@@ -21,7 +21,15 @@ ApplicationWindow {
 
     Component {
         id: componentThing
+
         Thing {
+            Drag.active: dragArea.drag.active
+
+            MouseArea {
+                id: dragArea
+                anchors.fill: parent
+                drag.target: parent
+            }
 
         }
     }
