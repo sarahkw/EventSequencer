@@ -3,6 +3,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
 ApplicationWindow {
+    id: appwin
     visible: true
     width: 640
     height: 480
@@ -11,11 +12,18 @@ ApplicationWindow {
         RowLayout {
             ToolButton {
                 text: "Add"
+                onClicked: {
+                    componentThing.createObject(appwin.contentItem, {})
+                }
             }
         }
     }
 
-    Thing {
+    Component {
+        id: componentThing
+        Thing {
 
+        }
     }
+
 }
