@@ -22,11 +22,45 @@ ApplicationWindow {
     Component {
         id: componentThing
         Thing {
-            Drag.active: dragArea.drag.active
-            MouseArea {
-                id: dragArea
-                anchors.fill: parent
-                drag.target: parent
+            id: thingar
+
+            Item {
+                Drag.active: dragArea.drag.active
+
+                id: dragProxy
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+
+                MouseArea {
+                    id: dragArea
+                    anchors.fill: parent
+                    drag.target: dragProxy
+                }
+
+                states: [
+                    State {
+                        when: dragArea.drag.active
+                        PropertyChanges {
+                            target: dragProxy
+                            restoreEntryValues: false
+                            onXChanged: thingar.x = Math.floor(dragProxy.x / 110) * 110
+                            onYChanged: thingar.y = Math.floor(dragProxy.y / 35) * 35
+                        }
+                        AnchorChanges {
+                            target: dragProxy
+                            anchors.left: undefined
+                            anchors.right: undefined
+                            anchors.top: undefined
+                            anchors.bottom: undefined
+                        }
+                        ParentChange {
+                            target: dragProxy
+                            parent: thingar.parent
+                        }
+                    }
+                ]
             }
         }
     }
@@ -39,7 +73,6 @@ ApplicationWindow {
             id: body
             implicitWidth: childrenRect.width + childrenRect.x
             implicitHeight: childrenRect.height + childrenRect.y
-            color: "#efefef"
         }
     }
 }
