@@ -78,7 +78,15 @@ ApplicationWindow {
                     if (mouse.modifiers & Qt.ShiftModifier) {
                         var tmp = selectedThingars
                         selectedThingars = []
-                        tmp.push(thingar)
+
+                        if (realIn(thingar, tmp)) {
+                            tmp = tmp.filter(function (x) {
+                                return x !== thingar;
+                            })
+                        } else {
+                            tmp.push(thingar)
+                        }
+
                         selectedThingars = tmp
                     } else {
                         selectedThingars = [thingar]
