@@ -13,7 +13,7 @@ ApplicationWindow {
             ToolButton {
                 text: "Add"
                 onClicked: {
-                    componentThing.createObject(appwin.contentItem, {})
+                    componentThing.createObject(body, {})
                 }
             }
         }
@@ -21,17 +21,25 @@ ApplicationWindow {
 
     Component {
         id: componentThing
-
         Thing {
             Drag.active: dragArea.drag.active
-
             MouseArea {
                 id: dragArea
                 anchors.fill: parent
                 drag.target: parent
             }
-
         }
     }
 
+    ScrollView {
+        anchors.fill: parent
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
+        ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+        Rectangle {
+            id: body
+            implicitWidth: childrenRect.width + childrenRect.x
+            implicitHeight: childrenRect.height + childrenRect.y
+            color: "#efefef"
+        }
+    }
 }
