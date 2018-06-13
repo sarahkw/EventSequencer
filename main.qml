@@ -45,7 +45,7 @@ ApplicationWindow {
                         PropertyChanges {
                             target: dragProxy
                             restoreEntryValues: false
-                            onXChanged: thingar.x = Math.floor(dragProxy.x / 110) * 110
+                            onXChanged: thingar.x = Math.floor(dragProxy.x / 50) * 50
                             onYChanged: thingar.y = Math.floor(dragProxy.y / 35) * 35
                         }
                         AnchorChanges {
