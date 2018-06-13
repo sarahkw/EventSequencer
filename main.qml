@@ -19,10 +19,24 @@ ApplicationWindow {
         }
     }
 
+    // "needle in haystack" doesn't seem to work for QML elements
+    function realIn(needle, haystack) {
+        for (var idx in haystack) {
+            if (haystack[idx] === needle) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    property var selectedThingars: []
+
     Component {
         id: componentThing
         Thing {
             id: thingar
+
+            selected: realIn(thingar, selectedThingars)
 
             Item {
                 Drag.active: dragArea.drag.active
@@ -61,6 +75,21 @@ ApplicationWindow {
                     }
                 ]
             }
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.RightButton
+                onClicked: {
+                    if (mouse.modifiers & Qt.ShiftModifier) {
+                        var tmp = selectedThingars
+                        selectedThingars = []
+                        tmp.push(thingar)
+                        selectedThingars = tmp
+                    } else {
+                        selectedThingars = [thingar]
+                    }
+                }
+            }
         }
     }
 
@@ -68,6 +97,11 @@ ApplicationWindow {
         anchors.fill: parent
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+        MouseArea {
+            anchors.fill: parent
+            acceptedButtons: Qt.RightButton
+            onClicked: selectedThingars = []
+        }
         Rectangle {
             id: body
             implicitWidth: childrenRect.width + childrenRect.x
