@@ -21,12 +21,7 @@ ApplicationWindow {
 
     // "needle in haystack" doesn't seem to work for QML elements
     function realIn(needle, haystack) {
-        for (var idx in haystack) {
-            if (haystack[idx] === needle) {
-                return true;
-            }
-        }
-        return false;
+        return haystack.some(function (x) { return x === needle });
     }
 
     property var selectedThingars: []
