@@ -1,4 +1,4 @@
-import QtQuick 2.10
+﻿import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
@@ -122,6 +122,9 @@ ApplicationWindow {
             function snapX(_x) {
                 return Math.floor(_x / 50) * 50;
             }
+            function snapXceil(_x) {
+                return Math.ceil(_x / 50) * 50;
+            }
 
             function snapY(_y) {
                 return Math.floor(_y / 35) * 35
@@ -139,6 +142,11 @@ ApplicationWindow {
                         case thingar.selectionMode_RIGHT:
                             width = snapX(width + diffX);
                             break;
+                        case thingar.selectionMode_LEFT:
+                            var initialX = x + width
+                            width = snapXceil(width - diffX)
+                            x = initialX - width
+                            break;
                         }
                     }
                 }
@@ -146,6 +154,7 @@ ApplicationWindow {
 
             property int initialX
             property int initialY
+            property int initialWidth
 
             states: [
                 State {
@@ -172,12 +181,29 @@ ApplicationWindow {
                     PropertyChanges {
                         target: thingar
                         explicit: true
-                        initialX: width
+                        initialWidth: width
                     }
 
                     PropertyChanges {
                         target: thingar
-                        width: snapX(initialX + grabMode.diffX)
+                        width: snapX(initialWidth + grabMode.diffX)
+                    }
+                },
+                State {
+                    when: (selected &&
+                           grabMode.grabState == grabMode.grabstate_MOVING &&
+                           thingar.selectionMode == thingar.selectionMode_LEFT)
+                    PropertyChanges {
+                        target: thingar
+                        explicit: true
+                        initialX: x + width
+                        initialWidth: width
+                    }
+
+                    PropertyChanges {
+                        target: thingar
+                        width: snapXceil(initialWidth - grabMode.diffX)
+                        x: initialX - width
                     }
                 }
             ]
