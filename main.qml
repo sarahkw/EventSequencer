@@ -77,98 +77,71 @@ ApplicationWindow {
     Component {
         id: componentThing
 
-        Item {
-            width: childrenRect.width
-            height: childrenRect.height
-            Thing {
-                id: thingar
+        Thing {
+            id: thingar
 
-                selected: realIn(thingar, selectedThingars)
+            selected: realIn(thingar, selectedThingars)
 
-                MouseArea {
-                    anchors.fill: parent
-                    acceptedButtons: Qt.RightButton
-                    onClicked: {
-                        if (mouse.modifiers & Qt.ShiftModifier) {
-                            var tmp = selectedThingars
-                            selectedThingars = []
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.RightButton
+                onClicked: {
+                    if (mouse.modifiers & Qt.ShiftModifier) {
+                        var tmp = selectedThingars
+                        selectedThingars = []
 
-                            if (realIn(thingar, tmp)) {
-                                tmp = tmp.filter(function (x) {
-                                    return x !== thingar;
-                                })
-                            } else {
-                                tmp.push(thingar)
-                            }
-
-                            selectedThingars = tmp
+                        if (realIn(thingar, tmp)) {
+                            tmp = tmp.filter(function (x) {
+                                return x !== thingar;
+                            })
                         } else {
-                            selectedThingars = [thingar]
+                            tmp.push(thingar)
                         }
+
+                        selectedThingars = tmp
+                    } else {
+                        selectedThingars = [thingar]
                     }
                 }
+            }
 
-                Connections {
-                    target: grabMode
-                    onFinalCommit: {
-                        x += diffX
-                        y += diffY
+            function snapX(_x) {
+                return Math.floor(_x / 50) * 50;
+            }
+
+            function snapY(_y) {
+                return Math.floor(_y / 35) * 35
+            }
+
+            Connections {
+                target: grabMode
+                onFinalCommit: {
+                    x = snapX(x + diffX);
+                    y = snapY(y + diffY);
+                }
+            }
+
+            property int initialX
+            property int initialY
+
+            states: [
+                State {
+                    when: grabMode.grabState == grabMode.grabstate_MOVING
+                    PropertyChanges {
+                        target: thingar
+                        explicit: true
+                        initialX: x
+                        initialY: y
+                    }
+
+                    PropertyChanges {
+                        target: thingar
+                        x: snapX(initialX + grabMode.diffX)
+                        y: snapY(initialY + grabMode.diffY)
                     }
                 }
-
-                states: [
-                    State {
-                        when: grabMode.grabState == grabMode.grabstate_MOVING
-                        PropertyChanges {
-                            target: thingar
-                            x: Math.floor(dragProxy.x / 50) * 50
-                            y: Math.floor(dragProxy.y / 35) * 35
-                        }
-                    }
-                ]
-            }
-            Rectangle {
-                id: dragProxy
-                anchors.left: thingar.left
-                anchors.right: thingar.right
-                anchors.top: thingar.top
-                anchors.bottom: thingar.bottom
-
-                color: "gray"
-                opacity: 0.5
-
-                property int initialX
-                property int initialY
-
-                states: [
-                    State {
-                        name: "TEST"
-                        when: grabMode.grabState == grabMode.grabstate_MOVING
-                        PropertyChanges {
-                            target: dragProxy
-                            explicit: true
-                            restoreEntryValues: false
-                            initialX: x
-                            initialY: y
-                        }
-                        PropertyChanges {
-                            target: dragProxy
-                            x: dragProxy.initialX + grabMode.diffX
-                            y: dragProxy.initialY + grabMode.diffY
-                        }
-                        AnchorChanges {
-                            target: dragProxy
-                            anchors.left: undefined
-                            anchors.right: undefined
-                            anchors.top: undefined
-                            anchors.bottom: undefined
-                        }
-                    }
-                ]
-            }
+            ]
         }
-
-
     }
 
     MouseArea {
