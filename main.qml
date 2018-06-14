@@ -116,8 +116,10 @@ ApplicationWindow {
             Connections {
                 target: grabMode
                 onFinalCommit: {
-                    x = snapX(x + diffX);
-                    y = snapY(y + diffY);
+                    if (selected) {
+                        x = snapX(x + diffX);
+                        y = snapY(y + diffY);
+                    }
                 }
             }
 
@@ -126,7 +128,7 @@ ApplicationWindow {
 
             states: [
                 State {
-                    when: grabMode.grabState == grabMode.grabstate_MOVING
+                    when: selected && grabMode.grabState == grabMode.grabstate_MOVING
                     PropertyChanges {
                         target: thingar
                         explicit: true
@@ -166,6 +168,10 @@ ApplicationWindow {
         id: grabMode
         enabled: grabAction.checked
         hoverEnabled: true
+        // Accept all buttons so we don't let mouse events through. Otherwise
+        // it will get confusing when we deselect stuff being grabbed, for
+        // example.
+        acceptedButtons: Qt.AllButtons
         anchors.fill: sView
 
         readonly property int grabstate_INACTIVE: 0
