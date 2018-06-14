@@ -100,26 +100,22 @@ ApplicationWindow {
 
             selected: realIn(thingar, selectedThingars)
 
-            MouseArea {
-                anchors.fill: parent
-                acceptedButtons: Qt.RightButton
-                onClicked: {
-                    if (mouse.modifiers & Qt.ShiftModifier) {
-                        var tmp = selectedThingars
-                        selectedThingars = []
+            onSelectionClicked: {
+                if (mouse.modifiers & Qt.ShiftModifier) {
+                    var tmp = selectedThingars
+                    selectedThingars = []
 
-                        if (realIn(thingar, tmp)) {
-                            tmp = tmp.filter(function (x) {
-                                return x !== thingar;
-                            })
-                        } else {
-                            tmp.push(thingar)
-                        }
-
-                        selectedThingars = tmp
+                    if (realIn(thingar, tmp)) {
+                        tmp = tmp.filter(function (x) {
+                            return x !== thingar;
+                        })
                     } else {
-                        selectedThingars = [thingar]
+                        tmp.push(thingar)
                     }
+
+                    selectedThingars = tmp
+                } else {
+                    selectedThingars = [thingar]
                 }
             }
 
