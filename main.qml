@@ -134,19 +134,23 @@ ApplicationWindow {
         }
     }
 
+
+    MouseArea {
+        anchors.fill: sView
+        acceptedButtons: Qt.RightButton
+        onClicked: selectedThingars = []
+    }
     ScrollView {
+        id: sView
         anchors.fill: parent
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-        MouseArea {
-            anchors.fill: parent
-            acceptedButtons: Qt.RightButton
-            onClicked: selectedThingars = []
-        }
+
         Rectangle {
             id: body
             implicitWidth: childrenRect.width + childrenRect.x
             implicitHeight: childrenRect.height + childrenRect.y
         }
     }
+
 }
