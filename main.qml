@@ -12,11 +12,31 @@ ApplicationWindow {
         RowLayout {
             ToolButton {
                 text: "Add"
-                onClicked: {
-                    componentThing.createObject(body, {})
-                }
+                action: addAction
+                ToolTip.visible: hovered
+                ToolTip.text: "Shift+A"
             }
         }
+    }
+
+    footer: ToolBar {
+        Label {
+            id: statusBar
+            text: "Status"
+            elide: Text.ElideRight
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+            Layout.fillWidth: true
+            anchors.verticalCenter: parent.verticalCenter
+            leftPadding: 10
+        }
+    }
+
+    Action {
+        id: addAction
+        text: "Add"
+        onTriggered: componentThing.createObject(body, {})
+        shortcut: "Shift+A"
     }
 
     // "needle in haystack" doesn't seem to work for QML elements
