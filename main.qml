@@ -226,6 +226,12 @@ ApplicationWindow {
                 break;
             }
         }
+
+        onClicked: {
+            if (mouse.button === Qt.LeftButton) {
+                grabAction.checked = false
+            }
+        }
     }
 
 }
