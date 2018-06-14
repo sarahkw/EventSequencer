@@ -131,8 +131,15 @@ ApplicationWindow {
                 target: grabMode
                 onFinalCommit: {
                     if (selected) {
-                        x = snapX(x + diffX);
-                        y = snapY(y + diffY);
+                        switch (thingar.selectionMode) {
+                        case thingar.selectionMode_WHOLE:
+                            x = snapX(x + diffX);
+                            y = snapY(y + diffY);
+                            break;
+                        case thingar.selectionMode_RIGHT:
+                            width = snapX(width + diffX);
+                            break;
+                        }
                     }
                 }
             }
@@ -142,7 +149,9 @@ ApplicationWindow {
 
             states: [
                 State {
-                    when: selected && grabMode.grabState == grabMode.grabstate_MOVING
+                    when: (selected &&
+                           grabMode.grabState == grabMode.grabstate_MOVING &&
+                           thingar.selectionMode == thingar.selectionMode_WHOLE)
                     PropertyChanges {
                         target: thingar
                         explicit: true
@@ -154,6 +163,21 @@ ApplicationWindow {
                         target: thingar
                         x: snapX(initialX + grabMode.diffX)
                         y: snapY(initialY + grabMode.diffY)
+                    }
+                },
+                State {
+                    when: (selected &&
+                           grabMode.grabState == grabMode.grabstate_MOVING &&
+                           thingar.selectionMode == thingar.selectionMode_RIGHT)
+                    PropertyChanges {
+                        target: thingar
+                        explicit: true
+                        initialX: width
+                    }
+
+                    PropertyChanges {
+                        target: thingar
+                        width: snapX(initialX + grabMode.diffX)
                     }
                 }
             ]
