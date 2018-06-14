@@ -76,31 +76,85 @@ ApplicationWindow {
 
     Component {
         id: componentThing
-        Thing {
-            id: thingar
 
-            selected: realIn(thingar, selectedThingars)
+        Item {
+            width: childrenRect.width
+            height: childrenRect.height
+            Thing {
+                id: thingar
 
-            Item {
-                id: dragProxy
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
+                selected: realIn(thingar, selectedThingars)
 
                 MouseArea {
-                    id: dragArea
                     anchors.fill: parent
-                    drag.target: dragProxy
+                    acceptedButtons: Qt.RightButton
+                    onClicked: {
+                        if (mouse.modifiers & Qt.ShiftModifier) {
+                            var tmp = selectedThingars
+                            selectedThingars = []
+
+                            if (realIn(thingar, tmp)) {
+                                tmp = tmp.filter(function (x) {
+                                    return x !== thingar;
+                                })
+                            } else {
+                                tmp.push(thingar)
+                            }
+
+                            selectedThingars = tmp
+                        } else {
+                            selectedThingars = [thingar]
+                        }
+                    }
+                }
+
+                Connections {
+                    target: grabMode
+                    onFinalCommit: {
+                        x += diffX
+                        y += diffY
+                    }
                 }
 
                 states: [
                     State {
-                        when: dragArea.drag.active
+                        when: grabMode.grabState == grabMode.grabstate_MOVING
+                        PropertyChanges {
+                            target: thingar
+                            x: Math.floor(dragProxy.x / 50) * 50
+                            y: Math.floor(dragProxy.y / 35) * 35
+                        }
+                    }
+                ]
+            }
+            Rectangle {
+                id: dragProxy
+                anchors.left: thingar.left
+                anchors.right: thingar.right
+                anchors.top: thingar.top
+                anchors.bottom: thingar.bottom
+
+                color: "gray"
+                opacity: 0.5
+
+                property int initialX
+                property int initialY
+
+                states: [
+                    State {
+                        name: "TEST"
+                        when: grabMode.grabState == grabMode.grabstate_MOVING
                         PropertyChanges {
                             target: dragProxy
-                            onXChanged: thingar.x = Math.floor(dragProxy.x / 50) * 50
-                            onYChanged: thingar.y = Math.floor(dragProxy.y / 35) * 35
+                            explicit: true
+                            restoreEntryValues: false
+                            initialX: x
+                            initialY: y
+                        }
+                        PropertyChanges {
+                            target: dragProxy
+                            x: dragProxy.initialX + grabMode.diffX
+                            y: dragProxy.initialY + grabMode.diffY
                         }
                         AnchorChanges {
                             target: dragProxy
@@ -109,37 +163,12 @@ ApplicationWindow {
                             anchors.top: undefined
                             anchors.bottom: undefined
                         }
-                        ParentChange {
-                            target: dragProxy
-                            parent: thingar.parent
-                        }
                     }
                 ]
             }
-
-            MouseArea {
-                anchors.fill: parent
-                acceptedButtons: Qt.RightButton
-                onClicked: {
-                    if (mouse.modifiers & Qt.ShiftModifier) {
-                        var tmp = selectedThingars
-                        selectedThingars = []
-
-                        if (realIn(thingar, tmp)) {
-                            tmp = tmp.filter(function (x) {
-                                return x !== thingar;
-                            })
-                        } else {
-                            tmp.push(thingar)
-                        }
-
-                        selectedThingars = tmp
-                    } else {
-                        selectedThingars = [thingar]
-                    }
-                }
-            }
         }
+
+
     }
 
     MouseArea {
@@ -157,6 +186,66 @@ ApplicationWindow {
             id: body
             implicitWidth: childrenRect.width + childrenRect.x
             implicitHeight: childrenRect.height + childrenRect.y
+        }
+    }
+
+    MouseArea {
+        id: grabMode
+        enabled: grabAction.checked
+        hoverEnabled: true
+        anchors.fill: sView
+
+        readonly property int grabstate_INACTIVE: 0
+        readonly property int grabstate_PREMOVE1: 1
+        readonly property int grabstate_PREMOVE2: 2
+        readonly property int grabstate_MOVING: 3
+
+        property int grabState: grabstate_INACTIVE
+        property int initialMouseX
+        property int initialMouseY
+        property int diffX
+        property int diffY
+
+        signal finalCommit(int diffX, int diffY)
+
+        onEnabledChanged: {
+            switch (grabState) {
+            case grabstate_INACTIVE:
+                if (enabled) {
+                    grabState = grabstate_PREMOVE1
+                }
+                break;
+            case grabstate_PREMOVE1:
+            case grabstate_PREMOVE2:
+                if (!enabled) {
+                    grabState = grabstate_INACTIVE
+                }
+                break;
+            case grabstate_MOVING:
+                if (!enabled) {
+                    grabState = grabstate_INACTIVE
+                    finalCommit(diffX, diffY)
+                }
+                break;
+            }
+        }
+
+        onPositionChanged: {
+            switch (grabState) {
+            case grabstate_INACTIVE:
+                break;
+            case grabstate_PREMOVE1:
+                initialMouseX = mouseX
+                initialMouseY = mouseY
+                grabState = grabstate_PREMOVE2
+                break;
+            case grabstate_PREMOVE2:
+            case grabstate_MOVING:
+                diffX = mouseX - initialMouseX
+                diffY = mouseY - initialMouseY
+                grabState = grabstate_MOVING; // XXX Only set if not already moving?
+                break;
+            }
         }
     }
 
