@@ -11,14 +11,17 @@ ApplicationWindow {
     header: ToolBar {
         RowLayout {
             ToolButton {
-                text: "Add"
                 action: addAction
                 ToolTip.visible: hovered
                 ToolTip.text: action.shortcut
             }
             ToolButton {
-                text: "Delete"
                 action: deleteAction
+                ToolTip.visible: hovered
+                ToolTip.text: action.shortcut
+            }
+            ToolButton {
+                action: grabAction
                 ToolTip.visible: hovered
                 ToolTip.text: action.shortcut
             }
@@ -55,6 +58,13 @@ ApplicationWindow {
             selectedThingars = []
         }
         shortcut: "X"
+    }
+
+    Action {
+        id: grabAction
+        text: "Grab"
+        checkable: true
+        shortcut: "G"
     }
 
     // "needle in haystack" doesn't seem to work for QML elements
@@ -133,7 +143,6 @@ ApplicationWindow {
             }
         }
     }
-
 
     MouseArea {
         anchors.fill: sView
