@@ -14,7 +14,13 @@ ApplicationWindow {
                 text: "Add"
                 action: addAction
                 ToolTip.visible: hovered
-                ToolTip.text: "Shift+A"
+                ToolTip.text: action.shortcut
+            }
+            ToolButton {
+                text: "Delete"
+                action: deleteAction
+                ToolTip.visible: hovered
+                ToolTip.text: action.shortcut
             }
         }
     }
@@ -37,6 +43,18 @@ ApplicationWindow {
         text: "Add"
         onTriggered: componentThing.createObject(body, {})
         shortcut: "Shift+A"
+    }
+
+    Action {
+        id: deleteAction
+        text: "Delete"
+        onTriggered: {
+            selectedThingars.forEach(function (x) {
+                x.destroy()
+            })
+            selectedThingars = []
+        }
+        shortcut: "X"
     }
 
     // "needle in haystack" doesn't seem to work for QML elements
