@@ -82,8 +82,6 @@ ApplicationWindow {
             selected: realIn(thingar, selectedThingars)
 
             Item {
-                Drag.active: dragArea.drag.active
-
                 id: dragProxy
                 anchors.left: parent.left
                 anchors.right: parent.right
