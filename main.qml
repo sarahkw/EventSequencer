@@ -44,7 +44,10 @@ ApplicationWindow {
     Action {
         id: addAction
         text: "Add"
-        onTriggered: componentThing.createObject(body, {})
+        onTriggered: {
+            var x = componentThing.createObject(body, {})
+            selectedThingars = [x]
+        }
         shortcut: "Shift+A"
     }
 
