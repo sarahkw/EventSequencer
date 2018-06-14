@@ -25,6 +25,11 @@ ApplicationWindow {
                 ToolTip.visible: hovered
                 ToolTip.text: action.shortcut
             }
+            ToolButton {
+                action: selectAction
+                ToolTip.visible: hovered
+                ToolTip.text: action.shortcut
+            }
         }
     }
 
@@ -68,6 +73,16 @@ ApplicationWindow {
         text: "Grab"
         checkable: true
         shortcut: "G"
+    }
+
+    Action {
+        id: selectAction
+        text: "Select"
+        shortcut: "A"
+        onTriggered: {
+            selectedThingars = []
+            // TODO Also support Select All
+        }
     }
 
     // "needle in haystack" doesn't seem to work for QML elements
