@@ -222,14 +222,31 @@ ApplicationWindow {
             case grabstate_MOVING:
                 diffX = mouseX - initialMouseX
                 diffY = mouseY - initialMouseY
-                grabState = grabstate_MOVING; // XXX Only set if not already moving?
+                grabState = grabstate_MOVING // XXX Only set if not already moving?
                 break;
             }
         }
 
+        function cancel() {
+            switch (grabState) {
+            case grabstate_INACTIVE:
+            case grabstate_PREMOVE1:
+            case grabstate_PREMOVE2:
+            case grabstate_MOVING:
+                grabState = grabstate_INACTIVE
+                grabAction.checked = false
+                break;
+            }
+        }
+
+
         onClicked: {
             if (mouse.button === Qt.LeftButton) {
+                // Confirm
                 grabAction.checked = false
+            } else if (mouse.button === Qt.RightButton) {
+                // Cancel
+                cancel()
             }
         }
     }
