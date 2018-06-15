@@ -221,8 +221,8 @@ ApplicationWindow {
 
         Item {
             id: bodyView
-            anchors.left: parent.left
-            anchors.right: sbVertHolder.left
+            anchors.left: sbVertHolder.right
+            anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: sbHoriz.top
 
@@ -239,14 +239,14 @@ ApplicationWindow {
             tickSize: 50
             position: body.x
 
-            anchors.left: parent.left
-            anchors.right: sbVertHolder.left
+            anchors.left: sbVertHolder.right
+            anchors.right: parent.right
             anchors.bottom: parent.bottom
         }
 
         Item {
             id: sbVertHolder
-            anchors.right: parent.right
+            anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: sbHoriz.top
             width: 20
@@ -266,10 +266,10 @@ ApplicationWindow {
 
         Rectangle {
             id: sbDead
-            anchors.left: sbHoriz.right
+            anchors.left: parent.left
             anchors.top: sbVertHolder.bottom
             anchors.bottom: parent.bottom
-            anchors.right: parent.right
+            anchors.right: sbHoriz.left
             color: "gray"
         }
 
