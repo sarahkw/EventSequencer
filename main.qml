@@ -234,12 +234,36 @@ ApplicationWindow {
         }
 
         Rectangle {
+            property int snapWidth: 50
+
             id: sbHoriz
             anchors.left: parent.left
             anchors.right: sbVert.left
             anchors.bottom: parent.bottom
             color: "whitesmoke"
             height: 20
+
+            Repeater {
+                model: sbHoriz.width / sbHoriz.snapWidth
+                Item {
+                    anchors.top: sbHoriz.top
+                    anchors.bottom: sbHoriz.bottom
+                    x: body.x + index * sbHoriz.snapWidth
+                    Rectangle {
+                        width: 1
+                        color: "black"
+                        anchors.top: parent.top
+                        anchors.bottom: texty.top
+                    }
+                    Text {
+                        id: texty
+                        font.pixelSize: 10
+                        anchors.horizontalCenter: parent.left
+                        text: index
+                        anchors.bottom: parent.bottom
+                    }
+                }
+            }
         }
 
         Rectangle {
@@ -249,6 +273,14 @@ ApplicationWindow {
             anchors.bottom: sbHoriz.top
             color: "whitesmoke"
             width: 20
+
+            Rectangle {
+                height: 1
+                color: "black"
+                anchors.left: parent.left
+                anchors.right: parent.right
+                y: body.y
+            }
         }
 
         Rectangle {
