@@ -233,37 +233,15 @@ ApplicationWindow {
             }
         }
 
-        Rectangle {
-            property int snapWidth: 50
-
+        Ruler {
             id: sbHoriz
+            tickSize: 50
+            height: 20
+            position: body.x
+
             anchors.left: parent.left
             anchors.right: sbVert.left
             anchors.bottom: parent.bottom
-            color: "whitesmoke"
-            height: 20
-
-            Repeater {
-                model: sbHoriz.width / sbHoriz.snapWidth + 1
-                Item {
-                    anchors.top: sbHoriz.top
-                    anchors.bottom: sbHoriz.bottom
-                    x: body.x % sbHoriz.snapWidth + index * sbHoriz.snapWidth
-                    Rectangle {
-                        width: 1
-                        color: "black"
-                        anchors.top: parent.top
-                        anchors.bottom: texty.top
-                    }
-                    Text {
-                        id: texty
-                        font.pixelSize: 10
-                        anchors.horizontalCenter: parent.left
-                        text: index - Math.floor(body.x / sbHoriz.snapWidth)
-                        anchors.bottom: parent.bottom
-                    }
-                }
-            }
         }
 
         Rectangle {

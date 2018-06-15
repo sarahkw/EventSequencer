@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>Thing.qml</file>
         <file>Triangle.qml</file>
+        <file>Ruler.qml</file>
     </qresource>
 </RCC>
