@@ -222,7 +222,7 @@ ApplicationWindow {
         Item {
             id: bodyView
             anchors.left: parent.left
-            anchors.right: sbVert.left
+            anchors.right: sbVertHolder.left
             anchors.top: parent.top
             anchors.bottom: sbHoriz.top
 
@@ -235,36 +235,39 @@ ApplicationWindow {
 
         Ruler {
             id: sbHoriz
-            tickSize: 50
             height: 20
+            tickSize: 50
             position: body.x
 
             anchors.left: parent.left
-            anchors.right: sbVert.left
+            anchors.right: sbVertHolder.left
             anchors.bottom: parent.bottom
         }
 
-        Rectangle {
-            id: sbVert
+        Item {
+            id: sbVertHolder
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: sbHoriz.top
-            color: "whitesmoke"
             width: 20
+            Ruler {
+                id: sbVert
+                tickSize: 35
+                position: body.y
+                height: parent.width
+                width: parent.height
+                y: -height
 
-            Rectangle {
-                height: 1
-                color: "black"
-                anchors.left: parent.left
-                anchors.right: parent.right
-                y: body.y
+                // Hack hack hack hack
+                rotation: 90
+                transformOrigin: Item.BottomLeft
             }
         }
 
         Rectangle {
             id: sbDead
             anchors.left: sbHoriz.right
-            anchors.top: sbVert.bottom
+            anchors.top: sbVertHolder.bottom
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             color: "gray"
