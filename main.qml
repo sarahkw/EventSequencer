@@ -215,13 +215,21 @@ ApplicationWindow {
         acceptedButtons: Qt.RightButton
         onClicked: selectedThingars = []
     }
-    ScrollView {
+    Flickable {
         id: sView
         anchors.fill: parent
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
-        ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
-        Rectangle {
+        ScrollBar.vertical: ScrollBar {
+            policy: ScrollBar.AlwaysOn
+        }
+        ScrollBar.horizontal: ScrollBar {
+            policy: ScrollBar.AlwaysOn
+        }
+
+        contentWidth: body.implicitWidth
+        contentHeight: body.implicitHeight
+
+        Item {
             id: body
             implicitWidth: childrenRect.width + childrenRect.x
             implicitHeight: childrenRect.height + childrenRect.y
