@@ -244,11 +244,11 @@ ApplicationWindow {
             height: 20
 
             Repeater {
-                model: sbHoriz.width / sbHoriz.snapWidth
+                model: sbHoriz.width / sbHoriz.snapWidth + 1
                 Item {
                     anchors.top: sbHoriz.top
                     anchors.bottom: sbHoriz.bottom
-                    x: body.x + index * sbHoriz.snapWidth
+                    x: body.x % sbHoriz.snapWidth + index * sbHoriz.snapWidth
                     Rectangle {
                         width: 1
                         color: "black"
@@ -259,7 +259,7 @@ ApplicationWindow {
                         id: texty
                         font.pixelSize: 10
                         anchors.horizontalCenter: parent.left
-                        text: index
+                        text: index - Math.floor(body.x / sbHoriz.snapWidth)
                         anchors.bottom: parent.bottom
                     }
                 }
