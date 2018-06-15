@@ -210,131 +210,164 @@ ApplicationWindow {
         }
     }
 
-    MouseArea {
-        anchors.fill: bodyView
-        acceptedButtons: Qt.RightButton
-        onClicked: selectedThingars = []
-    }
     Item {
-        id: bodyView
         anchors.fill: parent
 
+        MouseArea {
+            anchors.fill: bodyView
+            acceptedButtons: Qt.RightButton
+            onClicked: selectedThingars = []
+        }
+
         Item {
-            id: body
-            implicitWidth: childrenRect.width + childrenRect.x
-            implicitHeight: childrenRect.height + childrenRect.y
+            id: bodyView
+            anchors.left: parent.left
+            anchors.right: sbVert.left
+            anchors.top: parent.top
+            anchors.bottom: sbHoriz.top
+
+            Item {
+                id: body
+                implicitWidth: childrenRect.width + childrenRect.x
+                implicitHeight: childrenRect.height + childrenRect.y
+            }
         }
-    }
 
-    MouseArea {
-        id: pan
-        anchors.fill: bodyView
-        acceptedButtons: Qt.MiddleButton
-
-        property int lastMouseX
-        property int lastMouseY
-
-        onPressed: {
-            lastMouseX = mouse.x
-            lastMouseY = mouse.y
+        Rectangle {
+            id: sbHoriz
+            anchors.left: parent.left
+            anchors.right: sbVert.left
+            anchors.bottom: parent.bottom
+            color: "whitesmoke"
+            height: 20
         }
-        onPositionChanged: {
-            var deltaX = mouse.x - lastMouseX
-            var deltaY = mouse.y - lastMouseY
-            var newx = body.x + deltaX
-            var newy = body.y + deltaY
-            body.x = newx
-            body.y = newy
-            lastMouseX = mouse.x
-            lastMouseY = mouse.y
+
+        Rectangle {
+            id: sbVert
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: sbHoriz.top
+            color: "whitesmoke"
+            width: 20
         }
-    }
 
-    MouseArea {
-        id: grabMode
-        enabled: grabAction.checked
-        hoverEnabled: true
-        // Accept all buttons so we don't let mouse events through. Otherwise
-        // it will get confusing when we deselect stuff being grabbed, for
-        // example.
-        acceptedButtons: Qt.AllButtons
-        anchors.fill: bodyView
+        Rectangle {
+            id: sbDead
+            anchors.left: sbHoriz.right
+            anchors.top: sbVert.bottom
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            color: "gray"
+        }
 
-        readonly property int grabstate_INACTIVE: 0
-        readonly property int grabstate_PREMOVE1: 1
-        readonly property int grabstate_PREMOVE2: 2
-        readonly property int grabstate_MOVING: 3
+        MouseArea {
+            id: pan
+            anchors.fill: bodyView
+            acceptedButtons: Qt.MiddleButton
 
-        property int grabState: grabstate_INACTIVE
-        property int initialMouseX
-        property int initialMouseY
-        property int diffX
-        property int diffY
+            property int lastMouseX
+            property int lastMouseY
 
-        signal finalCommit(int diffX, int diffY)
+            onPressed: {
+                lastMouseX = mouse.x
+                lastMouseY = mouse.y
+            }
+            onPositionChanged: {
+                var deltaX = mouse.x - lastMouseX
+                var deltaY = mouse.y - lastMouseY
+                var newx = body.x + deltaX
+                var newy = body.y + deltaY
+                body.x = newx
+                body.y = newy
+                lastMouseX = mouse.x
+                lastMouseY = mouse.y
+            }
+        }
 
-        onEnabledChanged: {
-            switch (grabState) {
-            case grabstate_INACTIVE:
-                if (enabled) {
-                    grabState = grabstate_PREMOVE1
+        MouseArea {
+            id: grabMode
+            enabled: grabAction.checked
+            hoverEnabled: true
+            // Accept all buttons so we don't let mouse events through. Otherwise
+            // it will get confusing when we deselect stuff being grabbed, for
+            // example.
+            acceptedButtons: Qt.AllButtons
+            anchors.fill: bodyView
+
+            readonly property int grabstate_INACTIVE: 0
+            readonly property int grabstate_PREMOVE1: 1
+            readonly property int grabstate_PREMOVE2: 2
+            readonly property int grabstate_MOVING: 3
+
+            property int grabState: grabstate_INACTIVE
+            property int initialMouseX
+            property int initialMouseY
+            property int diffX
+            property int diffY
+
+            signal finalCommit(int diffX, int diffY)
+
+            onEnabledChanged: {
+                switch (grabState) {
+                case grabstate_INACTIVE:
+                    if (enabled) {
+                        grabState = grabstate_PREMOVE1
+                    }
+                    break;
+                case grabstate_PREMOVE1:
+                case grabstate_PREMOVE2:
+                    if (!enabled) {
+                        grabState = grabstate_INACTIVE
+                    }
+                    break;
+                case grabstate_MOVING:
+                    if (!enabled) {
+                        grabState = grabstate_INACTIVE
+                        finalCommit(diffX, diffY)
+                    }
+                    break;
                 }
-                break;
-            case grabstate_PREMOVE1:
-            case grabstate_PREMOVE2:
-                if (!enabled) {
+            }
+
+            onPositionChanged: {
+                switch (grabState) {
+                case grabstate_INACTIVE:
+                    break;
+                case grabstate_PREMOVE1:
+                    initialMouseX = mouseX
+                    initialMouseY = mouseY
+                    grabState = grabstate_PREMOVE2
+                    break;
+                case grabstate_PREMOVE2:
+                case grabstate_MOVING:
+                    diffX = mouseX - initialMouseX
+                    diffY = mouseY - initialMouseY
+                    grabState = grabstate_MOVING // XXX Only set if not already moving?
+                    break;
+                }
+            }
+
+            function cancel() {
+                switch (grabState) {
+                case grabstate_INACTIVE:
+                case grabstate_PREMOVE1:
+                case grabstate_PREMOVE2:
+                case grabstate_MOVING:
                     grabState = grabstate_INACTIVE
+                    grabAction.checked = false
+                    break;
                 }
-                break;
-            case grabstate_MOVING:
-                if (!enabled) {
-                    grabState = grabstate_INACTIVE
-                    finalCommit(diffX, diffY)
+            }
+
+            onClicked: {
+                if (mouse.button === Qt.LeftButton) {
+                    // Confirm
+                    grabAction.checked = false
+                } else if (mouse.button === Qt.RightButton) {
+                    // Cancel
+                    cancel()
                 }
-                break;
-            }
-        }
-
-        onPositionChanged: {
-            switch (grabState) {
-            case grabstate_INACTIVE:
-                break;
-            case grabstate_PREMOVE1:
-                initialMouseX = mouseX
-                initialMouseY = mouseY
-                grabState = grabstate_PREMOVE2
-                break;
-            case grabstate_PREMOVE2:
-            case grabstate_MOVING:
-                diffX = mouseX - initialMouseX
-                diffY = mouseY - initialMouseY
-                grabState = grabstate_MOVING // XXX Only set if not already moving?
-                break;
-            }
-        }
-
-        function cancel() {
-            switch (grabState) {
-            case grabstate_INACTIVE:
-            case grabstate_PREMOVE1:
-            case grabstate_PREMOVE2:
-            case grabstate_MOVING:
-                grabState = grabstate_INACTIVE
-                grabAction.checked = false
-                break;
-            }
-        }
-
-
-        onClicked: {
-            if (mouse.button === Qt.LeftButton) {
-                // Confirm
-                grabAction.checked = false
-            } else if (mouse.button === Qt.RightButton) {
-                // Cancel
-                cancel()
             }
         }
     }
-
 }
