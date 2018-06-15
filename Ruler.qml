@@ -6,6 +6,7 @@ Rectangle {
 
     id: sbHoriz
     color: "whitesmoke"
+    clip: true
 
     Repeater {
         model: sbHoriz.width / sbHoriz.tickSize + 1
