@@ -211,28 +211,42 @@ ApplicationWindow {
     }
 
     MouseArea {
-        anchors.fill: sView
+        anchors.fill: bodyView
         acceptedButtons: Qt.RightButton
         onClicked: selectedThingars = []
     }
-    Flickable {
-        id: sView
+    Item {
+        id: bodyView
         anchors.fill: parent
-
-        ScrollBar.vertical: ScrollBar {
-            policy: ScrollBar.AlwaysOn
-        }
-        ScrollBar.horizontal: ScrollBar {
-            policy: ScrollBar.AlwaysOn
-        }
-
-        contentWidth: body.implicitWidth
-        contentHeight: body.implicitHeight
 
         Item {
             id: body
             implicitWidth: childrenRect.width + childrenRect.x
             implicitHeight: childrenRect.height + childrenRect.y
+        }
+    }
+
+    MouseArea {
+        id: pan
+        anchors.fill: bodyView
+        acceptedButtons: Qt.MiddleButton
+
+        property int lastMouseX
+        property int lastMouseY
+
+        onPressed: {
+            lastMouseX = mouse.x
+            lastMouseY = mouse.y
+        }
+        onPositionChanged: {
+            var deltaX = mouse.x - lastMouseX
+            var deltaY = mouse.y - lastMouseY
+            var newx = body.x + deltaX
+            var newy = body.y + deltaY
+            body.x = newx
+            body.y = newy
+            lastMouseX = mouse.x
+            lastMouseY = mouse.y
         }
     }
 
@@ -244,7 +258,7 @@ ApplicationWindow {
         // it will get confusing when we deselect stuff being grabbed, for
         // example.
         acceptedButtons: Qt.AllButtons
-        anchors.fill: sView
+        anchors.fill: bodyView
 
         readonly property int grabstate_INACTIVE: 0
         readonly property int grabstate_PREMOVE1: 1
