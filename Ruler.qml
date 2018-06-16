@@ -8,6 +8,15 @@ Rectangle {
     color: "whitesmoke"
     clip: true
 
+    // No Math.trunc yet.
+    function ceilFloorTowardsZero(x) {
+        if (x < 0) {
+            return Math.ceil(x)
+        } else {
+            return Math.floor(x)
+        }
+    }
+
     Repeater {
         model: sbHoriz.width / sbHoriz.tickSize + 1
         Item {
@@ -24,7 +33,7 @@ Rectangle {
                 id: texty
                 font.pixelSize: 10
                 anchors.horizontalCenter: parent.left
-                text: index - Math.floor(position / sbHoriz.tickSize)
+                text: index - ceilFloorTowardsZero(position / sbHoriz.tickSize)
                 anchors.bottom: parent.bottom
             }
         }
