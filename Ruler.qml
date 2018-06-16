@@ -10,7 +10,7 @@ Rectangle {
     clip: true
 
     Repeater {
-        model: sbHoriz.width / sbHoriz.tickSize + 1
+        model: sbHoriz.width / sbHoriz.tickSize + 2 /*1 isn't enough. I don't know why, but 2 seems to work visually.*/
         Item {
             anchors.top: sbHoriz.top
             anchors.bottom: sbHoriz.bottom
