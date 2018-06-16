@@ -237,12 +237,15 @@ ApplicationWindow {
                 onClicked: selectedThingars = []
             }
 
-            Item {
+            Rectangle {
                 id: bodyView
                 anchors.left: sbVertHolder.right
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.bottom: sbHoriz.top
+
+                // The fusion theme would make this gray otherwise.
+                color: "white"
 
                 Item {
                     id: body
