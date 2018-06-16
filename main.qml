@@ -395,10 +395,11 @@ ApplicationWindow {
             id: propertiesDragger
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            x: parent.width - 200
+
+            property int position: 200
+            x: parent.width - position
 
             width: 2
-
             color: "white"
 
             Rectangle {
@@ -415,6 +416,10 @@ ApplicationWindow {
                 cursorShape: Qt.SizeHorCursor
                 drag.target: propertiesDragger
                 drag.axis: Drag.XAxis
+            }
+
+            onXChanged: {
+                position = parent.width - x
             }
         }
 
