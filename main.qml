@@ -1,4 +1,4 @@
-﻿import QtQuick 2.10
+import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
@@ -27,6 +27,11 @@ ApplicationWindow {
             }
             ToolButton {
                 action: selectAction
+                ToolTip.visible: hovered
+                ToolTip.text: action.shortcut
+            }
+            ToolButton {
+                action: propertiesAction
                 ToolTip.visible: hovered
                 ToolTip.text: action.shortcut
             }
@@ -83,6 +88,13 @@ ApplicationWindow {
             selectedThingars = []
             // TODO Also support Select All
         }
+    }
+
+    Action {
+        id: propertiesAction
+        text: "Properties"
+        checkable: true
+        shortcut: "N"
     }
 
     // "needle in haystack" doesn't seem to work for QML elements
@@ -421,6 +433,17 @@ ApplicationWindow {
             onXChanged: {
                 position = parent.width - x
             }
+
+            states: [
+                State {
+                    when: !propertiesAction.checked
+                    PropertyChanges {
+                        target: propertiesDragger
+                        position: 0
+                        visible: false
+                    }
+                }
+            ]
         }
 
         Rectangle {
