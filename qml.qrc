@@ -4,5 +4,6 @@
         <file>Thing.qml</file>
         <file>Triangle.qml</file>
         <file>Ruler.qml</file>
+        <file>util.js</file>
     </qresource>
 </RCC>

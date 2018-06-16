@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import "util.js" as Util
 
 Rectangle {
     property int tickSize
@@ -7,15 +8,6 @@ Rectangle {
     id: sbHoriz
     color: "whitesmoke"
     clip: true
-
-    // No Math.trunc yet.
-    function ceilFloorTowardsZero(x) {
-        if (x < 0) {
-            return Math.ceil(x)
-        } else {
-            return Math.floor(x)
-        }
-    }
 
     Repeater {
         model: sbHoriz.width / sbHoriz.tickSize + 1
@@ -33,7 +25,7 @@ Rectangle {
                 id: texty
                 font.pixelSize: 10
                 anchors.horizontalCenter: parent.left
-                text: index - ceilFloorTowardsZero(position / sbHoriz.tickSize)
+                text: index - Util.trunc(position / sbHoriz.tickSize)
                 anchors.bottom: parent.bottom
             }
         }
