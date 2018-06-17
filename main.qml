@@ -515,6 +515,16 @@ ApplicationWindow {
                                     selectedThingar.width = parseInt(text, 10)
                                 }
                             }
+                            Label {
+                                text: "End Frame"
+                            }
+                            TextField {
+                                Layout.fillWidth: true
+                                text: selectedThingar.x + selectedThingar.width
+                                onEditingFinished: {
+                                    selectedThingar.width = parseInt(text, 10) - selectedThingar.x
+                                }
+                            }
 
                         }
                     }
