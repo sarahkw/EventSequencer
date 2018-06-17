@@ -449,14 +449,66 @@ ApplicationWindow {
             ]
         }
 
-        Rectangle {
+        Pane {
             id: propertiesPanel
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.left: propertiesDragger.right
+            anchors.leftMargin: 5
+            anchors.rightMargin: 5
 
-            color: "lightgrey"
+            Loader {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                sourceComponent: selectedThingars.length == 1 ? propertiesComponent : undefined
+                Component {
+                    id: propertiesComponent
+                    Column {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        property var selectedThingar: selectedThingars[0]
+
+                        Label {
+                            text: "Edit Strip"
+                            font.pixelSize: 16
+                            font.bold: true
+                        }
+
+                        Item { // Spacer
+                            width: 1
+                            height: 15
+                        }
+
+                        GridLayout {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+
+                            columns: 2
+                            Label {
+                                text: "Channel"
+                            }
+                            SpinBox {
+                                Layout.fillWidth: true
+                            }
+                            Label {
+                                text: "Start Frame"
+                            }
+                            SpinBox {
+                                Layout.fillWidth: true
+                            }
+                            Label {
+                                text: "Length"
+                            }
+                            SpinBox {
+                                Layout.fillWidth: true
+                            }
+
+                        }
+                    }
+                }
+            }
+
         }
     }
 }
