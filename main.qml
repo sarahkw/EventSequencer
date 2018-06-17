@@ -491,6 +491,7 @@ ApplicationWindow {
                             TextField {
                                 Layout.fillWidth: true
                                 text: selectedThingar.y
+                                selectByMouse: true
                                 onEditingFinished: {
                                     selectedThingar.y = parseInt(text, 10)
                                 }
@@ -501,6 +502,7 @@ ApplicationWindow {
                             TextField {
                                 Layout.fillWidth: true
                                 text: selectedThingar.x
+                                selectByMouse: true
                                 onEditingFinished: {
                                     selectedThingar.x = parseInt(text, 10)
                                 }
@@ -511,6 +513,7 @@ ApplicationWindow {
                             TextField {
                                 Layout.fillWidth: true
                                 text: selectedThingar.width
+                                selectByMouse: true
                                 onEditingFinished: {
                                     selectedThingar.width = parseInt(text, 10)
                                 }
@@ -521,6 +524,7 @@ ApplicationWindow {
                             TextField {
                                 Layout.fillWidth: true
                                 text: selectedThingar.x + selectedThingar.width
+                                selectByMouse: true
                                 onEditingFinished: {
                                     selectedThingar.width = parseInt(text, 10) - selectedThingar.x
                                 }
