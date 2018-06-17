@@ -491,6 +491,9 @@ ApplicationWindow {
                             TextField {
                                 Layout.fillWidth: true
                                 text: selectedThingar.y
+                                onEditingFinished: {
+                                    selectedThingar.y = parseInt(text, 10)
+                                }
                             }
                             Label {
                                 text: "Start Frame"
@@ -498,6 +501,9 @@ ApplicationWindow {
                             TextField {
                                 Layout.fillWidth: true
                                 text: selectedThingar.x
+                                onEditingFinished: {
+                                    selectedThingar.x = parseInt(text, 10)
+                                }
                             }
                             Label {
                                 text: "Length"
@@ -505,6 +511,9 @@ ApplicationWindow {
                             TextField {
                                 Layout.fillWidth: true
                                 text: selectedThingar.width
+                                onEditingFinished: {
+                                    selectedThingar.width = parseInt(text, 10)
+                                }
                             }
 
                         }
