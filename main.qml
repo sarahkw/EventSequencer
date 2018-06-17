@@ -488,20 +488,23 @@ ApplicationWindow {
                             Label {
                                 text: "Channel"
                             }
-                            SpinBox {
+                            TextField {
                                 Layout.fillWidth: true
+                                text: selectedThingar.y
                             }
                             Label {
                                 text: "Start Frame"
                             }
-                            SpinBox {
+                            TextField {
                                 Layout.fillWidth: true
+                                text: selectedThingar.x
                             }
                             Label {
                                 text: "Length"
                             }
-                            SpinBox {
+                            TextField {
                                 Layout.fillWidth: true
+                                text: selectedThingar.width
                             }
 
                         }
