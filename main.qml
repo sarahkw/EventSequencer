@@ -309,6 +309,9 @@ ApplicationWindow {
                 property int lastMouseX
                 property int lastMouseY
 
+                property int anglePerPixel: 120
+                property int angleAccumulator: 0
+
                 onPressed: {
                     lastMouseX = mouse.x
                     lastMouseY = mouse.y
@@ -322,6 +325,14 @@ ApplicationWindow {
                     body.y = newy
                     lastMouseX = mouse.x
                     lastMouseY = mouse.y
+                }
+
+                onWheel: {
+                    angleAccumulator += wheel.angleDelta.y
+                    var whole = Math.floor(angleAccumulator / anglePerPixel)
+                    var remain = angleAccumulator % anglePerPixel
+                    framePixels += whole
+                    angleAccumulator = remain
                 }
             }
 
