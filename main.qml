@@ -55,8 +55,8 @@ ApplicationWindow {
         id: addAction
         text: "Add"
         onTriggered: {
-            var x = componentThing.createObject(body, {})
-            selectedThingars = [x]
+            var newThing = componentThing.createObject(body, {})
+            selectedThingars = [newThing]
         }
         shortcut: "Shift+A"
     }
@@ -65,8 +65,8 @@ ApplicationWindow {
         id: deleteAction
         text: "Delete"
         onTriggered: {
-            selectedThingars.forEach(function (x) {
-                x.destroy()
+            selectedThingars.forEach(function (foo) {
+                foo.destroy()
             })
             selectedThingars = []
         }
@@ -99,16 +99,26 @@ ApplicationWindow {
 
     // "needle in haystack" doesn't seem to work for QML elements
     function realIn(needle, haystack) {
-        return haystack.some(function (x) { return x === needle });
+        return haystack.some(function (foo) { return foo === needle });
     }
 
     property var selectedThingars: []
+    property int framePixels: 50
+    property int channelPixels: 35
 
     Component {
         id: componentThing
 
         Thing {
             id: thingar
+
+            property int startFrame: 0
+            property int channel: 0
+            property int length: 2
+            
+            x: startFrame * framePixels
+            width: length * framePixels
+            y: channel * channelPixels
 
             selected: realIn(thingar, selectedThingars)
 
@@ -118,8 +128,8 @@ ApplicationWindow {
                     selectedThingars = []
 
                     if (realIn(thingar, tmp)) {
-                        tmp = tmp.filter(function (x) {
-                            return x !== thingar;
+                        tmp = tmp.filter(function (foo) {
+                            return foo !== thingar;
                         })
                     } else {
                         tmp.push(thingar)
@@ -131,15 +141,8 @@ ApplicationWindow {
                 }
             }
 
-            function snapX(_x) {
-                return Math.floor(_x / 50) * 50;
-            }
-            function snapXceil(_x) {
-                return Math.ceil(_x / 50) * 50;
-            }
-
-            function snapY(_y) {
-                return Math.floor(_y / 35) * 35
+            function floorDiv(a, b) {
+                return Math.floor(a / b);
             }
 
             Connections {
@@ -148,25 +151,25 @@ ApplicationWindow {
                     if (selected) {
                         switch (thingar.selectionMode) {
                         case thingar.selectionMode_WHOLE:
-                            x = snapX(x + diffX);
-                            y = snapY(y + diffY);
+                            startFrame += floorDiv(diffX, framePixels)
+                            channel += floorDiv(diffY, channelPixels)
                             break;
                         case thingar.selectionMode_RIGHT:
-                            width = snapX(width + diffX);
+                            length += floorDiv(diffX, framePixels)
                             break;
                         case thingar.selectionMode_LEFT:
-                            var initialX = x + width
-                            width = snapXceil(width - diffX)
-                            x = initialX - width
+                            var initialEndFrame = startFrame + length
+                            length -= floorDiv(diffX, framePixels)
+                            startFrame = initialEndFrame - length
                             break;
                         }
                     }
                 }
             }
 
-            property int initialX
-            property int initialY
-            property int initialWidth
+            property int initialFrame
+            property int initialChannel
+            property int initialLength
 
             states: [
                 State {
@@ -176,14 +179,16 @@ ApplicationWindow {
                     PropertyChanges {
                         target: thingar
                         explicit: true
-                        initialX: x
-                        initialY: y
+                        initialFrame: startFrame
+                        initialChannel: channel
                     }
 
                     PropertyChanges {
                         target: thingar
-                        x: snapX(initialX + grabMode.diffX)
-                        y: snapY(initialY + grabMode.diffY)
+                        startFrame: (initialFrame +
+                                     floorDiv(grabMode.diffX, framePixels))
+                        channel: (initialChannel +
+                                  floorDiv(grabMode.diffY, channelPixels))
                     }
                 },
                 State {
@@ -193,12 +198,13 @@ ApplicationWindow {
                     PropertyChanges {
                         target: thingar
                         explicit: true
-                        initialWidth: width
+                        initialLength: length
                     }
 
                     PropertyChanges {
                         target: thingar
-                        width: snapX(initialWidth + grabMode.diffX)
+                        length: (initialLength +
+                                 floorDiv(grabMode.diffX, framePixels))
                     }
                 },
                 State {
@@ -208,14 +214,15 @@ ApplicationWindow {
                     PropertyChanges {
                         target: thingar
                         explicit: true
-                        initialX: x + width
-                        initialWidth: width
+                        initialFrame: startFrame + length
+                        initialLength: length
                     }
 
                     PropertyChanges {
                         target: thingar
-                        width: snapXceil(initialWidth - grabMode.diffX)
-                        x: initialX - width
+                        length: (initialLength -
+                                 floorDiv(grabMode.diffX, framePixels))
+                        startFrame: initialFrame - length
                     }
                 }
             ]
@@ -257,7 +264,7 @@ ApplicationWindow {
             Ruler {
                 id: sbHoriz
                 height: 20
-                tickSize: 50
+                tickSize: framePixels
                 position: body.x
 
                 anchors.left: sbVertHolder.right
@@ -273,7 +280,7 @@ ApplicationWindow {
                 width: 20
                 Ruler {
                     id: sbVert
-                    tickSize: 35
+                    tickSize: channelPixels
                     position: body.y
                     height: parent.width
                     width: parent.height
@@ -490,10 +497,10 @@ ApplicationWindow {
                             }
                             TextField {
                                 Layout.fillWidth: true
-                                text: selectedThingar.y
+                                text: selectedThingar.channel
                                 selectByMouse: true
                                 onEditingFinished: {
-                                    selectedThingar.y = parseInt(text, 10)
+                                    selectedThingar.channel = parseInt(text, 10)
                                 }
                             }
                             Label {
@@ -501,10 +508,10 @@ ApplicationWindow {
                             }
                             TextField {
                                 Layout.fillWidth: true
-                                text: selectedThingar.x
+                                text: selectedThingar.startFrame
                                 selectByMouse: true
                                 onEditingFinished: {
-                                    selectedThingar.x = parseInt(text, 10)
+                                    selectedThingar.startFrame = parseInt(text, 10)
                                 }
                             }
                             Label {
@@ -512,10 +519,10 @@ ApplicationWindow {
                             }
                             TextField {
                                 Layout.fillWidth: true
-                                text: selectedThingar.width
+                                text: selectedThingar.length
                                 selectByMouse: true
                                 onEditingFinished: {
-                                    selectedThingar.width = parseInt(text, 10)
+                                    selectedThingar.length = parseInt(text, 10)
                                 }
                             }
                             Label {
@@ -523,10 +530,10 @@ ApplicationWindow {
                             }
                             TextField {
                                 Layout.fillWidth: true
-                                text: selectedThingar.x + selectedThingar.width
+                                text: selectedThingar.startFrame + selectedThingar.length
                                 selectByMouse: true
                                 onEditingFinished: {
-                                    selectedThingar.width = parseInt(text, 10) - selectedThingar.x
+                                    selectedThingar.length = parseInt(text, 10) - selectedThingar.startFrame
                                 }
                             }
 
