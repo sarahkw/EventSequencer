@@ -265,7 +265,7 @@ ApplicationWindow {
             Ruler {
                 id: sbHoriz
                 height: 20
-                tickSize: zoom.tempTickSize
+                zoom: appwin.zoom
                 position: body.x
 
                 anchors.left: sbVertHolder.right
@@ -279,6 +279,7 @@ ApplicationWindow {
                 anchors.top: parent.top
                 anchors.bottom: sbHoriz.top
                 width: 20
+                /*
                 Ruler {
                     id: sbVert
                     tickSize: channelPixels
@@ -291,6 +292,7 @@ ApplicationWindow {
                     rotation: 90
                     transformOrigin: Item.BottomLeft
                 }
+                */
             }
 
             Rectangle {
