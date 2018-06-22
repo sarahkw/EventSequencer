@@ -44,7 +44,7 @@ QtObject {
     }
 
     function zoom(deltaZoomLevel) {
-        zoomLevel += deltaZoomLevel
+        zoomLevel -= deltaZoomLevel
     }
 
     property int displayWidthPerRulerTick: (function () {
