@@ -104,7 +104,7 @@ ApplicationWindow {
 
     property var selectedThingars: []
 
-    property ZoomOld zoom: ZoomOld {}
+    property ZoomLogic zoom: ZoomLogic {}
     property int channelPixels: 35
 
     Component {

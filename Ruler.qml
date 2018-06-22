@@ -2,7 +2,7 @@ import QtQuick 2.0
 import "util.js" as Util
 
 Rectangle {
-    property ZoomOld zoom
+    property var zoom
     property int position
 
     id: sbHoriz

@@ -6,5 +6,6 @@
         <file>Ruler.qml</file>
         <file>util.js</file>
         <file>ZoomOld.qml</file>
+        <file>ZoomLogic.qml</file>
     </qresource>
 </RCC>
