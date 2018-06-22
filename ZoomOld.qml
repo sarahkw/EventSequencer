@@ -2,31 +2,36 @@ import QtQuick 2.0
 
 QtObject {
     property int framePixels: 50
+
+    /* Interface */
     function mapFrameToDisplayX(frame) {
         return frame * framePixels
     }
+
+    /* Interface */
     function mapLengthToDisplayWidth(length) {
         return length * framePixels
     }
 
+    /* Interface */
     function mapDisplayWidthToFullFrames(displayWidth) {
-        return _floorDiv(displayWidth, framePixels)
+        return Math.floor(displayWidth / framePixels)
     }
 
+    /* Interface */
     function zoom(deltaZoomLevel) {
         framePixels += deltaZoomLevel
     }
 
-    function _floorDiv(a, b) {
-        return Math.floor(a / b);
-    }
-
+    /* Interface */
     property int displayWidthPerRulerTick: pseudoTickSize
 
+    /* Interface */
     function tickIndexToNumber(tickIndex) {
         return tickIndex * pseudoScale
     }
 
+    /* Interface */
     function tickIndexShouldShowNumber(tickIndex) {
         return (tickIndex * pseudoScale) % nextScale == 0
     }
