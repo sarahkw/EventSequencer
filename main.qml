@@ -103,7 +103,8 @@ ApplicationWindow {
     }
 
     property var selectedThingars: []
-    property int framePixels: 50
+
+    property ZoomOld zoom: ZoomOld {}
     property int channelPixels: 35
 
     Component {
@@ -116,8 +117,8 @@ ApplicationWindow {
             property int channel: 0
             property int length: 2
             
-            x: startFrame * framePixels
-            width: length * framePixels
+            x: zoom.mapFrameToDisplayX(startFrame)
+            width: zoom.mapLengthToDisplayWidth(length)
             y: channel * channelPixels
 
             selected: realIn(thingar, selectedThingars)
@@ -151,15 +152,15 @@ ApplicationWindow {
                     if (selected) {
                         switch (thingar.selectionMode) {
                         case thingar.selectionMode_WHOLE:
-                            startFrame += floorDiv(diffX, framePixels)
+                            startFrame += zoom.mapDisplayWidthToFullFrames(diffX)
                             channel += floorDiv(diffY, channelPixels)
                             break;
                         case thingar.selectionMode_RIGHT:
-                            length += floorDiv(diffX, framePixels)
+                            length += zoom.mapDisplayWidthToFullFrames(diffX)
                             break;
                         case thingar.selectionMode_LEFT:
                             var initialEndFrame = startFrame + length
-                            length -= floorDiv(diffX, framePixels)
+                            length -= zoom.mapDisplayWidthToFullFrames(diffX)
                             startFrame = initialEndFrame - length
                             break;
                         }
@@ -186,7 +187,7 @@ ApplicationWindow {
                     PropertyChanges {
                         target: thingar
                         startFrame: (initialFrame +
-                                     floorDiv(grabMode.diffX, framePixels))
+                                     zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
                         channel: (initialChannel +
                                   floorDiv(grabMode.diffY, channelPixels))
                     }
@@ -204,7 +205,7 @@ ApplicationWindow {
                     PropertyChanges {
                         target: thingar
                         length: (initialLength +
-                                 floorDiv(grabMode.diffX, framePixels))
+                                 zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
                     }
                 },
                 State {
@@ -221,7 +222,7 @@ ApplicationWindow {
                     PropertyChanges {
                         target: thingar
                         length: (initialLength -
-                                 floorDiv(grabMode.diffX, framePixels))
+                                 zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
                         startFrame: initialFrame - length
                     }
                 }
@@ -264,7 +265,7 @@ ApplicationWindow {
             Ruler {
                 id: sbHoriz
                 height: 20
-                tickSize: framePixels
+                tickSize: zoom.tempTickSize
                 position: body.x
 
                 anchors.left: sbVertHolder.right
@@ -331,7 +332,7 @@ ApplicationWindow {
                     angleAccumulator += wheel.angleDelta.y
                     var whole = Math.floor(angleAccumulator / anglePerPixel)
                     var remain = angleAccumulator % anglePerPixel
-                    framePixels += whole
+                    zoom.zoom(whole)
                     angleAccumulator = remain
                 }
             }
