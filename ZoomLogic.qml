@@ -18,9 +18,6 @@ QtObject {
         }
     })()
 
-    property int realUnitsPerLargeTick:
-        realUnitsPerSmallTick * smallTicksPerLargeTick
-
     // INTERFACE
 
     function mapFrameToDisplayX(frame) {
