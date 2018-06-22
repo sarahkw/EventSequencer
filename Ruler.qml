@@ -50,7 +50,7 @@ Rectangle {
                 property int myTickIndex: index - Util.trunc(position / sbHoriz.pseudoTickSize)
 
                 property int myNumber: myTickIndex * pseudoScale
-                visible: myNumber % nextScale == 0
+                visible: (myTickIndex * pseudoScale) % nextScale == 0
                 id: texty
                 font.pixelSize: 10
                 anchors.horizontalCenter: parent.left
