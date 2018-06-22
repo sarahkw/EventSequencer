@@ -46,7 +46,10 @@ Rectangle {
                 anchors.bottom: texty.top
             }
             Text {
-                property int myNumber: (index - Util.trunc(position / sbHoriz.pseudoTickSize)) * pseudoScale
+                // Tick index compensated for any panning done by the user.
+                property int myTickIndex: index - Util.trunc(position / sbHoriz.pseudoTickSize)
+
+                property int myNumber: myTickIndex * pseudoScale
                 visible: myNumber % nextScale == 0
                 id: texty
                 font.pixelSize: 10
