@@ -46,9 +46,12 @@ QtObject {
 
     property int displayWidthPerRulerTick: (function () {
         var r = Math.ceil(minPixelsBetweenLargeTicks / smallTicksPerLargeTick)
-        if (zoomLevel < 0) {
+        if (zoomLevel > 0) {
+            // NOP
+        } else {
             r += Math.abs(zoomLevel)
         }
+
         return r
     })()
 
