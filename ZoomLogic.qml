@@ -18,6 +18,39 @@ QtObject {
         }
     })()
 
+    function numberToScale(num) {
+        // Not going to use Math.log because we will no longer be working with
+        // discrete values and will have to worry about rounding and accuracy.
+        var exponent = 0
+        while (num >= 10) {
+            exponent++
+            num /= 10
+        }
+        return Math.pow(10, exponent)
+    }
+
+    function nextFocusNumber(currentFocusNumber, direction) {
+        var myScale = numberToScale(currentFocusNumber)
+        var myMultiplier = currentFocusNumber / myScale
+        if (direction > 0) {
+            if (currentFocusNumber >= myScale * 5) {
+                myScale *= 10
+                myMultiplier = 1
+            } else {
+                myMultiplier = 5
+            }
+        } else {
+            if (currentFocusNumber >= myScale * 5) {
+                myMultiplier = 1
+            } else {
+                myScale /= 10
+                myMultiplier = 5
+            }
+        }
+
+        return myScale * myMultiplier
+    }
+
     // INTERFACE
 
     function mapFrameToDisplayX(frame) {

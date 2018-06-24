@@ -7,5 +7,6 @@
         <file>util.js</file>
         <file>ZoomOld.qml</file>
         <file>ZoomLogic.qml</file>
+        <file>tst_ZoomLogic.qml</file>
     </qresource>
 </RCC>
