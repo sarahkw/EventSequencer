@@ -10,14 +10,6 @@ QtObject {
     property int smallTicksPerLargeTick: 5
     property int minPixelsBetweenLargeTicks: 60
 
-    property int realUnitsPerSmallTick: (function () {
-        if (zoomLevel > 0) {
-            return displayWidthPerRulerTick * zoomLevel;
-        } else {
-            return 1;
-        }
-    })()
-
     function numberToScale(num) {
         // Not going to use Math.log because we will no longer be working with
         // discrete values and will have to worry about rounding and accuracy.
@@ -89,7 +81,11 @@ QtObject {
     })()
 
     function tickIndexToNumber(tickIndex) {
-        return tickIndex * realUnitsPerSmallTick
+        if (zoomLevel > 0) {
+            return displayWidthPerRulerTick * zoomLevel * tickIndex;
+        } else {
+            return tickIndex;
+        }
     }
 
     function tickIndexShouldShowNumber(tickIndex) {
