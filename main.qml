@@ -513,8 +513,10 @@ ApplicationWindow {
                                 Layout.fillWidth: true
                                 text: selectedThingar.channel
                                 selectByMouse: true
+                                validator: IntValidator { }
                                 onEditingFinished: {
                                     selectedThingar.channel = parseInt(text, 10)
+                                    focus = false
                                 }
                             }
                             Label {
@@ -524,8 +526,10 @@ ApplicationWindow {
                                 Layout.fillWidth: true
                                 text: selectedThingar.startFrame
                                 selectByMouse: true
+                                validator: IntValidator { }
                                 onEditingFinished: {
                                     selectedThingar.startFrame = parseInt(text, 10)
+                                    focus = false
                                 }
                             }
                             Label {
@@ -535,8 +539,10 @@ ApplicationWindow {
                                 Layout.fillWidth: true
                                 text: selectedThingar.length
                                 selectByMouse: true
+                                validator: IntValidator { }
                                 onEditingFinished: {
                                     selectedThingar.length = parseInt(text, 10)
+                                    focus = false
                                 }
                             }
                             Label {
@@ -546,8 +552,10 @@ ApplicationWindow {
                                 Layout.fillWidth: true
                                 text: selectedThingar.startFrame + selectedThingar.length
                                 selectByMouse: true
+                                validator: IntValidator { }
                                 onEditingFinished: {
                                     selectedThingar.length = parseInt(text, 10) - selectedThingar.startFrame
+                                    focus = false
                                 }
                             }
 
