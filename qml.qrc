@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>Thing.qml</file>
+        <file>Strip.qml</file>
         <file>Triangle.qml</file>
         <file>Ruler.qml</file>
         <file>util.js</file>

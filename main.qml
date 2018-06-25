@@ -110,7 +110,7 @@ ApplicationWindow {
     Component {
         id: componentThing
 
-        Thing {
+        Strip {
             id: thingar
 
             property int startFrame: 0
