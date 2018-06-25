@@ -121,7 +121,7 @@ Item {
 
         // These are from the spreadsheet used to prototype the
         // calculations.
-        function xxtest_nextFocusNumber_spreadsheet() {
+        function test_nextFocusNumber_spreadsheet() {
             // Division, Input, Expected Fwd, Expected Bak
             var rows = [
                 [ 2, 1, 2, 0.8 ],
