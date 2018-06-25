@@ -17,38 +17,73 @@ QtObject {
         // Not going to use Math.log because we will no longer be working with
         // discrete values and will have to worry about rounding and accuracy.
         var exponent = 0
-        while (num >= 10) {
-            exponent++
-            num /= 10
+
+        console.assert(num >= 1, "Numbers less than 1 not supported!");
+
+        if (num === 1) {
+            exponent = -1
+        } else {
+            while (num > 10) {
+                exponent++
+                num /= 10
+            }
         }
         return Math.pow(10, exponent)
     }
 
     // Static
-    function nextFocusNumber(currentFocusNumber, direction) {
-        var myScale = numberToScale(currentFocusNumber)
-        var myMultiplier = currentFocusNumber / myScale
-        if (direction > 0) {
-            if (currentFocusNumber >= myScale * 5) {
-                myScale *= 10
-                myMultiplier = 1
-            } else {
-                myMultiplier = 5
-            }
-        } else {
-            if (currentFocusNumber >= myScale * 5) {
-                myMultiplier = 1
-            } else {
-                myScale /= 10
-                myMultiplier = 5
-            }
+    function nextFactor(currentFactor, direction, division) {
+        console.assert(currentFactor % division == 0,
+                       "Current factor is invalid! (Not a factor.)");
+
+        var firstValue = division;
+        if (division === 1) {
+            // If division is 1, our sequence is actually from 2 to 10.
+            firstValue = 2;
         }
 
-        return myScale * myMultiplier
+        if (direction > 0) {
+            currentFactor += division;
+            if (currentFactor > 10) {
+                return [firstValue, true];
+            } else {
+                return [currentFactor, false];
+            }
+        } if (direction < 0) {
+            currentFactor -= division;
+            // TODO: I changed <= 0 to < firstValue and it passes tests.
+            //       I'm drunk and don't know what I did.
+            if (currentFactor < firstValue) {
+                return [10, true];
+            } else {
+                return [currentFactor, false];
+            }
+        }
+    }
+
+    // Static
+    function nextFocusNumber(currentFocusNumber, direction, division) {
+        if (division === undefined) {
+            division = 5;
+        }
+
+        var scale = numberToScale(currentFocusNumber);
+        var factor = currentFocusNumber / scale;
+        var nfac = nextFactor(factor, direction, division);
+        var nfac_num = nfac[0];
+        var nfac_wrapped = nfac[1];
+
+        if (direction > 0) {
+            return scale * nfac_num * (nfac_wrapped ? 10 : 1);
+        } else {
+            return scale * nfac_num / (nfac_wrapped ? 10 : 1);
+        }
+
+        return -1
     }
 
     function _framesPerRulerTick() {
-        console.assert(zoomLevel > 0);
+        console.assert(zoomLevel > 0, "Shouldn't be here.");
         var focusNumber = zoomLevel;
         return focusNumber / rulerTicksPerFocusNumber;
     }
@@ -121,7 +156,8 @@ QtObject {
 
         // XXX Didn't yet think about what happens to rounding when
         //     ruler ticks aren't full pixels.
-        console.assert(r === Math.floor(r))
+        console.assert(r === Math.floor(r),
+                       "Ruler ticks need to be on full pixels");
 
         if (zoomLevel > 0) {
             // NOP
