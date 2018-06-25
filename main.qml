@@ -118,7 +118,7 @@ ApplicationWindow {
             property int length: 2
             
             x: zoom.mapFrameToDisplayX(startFrame)
-            width: zoom.mapLengthToDisplayWidth(length)
+            width: Math.max(zoom.mapLengthToDisplayWidth(length), minimumWidth)
             y: channel * channelPixels
 
             selected: realIn(thingar, selectedThingars)
@@ -174,6 +174,7 @@ ApplicationWindow {
 
             states: [
                 State {
+                    name: "move_whole"
                     when: (selected &&
                            grabMode.grabState == grabMode.grabstate_MOVING &&
                            thingar.selectionMode == thingar.selectionMode_WHOLE)
@@ -193,6 +194,7 @@ ApplicationWindow {
                     }
                 },
                 State {
+                    name: "move_right"
                     when: (selected &&
                            grabMode.grabState == grabMode.grabstate_MOVING &&
                            thingar.selectionMode == thingar.selectionMode_RIGHT)
@@ -209,6 +211,7 @@ ApplicationWindow {
                     }
                 },
                 State {
+                    name: "move_left"
                     when: (selected &&
                            grabMode.grabState == grabMode.grabstate_MOVING &&
                            thingar.selectionMode == thingar.selectionMode_LEFT)

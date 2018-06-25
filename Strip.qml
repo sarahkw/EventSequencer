@@ -20,6 +20,31 @@ Rectangle {
     color: selected ? selectedColor : baseColor
     height: 20
 
+    readonly property int handleWidth: 20
+    readonly property int smallModeWidth: handleWidth + handleWidth + 3
+    readonly property int minimumWidth: 3 // Always want to be visible.
+
+    // StateGroup to prevent merging of states.
+    StateGroup {
+        states: [
+            State {
+                // Hide handles when we're too small
+                when: width < smallModeWidth
+                name: "too_small"
+                PropertyChanges {
+                    target: leftRect
+                    width: 0
+                    visible: false
+                }
+                PropertyChanges {
+                    target: rightRect
+                    width: 0
+                    visible: false
+                }
+            }
+        ]
+    }
+
     Rectangle {
         id: leftRect
         anchors.left: parent.left
@@ -30,7 +55,7 @@ Rectangle {
         anchors.topMargin: parent.border.width
         anchors.bottomMargin: parent.border.width
 
-        width: 20
+        width: handleWidth
         color: (parent.selected && parent.selectionMode != parent.selectionMode_RIGHT) ? selectedColor : handleColor
         Triangle {
             anchors.verticalCenter: parent.verticalCenter
@@ -53,7 +78,7 @@ Rectangle {
         anchors.topMargin: parent.border.width
         anchors.bottomMargin: parent.border.width
 
-        width: 20
+        width: handleWidth
         color: (parent.selected && parent.selectionMode != parent.selectionMode_LEFT) ? selectedColor : handleColor
         Triangle {
             anchors.verticalCenter: parent.verticalCenter
