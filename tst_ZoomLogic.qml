@@ -74,25 +74,25 @@ Item {
         function test_nextFocusNumber_up() {
             var up = 1;
 
-            compare(zl.nextFocusNumber(1, up), 5);
-            compare(zl.nextFocusNumber(5, up), 10);
+            compare(zl.nextFocusNumber(1, up, 5), 5);
+            compare(zl.nextFocusNumber(5, up, 5), 10);
 
-            compare(zl.nextFocusNumber(10, up), 50);
-            compare(zl.nextFocusNumber(50, up), 100);
-            compare(zl.nextFocusNumber(100, up), 500);
-            compare(zl.nextFocusNumber(500, up), 1000);
+            compare(zl.nextFocusNumber(10, up, 5), 50);
+            compare(zl.nextFocusNumber(50, up, 5), 100);
+            compare(zl.nextFocusNumber(100, up, 5), 500);
+            compare(zl.nextFocusNumber(500, up, 5), 1000);
         }
 
         function test_nextFocusNumber_dn() {
             var dn = -1;
 
-            compare(zl.nextFocusNumber(10, dn), 5);
-            compare(zl.nextFocusNumber(5, dn), 1);
+            compare(zl.nextFocusNumber(10, dn, 5), 5);
+            compare(zl.nextFocusNumber(5, dn, 5), 1);
 
-            compare(zl.nextFocusNumber(1000, dn), 500);
-            compare(zl.nextFocusNumber(500, dn), 100);
-            compare(zl.nextFocusNumber(100, dn), 50);
-            compare(zl.nextFocusNumber(50, dn), 10);
+            compare(zl.nextFocusNumber(1000, dn, 5), 500);
+            compare(zl.nextFocusNumber(500, dn, 5), 100);
+            compare(zl.nextFocusNumber(100, dn, 5), 50);
+            compare(zl.nextFocusNumber(50, dn, 5), 10);
         }
 
         function test_nextFocusNumber_div2() {

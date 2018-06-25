@@ -64,7 +64,7 @@ QtObject {
     // Static
     function nextFocusNumber(currentFocusNumber, direction, division) {
         if (division === undefined) {
-            division = 5;
+            division = 1
         }
 
         var scale = numberToScale(currentFocusNumber);
