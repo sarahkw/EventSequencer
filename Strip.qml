@@ -24,26 +24,23 @@ Rectangle {
     readonly property int smallModeWidth: handleWidth + handleWidth + 3
     readonly property int minimumWidth: 3 // Always want to be visible.
 
-    // StateGroup to prevent merging of states.
-    StateGroup {
-        states: [
-            State {
-                // Hide handles when we're too small
-                when: width < smallModeWidth
-                name: "too_small"
-                PropertyChanges {
-                    target: leftRect
-                    width: 0
-                    visible: false
-                }
-                PropertyChanges {
-                    target: rightRect
-                    width: 0
-                    visible: false
-                }
+    states: [
+        State {
+            // Hide handles when we're too small
+            when: width < smallModeWidth
+            name: "too_small"
+            PropertyChanges {
+                target: leftRect
+                width: 0
+                visible: false
             }
-        ]
-    }
+            PropertyChanges {
+                target: rightRect
+                width: 0
+                visible: false
+            }
+        }
+    ]
 
     Rectangle {
         id: leftRect

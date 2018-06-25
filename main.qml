@@ -172,64 +172,66 @@ ApplicationWindow {
             property int initialChannel
             property int initialLength
 
-            states: [
-                State {
-                    name: "move_whole"
-                    when: (selected &&
-                           grabMode.grabState == grabMode.grabstate_MOVING &&
-                           thingar.selectionMode == thingar.selectionMode_WHOLE)
-                    PropertyChanges {
-                        target: thingar
-                        explicit: true
-                        initialFrame: startFrame
-                        initialChannel: channel
-                    }
+            StateGroup {
+                states: [
+                    State {
+                        name: "move_whole"
+                        when: (selected &&
+                               grabMode.grabState == grabMode.grabstate_MOVING &&
+                               thingar.selectionMode == thingar.selectionMode_WHOLE)
+                        PropertyChanges {
+                            target: thingar
+                            explicit: true
+                            initialFrame: startFrame
+                            initialChannel: channel
+                        }
 
-                    PropertyChanges {
-                        target: thingar
-                        startFrame: (initialFrame +
+                        PropertyChanges {
+                            target: thingar
+                            startFrame: (initialFrame +
+                                         zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
+                            channel: (initialChannel +
+                                      floorDiv(grabMode.diffY, channelPixels))
+                        }
+                    },
+                    State {
+                        name: "move_right"
+                        when: (selected &&
+                               grabMode.grabState == grabMode.grabstate_MOVING &&
+                               thingar.selectionMode == thingar.selectionMode_RIGHT)
+                        PropertyChanges {
+                            target: thingar
+                            explicit: true
+                            initialLength: length
+                        }
+
+                        PropertyChanges {
+                            target: thingar
+                            length: (initialLength +
                                      zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
-                        channel: (initialChannel +
-                                  floorDiv(grabMode.diffY, channelPixels))
-                    }
-                },
-                State {
-                    name: "move_right"
-                    when: (selected &&
-                           grabMode.grabState == grabMode.grabstate_MOVING &&
-                           thingar.selectionMode == thingar.selectionMode_RIGHT)
-                    PropertyChanges {
-                        target: thingar
-                        explicit: true
-                        initialLength: length
-                    }
+                        }
+                    },
+                    State {
+                        name: "move_left"
+                        when: (selected &&
+                               grabMode.grabState == grabMode.grabstate_MOVING &&
+                               thingar.selectionMode == thingar.selectionMode_LEFT)
+                        PropertyChanges {
+                            target: thingar
+                            explicit: true
+                            initialFrame: startFrame + length
+                            initialLength: length
+                        }
 
-                    PropertyChanges {
-                        target: thingar
-                        length: (initialLength +
-                                 zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
+                        PropertyChanges {
+                            target: thingar
+                            length: (initialLength -
+                                     zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
+                            startFrame: initialFrame - length
+                        }
                     }
-                },
-                State {
-                    name: "move_left"
-                    when: (selected &&
-                           grabMode.grabState == grabMode.grabstate_MOVING &&
-                           thingar.selectionMode == thingar.selectionMode_LEFT)
-                    PropertyChanges {
-                        target: thingar
-                        explicit: true
-                        initialFrame: startFrame + length
-                        initialLength: length
-                    }
-
-                    PropertyChanges {
-                        target: thingar
-                        length: (initialLength -
-                                 zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
-                        startFrame: initialFrame - length
-                    }
-                }
-            ]
+                ]
+            }
         }
     }
 
