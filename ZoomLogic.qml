@@ -78,8 +78,6 @@ QtObject {
         } else {
             return scale * nfac_num / (nfac_wrapped ? 10 : 1);
         }
-
-        return -1
     }
 
     function _framesPerRulerTick() {
@@ -115,7 +113,9 @@ QtObject {
     function zoom(deltaZoomLevel) {
         if (deltaZoomLevel === 0) return
 
+        // Temp hack: One "action" per event
         deltaZoomLevel = deltaZoomLevel < 0 ? -1 : 1
+
         // Temp hack: Negative should mean zoom in.
         deltaZoomLevel *= -1
 

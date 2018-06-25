@@ -52,7 +52,7 @@ Item {
             compare(a.next(), [6, false]);
 
             var dn = -1;
-            var a = new NextFacWrap(2, dn, 2);
+            a = new NextFacWrap(2, dn, 2);
             compare(a.next(), [10, true]);
             compare(a.next(), [8, false]);
             compare(a.next(), [6, false]);
@@ -61,11 +61,11 @@ Item {
             compare(a.next(), [10, true]);
             compare(a.next(), [8, false]);
 
-            var a = new NextFacWrap(10, up, 1);
+            a = new NextFacWrap(10, up, 1);
             compare(a.next(), [2, true]);
             compare(a.next(), [3, false]);
 
-            var a = new NextFacWrap(2, dn, 1);
+            a = new NextFacWrap(2, dn, 1);
             compare(a.next(), [10, true]);
             compare(a.next(), [9, false]);
 
