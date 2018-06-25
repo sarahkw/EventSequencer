@@ -256,11 +256,13 @@ ApplicationWindow {
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.bottom: sbHoriz.top
+                clip: true // Strips will definitely go out of bounds
 
                 // The fusion theme would make this gray otherwise.
                 color: "white"
 
                 Item {
+                    // This moves around inside bodyView.
                     id: body
                     implicitWidth: childrenRect.width + childrenRect.x
                     implicitHeight: childrenRect.height + childrenRect.y
