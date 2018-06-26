@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import "util.js" as Util
 
 QtObject {
     // When zoomLevel is zero or negative, the abs value will be the
@@ -101,13 +102,16 @@ QtObject {
         return mapFrameToDisplayX(length)
     }
 
-    function mapDisplayWidthToFullFrames(displayWidth) {
+    function mapDisplayWidthToFrames(displayWidth) {
         if (zoomLevel > 0) {
-            return Math.floor(
-                displayWidth / displayWidthPerRulerTick * _framesPerRulerTick());
+            return displayWidth / displayWidthPerRulerTick * _framesPerRulerTick();
         } else {
             return displayWidth / displayWidthPerRulerTick
         }
+    }
+
+    function mapDisplayWidthToFullFrames(displayWidth) {
+        return Util.trunc(mapDisplayWidthToFrames(displayWidth))
     }
 
     function zoom(deltaZoomLevel) {

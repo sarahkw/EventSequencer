@@ -341,8 +341,15 @@ ApplicationWindow {
                     angleAccumulator += wheel.angleDelta.y
                     var whole = Math.floor(angleAccumulator / anglePerPixel)
                     var remain = angleAccumulator % anglePerPixel
-                    zoom.zoom(whole)
                     angleAccumulator = remain
+
+                    var whereWasTheFrame = body.mapFromItem(bodyView, wheel.x, wheel.y).x
+                    var frameNoAtMouse = zoom.mapDisplayWidthToFrames(whereWasTheFrame)
+                    zoom.zoom(whole)
+
+                    // Move body.x so that the old frame number stays in the same place.
+                    var whereIsTheFrameNow = zoom.mapFrameToDisplayX(frameNoAtMouse)
+                    body.x += whereWasTheFrame - whereIsTheFrameNow
                 }
             }
 
