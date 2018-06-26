@@ -8,5 +8,6 @@
         <file>ZoomOld.qml</file>
         <file>ZoomLogic.qml</file>
         <file>tst_ZoomLogic.qml</file>
+        <file>DebugCppModel.qml</file>
     </qresource>
 </RCC>

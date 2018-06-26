@@ -35,6 +35,20 @@ ApplicationWindow {
                 ToolTip.visible: hovered
                 ToolTip.text: action.shortcut
             }
+            ToolButton {
+                text: "Debug"
+                onClicked: debugMenu.popup()
+                Menu {
+                    id: debugMenu
+                    MenuItem {
+                        text: "DebugCppModel"
+                        onTriggered: {
+                            var component = Qt.createComponent("DebugCppModel.qml")
+                            var obj = component.createObject(appwin, {visible: true})
+                        }
+                    }
+                }
+            }
         }
     }
 

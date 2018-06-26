@@ -1,8 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+#include "registerqmltypes.h"
+
 int main(int argc, char *argv[])
 {
+    RegisterQmlTypes::registerQmlTypes();
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
