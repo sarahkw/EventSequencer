@@ -55,8 +55,8 @@ ApplicationWindow {
         id: addAction
         text: "Add"
         onTriggered: {
-            var newThing = componentThing.createObject(body, {})
-            selectedThingars = [newThing]
+            var newStrip = componentStrip.createObject(body, {})
+            selectedStrips = [newStrip]
         }
         shortcut: "Shift+A"
     }
@@ -65,10 +65,10 @@ ApplicationWindow {
         id: deleteAction
         text: "Delete"
         onTriggered: {
-            selectedThingars.forEach(function (foo) {
+            selectedStrips.forEach(function (foo) {
                 foo.destroy()
             })
-            selectedThingars = []
+            selectedStrips = []
         }
         shortcut: "X"
     }
@@ -85,7 +85,7 @@ ApplicationWindow {
         text: "Select"
         shortcut: "A"
         onTriggered: {
-            selectedThingars = []
+            selectedStrips = []
             // TODO Also support Select All
         }
     }
@@ -102,16 +102,16 @@ ApplicationWindow {
         return haystack.some(function (foo) { return foo === needle });
     }
 
-    property var selectedThingars: []
+    property var selectedStrips: []
 
     property ZoomLogic zoom: ZoomLogic {}
     property int channelPixels: 35
 
     Component {
-        id: componentThing
+        id: componentStrip
 
         Strip {
-            id: thingar
+            id: strip
 
             property int startFrame: 0
             property int channel: 0
@@ -121,24 +121,24 @@ ApplicationWindow {
             width: Math.max(zoom.mapLengthToDisplayWidth(length), minimumWidth)
             y: channel * channelPixels
 
-            selected: realIn(thingar, selectedThingars)
+            selected: realIn(strip, selectedStrips)
 
             onSelectionClicked: {
                 if (mouse.modifiers & Qt.ShiftModifier) {
-                    var tmp = selectedThingars
-                    selectedThingars = []
+                    var tmp = selectedStrips
+                    selectedStrips = []
 
-                    if (realIn(thingar, tmp)) {
+                    if (realIn(strip, tmp)) {
                         tmp = tmp.filter(function (foo) {
-                            return foo !== thingar;
+                            return foo !== strip;
                         })
                     } else {
-                        tmp.push(thingar)
+                        tmp.push(strip)
                     }
 
-                    selectedThingars = tmp
+                    selectedStrips = tmp
                 } else {
-                    selectedThingars = [thingar]
+                    selectedStrips = [strip]
                 }
             }
 
@@ -150,15 +150,15 @@ ApplicationWindow {
                 target: grabMode
                 onFinalCommit: {
                     if (selected) {
-                        switch (thingar.selectionMode) {
-                        case thingar.selectionMode_WHOLE:
+                        switch (strip.selectionMode) {
+                        case strip.selectionMode_WHOLE:
                             startFrame += zoom.mapDisplayWidthToFullFrames(diffX)
                             channel += floorDiv(diffY, channelPixels)
                             break;
-                        case thingar.selectionMode_RIGHT:
+                        case strip.selectionMode_RIGHT:
                             length += zoom.mapDisplayWidthToFullFrames(diffX)
                             break;
-                        case thingar.selectionMode_LEFT:
+                        case strip.selectionMode_LEFT:
                             var initialEndFrame = startFrame + length
                             length -= zoom.mapDisplayWidthToFullFrames(diffX)
                             startFrame = initialEndFrame - length
@@ -178,16 +178,16 @@ ApplicationWindow {
                         name: "move_whole"
                         when: (selected &&
                                grabMode.grabState == grabMode.grabstate_MOVING &&
-                               thingar.selectionMode == thingar.selectionMode_WHOLE)
+                               strip.selectionMode == strip.selectionMode_WHOLE)
                         PropertyChanges {
-                            target: thingar
+                            target: strip
                             explicit: true
                             initialFrame: startFrame
                             initialChannel: channel
                         }
 
                         PropertyChanges {
-                            target: thingar
+                            target: strip
                             startFrame: (initialFrame +
                                          zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
                             channel: (initialChannel +
@@ -198,15 +198,15 @@ ApplicationWindow {
                         name: "move_right"
                         when: (selected &&
                                grabMode.grabState == grabMode.grabstate_MOVING &&
-                               thingar.selectionMode == thingar.selectionMode_RIGHT)
+                               strip.selectionMode == strip.selectionMode_RIGHT)
                         PropertyChanges {
-                            target: thingar
+                            target: strip
                             explicit: true
                             initialLength: length
                         }
 
                         PropertyChanges {
-                            target: thingar
+                            target: strip
                             length: (initialLength +
                                      zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
                         }
@@ -215,16 +215,16 @@ ApplicationWindow {
                         name: "move_left"
                         when: (selected &&
                                grabMode.grabState == grabMode.grabstate_MOVING &&
-                               thingar.selectionMode == thingar.selectionMode_LEFT)
+                               strip.selectionMode == strip.selectionMode_LEFT)
                         PropertyChanges {
-                            target: thingar
+                            target: strip
                             explicit: true
                             initialFrame: startFrame + length
                             initialLength: length
                         }
 
                         PropertyChanges {
-                            target: thingar
+                            target: strip
                             length: (initialLength -
                                      zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
                             startFrame: initialFrame - length
@@ -247,7 +247,7 @@ ApplicationWindow {
             MouseArea {
                 anchors.fill: bodyView
                 acceptedButtons: Qt.RightButton
-                onClicked: selectedThingars = []
+                onClicked: selectedStrips = []
             }
 
             Rectangle {
@@ -496,13 +496,13 @@ ApplicationWindow {
             Loader {
                 anchors.left: parent.left
                 anchors.right: parent.right
-                sourceComponent: selectedThingars.length == 1 ? propertiesComponent : undefined
+                sourceComponent: selectedStrips.length == 1 ? propertiesComponent : undefined
                 Component {
                     id: propertiesComponent
                     Column {
                         anchors.left: parent.left
                         anchors.right: parent.right
-                        property var selectedThingar: selectedThingars[0]
+                        property var selectedThingar: selectedStrips[0]
 
                         Label {
                             text: "Edit Strip"
