@@ -44,6 +44,11 @@ ApplicationWindow {
                 ToolTip.text: action.shortcut
             }
             ToolButton {
+                action: showSecondsAction
+                ToolTip.visible: hovered
+                ToolTip.text: action.shortcut
+            }
+            ToolButton {
                 text: "Debug"
                 onClicked: debugMenu.open()
                 Menu {
@@ -160,6 +165,13 @@ ApplicationWindow {
         text: "Properties"
         checkable: true
         shortcut: "N"
+    }
+
+    Action {
+        id: showSecondsAction
+        text: "Show Seconds"
+        checkable: true
+        shortcut: "Ctrl+T"
     }
 
     // "needle in haystack" doesn't seem to work for QML elements
