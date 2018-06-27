@@ -45,7 +45,7 @@ ApplicationWindow {
             }
             ToolButton {
                 text: "Debug"
-                onClicked: debugMenu.popup()
+                onClicked: debugMenu.open()
                 Menu {
                     id: debugMenu
                     MenuItem {
