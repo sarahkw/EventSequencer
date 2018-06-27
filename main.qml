@@ -105,8 +105,17 @@ ApplicationWindow {
         text: "Select"
         shortcut: "A"
         onTriggered: {
-            selectedCppStrips = []
-            // TODO Also support Select All
+            if (selectedCppStrips.length != 0) {
+                selectedCppStrips = []
+            } else {
+                // Select All
+                var strips = document.strips()
+                strips.forEach(function (s) {
+                    // This sucks, but user could have had the left/right selected.
+                    s.qmlStrip.selectionMode = s.qmlStrip.selectionMode_WHOLE
+                })
+                selectedCppStrips = strips
+            }
         }
     }
 

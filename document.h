@@ -24,6 +24,7 @@ public:
 
     Q_INVOKABLE Strip* createStrip();
     Q_INVOKABLE void deleteStrip(Strip* strip);
+    Q_INVOKABLE QVariantList strips(); // QVariantList for QML
 
 signals:
 

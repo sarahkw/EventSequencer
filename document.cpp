@@ -53,3 +53,14 @@ void Document::deleteStrip(Strip* strip)
     endRemoveRows();
     delete s;
 }
+
+QVariantList Document::strips()
+{
+    QVariantList ret;
+    for (Strip* s : strips_) {
+        QVariant v;
+        v.setValue(s);
+        ret.push_back(v);
+    }
+    return ret;
+}
