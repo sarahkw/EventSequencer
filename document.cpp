@@ -31,7 +31,7 @@ QHash<int, QByteArray> Document::roleNames() const
     return {{ModelDataRole, "modelData"}};
 }
 
-QVariant Document::createStrip()
+Strip* Document::createStrip()
 {
     Strip* s = new Strip(this);
 
@@ -39,17 +39,17 @@ QVariant Document::createStrip()
     strips_.push_back(s);
     endInsertRows();
 
-    QVariant var;
-    var.setValue(s);
-    return var;
+    return s;
 }
 
-void Document::deleteStrip(QVariant strip)
+void Document::deleteStrip(Strip* strip)
 {
-    auto found = std::find(strips_.begin(), strips_.end(), strip.value<Strip*>());
+    auto found = std::find(strips_.begin(), strips_.end(), strip);
     Q_ASSERT(found != strips_.end());
+    Strip* s = *found;
     auto rmIndex = found - strips_.begin();
     beginRemoveRows(QModelIndex(), rmIndex, rmIndex);
     strips_.erase(found);
     endRemoveRows();
+    delete s;
 }
