@@ -189,6 +189,38 @@ ApplicationWindow {
                     color: "white"
                 }
 
+                Rectangle {
+                    property int frame: 0
+                    id: cursor
+                    width: 2
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    color: "lime"
+                    x: body.x + zoom.mapFrameToDisplayX(frame) - 1
+                    z: 1
+
+                    Rectangle {
+                        color: cursor.color
+                        anchors.left: cursor.right
+                        anchors.top: cursorText.top
+                        anchors.bottom: cursorText.bottom
+                        anchors.right: cursorText.right
+                        anchors.rightMargin: -10
+                        anchors.topMargin: -2
+                        anchors.bottomMargin: -2
+                    }
+
+                    Text {
+                        id: cursorText
+                        anchors.left: cursor.right
+                        anchors.bottom: cursor.bottom
+                        anchors.leftMargin: 10
+                        anchors.bottomMargin: 10
+                        text: cursor.frame
+                        font.pixelSize: 12
+                    }
+                }
+
                 Item {
                     // This moves around inside bodyView.
                     id: body
@@ -409,6 +441,24 @@ ApplicationWindow {
                     // Move body.x so that the old frame number stays in the same place.
                     var whereIsTheFrameNow = zoom.mapFrameToDisplayX(frameNoAtMouse)
                     body.x += whereWasTheFrame - whereIsTheFrameNow
+                }
+            }
+
+            MouseArea {
+                id: cursorMouseArea
+                anchors.fill: bodyView
+
+                function xyPositionToFrame(x, y) {
+                    var whereWasTheFrame = body.mapFromItem(bodyView, x, y).x
+                    var frameNoAtMouse = zoom.mapDisplayWidthToFrames(whereWasTheFrame)
+                    return frameNoAtMouse
+                }
+
+                onPressed: {
+                    cursor.frame = xyPositionToFrame(mouse.x, mouse.y)
+                }
+                onPositionChanged: {
+                    cursor.frame = xyPositionToFrame(mouse.x, mouse.y)
                 }
             }
 
