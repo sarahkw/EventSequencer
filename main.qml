@@ -618,89 +618,140 @@ ApplicationWindow {
             anchors.leftMargin: 5
             anchors.rightMargin: 5
 
-            Loader {
-                anchors.left: parent.left
-                anchors.right: parent.right
-                sourceComponent: selectedCppStrips.length == 1 ? propertiesComponent : undefined
-                Component {
-                    id: propertiesComponent
-                    Column {
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        property var selectedThingar: selectedCppStrips[0].qmlStrip
+            ColumnLayout {
+                anchors.fill: parent
 
-                        Label {
-                            text: "Edit Strip"
-                            font.pixelSize: 16
-                            font.bold: true
-                        }
+                Loader {
+                    Layout.fillWidth: true
+                    sourceComponent: selectedCppStrips.length == 1 ? propertiesComponent : blankComponent
 
-                        Item { // Spacer
-                            width: 1
-                            height: 15
-                        }
+                    Component {
+                        // Blank component so that the Loader resizes itself upon
+                        // clearing.
+                        id: blankComponent
+                        Item {}
+                    }
 
-                        GridLayout {
+                    Component {
+                        id: propertiesComponent
+                        Column {
                             anchors.left: parent.left
                             anchors.right: parent.right
 
-                            columns: 2
+                            property var selectedThingar: selectedCppStrips[0].qmlStrip
+
                             Label {
-                                text: "Channel"
+                                text: "Edit Strip"
+                                font.pixelSize: 16
+                                font.bold: true
                             }
-                            TextField {
-                                Layout.fillWidth: true
-                                text: selectedThingar.channel
-                                selectByMouse: true
-                                validator: IntValidator { }
-                                onEditingFinished: {
-                                    selectedThingar.channel = parseInt(text, 10)
-                                    focus = false
+
+                            Item { // Spacer
+                                width: 1
+                                height: 15
+                            }
+
+                            GridLayout {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+
+                                columns: 2
+                                Label {
+                                    text: "Channel"
+                                }
+                                TextField {
+                                    Layout.fillWidth: true
+                                    text: selectedThingar.channel
+                                    selectByMouse: true
+                                    validator: IntValidator { }
+                                    onEditingFinished: {
+                                        selectedThingar.channel = parseInt(text, 10)
+                                        focus = false
+                                    }
+                                }
+                                Label {
+                                    text: "Start Frame"
+                                }
+                                TextField {
+                                    Layout.fillWidth: true
+                                    text: selectedThingar.startFrame
+                                    selectByMouse: true
+                                    validator: IntValidator { }
+                                    onEditingFinished: {
+                                        selectedThingar.startFrame = parseInt(text, 10)
+                                        focus = false
+                                    }
+                                }
+                                Label {
+                                    text: "Length"
+                                }
+                                TextField {
+                                    Layout.fillWidth: true
+                                    text: selectedThingar.length
+                                    selectByMouse: true
+                                    validator: IntValidator { }
+                                    onEditingFinished: {
+                                        selectedThingar.length = parseInt(text, 10)
+                                        focus = false
+                                    }
+                                }
+                                Label {
+                                    text: "End Frame"
+                                }
+                                TextField {
+                                    Layout.fillWidth: true
+                                    text: selectedThingar.startFrame + selectedThingar.length
+                                    selectByMouse: true
+                                    validator: IntValidator { }
+                                    onEditingFinished: {
+                                        selectedThingar.length = parseInt(text, 10) - selectedThingar.startFrame
+                                        focus = false
+                                    }
                                 }
                             }
-                            Label {
-                                text: "Start Frame"
-                            }
-                            TextField {
-                                Layout.fillWidth: true
-                                text: selectedThingar.startFrame
-                                selectByMouse: true
-                                validator: IntValidator { }
-                                onEditingFinished: {
-                                    selectedThingar.startFrame = parseInt(text, 10)
-                                    focus = false
-                                }
-                            }
-                            Label {
-                                text: "Length"
-                            }
-                            TextField {
-                                Layout.fillWidth: true
-                                text: selectedThingar.length
-                                selectByMouse: true
-                                validator: IntValidator { }
-                                onEditingFinished: {
-                                    selectedThingar.length = parseInt(text, 10)
-                                    focus = false
-                                }
-                            }
-                            Label {
-                                text: "End Frame"
-                            }
-                            TextField {
-                                Layout.fillWidth: true
-                                text: selectedThingar.startFrame + selectedThingar.length
-                                selectByMouse: true
-                                validator: IntValidator { }
-                                onEditingFinished: {
-                                    selectedThingar.length = parseInt(text, 10) - selectedThingar.startFrame
-                                    focus = false
-                                }
+                            Item { // End Spacer
+                                width: 1
+                                height: 15
                             }
 
                         }
                     }
                 }
+
+                Column {
+                    Layout.fillWidth: true
+
+                    Label {
+                        text: "Document"
+                        font.pixelSize: 16
+                        font.bold: true
+                    }
+
+                    Item { // Spacer
+                        width: 1
+                        height: 15
+                    }
+
+                    GridLayout {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+
+                        columns: 2
+                        Label {
+                            text: "Frames/Sec"
+                        }
+                        TextField {
+                            Layout.fillWidth: true
+                            selectByMouse: true
+                            validator: IntValidator { }
+                        }
+                    }
+                }
+
+                Item {
+                    Layout.fillHeight: true
+                }
+
             }
 
         }
