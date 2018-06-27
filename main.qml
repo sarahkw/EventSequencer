@@ -89,6 +89,7 @@ ApplicationWindow {
 
     ES.Document {
         id: document
+        framesPerSecond: 30
     }
 
     FileDialog {
@@ -742,8 +743,13 @@ ApplicationWindow {
                         }
                         TextField {
                             Layout.fillWidth: true
+                            text: document.framesPerSecond
                             selectByMouse: true
                             validator: IntValidator { }
+                            onEditingFinished: {
+                                document.framesPerSecond = parseInt(text, 10)
+                                focus = false
+                            }
                         }
                     }
                 }

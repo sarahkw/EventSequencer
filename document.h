@@ -15,6 +15,10 @@ class Document : public QAbstractListModel
 
     std::vector<Strip*> strips_;
 
+    int framesPerSecond_;
+
+    Q_PROPERTY(int framesPerSecond READ framesPerSecond WRITE setFramesPerSecond NOTIFY framesPerSecondChanged)
+
 public:
     explicit Document(QObject *parent = nullptr);
 
@@ -26,7 +30,12 @@ public:
     Q_INVOKABLE void deleteStrip(Strip* strip);
     Q_INVOKABLE QVariantList strips(); // QVariantList for QML
 
+    int framesPerSecond() const;
+    void setFramesPerSecond(int framesPerSecond);
+
 signals:
+
+    void framesPerSecondChanged();
 
 public slots:
 };

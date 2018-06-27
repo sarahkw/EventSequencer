@@ -2,6 +2,19 @@
 
 #include "strip.h"
 
+int Document::framesPerSecond() const
+{
+    return framesPerSecond_;
+}
+
+void Document::setFramesPerSecond(int framesPerSecond)
+{
+    if (framesPerSecond_ != framesPerSecond) {
+        framesPerSecond_ = framesPerSecond;
+        emit framesPerSecondChanged();
+    }
+}
+
 Document::Document(QObject *parent) : QAbstractListModel(parent)
 {
 
