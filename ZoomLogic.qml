@@ -99,7 +99,18 @@ QtObject {
     }
 
     function mapLengthToDisplayWidth(length) {
-        return mapFrameToDisplayX(length)
+        if (zoomLevel > 0) {
+            // Ceil it. I think it's better to not show any extra
+            // space, then it is to not show a possible gap.
+            //
+            // I guess the best solution would be to forcefully add an
+            // extra pixel spacing if there is a gap between adjacent
+            // strips.
+            return Math.ceil(
+                length / _framesPerRulerTick() * displayWidthPerRulerTick);
+        } else {
+            return length * displayWidthPerRulerTick;
+        }
     }
 
     function mapDisplayWidthToFrames(displayWidth) {
