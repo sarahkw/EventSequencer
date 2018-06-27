@@ -1,6 +1,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
+import Qt.labs.platform 1.0
 
 import eventsequencer 1.0 as ES
 
@@ -12,6 +13,11 @@ ApplicationWindow {
     title: qsTr("Hello World")
     header: ToolBar {
         RowLayout {
+            ToolButton {
+                action: saveAction
+                ToolTip.visible: hovered
+                ToolTip.text: action.shortcut
+            }
             ToolButton {
                 action: addAction
                 ToolTip.visible: hovered
@@ -69,6 +75,19 @@ ApplicationWindow {
 
     ES.Document {
         id: document
+    }
+
+    FileDialog {
+        id: fileDialog
+        fileMode: FileDialog.SaveFile
+        nameFilters: ["JSON files (*.json)", "All files (*)"]
+    }
+
+    Action {
+        id: saveAction
+        text: "Save"
+        onTriggered: fileDialog.open()
+        shortcut: "Ctrl+S"
     }
 
     Action {
