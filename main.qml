@@ -178,8 +178,16 @@ ApplicationWindow {
                 anchors.bottom: sbHoriz.top
                 clip: true // Strips will definitely go out of bounds
 
-                // The fusion theme would make this gray otherwise.
-                color: "white"
+                color: "#fafafa"
+
+                Rectangle {
+                    // White background for positive x/y
+                    anchors.top: body.top
+                    anchors.left: body.left
+                    anchors.right: bodyView.right
+                    anchors.bottom: bodyView.bottom
+                    color: "white"
+                }
 
                 Item {
                     // This moves around inside bodyView.
