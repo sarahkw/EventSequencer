@@ -43,3 +43,13 @@ QVariant Document::createStrip()
     var.setValue(s);
     return var;
 }
+
+void Document::deleteStrip(QVariant strip)
+{
+    auto found = std::find(strips_.begin(), strips_.end(), strip.value<Strip*>());
+    Q_ASSERT(found != strips_.end());
+    auto rmIndex = found - strips_.begin();
+    beginRemoveRows(QModelIndex(), rmIndex, rmIndex);
+    strips_.erase(found);
+    endRemoveRows();
+}

@@ -23,6 +23,7 @@ public:
     QHash<int,QByteArray> roleNames() const override;
 
     Q_INVOKABLE QVariant createStrip();
+    Q_INVOKABLE void deleteStrip(QVariant strip);
 
 signals:
 

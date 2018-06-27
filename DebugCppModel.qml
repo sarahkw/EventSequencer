@@ -47,8 +47,15 @@ Window {
             Layout.fillHeight: true
 
             model: document
-            delegate: Text {
-                text: modelData.channel + ", " + modelData.startFrame + ", " + modelData.length
+            delegate: Row {
+                Button {
+                    text: "X"
+                    onClicked: document.deleteStrip(modelData)
+                }
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: modelData.channel + ", " + modelData.startFrame + ", " + modelData.length
+                }
             }
         }
     }
