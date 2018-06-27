@@ -61,15 +61,27 @@ ApplicationWindow {
     }
 
     footer: ToolBar {
-        Label {
-            id: statusBar
-            text: "Status"
-            elide: Text.ElideRight
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
-            Layout.fillWidth: true
-            anchors.verticalCenter: parent.verticalCenter
-            leftPadding: 10
+        Row {
+            TextField {
+                selectByMouse: true
+                validator: IntValidator { }
+                text: cursor.frame
+                horizontalAlignment: TextInput.AlignRight
+                onEditingFinished: {
+                    cursor.frame = parseInt(text, 10)
+                    focus = false
+                }
+            }
+            Label {
+                id: statusBar
+                text: "Status"
+                elide: Text.ElideRight
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+                anchors.verticalCenter: parent.verticalCenter
+                leftPadding: 10
+            }
         }
     }
 
