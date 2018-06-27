@@ -15,6 +15,11 @@ Rectangle {
                 2 /*1 isn't enough. I don't know why, but 2 seems to work visually.*/
                )
         Item {
+            // Tick index compensated for any panning done by the user.
+            property int myTickIndex: (
+                index - Util.trunc(position / sbHoriz.zoom.displayWidthPerRulerTick))
+            property bool shouldShowNumber: zoom.tickIndexShouldShowNumber(myTickIndex)
+
             anchors.top: sbHoriz.top
             anchors.bottom: sbHoriz.bottom
             x: (position % sbHoriz.zoom.displayWidthPerRulerTick +
@@ -24,13 +29,10 @@ Rectangle {
                 color: "black"
                 anchors.top: parent.top
                 anchors.bottom: texty.top
+                anchors.bottomMargin: shouldShowNumber ? 0 : 3
             }
             Text {
-                // Tick index compensated for any panning done by the user.
-                property int myTickIndex: (
-                    index - Util.trunc(position / sbHoriz.zoom.displayWidthPerRulerTick))
-
-                visible: zoom.tickIndexShouldShowNumber(myTickIndex)
+                visible: shouldShowNumber
                 id: texty
                 font.pixelSize: 10
                 anchors.horizontalCenter: parent.left
