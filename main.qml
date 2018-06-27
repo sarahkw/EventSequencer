@@ -71,6 +71,8 @@ ApplicationWindow {
                     cursor.frame = parseInt(text, 10)
                     focus = false
                 }
+                ToolTip.text: "Current Frame"
+                ToolTip.visible: hovered
             }
             Label {
                 id: statusBar
