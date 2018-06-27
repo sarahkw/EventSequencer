@@ -1,21 +1,57 @@
 import QtQuick 2.0
 import QtQuick.Window 2.3
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.2
 
 import eventsequencer 1.0 as ES
 
 Window {
     title: "DebugCppModel"
     flags: Qt.Dialog
+    width: 640
+    height: 480
 
     ES.Document {
         id: document
     }
 
-    ListView {
+    ColumnLayout {
         anchors.fill: parent
-        model: document
-        delegate: Text {
-            text: modelData.channel + ", " + modelData.startFrame + ", " + modelData.length
+
+        Row {
+            TextField {
+                id: chan
+                placeholderText: "channel"
+            }
+            TextField {
+                id: sf
+                placeholderText: "startFrame"
+            }
+            TextField {
+                id: leng
+                placeholderText: "length"
+            }
+            Button {
+                text: "Add"
+                onClicked: {
+                    var r = document.createStrip()
+                    r.channel = chan.text
+                    r.startFrame = sf.text
+                    r.length = leng.text
+                }
+            }
+        }
+
+        ListView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            model: document
+            delegate: Text {
+                text: modelData.channel + ", " + modelData.startFrame + ", " + modelData.length
+            }
         }
     }
+
+
 }

@@ -1,15 +1,5 @@
 #include "strip.h"
 
-int Strip::startFrame() const
-{
-    return startFrame_;
-}
-
-void Strip::setStartFrame(int startFrame)
-{
-    startFrame_ = startFrame;
-}
-
 int Strip::channel() const
 {
     return channel_;
@@ -18,6 +8,16 @@ int Strip::channel() const
 void Strip::setChannel(int channel)
 {
     channel_ = channel;
+}
+
+int Strip::startFrame() const
+{
+    return startFrame_;
+}
+
+void Strip::setStartFrame(int startFrame)
+{
+    startFrame_ = startFrame;
 }
 
 int Strip::length() const
