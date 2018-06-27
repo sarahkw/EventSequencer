@@ -2,6 +2,8 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
+import eventsequencer 1.0 as ES
+
 ApplicationWindow {
     id: appwin
     visible: true
@@ -65,12 +67,16 @@ ApplicationWindow {
         }
     }
 
+    ES.Document {
+        id: document
+    }
+
     Action {
         id: addAction
         text: "Add"
         onTriggered: {
-            var newStrip = componentStrip.createObject(body, {})
-            selectedStrips = [newStrip]
+            var cppStrip = document.createStrip()
+            selectedCppStrips = [cppStrip]
         }
         shortcut: "Shift+A"
     }
@@ -79,10 +85,10 @@ ApplicationWindow {
         id: deleteAction
         text: "Delete"
         onTriggered: {
-            selectedStrips.forEach(function (foo) {
-                foo.destroy()
+            selectedCppStrips.forEach(function (foo) {
+                document.deleteStrip(foo)
             })
-            selectedStrips = []
+            selectedCppStrips = []
         }
         shortcut: "X"
     }
@@ -99,7 +105,7 @@ ApplicationWindow {
         text: "Select"
         shortcut: "A"
         onTriggered: {
-            selectedStrips = []
+            selectedCppStrips = []
             // TODO Also support Select All
         }
     }
@@ -116,138 +122,10 @@ ApplicationWindow {
         return haystack.some(function (foo) { return foo === needle });
     }
 
-    property var selectedStrips: []
+    property var selectedCppStrips: []
 
     property ZoomLogic zoom: ZoomLogic {}
     property int channelPixels: 35
-
-    Component {
-        id: componentStrip
-
-        Strip {
-            id: strip
-
-            property int startFrame: 0
-            property int channel: 0
-            property int length: 2
-            
-            x: zoom.mapFrameToDisplayX(startFrame)
-            width: Math.max(zoom.mapLengthToDisplayWidth(length), minimumWidth)
-            y: channel * channelPixels
-
-            selected: realIn(strip, selectedStrips)
-
-            onSelectionClicked: {
-                if (mouse.modifiers & Qt.ShiftModifier) {
-                    var tmp = selectedStrips
-                    selectedStrips = []
-
-                    if (realIn(strip, tmp)) {
-                        tmp = tmp.filter(function (foo) {
-                            return foo !== strip;
-                        })
-                    } else {
-                        tmp.push(strip)
-                    }
-
-                    selectedStrips = tmp
-                } else {
-                    selectedStrips = [strip]
-                }
-            }
-
-            function floorDiv(a, b) {
-                return Math.floor(a / b);
-            }
-
-            Connections {
-                target: grabMode
-                onFinalCommit: {
-                    if (selected) {
-                        switch (strip.selectionMode) {
-                        case strip.selectionMode_WHOLE:
-                            startFrame += zoom.mapDisplayWidthToFullFrames(diffX)
-                            channel += floorDiv(diffY, channelPixels)
-                            break;
-                        case strip.selectionMode_RIGHT:
-                            length += zoom.mapDisplayWidthToFullFrames(diffX)
-                            break;
-                        case strip.selectionMode_LEFT:
-                            var initialEndFrame = startFrame + length
-                            length -= zoom.mapDisplayWidthToFullFrames(diffX)
-                            startFrame = initialEndFrame - length
-                            break;
-                        }
-                    }
-                }
-            }
-
-            property int initialFrame
-            property int initialChannel
-            property int initialLength
-
-            StateGroup {
-                states: [
-                    State {
-                        name: "move_whole"
-                        when: (selected &&
-                               grabMode.grabState == grabMode.grabstate_MOVING &&
-                               strip.selectionMode == strip.selectionMode_WHOLE)
-                        PropertyChanges {
-                            target: strip
-                            explicit: true
-                            initialFrame: startFrame
-                            initialChannel: channel
-                        }
-
-                        PropertyChanges {
-                            target: strip
-                            startFrame: (initialFrame +
-                                         zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
-                            channel: (initialChannel +
-                                      floorDiv(grabMode.diffY, channelPixels))
-                        }
-                    },
-                    State {
-                        name: "move_right"
-                        when: (selected &&
-                               grabMode.grabState == grabMode.grabstate_MOVING &&
-                               strip.selectionMode == strip.selectionMode_RIGHT)
-                        PropertyChanges {
-                            target: strip
-                            explicit: true
-                            initialLength: length
-                        }
-
-                        PropertyChanges {
-                            target: strip
-                            length: (initialLength +
-                                     zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
-                        }
-                    },
-                    State {
-                        name: "move_left"
-                        when: (selected &&
-                               grabMode.grabState == grabMode.grabstate_MOVING &&
-                               strip.selectionMode == strip.selectionMode_LEFT)
-                        PropertyChanges {
-                            target: strip
-                            explicit: true
-                            initialFrame: startFrame + length
-                            initialLength: length
-                        }
-
-                        PropertyChanges {
-                            target: strip
-                            length: (initialLength -
-                                     zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
-                            startFrame: initialFrame - length
-                        }
-                    }
-                ]
-            }
-        }
-    }
 
     Item {
         anchors.fill: parent
@@ -261,7 +139,7 @@ ApplicationWindow {
             MouseArea {
                 anchors.fill: bodyView
                 acceptedButtons: Qt.RightButton
-                onClicked: selectedStrips = []
+                onClicked: selectedCppStrips = []
             }
 
             Rectangle {
@@ -280,6 +158,137 @@ ApplicationWindow {
                     id: body
                     implicitWidth: childrenRect.width + childrenRect.x
                     implicitHeight: childrenRect.height + childrenRect.y
+
+                    Repeater {
+                        model: document
+                        Strip {
+                            id: strip
+
+                            Component.onCompleted: {
+                                modelData.qmlStrip = strip
+                            }
+
+                            property int startFrame: 0
+                            property int channel: 0
+                            property int length: 2
+
+                            x: zoom.mapFrameToDisplayX(startFrame)
+                            width: Math.max(zoom.mapLengthToDisplayWidth(length), minimumWidth)
+                            y: channel * channelPixels
+
+                            selected: realIn(modelData, selectedCppStrips)
+
+                            onSelectionClicked: {
+                                if (mouse.modifiers & Qt.ShiftModifier) {
+                                    var tmp = selectedCppStrips
+                                    selectedCppStrips = []
+
+                                    if (realIn(modelData, tmp)) {
+                                        tmp = tmp.filter(function (foo) {
+                                            return foo !== strip;
+                                        })
+                                    } else {
+                                        tmp.push(modelData)
+                                    }
+
+                                    selectedCppStrips = tmp
+                                } else {
+                                    selectedCppStrips = [modelData]
+                                }
+                            }
+
+                            function floorDiv(a, b) {
+                                return Math.floor(a / b);
+                            }
+
+                            Connections {
+                                target: grabMode
+                                onFinalCommit: {
+                                    if (selected) {
+                                        switch (strip.selectionMode) {
+                                        case strip.selectionMode_WHOLE:
+                                            startFrame += zoom.mapDisplayWidthToFullFrames(diffX)
+                                            channel += floorDiv(diffY, channelPixels)
+                                            break;
+                                        case strip.selectionMode_RIGHT:
+                                            length += zoom.mapDisplayWidthToFullFrames(diffX)
+                                            break;
+                                        case strip.selectionMode_LEFT:
+                                            var initialEndFrame = startFrame + length
+                                            length -= zoom.mapDisplayWidthToFullFrames(diffX)
+                                            startFrame = initialEndFrame - length
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            property int initialFrame
+                            property int initialChannel
+                            property int initialLength
+
+                            StateGroup {
+                                states: [
+                                    State {
+                                        name: "move_whole"
+                                        when: (selected &&
+                                               grabMode.grabState == grabMode.grabstate_MOVING &&
+                                               strip.selectionMode == strip.selectionMode_WHOLE)
+                                        PropertyChanges {
+                                            target: strip
+                                            explicit: true
+                                            initialFrame: startFrame
+                                            initialChannel: channel
+                                        }
+
+                                        PropertyChanges {
+                                            target: strip
+                                            startFrame: (initialFrame +
+                                                         zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
+                                            channel: (initialChannel +
+                                                      floorDiv(grabMode.diffY, channelPixels))
+                                        }
+                                    },
+                                    State {
+                                        name: "move_right"
+                                        when: (selected &&
+                                               grabMode.grabState == grabMode.grabstate_MOVING &&
+                                               strip.selectionMode == strip.selectionMode_RIGHT)
+                                        PropertyChanges {
+                                            target: strip
+                                            explicit: true
+                                            initialLength: length
+                                        }
+
+                                        PropertyChanges {
+                                            target: strip
+                                            length: (initialLength +
+                                                     zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
+                                        }
+                                    },
+                                    State {
+                                        name: "move_left"
+                                        when: (selected &&
+                                               grabMode.grabState == grabMode.grabstate_MOVING &&
+                                               strip.selectionMode == strip.selectionMode_LEFT)
+                                        PropertyChanges {
+                                            target: strip
+                                            explicit: true
+                                            initialFrame: startFrame + length
+                                            initialLength: length
+                                        }
+
+                                        PropertyChanges {
+                                            target: strip
+                                            length: (initialLength -
+                                                     zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
+                                            startFrame: initialFrame - length
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
                 }
             }
 
@@ -510,13 +519,13 @@ ApplicationWindow {
             Loader {
                 anchors.left: parent.left
                 anchors.right: parent.right
-                sourceComponent: selectedStrips.length == 1 ? propertiesComponent : undefined
+                sourceComponent: selectedCppStrips.length == 1 ? propertiesComponent : undefined
                 Component {
                     id: propertiesComponent
                     Column {
                         anchors.left: parent.left
                         anchors.right: parent.right
-                        property var selectedThingar: selectedStrips[0]
+                        property var selectedThingar: selectedCppStrips[0].qmlStrip
 
                         Label {
                             text: "Edit Strip"
