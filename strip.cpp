@@ -7,7 +7,10 @@ int Strip::channel() const
 
 void Strip::setChannel(int channel)
 {
-    channel_ = channel;
+    if (channel_ != channel) {
+        channel_ = channel;
+        emit channelChanged();
+    }
 }
 
 int Strip::startFrame() const
@@ -17,7 +20,10 @@ int Strip::startFrame() const
 
 void Strip::setStartFrame(int startFrame)
 {
-    startFrame_ = startFrame;
+    if (startFrame_ != startFrame) {
+        startFrame_ = startFrame;
+        emit startFrameChanged();
+    }
 }
 
 int Strip::length() const
@@ -27,7 +33,10 @@ int Strip::length() const
 
 void Strip::setLength(int length)
 {
-    length_ = length;
+    if (length_ != length) {
+        length_ = length;
+        emit lengthChanged();
+    }
 }
 
 Strip::Strip(QObject *parent) : QObject(parent)

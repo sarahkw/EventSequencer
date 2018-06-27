@@ -107,6 +107,8 @@ ApplicationWindow {
         text: "Add"
         onTriggered: {
             var cppStrip = document.createStrip()
+            cppStrip.startFrame = cursor.frame
+            cppStrip.length = 10 // Maybe make this one large tick instead
             selectedCppStrips = [cppStrip]
         }
         shortcut: "Shift+A"
@@ -248,9 +250,9 @@ ApplicationWindow {
                                 modelData.qmlStrip = strip
                             }
 
-                            property int startFrame: 0
-                            property int channel: 0
-                            property int length: 2
+                            readonly property int startFrame: modelData.startFrame
+                            readonly property int channel: modelData.channel
+                            readonly property int length: modelData.length
 
                             x: zoom.mapFrameToDisplayX(startFrame)
                             width: Math.max(zoom.mapLengthToDisplayWidth(length), minimumWidth)
@@ -287,16 +289,16 @@ ApplicationWindow {
                                     if (selected) {
                                         switch (strip.selectionMode) {
                                         case strip.selectionMode_WHOLE:
-                                            startFrame += zoom.mapDisplayWidthToFullFrames(diffX)
-                                            channel += floorDiv(diffY, channelPixels)
+                                            modelData.startFrame += zoom.mapDisplayWidthToFullFrames(diffX)
+                                            modelData.channel += floorDiv(diffY, channelPixels)
                                             break;
                                         case strip.selectionMode_RIGHT:
-                                            length += zoom.mapDisplayWidthToFullFrames(diffX)
+                                            modelData.length += zoom.mapDisplayWidthToFullFrames(diffX)
                                             break;
                                         case strip.selectionMode_LEFT:
                                             var initialEndFrame = startFrame + length
-                                            length -= zoom.mapDisplayWidthToFullFrames(diffX)
-                                            startFrame = initialEndFrame - length
+                                            modelData.length -= zoom.mapDisplayWidthToFullFrames(diffX)
+                                            modelData.startFrame = initialEndFrame - length
                                             break;
                                         }
                                     }
@@ -322,7 +324,7 @@ ApplicationWindow {
                                         }
 
                                         PropertyChanges {
-                                            target: strip
+                                            target: modelData
                                             startFrame: (initialFrame +
                                                          zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
                                             channel: (initialChannel +
@@ -341,7 +343,7 @@ ApplicationWindow {
                                         }
 
                                         PropertyChanges {
-                                            target: strip
+                                            target: modelData
                                             length: (initialLength +
                                                      zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
                                         }
@@ -359,7 +361,7 @@ ApplicationWindow {
                                         }
 
                                         PropertyChanges {
-                                            target: strip
+                                            target: modelData
                                             length: (initialLength -
                                                      zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
                                             startFrame: initialFrame - length
