@@ -40,3 +40,8 @@ QString FramesAndSeconds::framesToSeconds(int fps, int frames)
 
     return s;
 }
+
+QVariantList FramesAndSeconds::secondsToFrames(int fps, QString input)
+{
+    return {true, 1};
+}

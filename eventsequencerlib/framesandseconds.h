@@ -2,6 +2,7 @@
 #define FRAMESANDSECONDS_H
 
 #include <QObject>
+#include <QVariantList>
 
 class FramesAndSeconds : public QObject
 {
@@ -10,6 +11,8 @@ public:
     explicit FramesAndSeconds(QObject *parent = nullptr);
 
     Q_INVOKABLE static QString framesToSeconds(int fps, int frames);
+
+    Q_INVOKABLE static QVariantList secondsToFrames(int fps, QString input);
 
 signals:
 

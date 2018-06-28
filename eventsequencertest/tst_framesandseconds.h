@@ -5,7 +5,7 @@
 
 using namespace testing;
 
-
+////////////////////////////////////////////////////////////////////////////////
 
 // https://stackoverflow.com/a/42597727
 QT_BEGIN_NAMESPACE
@@ -13,9 +13,15 @@ inline void PrintTo(const QString &qString, ::std::ostream *os)
 {
     *os << qUtf8Printable(qString);
 }
+inline void PrintTo(const QVariant &qVar, ::std::ostream *os)
+{
+    // XXX I wrote this without much research/thought.
+    *os << "(QVariant " << qVar.typeName() << " "
+        << qUtf8Printable(qVar.toString()) << ")";
+}
 QT_END_NAMESPACE
 
-
+////////////////////////////////////////////////////////////////////////////////
 
 TEST(FramesAndSeconds, ToSeconds_Seconds)
 {
@@ -42,4 +48,13 @@ TEST(FramesAndSeconds, ToSeconds_Hours)
                                                 fps * 60 * 1 +
                                                 fps * 5 +
                                                 1), "1:01:05+1");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+TEST(FramesAndSeconds, ToFrames_FrameNumberOnly)
+{
+    const int fps = 5;
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "10"),
+                ElementsAre(true, 10));
 }
