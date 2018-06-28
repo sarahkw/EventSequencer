@@ -283,7 +283,7 @@ ApplicationWindow {
 
                                     if (realIn(modelData, tmp)) {
                                         tmp = tmp.filter(function (foo) {
-                                            return foo !== strip;
+                                            return foo !== modelData;
                                         })
                                     } else {
                                         tmp.push(modelData)
