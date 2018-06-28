@@ -1,5 +1,8 @@
 #include "framesandseconds.h"
 
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+
 FramesAndSeconds::FramesAndSeconds(QObject *parent) : QObject(parent)
 {
 
@@ -43,10 +46,15 @@ QString FramesAndSeconds::framesToSeconds(int fps, int frames)
 
 QVariantList FramesAndSeconds::secondsToFrames(int fps, QString input)
 {
-    bool ok;
-    int dec = input.toInt(&ok);
-    if (ok) {
-        return {true, dec};
+    QRegularExpression re("^((?<second>\\d*)\\+)?(?<frame>\\d*)$");
+    QRegularExpressionMatch match = re.match(input);
+    if (match.hasMatch()) {
+        const int second = match.captured("second").toInt();
+        const int frame = match.captured("frame").toInt();
+
+        const int result = second * fps + frame;
+
+        return {true, result};
     } else {
         return {false};
     }

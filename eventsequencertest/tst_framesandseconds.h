@@ -60,3 +60,26 @@ TEST(FramesAndSeconds, ToFrames_FrameNumberOnly)
     EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "hello"),
                 ElementsAre(false));
 }
+
+TEST(FramesAndSeconds, ToFrames_Seconds)
+{
+    const int fps = 5;
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "0+0"),
+                ElementsAre(true, 0));
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "0+1"),
+                ElementsAre(true, 1));
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "1+0"),
+                ElementsAre(true, 5));
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "6+1"),
+                ElementsAre(true, 31));
+
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "6+"),
+                ElementsAre(true, 30));
+}
+
+//TEST(FramesAndSeconds, ToFrames_Minutes)
+//{
+//    const int fps = 1;
+//    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "1:00+0"),
+//                ElementsAre(true, 60));
+//}
