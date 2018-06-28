@@ -1,5 +1,6 @@
 #include "tst_testcasename.h"
 #include "tst_strip.h"
+#include "tst_framesandseconds.h"
 
 #include <gtest/gtest.h>
 

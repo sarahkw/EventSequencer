@@ -24,13 +24,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     strip.cpp \
     document.cpp \
-    eventsequencer.pb.cc
+    eventsequencer.pb.cc \
+    framesandseconds.cpp
 
 
 HEADERS += \
     strip.h \
     document.h \
-    eventsequencer.pb.h
+    eventsequencer.pb.h \
+    framesandseconds.h
 
 unix {
     target.path = /usr/lib

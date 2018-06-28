@@ -7,7 +7,8 @@ CONFIG += thread
 
 HEADERS += \
         tst_testcasename.h \
-    tst_strip.h
+    tst_strip.h \
+    tst_framesandseconds.h
 
 SOURCES += \
         main.cpp
