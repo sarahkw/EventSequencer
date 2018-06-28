@@ -23,14 +23,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     strip.cpp \
-    document.cpp
+    document.cpp \
+    eventsequencer.pb.cc
 
 
 HEADERS += \
     strip.h \
-    document.h
+    document.h \
+    eventsequencer.pb.h
 
 unix {
     target.path = /usr/lib
     INSTALLS += target
 }
+
+unix: CONFIG += link_pkgconfig
+unix: PKGCONFIG += protobuf

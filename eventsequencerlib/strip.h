@@ -3,6 +3,10 @@
 
 #include <QObject>
 
+namespace pb {
+class Strip;
+}
+
 class Strip : public QObject
 {
     Q_OBJECT
@@ -17,6 +21,8 @@ class Strip : public QObject
 
 public:
     explicit Strip(QObject *parent = nullptr);
+
+    void toPb(pb::Strip& pb) const;
 
     int channel() const;
     void setChannel(int channel);

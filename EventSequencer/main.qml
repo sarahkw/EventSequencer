@@ -101,6 +101,7 @@ ApplicationWindow {
         id: fileDialog
         fileMode: FileDialog.SaveFile
         nameFilters: ["JSON files (*.json)", "All files (*)"]
+        onAccepted: document.save(file)
     }
 
     Action {

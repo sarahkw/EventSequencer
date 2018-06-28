@@ -39,3 +39,6 @@ INCLUDEPATH += $$PWD/../eventsequencerlib
 DEPENDPATH += $$PWD/../eventsequencerlib
 
 unix:!macx: PRE_TARGETDEPS += $$OUT_PWD/../eventsequencerlib/libeventsequencerlib.a
+
+unix: CONFIG += link_pkgconfig
+unix: PKGCONFIG += protobuf

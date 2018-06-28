@@ -1,6 +1,9 @@
 #include "document.h"
 
 #include "strip.h"
+#include "eventsequencer.pb.h"
+
+#include <QDebug>
 
 int Document::framesPerSecond() const
 {
@@ -18,6 +21,14 @@ void Document::setFramesPerSecond(int framesPerSecond)
 Document::Document(QObject *parent) : QAbstractListModel(parent)
 {
 
+}
+
+void Document::toPb(pb::Document &pb) const
+{
+    for (const Strip* s : strips_) {
+        s->toPb(*pb.add_strips());
+    }
+    pb.set_framespersecond(framesPerSecond_);
 }
 
 int Document::rowCount(const QModelIndex &parent) const
@@ -76,4 +87,13 @@ QVariantList Document::strips()
         ret.push_back(v);
     }
     return ret;
+}
+
+void Document::save(const QString& fileName)
+{
+    qInfo() << "I will eventually save to" << fileName;
+    pb::Document doc;
+    toPb(doc);
+    doc.PrintDebugString();
+    // TODO Actually save!
 }

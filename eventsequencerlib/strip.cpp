@@ -1,5 +1,7 @@
 #include "strip.h"
 
+#include "eventsequencer.pb.h"
+
 int Strip::channel() const
 {
     return channel_;
@@ -42,4 +44,11 @@ void Strip::setLength(int length)
 Strip::Strip(QObject *parent) : QObject(parent)
 {
 
+}
+
+void Strip::toPb(pb::Strip &pb) const
+{
+    pb.set_channel(channel_);
+    pb.set_startframe(startFrame_);
+    pb.set_length(length_);
 }

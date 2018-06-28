@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package pb;
+
+message Strip {
+  int32 channel = 1;
+  int32 startFrame = 2;
+  int32 length = 3;
+}
+
+message Document {
+  repeated Strip strips = 1;
+  int32 framesPerSecond = 2;
+}
