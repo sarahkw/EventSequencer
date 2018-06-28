@@ -57,4 +57,6 @@ TEST(FramesAndSeconds, ToFrames_FrameNumberOnly)
     const int fps = 5;
     EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "10"),
                 ElementsAre(true, 10));
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "hello"),
+                ElementsAre(false));
 }

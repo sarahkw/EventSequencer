@@ -43,5 +43,11 @@ QString FramesAndSeconds::framesToSeconds(int fps, int frames)
 
 QVariantList FramesAndSeconds::secondsToFrames(int fps, QString input)
 {
-    return {true, 1};
+    bool ok;
+    int dec = input.toInt(&ok);
+    if (ok) {
+        return {true, dec};
+    } else {
+        return {false};
+    }
 }
