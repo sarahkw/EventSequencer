@@ -15,8 +15,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    strip.cpp \
-    document.cpp \
     registerqmltypes.cpp
 
 RESOURCES += qml.qrc
@@ -33,6 +31,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    strip.h \
-    document.h \
     registerqmltypes.h
+
+unix:!macx: LIBS += -L$$OUT_PWD/../eventsequencerlib/ -leventsequencerlib
+
+INCLUDEPATH += $$PWD/../eventsequencerlib
+DEPENDPATH += $$PWD/../eventsequencerlib
+
+unix:!macx: PRE_TARGETDEPS += $$OUT_PWD/../eventsequencerlib/libeventsequencerlib.a
