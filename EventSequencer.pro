@@ -2,4 +2,5 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     eventsequencerlib \
-    EventSequencer
+    EventSequencer \
+    eventsequencertest
