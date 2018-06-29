@@ -30,7 +30,7 @@ MenuItem {
             color: control.down || control.highlighted ? Fusion.highlightedText(control.palette) : control.palette.text
         }
         Label {
-            text: control.action.shortcut || ""
+            text: control.action && control.action.shortcut || ""
             color: control.down || control.highlighted ? Fusion.highlightedText(control.palette) : control.palette.text
         }
     }
