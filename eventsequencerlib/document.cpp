@@ -4,6 +4,7 @@
 #include "eventsequencer.pb.h"
 
 #include <QDebug>
+#include <QFile>
 
 int Document::framesPerSecond() const
 {
@@ -91,9 +92,22 @@ QVariantList Document::strips()
 
 void Document::save(const QString& fileName)
 {
+    // TODO Error handling! Need to do more than just write to stdout.
+
+    const char* fn = "/tmp/eventsequencer.dat";
+
+    qInfo() << "Writing to altfile until we trust to not corrupt anything." << fn;
     qInfo() << "I will eventually save to" << fileName;
     pb::Document doc;
     toPb(doc);
-    doc.PrintDebugString();
-    // TODO Actually save!
+
+    QFile file(fn);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qWarning() << "Cannot open";
+        return;
+    }
+    if (!doc.SerializeToFileDescriptor(file.handle())) {
+        qWarning() << "Cannot serialize";
+    }
+    file.close();
 }
