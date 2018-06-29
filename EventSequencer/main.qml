@@ -28,15 +28,24 @@ ApplicationWindow {
                 shortcut: "Ctrl+S"
             }
         }
+        CustomMenu {
+            id: addMenu
+            title: "Add"
+            Action {
+                text: "&Strip"
+                onTriggered: {
+                    var cppStrip = document.createStrip()
+                    cppStrip.startFrame = cursor.frame
+                    cppStrip.length = 10 // Maybe make this one large tick instead
+                    selectedCppStrips = [cppStrip]
+                }
+            }
+        }
+
     }
 
     header: ToolBar {
         RowLayout {
-            ToolButton {
-                action: addAction
-                ToolTip.visible: hovered
-                ToolTip.text: action.shortcut
-            }
             ToolButton {
                 action: deleteAction
                 ToolTip.visible: hovered
@@ -142,23 +151,6 @@ ApplicationWindow {
         text: "Add"
         onTriggered: addMenu.open()
         shortcut: "Shift+A"
-    }
-    Menu {
-        id: addMenu
-        MenuItem {
-            text: "Add"
-            enabled: false
-        }
-        MenuSeparator {}
-        MenuItem {
-            text: "&Strip"
-            onTriggered: {
-                var cppStrip = document.createStrip()
-                cppStrip.startFrame = cursor.frame
-                cppStrip.length = 10 // Maybe make this one large tick instead
-                selectedCppStrips = [cppStrip]
-            }
-        }
     }
 
     Action {
