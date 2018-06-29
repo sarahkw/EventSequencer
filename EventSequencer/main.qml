@@ -57,6 +57,16 @@ ApplicationWindow {
                 }
             }
         }
+        CustomMenu {
+            title: "Debug"
+            CustomMenuItem {
+                text: "DebugCppModel"
+                onTriggered: {
+                    var component = Qt.createComponent("DebugCppModel.qml")
+                    var obj = component.createObject(appwin, {visible: true})
+                }
+            }
+        }
 
     }
 
@@ -76,20 +86,6 @@ ApplicationWindow {
                 action: selectAction
                 ToolTip.visible: hovered
                 ToolTip.text: action.shortcut
-            }
-            ToolButton {
-                text: "Debug"
-                onClicked: debugMenu.open()
-                Menu {
-                    id: debugMenu
-                    MenuItem {
-                        text: "DebugCppModel"
-                        onTriggered: {
-                            var component = Qt.createComponent("DebugCppModel.qml")
-                            var obj = component.createObject(appwin, {visible: true})
-                        }
-                    }
-                }
             }
         }
     }
