@@ -75,7 +75,7 @@ ApplicationWindow {
             TextField {
                 selectByMouse: true
                 validator: IntValidator { }
-                text: cursor.frame
+                text: displayFrameNumber(cursor.frame)
                 horizontalAlignment: TextInput.AlignRight
                 onEditingFinished: {
                     cursor.frame = parseInt(text, 10)
@@ -101,6 +101,15 @@ ApplicationWindow {
         id: document
         framesPerSecond: 30
     }
+
+    property var displayFrameNumber: (function (a, b) {
+        return function (frameNumber) {
+            if (a)
+                return ES.FramesAndSeconds.framesToSeconds(b, frameNumber);
+            else
+                return frameNumber;
+        }
+    })(showSecondsAction.checked, document.framesPerSecond)
 
     FileDialog {
         id: saveFileDialog
@@ -264,7 +273,7 @@ ApplicationWindow {
                         anchors.bottom: cursor.bottom
                         anchors.leftMargin: 10
                         anchors.bottomMargin: 10
-                        text: showSecondsAction.checked ? ES.FramesAndSeconds.framesToSeconds(document.framesPerSecond, cursor.frame) : cursor.frame
+                        text: displayFrameNumber(cursor.frame)
                         font.pixelSize: 12
                     }
                 }
@@ -413,6 +422,7 @@ ApplicationWindow {
                 height: 20
                 zoom: appwin.zoom
                 position: body.x
+                displayFrameNumber: appwin.displayFrameNumber
 
                 anchors.left: sbVertHolder.right
                 anchors.right: parent.right
