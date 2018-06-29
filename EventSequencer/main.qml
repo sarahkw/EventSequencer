@@ -29,6 +29,15 @@ ApplicationWindow {
             }
         }
         CustomMenu {
+            title: "View"
+            Action {
+                id: propertiesAction
+                text: "Properties"
+                checkable: true
+                shortcut: "N"
+            }
+        }
+        CustomMenu {
             id: addMenu
             title: "Add"
             Action {
@@ -58,11 +67,6 @@ ApplicationWindow {
             }
             ToolButton {
                 action: selectAction
-                ToolTip.visible: hovered
-                ToolTip.text: action.shortcut
-            }
-            ToolButton {
-                action: propertiesAction
                 ToolTip.visible: hovered
                 ToolTip.text: action.shortcut
             }
@@ -189,13 +193,6 @@ ApplicationWindow {
                 selectedCppStrips = strips
             }
         }
-    }
-
-    Action {
-        id: propertiesAction
-        text: "Properties"
-        checkable: true
-        shortcut: "N"
     }
 
     Action {
