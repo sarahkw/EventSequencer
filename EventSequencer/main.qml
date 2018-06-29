@@ -102,10 +102,10 @@ ApplicationWindow {
         framesPerSecond: 30
     }
 
-    property var displayFrameNumber: (function (a, b) {
+    property var displayFrameNumber: (function (shouldShowTime, framesPerSecond) {
         return function (frameNumber) {
-            if (a)
-                return ES.FramesAndSeconds.framesToSeconds(b, frameNumber);
+            if (shouldShowTime)
+                return ES.FramesAndSeconds.framesToSeconds(framesPerSecond, frameNumber);
             else
                 return frameNumber;
         }
