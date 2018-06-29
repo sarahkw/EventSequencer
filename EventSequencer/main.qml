@@ -70,25 +70,21 @@ ApplicationWindow {
         }
     }
 
+    property ES.Document document: ES.Document {
+        framesPerSecond: 30
+    }
+
     footer: ToolBar {
         Row {
-            TextField {
+            FrameTextField {
+                document: appwin.document
+                shouldShowTime: showSecondsAction.checked
+                frame: cursor.frame
+                onFrameChanged: cursor.frame = frame
+                onEditingFinished: focus = false
+
                 selectByMouse: true
-                text: displayFrameNumber(cursor.frame)
                 horizontalAlignment: TextInput.AlignRight
-                onAccepted: {
-                    var result = ES.FramesAndSeconds.secondsToFrames(
-                                document.framesPerSecond,
-                                text,
-                                !showSecondsAction.checked /*numberOnlyIsFrames*/)
-                    var success = result[0]
-                    var frame = result[1]
-                    if (success) {
-                        cursor.frame = frame
-                    }
-                    text = Qt.binding(function () { return displayFrameNumber(cursor.frame); });
-                    focus = false
-                }
                 ToolTip.text: showSecondsAction.checked ? "Current Time" : "Current Frame"
                 ToolTip.visible: hovered
             }
@@ -103,11 +99,6 @@ ApplicationWindow {
                 leftPadding: 10
             }
         }
-    }
-
-    ES.Document {
-        id: document
-        framesPerSecond: 30
     }
 
     property var displayFrameNumber: (function (shouldShowTime, framesPerSecond) {
@@ -689,7 +680,7 @@ ApplicationWindow {
                             anchors.left: parent.left
                             anchors.right: parent.right
 
-                            property var selectedThingar: selectedCppStrips[0].qmlStrip
+                            property var selectedThingar: selectedCppStrips[0]
 
                             Label {
                                 text: "Edit Strip"
@@ -723,41 +714,38 @@ ApplicationWindow {
                                 Label {
                                     text: "Start"
                                 }
-                                TextField {
+                                FrameTextField {
+                                    document: appwin.document
+                                    shouldShowTime: showSecondsAction.checked
+                                    frame: selectedThingar.startFrame
+                                    onFrameChanged: selectedThingar.startFrame = frame
+
                                     Layout.fillWidth: true
-                                    text: displayFrameNumber(selectedThingar.startFrame)
                                     selectByMouse: true
-                                    validator: IntValidator { }
-                                    onEditingFinished: {
-                                        selectedThingar.startFrame = parseInt(text, 10)
-                                        focus = false
-                                    }
                                 }
                                 Label {
                                     text: "Length"
                                 }
-                                TextField {
+                                FrameTextField {
+                                    document: appwin.document
+                                    shouldShowTime: showSecondsAction.checked
+                                    frame: selectedThingar.length
+                                    onFrameChanged: selectedThingar.length = frame
+
                                     Layout.fillWidth: true
-                                    text: displayFrameNumber(selectedThingar.length)
                                     selectByMouse: true
-                                    validator: IntValidator { }
-                                    onEditingFinished: {
-                                        selectedThingar.length = parseInt(text, 10)
-                                        focus = false
-                                    }
                                 }
                                 Label {
                                     text: "End"
                                 }
-                                TextField {
+                                FrameTextField {
+                                    document: appwin.document
+                                    shouldShowTime: showSecondsAction.checked
+                                    frame: selectedThingar.startFrame + selectedThingar.length
+                                    onFrameChanged: selectedThingar.length = frame - selectedThingar.startFrame
+
                                     Layout.fillWidth: true
-                                    text: displayFrameNumber(selectedThingar.startFrame + selectedThingar.length)
                                     selectByMouse: true
-                                    validator: IntValidator { }
-                                    onEditingFinished: {
-                                        selectedThingar.length = parseInt(text, 10) - selectedThingar.startFrame
-                                        focus = false
-                                    }
                                 }
                             }
                             Item { // End Spacer
