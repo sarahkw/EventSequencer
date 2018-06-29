@@ -61,9 +61,23 @@ QString FramesAndSeconds::framesToSeconds(int fps, int frames, bool hideFramesWh
     return s;
 }
 
-QVariantList FramesAndSeconds::secondsToFrames(int fps, QString input)
+QVariantList FramesAndSeconds::secondsToFrames(int fps, QString input,
+                                               bool numberOnlyIsFrames)
 {
     // TODO Don't keep compiling re, save it somewhere.
+
+    if (numberOnlyIsFrames) {
+        QRegularExpression re("^(?<neg>-)?(?<f>\\d*)$");
+        QRegularExpressionMatch match = re.match(input);
+        if (match.hasMatch()) {
+            const bool neg = match.capturedLength("neg") != 0;
+            const int f = match.captured("f").toInt();
+
+            const int result = (neg ? -1 : 1) * f;
+            return {true, result};
+        }
+    }
+
     QRegularExpression re("^(?<neg>-)?(((?<h>\\d*):)?(?<m>\\d*):)?(?<s>\\d*)(\\+(?<f>\\d*))?$");
     QRegularExpressionMatch match = re.match(input);
     if (match.hasMatch()) {

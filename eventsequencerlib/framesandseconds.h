@@ -13,7 +13,8 @@ public:
     Q_INVOKABLE static QString framesToSeconds(
         int fps, int frames, bool hideFramesWhenHoursShown = false);
 
-    Q_INVOKABLE static QVariantList secondsToFrames(int fps, QString input);
+    Q_INVOKABLE static QVariantList secondsToFrames(
+        int fps, QString input, bool numberOnlyIsFrames = false);
 
 signals:
 

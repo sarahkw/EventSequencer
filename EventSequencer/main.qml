@@ -74,14 +74,22 @@ ApplicationWindow {
         Row {
             TextField {
                 selectByMouse: true
-                validator: IntValidator { }
                 text: displayFrameNumber(cursor.frame)
                 horizontalAlignment: TextInput.AlignRight
-                onEditingFinished: {
-                    cursor.frame = parseInt(text, 10)
+                onAccepted: {
+                    var result = ES.FramesAndSeconds.secondsToFrames(
+                                document.framesPerSecond,
+                                text,
+                                !showSecondsAction.checked /*numberOnlyIsFrames*/)
+                    var success = result[0]
+                    var frame = result[1]
+                    if (success) {
+                        cursor.frame = frame
+                    }
+                    text = Qt.binding(function () { return displayFrameNumber(cursor.frame); });
                     focus = false
                 }
-                ToolTip.text: "Current Frame"
+                ToolTip.text: showSecondsAction.checked ? "Current Time" : "Current Frame"
                 ToolTip.visible: hovered
             }
             Label {

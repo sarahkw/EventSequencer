@@ -168,3 +168,24 @@ TEST(FramesAndSeconds, ToFrames_Neg)
     EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "-"),
                 ElementsAre(true, 0));
 }
+
+TEST(FramesAndSeconds, ToFrames_NumberOnlyIsFrames)
+{
+    const int fps = 2;
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "10", false),
+                ElementsAre(true, 20));
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "10", true),
+                ElementsAre(true, 10));
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, ":10", true),
+                ElementsAre(true, 20));
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "+10", true),
+                ElementsAre(true, 10));
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "10+10", true),
+                ElementsAre(true, 30));
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "", true),
+                ElementsAre(true, 0));
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "-", true),
+                ElementsAre(true, 0));
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "-10", true),
+                ElementsAre(true, -10));
+}
