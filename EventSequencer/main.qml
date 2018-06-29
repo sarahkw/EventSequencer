@@ -31,6 +31,13 @@ ApplicationWindow {
         CustomMenu {
             title: "View"
             Action {
+                id: showSecondsAction
+                text: "Show Seconds"
+                checkable: true
+                shortcut: "Ctrl+T"
+            }
+            MenuSeparator { }
+            Action {
                 id: propertiesAction
                 text: "Properties"
                 checkable: true
@@ -67,11 +74,6 @@ ApplicationWindow {
             }
             ToolButton {
                 action: selectAction
-                ToolTip.visible: hovered
-                ToolTip.text: action.shortcut
-            }
-            ToolButton {
-                action: showSecondsAction
                 ToolTip.visible: hovered
                 ToolTip.text: action.shortcut
             }
@@ -193,13 +195,6 @@ ApplicationWindow {
                 selectedCppStrips = strips
             }
         }
-    }
-
-    Action {
-        id: showSecondsAction
-        text: "Show Seconds"
-        checkable: true
-        shortcut: "Ctrl+T"
     }
 
     // "needle in haystack" doesn't seem to work for QML elements
