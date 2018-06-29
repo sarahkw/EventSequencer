@@ -78,6 +78,19 @@ ApplicationWindow {
             }
         }
         CustomMenu {
+            title: "Strip"
+            Action {
+                text: "Delete"
+                onTriggered: {
+                    selectedCppStrips.forEach(function (foo) {
+                        document.deleteStrip(foo)
+                    })
+                    selectedCppStrips = []
+                }
+                shortcut: "X"
+            }
+        }
+        CustomMenu {
             title: "Debug"
             CustomMenuItem {
                 text: "DebugCppModel"
@@ -92,11 +105,6 @@ ApplicationWindow {
 
     header: ToolBar {
         RowLayout {
-            ToolButton {
-                action: deleteAction
-                ToolTip.visible: hovered
-                ToolTip.text: action.shortcut
-            }
             ToolButton {
                 action: grabAction
                 ToolTip.visible: hovered
@@ -168,18 +176,6 @@ ApplicationWindow {
         text: "Add"
         onTriggered: addMenu.open()
         shortcut: "Shift+A"
-    }
-
-    Action {
-        id: deleteAction
-        text: "Delete"
-        onTriggered: {
-            selectedCppStrips.forEach(function (foo) {
-                document.deleteStrip(foo)
-            })
-            selectedCppStrips = []
-        }
-        shortcut: "X"
     }
 
     Action {
