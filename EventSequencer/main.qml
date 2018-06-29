@@ -246,7 +246,7 @@ ApplicationWindow {
                         anchors.bottom: cursor.bottom
                         anchors.leftMargin: 10
                         anchors.bottomMargin: 10
-                        text: cursor.frame
+                        text: showSecondsAction.checked ? ES.FramesAndSeconds.framesToSeconds(document.framesPerSecond, cursor.frame) : cursor.frame
                         font.pixelSize: 12
                     }
                 }
