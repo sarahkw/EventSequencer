@@ -10,7 +10,8 @@ FramesAndSeconds::FramesAndSeconds(QObject *parent) : QObject(parent)
 
 QString FramesAndSeconds::framesToSeconds(int fps, int frames)
 {
-    int f = frames;
+    const bool isNegative = frames < 0;
+    int f = frames * (isNegative ? -1 : 1);
 
     const int hours = f / (fps * 60 * 60);
     f %= (fps * 60 * 60);
@@ -39,6 +40,10 @@ QString FramesAndSeconds::framesToSeconds(int fps, int frames)
 
     if (hasHours) {
         s = QString("%1:%2").arg(hours).arg(s);
+    }
+
+    if (isNegative) {
+        s = QString("-%1").arg(s);
     }
 
     return s;

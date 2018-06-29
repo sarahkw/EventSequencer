@@ -50,6 +50,19 @@ TEST(FramesAndSeconds, ToSeconds_Hours)
                                                 1), "1:01:05+1");
 }
 
+TEST(FramesAndSeconds, ToSeconds_Negative)
+{
+    const int fps = 5;
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps, -6), "-1+1");
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(
+                  fps,
+                  -1 *
+                  (fps * 60 * 60 * 1 +
+                   fps * 60 * 1 +
+                   fps * 5 +
+                   1)), "-1:01:05+1");
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 TEST(FramesAndSeconds, ToFrames_WeirdInput)
