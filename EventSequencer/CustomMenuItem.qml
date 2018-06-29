@@ -10,11 +10,23 @@ import QtQuick.Controls.Fusion.impl 2.4
 MenuItem {
     id: control
     contentItem: RowLayout {
-        // TODO: Should rip off more features from ~/Qt/5.11.0/Src/qtquickcontrols2/src/imports/controls/fusion/MenuItem.qml
+        // Copied from ~/Qt/5.11.0/Src/qtquickcontrols2/src/imports/controls/fusion/MenuItem.qml
         IconLabel {
             Layout.fillWidth: true
+
+            readonly property real arrowPadding: control.subMenu && control.arrow ? control.arrow.width + control.spacing : 0
+            readonly property real indicatorPadding: control.checkable && control.indicator ? control.indicator.width + control.spacing : 0
+            leftPadding: !control.mirrored ? indicatorPadding : arrowPadding
+            rightPadding: control.mirrored ? indicatorPadding : arrowPadding
+
+            spacing: control.spacing
+            mirrored: control.mirrored
+            display: control.display
             alignment: Qt.AlignLeft
+
+            icon: control.icon
             text: control.text
+            font: control.font
             color: control.down || control.highlighted ? Fusion.highlightedText(control.palette) : control.palette.text
         }
         Label {
