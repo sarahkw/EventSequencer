@@ -143,13 +143,25 @@ ApplicationWindow {
     Action {
         id: addAction
         text: "Add"
-        onTriggered: {
-            var cppStrip = document.createStrip()
-            cppStrip.startFrame = cursor.frame
-            cppStrip.length = 10 // Maybe make this one large tick instead
-            selectedCppStrips = [cppStrip]
-        }
+        onTriggered: addMenu.open()
         shortcut: "Shift+A"
+    }
+    Menu {
+        id: addMenu
+        MenuItem {
+            text: "Add"
+            enabled: false
+        }
+        MenuSeparator {}
+        MenuItem {
+            text: "&Strip"
+            onTriggered: {
+                var cppStrip = document.createStrip()
+                cppStrip.startFrame = cursor.frame
+                cppStrip.length = 10 // Maybe make this one large tick instead
+                selectedCppStrips = [cppStrip]
+            }
+        }
     }
 
     Action {
