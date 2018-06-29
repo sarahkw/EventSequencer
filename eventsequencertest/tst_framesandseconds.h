@@ -44,6 +44,8 @@ TEST(FramesAndSeconds, ToSeconds_Hours)
 {
     const int fps = 5;
     EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps,
+                                                fps * 60 * 60), "1:00:00+0");
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps,
                                                 fps * 60 * 60 * 1 +
                                                 fps * 60 * 1 +
                                                 fps * 5 +
@@ -61,6 +63,18 @@ TEST(FramesAndSeconds, ToSeconds_Negative)
                    fps * 60 * 1 +
                    fps * 5 +
                    1)), "-1:01:05+1");
+}
+
+TEST(FramesAndSeconds, ToSeconds_OneFps)
+{
+    const int fps = 1;
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps, 0), "0+0");
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps, 1), "1+0");
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps, 2), "2+0");
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps, 60), "1:00+0");
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps, 61), "1:01+0");
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps, 60 * 60), "1:00:00+0");
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps, 60 * 60 + 60 + 1), "1:01:01+0");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
