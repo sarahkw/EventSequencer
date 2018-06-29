@@ -80,6 +80,12 @@ ApplicationWindow {
         CustomMenu {
             title: "Strip"
             Action {
+                id: grabAction
+                text: "Grab"
+                checkable: true
+                shortcut: "G"
+            }
+            Action {
                 text: "Delete"
                 onTriggered: {
                     selectedCppStrips.forEach(function (foo) {
@@ -103,14 +109,11 @@ ApplicationWindow {
 
     }
 
-    header: ToolBar {
-        RowLayout {
-            ToolButton {
-                action: grabAction
-                ToolTip.visible: hovered
-                ToolTip.text: action.shortcut
-            }
-        }
+    Action {
+        id: addAction
+        text: "Add"
+        onTriggered: addMenu.open()
+        shortcut: "Shift+A"
     }
 
     ES.Document {
@@ -167,22 +170,6 @@ ApplicationWindow {
         fileMode: Qlp.FileDialog.OpenFile
         nameFilters: ["Data files (*.dat)", "All files (*)"]
         onAccepted: document.load(file)
-    }
-
-
-
-    Action {
-        id: addAction
-        text: "Add"
-        onTriggered: addMenu.open()
-        shortcut: "Shift+A"
-    }
-
-    Action {
-        id: grabAction
-        text: "Grab"
-        checkable: true
-        shortcut: "G"
     }
 
     // "needle in haystack" doesn't seem to work for QML elements
