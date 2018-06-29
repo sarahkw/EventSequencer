@@ -45,6 +45,26 @@ ApplicationWindow {
             }
         }
         CustomMenu {
+            title: "Select"
+            Action {
+                text: "(De)select All"
+                shortcut: "A"
+                onTriggered: {
+                    if (selectedCppStrips.length != 0) {
+                        selectedCppStrips = []
+                    } else {
+                        // Select All
+                        var strips = document.strips()
+                        strips.forEach(function (s) {
+                            // This sucks, but user could have had the left/right selected.
+                            s.qmlStrip.selectionMode = s.qmlStrip.selectionMode_WHOLE
+                        })
+                        selectedCppStrips = strips
+                    }
+                }
+            }
+        }
+        CustomMenu {
             id: addMenu
             title: "Add"
             Action {
@@ -79,11 +99,6 @@ ApplicationWindow {
             }
             ToolButton {
                 action: grabAction
-                ToolTip.visible: hovered
-                ToolTip.text: action.shortcut
-            }
-            ToolButton {
-                action: selectAction
                 ToolTip.visible: hovered
                 ToolTip.text: action.shortcut
             }
@@ -172,25 +187,6 @@ ApplicationWindow {
         text: "Grab"
         checkable: true
         shortcut: "G"
-    }
-
-    Action {
-        id: selectAction
-        text: "Select"
-        shortcut: "A"
-        onTriggered: {
-            if (selectedCppStrips.length != 0) {
-                selectedCppStrips = []
-            } else {
-                // Select All
-                var strips = document.strips()
-                strips.forEach(function (s) {
-                    // This sucks, but user could have had the left/right selected.
-                    s.qmlStrip.selectionMode = s.qmlStrip.selectionMode_WHOLE
-                })
-                selectedCppStrips = strips
-            }
-        }
     }
 
     // "needle in haystack" doesn't seem to work for QML elements
