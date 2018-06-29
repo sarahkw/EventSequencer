@@ -712,11 +712,11 @@ ApplicationWindow {
                                     }
                                 }
                                 Label {
-                                    text: "Start Frame"
+                                    text: "Start"
                                 }
                                 TextField {
                                     Layout.fillWidth: true
-                                    text: selectedThingar.startFrame
+                                    text: displayFrameNumber(selectedThingar.startFrame)
                                     selectByMouse: true
                                     validator: IntValidator { }
                                     onEditingFinished: {
@@ -729,7 +729,7 @@ ApplicationWindow {
                                 }
                                 TextField {
                                     Layout.fillWidth: true
-                                    text: selectedThingar.length
+                                    text: displayFrameNumber(selectedThingar.length)
                                     selectByMouse: true
                                     validator: IntValidator { }
                                     onEditingFinished: {
@@ -738,11 +738,11 @@ ApplicationWindow {
                                     }
                                 }
                                 Label {
-                                    text: "End Frame"
+                                    text: "End"
                                 }
                                 TextField {
                                     Layout.fillWidth: true
-                                    text: selectedThingar.startFrame + selectedThingar.length
+                                    text: displayFrameNumber(selectedThingar.startFrame + selectedThingar.length)
                                     selectByMouse: true
                                     validator: IntValidator { }
                                     onEditingFinished: {
