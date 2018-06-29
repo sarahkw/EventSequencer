@@ -1,7 +1,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
-import Qt.labs.platform 1.0
+import Qt.labs.platform 1.0 as Qlp
 
 import eventsequencer 1.0 as ES
 
@@ -11,18 +11,42 @@ ApplicationWindow {
     width: 800
     height: 600
     title: qsTr("Hello World")
+
+    menuBar: MenuBar {
+        Menu {
+            title: "File"
+
+            Action {
+                id: openAction
+                text: "Open"
+                onTriggered: openFileDialog.open()
+                shortcut: "Ctrl+O"
+            }
+
+            Action {
+                id: saveAction
+                text: "Save"
+                onTriggered: saveFileDialog.open()
+                shortcut: "Ctrl+S"
+            }
+
+            delegate: MenuItem {
+                id: menuItem
+                contentItem: RowLayout {
+                    Label {
+                        Layout.fillWidth: true
+                        text: menuItem.text
+                    }
+                    Label {
+                        text: menuItem.action.shortcut
+                    }
+                }
+            }
+        }
+    }
+
     header: ToolBar {
         RowLayout {
-            ToolButton {
-                action: openAction
-                ToolTip.visible: hovered
-                ToolTip.text: action.shortcut
-            }
-            ToolButton {
-                action: saveAction
-                ToolTip.visible: hovered
-                ToolTip.text: action.shortcut
-            }
             ToolButton {
                 action: addAction
                 ToolTip.visible: hovered
@@ -113,32 +137,20 @@ ApplicationWindow {
         }
     })(showSecondsAction.checked, document.framesPerSecond)
 
-    FileDialog {
+    Qlp.FileDialog {
         id: saveFileDialog
-        fileMode: FileDialog.SaveFile
+        fileMode: Qlp.FileDialog.SaveFile
         nameFilters: ["Data files (*.dat)", "All files (*)"]
         onAccepted: document.save(file)
     }
-    FileDialog {
+    Qlp.FileDialog {
         id: openFileDialog
-        fileMode: FileDialog.OpenFile
+        fileMode: Qlp.FileDialog.OpenFile
         nameFilters: ["Data files (*.dat)", "All files (*)"]
         onAccepted: document.load(file)
     }
 
-    Action {
-        id: openAction
-        text: "Open"
-        onTriggered: openFileDialog.open()
-        shortcut: "Ctrl+O"
-    }
 
-    Action {
-        id: saveAction
-        text: "Save"
-        onTriggered: saveFileDialog.open()
-        shortcut: "Ctrl+S"
-    }
 
     Action {
         id: addAction
