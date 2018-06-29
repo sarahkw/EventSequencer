@@ -32,6 +32,19 @@ void Document::toPb(pb::Document &pb) const
     pb.set_framespersecond(framesPerSecond_);
 }
 
+void Document::fromPb(const pb::Document &pb)
+{
+    // TODO Delete all current strips first!
+    // TODO We do not want to create a single strip each time so don't call createStrip(),
+    //      because we don't want to spam the GUI with signals.
+    for (int i = 0; i < pb.strips_size(); ++i) {
+        createStrip()->fromPb(pb.strips(i));
+    }
+
+    // Calling setter to fire changed signals
+    setFramesPerSecond(pb.framespersecond());
+}
+
 int Document::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
@@ -90,18 +103,20 @@ QVariantList Document::strips()
     return ret;
 }
 
+namespace {
+const char* TMPFN = "/tmp/eventsequencer.dat";
+}
+
 void Document::save(const QString& fileName)
 {
     // TODO Error handling! Need to do more than just write to stdout.
 
-    const char* fn = "/tmp/eventsequencer.dat";
-
-    qInfo() << "Writing to altfile until we trust to not corrupt anything." << fn;
+    qInfo() << "Writing to altfile until we trust to not corrupt anything." << TMPFN;
     qInfo() << "I will eventually save to" << fileName;
     pb::Document doc;
     toPb(doc);
 
-    QFile file(fn);
+    QFile file(TMPFN);
     if (!file.open(QIODevice::WriteOnly)) {
         qWarning() << "Cannot open";
         return;
@@ -110,4 +125,23 @@ void Document::save(const QString& fileName)
         qWarning() << "Cannot serialize";
     }
     file.close();
+}
+
+void Document::load(const QString &fileName)
+{
+    qInfo() << "Reading instead from" << TMPFN;
+    qInfo() << "I'd like to read from" << fileName;
+
+    QFile file(TMPFN);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qWarning() << "Cannot open";
+        return;
+    }
+    pb::Document doc;
+    if (!doc.ParseFromFileDescriptor(file.handle())) {
+        qWarning() << "Cannot parse";
+        return;
+    }
+    file.close();
+    fromPb(doc);
 }

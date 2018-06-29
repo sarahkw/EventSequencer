@@ -52,3 +52,11 @@ void Strip::toPb(pb::Strip &pb) const
     pb.set_startframe(startFrame_);
     pb.set_length(length_);
 }
+
+void Strip::fromPb(const pb::Strip &pb)
+{
+    // Calling setters to fire changed signals.
+    setChannel(pb.channel());
+    setStartFrame(pb.startframe());
+    setLength(pb.length());
+}

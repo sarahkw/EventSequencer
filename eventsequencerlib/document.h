@@ -27,6 +27,7 @@ public:
     explicit Document(QObject *parent = nullptr);
 
     void toPb(pb::Document& pb) const;
+    void fromPb(const pb::Document& pb);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -36,6 +37,7 @@ public:
     Q_INVOKABLE void deleteStrip(Strip* strip);
     Q_INVOKABLE QVariantList strips(); // QVariantList for QML
     Q_INVOKABLE void save(const QString& fileName);
+    Q_INVOKABLE void load(const QString& fileName);
 
     int framesPerSecond() const;
     void setFramesPerSecond(int framesPerSecond);

@@ -14,6 +14,11 @@ ApplicationWindow {
     header: ToolBar {
         RowLayout {
             ToolButton {
+                action: openAction
+                ToolTip.visible: hovered
+                ToolTip.text: action.shortcut
+            }
+            ToolButton {
                 action: saveAction
                 ToolTip.visible: hovered
                 ToolTip.text: action.shortcut
@@ -98,16 +103,29 @@ ApplicationWindow {
     }
 
     FileDialog {
-        id: fileDialog
+        id: saveFileDialog
         fileMode: FileDialog.SaveFile
-        nameFilters: ["JSON files (*.json)", "All files (*)"]
+        nameFilters: ["Data files (*.dat)", "All files (*)"]
         onAccepted: document.save(file)
+    }
+    FileDialog {
+        id: openFileDialog
+        fileMode: FileDialog.OpenFile
+        nameFilters: ["Data files (*.dat)", "All files (*)"]
+        onAccepted: document.load(file)
+    }
+
+    Action {
+        id: openAction
+        text: "Open"
+        onTriggered: openFileDialog.open()
+        shortcut: "Ctrl+O"
     }
 
     Action {
         id: saveAction
         text: "Save"
-        onTriggered: fileDialog.open()
+        onTriggered: saveFileDialog.open()
         shortcut: "Ctrl+S"
     }
 

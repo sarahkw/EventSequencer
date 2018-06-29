@@ -23,6 +23,7 @@ public:
     explicit Strip(QObject *parent = nullptr);
 
     void toPb(pb::Strip& pb) const;
+    void fromPb(const pb::Strip& pb);
 
     int channel() const;
     void setChannel(int channel);
