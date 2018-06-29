@@ -8,6 +8,8 @@ TextField {
     property bool shouldShowTime
     property int frame
 
+    signal frameEditingFinished(int frame)
+
     function displayFrameNumber(frameNumber) {
         if (shouldShowTime) {
             return ES.FramesAndSeconds.framesToSeconds(
@@ -26,10 +28,10 @@ TextField {
                     !shouldShowTime /*numberOnlyIsFrames*/)
         var success = result[0]
         if (success) {
-            text = "" // Stop the binding
-            frame = result[1]
+            frameEditingFinished(result[1])
+        } else {
+            text = Qt.binding(function () { return displayFrameNumber(frame); });
         }
-        text = Qt.binding(function () { return displayFrameNumber(frame); });
 
         focus = false
     }

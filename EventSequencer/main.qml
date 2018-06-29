@@ -80,8 +80,9 @@ ApplicationWindow {
                 document: appwin.document
                 shouldShowTime: showSecondsAction.checked
                 frame: cursor.frame
-                onFrameChanged: cursor.frame = frame
-                onEditingFinished: focus = false
+                onFrameEditingFinished: {
+                    cursor.frame = frame
+                }
 
                 selectByMouse: true
                 horizontalAlignment: TextInput.AlignRight
@@ -718,7 +719,9 @@ ApplicationWindow {
                                     document: appwin.document
                                     shouldShowTime: showSecondsAction.checked
                                     frame: selectedThingar.startFrame
-                                    onFrameChanged: selectedThingar.startFrame = frame
+                                    onFrameEditingFinished: {
+                                        selectedThingar.startFrame = frame
+                                    }
 
                                     Layout.fillWidth: true
                                     selectByMouse: true
@@ -730,7 +733,9 @@ ApplicationWindow {
                                     document: appwin.document
                                     shouldShowTime: showSecondsAction.checked
                                     frame: selectedThingar.length
-                                    onFrameChanged: selectedThingar.length = frame
+                                    onFrameEditingFinished: {
+                                        selectedThingar.length = frame
+                                    }
 
                                     Layout.fillWidth: true
                                     selectByMouse: true
@@ -742,7 +747,9 @@ ApplicationWindow {
                                     document: appwin.document
                                     shouldShowTime: showSecondsAction.checked
                                     frame: selectedThingar.startFrame + selectedThingar.length
-                                    onFrameChanged: selectedThingar.length = frame - selectedThingar.startFrame
+                                    onFrameEditingFinished: {
+                                        selectedThingar.length = frame - selectedThingar.startFrame
+                                    }
 
                                     Layout.fillWidth: true
                                     selectByMouse: true
