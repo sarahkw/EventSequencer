@@ -89,6 +89,8 @@ QtObject {
 
     // INTERFACE
 
+    property bool isVeryZoomedIn: !(zoomLevel > 0)
+
     function mapFrameToDisplayX(frame) {
         if (zoomLevel > 0) {
             return Math.floor(

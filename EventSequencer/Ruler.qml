@@ -39,7 +39,7 @@ Rectangle {
                 anchors.horizontalCenter: parent.left
                 text: (shouldShowNumber ?
                        displayFrameNumber(zoom.tickIndexToNumber(myTickIndex),
-                                          true /*hideFramesWhenHoursShown*/) :
+                                          !zoom.isVeryZoomedIn /*hideFramesWhenHoursShown*/) :
                        "")
                 anchors.bottom: parent.bottom
             }
