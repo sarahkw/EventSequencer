@@ -8,7 +8,7 @@ FramesAndSeconds::FramesAndSeconds(QObject *parent) : QObject(parent)
 
 }
 
-QString FramesAndSeconds::framesToSeconds(int fps, int frames)
+QString FramesAndSeconds::framesToSeconds(int fps, int frames, bool hideFramesWhenHoursShown)
 {
     Q_ASSERT(fps >= 0);
 
@@ -31,9 +31,16 @@ QString FramesAndSeconds::framesToSeconds(int fps, int frames)
     const bool hasMinOrHr = hasMinutes || hasHours;
 
     // seconds and frame
-    QString s = QString("%1+%2")
-                    .arg(seconds, hasMinOrHr ? 2 : 0, 10, QLatin1Char('0'))
-                    .arg(framesLeft);
+    QString s;
+
+    if (hideFramesWhenHoursShown && hasHours) {
+        s = QString("%1").arg(seconds, hasMinOrHr ? 2 : 0, 10,
+                              QLatin1Char('0'));
+    } else {
+        s = QString("%1+%2")
+                .arg(seconds, hasMinOrHr ? 2 : 0, 10, QLatin1Char('0'))
+                .arg(framesLeft);
+    }
 
     // mins
     if (hasMinOrHr) {

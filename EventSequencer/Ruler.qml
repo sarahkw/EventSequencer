@@ -37,7 +37,10 @@ Rectangle {
                 id: texty
                 font.pixelSize: 10
                 anchors.horizontalCenter: parent.left
-                text: shouldShowNumber ? displayFrameNumber(zoom.tickIndexToNumber(myTickIndex)) : ""
+                text: (shouldShowNumber ?
+                       displayFrameNumber(zoom.tickIndexToNumber(myTickIndex),
+                                          true /*hideFramesWhenHoursShown*/) :
+                       "")
                 anchors.bottom: parent.bottom
             }
         }

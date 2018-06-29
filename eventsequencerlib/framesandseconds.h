@@ -10,7 +10,8 @@ class FramesAndSeconds : public QObject
 public:
     explicit FramesAndSeconds(QObject *parent = nullptr);
 
-    Q_INVOKABLE static QString framesToSeconds(int fps, int frames);
+    Q_INVOKABLE static QString framesToSeconds(
+        int fps, int frames, bool hideFramesWhenHoursShown = false);
 
     Q_INVOKABLE static QVariantList secondsToFrames(int fps, QString input);
 

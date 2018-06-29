@@ -77,6 +77,16 @@ TEST(FramesAndSeconds, ToSeconds_OneFps)
     EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps, 60 * 60 + 60 + 1), "1:01:01+0");
 }
 
+TEST(FramesAndSeconds, ToSeconds_HideFramesWhenHoursShown)
+{
+    const int fps = 1;
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps, 61, false), "1:01+0");
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps, 60 * 60 + 60 + 1, false), "1:01:01+0");
+
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps, 61, true), "1:01+0");
+    EXPECT_EQ(FramesAndSeconds::framesToSeconds(fps, 60 * 60 + 60 + 1, true), "1:01:01");
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 TEST(FramesAndSeconds, ToFrames_WeirdInput)

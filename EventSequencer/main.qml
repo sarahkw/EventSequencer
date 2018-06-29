@@ -103,9 +103,10 @@ ApplicationWindow {
     }
 
     property var displayFrameNumber: (function (shouldShowTime, framesPerSecond) {
-        return function (frameNumber) {
+        return function (frameNumber, hideFramesWhenHoursShown) {
             if (shouldShowTime)
-                return ES.FramesAndSeconds.framesToSeconds(framesPerSecond, frameNumber);
+                return ES.FramesAndSeconds.framesToSeconds(
+                    framesPerSecond, frameNumber, hideFramesWhenHoursShown);
             else
                 return frameNumber;
         }
