@@ -135,3 +135,12 @@ TEST(FramesAndSeconds, ToFrames_Hours)
     EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "2:00:00"),
                 ElementsAre(true, 2 * 60 * 60));
 }
+
+TEST(FramesAndSeconds, ToFrames_Neg)
+{
+    const int fps = 1;
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "-1:1:02+3"),
+                ElementsAre(true, -1 * (60 * 60 + 65)));
+    EXPECT_THAT(FramesAndSeconds::secondsToFrames(fps, "-"),
+                ElementsAre(true, 0));
+}

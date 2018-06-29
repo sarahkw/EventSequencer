@@ -52,15 +52,16 @@ QString FramesAndSeconds::framesToSeconds(int fps, int frames)
 QVariantList FramesAndSeconds::secondsToFrames(int fps, QString input)
 {
     // TODO Don't keep compiling re, save it somewhere.
-    QRegularExpression re("^(((?<h>\\d*):)?(?<m>\\d*):)?(?<s>\\d*)(\\+(?<f>\\d*))?$");
+    QRegularExpression re("^(?<neg>-)?(((?<h>\\d*):)?(?<m>\\d*):)?(?<s>\\d*)(\\+(?<f>\\d*))?$");
     QRegularExpressionMatch match = re.match(input);
     if (match.hasMatch()) {
+        const bool neg = match.capturedLength("neg") != 0;
         const int h = match.captured("h").toInt();
         const int m = match.captured("m").toInt();
         const int s = match.captured("s").toInt();
         const int f = match.captured("f").toInt();
 
-        const int result = (((h * 60) + m) * 60 + s) * fps + f;
+        const int result = (neg ? -1 : 1) * ((((h * 60) + m) * 60 + s) * fps + f);
 
         return {true, result};
     } else {
