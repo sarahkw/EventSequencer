@@ -67,6 +67,11 @@ ApplicationWindow {
         CustomMenu {
             id: addMenu
             title: "Add"
+            MenuItem {
+                text: "Add (Shift+A)"
+                enabled: false
+            }
+            MenuSeparator { }
             Action {
                 text: "&Strip"
                 onTriggered: {
