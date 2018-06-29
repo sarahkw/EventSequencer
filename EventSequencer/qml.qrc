@@ -10,5 +10,6 @@
         <file>tst_ZoomLogic.qml</file>
         <file>DebugCppModel.qml</file>
         <file>FrameTextField.qml</file>
+        <file>CustomMenu.qml</file>
     </qresource>
 </RCC>

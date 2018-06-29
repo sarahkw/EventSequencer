@@ -13,34 +13,19 @@ ApplicationWindow {
     title: qsTr("Hello World")
 
     menuBar: MenuBar {
-        Menu {
+        CustomMenu {
             title: "File"
-
             Action {
                 id: openAction
                 text: "Open"
                 onTriggered: openFileDialog.open()
                 shortcut: "Ctrl+O"
             }
-
             Action {
                 id: saveAction
                 text: "Save"
                 onTriggered: saveFileDialog.open()
                 shortcut: "Ctrl+S"
-            }
-
-            delegate: MenuItem {
-                id: menuItem
-                contentItem: RowLayout {
-                    Label {
-                        Layout.fillWidth: true
-                        text: menuItem.text
-                    }
-                    Label {
-                        text: menuItem.action.shortcut
-                    }
-                }
             }
         }
     }
