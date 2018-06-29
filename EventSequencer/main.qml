@@ -70,14 +70,15 @@ ApplicationWindow {
         }
     }
 
-    property ES.Document document: ES.Document {
+    ES.Document {
+        id: document
         framesPerSecond: 30
     }
 
     footer: ToolBar {
         Row {
             FrameTextField {
-                document: appwin.document
+                document: document
                 shouldShowTime: showSecondsAction.checked
                 frame: cursor.frame
                 onFrameEditingFinished: {
@@ -667,6 +668,7 @@ ApplicationWindow {
                 Loader {
                     Layout.fillWidth: true
                     sourceComponent: selectedCppStrips.length == 1 ? propertiesComponent : blankComponent
+                    property alias dokument: document
 
                     Component {
                         // Blank component so that the Loader resizes itself upon
@@ -716,7 +718,7 @@ ApplicationWindow {
                                     text: "Start"
                                 }
                                 FrameTextField {
-                                    document: appwin.document
+                                    document: dokument
                                     shouldShowTime: showSecondsAction.checked
                                     frame: selectedThingar.startFrame
                                     onFrameEditingFinished: {
@@ -730,7 +732,7 @@ ApplicationWindow {
                                     text: "Length"
                                 }
                                 FrameTextField {
-                                    document: appwin.document
+                                    document: dokument
                                     shouldShowTime: showSecondsAction.checked
                                     frame: selectedThingar.length
                                     onFrameEditingFinished: {
@@ -744,7 +746,7 @@ ApplicationWindow {
                                     text: "End"
                                 }
                                 FrameTextField {
-                                    document: appwin.document
+                                    document: dokument
                                     shouldShowTime: showSecondsAction.checked
                                     frame: selectedThingar.startFrame + selectedThingar.length
                                     onFrameEditingFinished: {
