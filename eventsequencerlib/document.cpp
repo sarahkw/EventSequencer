@@ -19,6 +19,32 @@ void Document::setFramesPerSecond(int framesPerSecond)
     }
 }
 
+int Document::startFrame() const
+{
+    return startFrame_;
+}
+
+void Document::setStartFrame(int startFrame)
+{
+    if (startFrame_ != startFrame) {
+        startFrame_ = startFrame;
+        emit startFrameChanged();
+    }
+}
+
+int Document::endFrame() const
+{
+    return endFrame_;
+}
+
+void Document::setEndFrame(int endFrame)
+{
+    if (endFrame_ != endFrame) {
+        endFrame_ = endFrame;
+        emit endFrameChanged();
+    }
+}
+
 Document::Document(QObject *parent) : QAbstractListModel(parent)
 {
 

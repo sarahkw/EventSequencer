@@ -19,9 +19,13 @@ class Document : public QAbstractListModel
 
     std::vector<Strip*> strips_;
 
-    int framesPerSecond_;
+    int framesPerSecond_ = 30;
+    int startFrame_ = 0;
+    int endFrame_ = 250;
 
     Q_PROPERTY(int framesPerSecond READ framesPerSecond WRITE setFramesPerSecond NOTIFY framesPerSecondChanged)
+    Q_PROPERTY(int startFrame READ startFrame WRITE setStartFrame NOTIFY startFrameChanged)
+    Q_PROPERTY(int endFrame READ endFrame WRITE setEndFrame NOTIFY endFrameChanged)
 
 public:
     explicit Document(QObject *parent = nullptr);
@@ -42,9 +46,17 @@ public:
     int framesPerSecond() const;
     void setFramesPerSecond(int framesPerSecond);
 
+    int startFrame() const;
+    void setStartFrame(int startFrame);
+
+    int endFrame() const;
+    void setEndFrame(int endFrame);
+
 signals:
 
     void framesPerSecondChanged();
+    void startFrameChanged();
+    void endFrameChanged();
 
 public slots:
 };

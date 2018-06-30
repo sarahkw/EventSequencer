@@ -128,17 +128,48 @@ ApplicationWindow {
 
     footer: ToolBar {
         Row {
+            Label {
+                text: "("
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            FrameTextField {
+                document: document
+                shouldShowTime: showSecondsAction.checked
+                frame: document.startFrame
+                onFrameEditingFinished: document.startFrame = frame
+                selectByMouse: true
+                horizontalAlignment: TextInput.AlignRight
+                ToolTip.text: "Start"
+                ToolTip.visible: hovered
+            }
+            Label {
+                text: "-"
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            FrameTextField {
+                document: document
+                shouldShowTime: showSecondsAction.checked
+                frame: document.endFrame
+                onFrameEditingFinished: document.endFrame = frame
+                selectByMouse: true
+                horizontalAlignment: TextInput.AlignRight
+                ToolTip.text: "End"
+                ToolTip.visible: hovered
+            }
+            Label {
+                text: ") @"
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
             FrameTextField {
                 document: document
                 shouldShowTime: showSecondsAction.checked
                 frame: cursor.frame
-                onFrameEditingFinished: {
-                    cursor.frame = frame
-                }
+                onFrameEditingFinished: cursor.frame = frame
 
                 selectByMouse: true
                 horizontalAlignment: TextInput.AlignRight
-                ToolTip.text: showSecondsAction.checked ? "Current Time" : "Current Frame"
+                ToolTip.text: "Current"
                 ToolTip.visible: hovered
             }
             Label {
