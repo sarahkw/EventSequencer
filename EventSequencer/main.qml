@@ -123,7 +123,6 @@ ApplicationWindow {
 
     ES.Document {
         id: document
-        framesPerSecond: 30
     }
 
     footer: ToolBar {
@@ -133,6 +132,7 @@ ApplicationWindow {
                 anchors.verticalCenter: parent.verticalCenter
             }
             FrameTextField {
+                anchors.verticalCenter: parent.verticalCenter
                 document: document
                 shouldShowTime: showSecondsAction.checked
                 frame: document.startFrame
@@ -147,6 +147,7 @@ ApplicationWindow {
                 anchors.verticalCenter: parent.verticalCenter
             }
             FrameTextField {
+                anchors.verticalCenter: parent.verticalCenter
                 document: document
                 shouldShowTime: showSecondsAction.checked
                 frame: document.endFrame
@@ -162,6 +163,7 @@ ApplicationWindow {
             }
 
             FrameTextField {
+                anchors.verticalCenter: parent.verticalCenter
                 document: document
                 shouldShowTime: showSecondsAction.checked
                 frame: cursor.frame
@@ -172,6 +174,34 @@ ApplicationWindow {
                 ToolTip.text: "Current"
                 ToolTip.visible: hovered
             }
+            QtObject {
+                id: controlUnicode
+                readonly property string play: "\u25B6" // Black Right-Pointing Triangle
+                readonly property string stop: "\u23F9" // Black Square for Stop
+                readonly property string prev: "\u23EE" // Black Left-Pointing Double Triangle With Vertical Bar
+                readonly property string next: "\u23ED" // Black Right-Pointing Double Triangle With Vertical Bar
+            }
+
+            Label {
+                text: "   "
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            RoundButton {
+                anchors.verticalCenter: parent.verticalCenter
+                text: controlUnicode.prev
+                onClicked: cursor.frame = document.startFrame
+            }
+            RoundButton {
+                anchors.verticalCenter: parent.verticalCenter
+                text: checked ? controlUnicode.stop : controlUnicode.play
+                checkable: true
+            }
+            RoundButton {
+                anchors.verticalCenter: parent.verticalCenter
+                text: controlUnicode.next
+                onClicked: cursor.frame = document.endFrame
+            }
+
             Label {
                 id: statusBar
                 text: "Status"
