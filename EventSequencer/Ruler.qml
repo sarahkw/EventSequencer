@@ -3,7 +3,7 @@ import "util.js" as Util
 
 Rectangle {
     property ZoomLogic zoom
-    property int position
+    property int xposition
     property var displayFrameNumber
 
     id: sbHoriz
@@ -18,12 +18,12 @@ Rectangle {
         Item {
             // Tick index compensated for any panning done by the user.
             property int myTickIndex: (
-                index - Util.trunc(position / sbHoriz.zoom.displayWidthPerRulerTick))
+                index - Util.trunc(xposition / sbHoriz.zoom.displayWidthPerRulerTick))
             property bool shouldShowNumber: zoom.tickIndexShouldShowNumber(myTickIndex)
 
             anchors.top: sbHoriz.top
             anchors.bottom: sbHoriz.bottom
-            x: (position % sbHoriz.zoom.displayWidthPerRulerTick +
+            x: (xposition % sbHoriz.zoom.displayWidthPerRulerTick +
                 index * sbHoriz.zoom.displayWidthPerRulerTick)
             Rectangle {
                 width: 1

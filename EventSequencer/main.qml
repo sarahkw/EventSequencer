@@ -482,7 +482,7 @@ ApplicationWindow {
                 id: sbHoriz
                 height: 20
                 zoom: appwin.zoom
-                position: body.x
+                xposition: body.x
                 displayFrameNumber: appwin.displayFrameNumber
 
                 anchors.left: bodyView.left
