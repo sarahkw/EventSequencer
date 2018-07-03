@@ -272,6 +272,8 @@ ApplicationWindow {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.right: channelDragger.left
+                channelPixels: appwin.channelPixels
+                yposition: body.y
             }
 
             Dragger {
