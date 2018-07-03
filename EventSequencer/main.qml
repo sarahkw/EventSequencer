@@ -92,6 +92,7 @@ ApplicationWindow {
                 text: "&Strip"
                 onTriggered: {
                     var cppStrip = document.createStrip()
+                    cppStrip.channel = channelPanel.activeChannel
                     cppStrip.startFrame = cursor.frame
                     cppStrip.length = 10 // Maybe make this one large tick instead
                     selectedCppStrips = [cppStrip]
