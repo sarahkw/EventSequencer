@@ -32,7 +32,5 @@ TextField {
         } else {
             text = Qt.binding(function () { return displayFrameNumber(frame); });
         }
-
-        focus = false
     }
 }

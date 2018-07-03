@@ -136,7 +136,10 @@ ApplicationWindow {
                 document: document
                 shouldShowTime: showSecondsAction.checked
                 frame: document.startFrame
-                onFrameEditingFinished: document.startFrame = frame
+                onFrameEditingFinished: {
+                    document.startFrame = frame
+                    focus = false
+                }
                 selectByMouse: true
                 horizontalAlignment: TextInput.AlignRight
                 ToolTip.text: "Start"
@@ -151,7 +154,10 @@ ApplicationWindow {
                 document: document
                 shouldShowTime: showSecondsAction.checked
                 frame: document.endFrame
-                onFrameEditingFinished: document.endFrame = frame
+                onFrameEditingFinished: {
+                    document.endFrame = frame
+                    focus = false
+                }
                 selectByMouse: true
                 horizontalAlignment: TextInput.AlignRight
                 ToolTip.text: "End"
@@ -167,7 +173,10 @@ ApplicationWindow {
                 document: document
                 shouldShowTime: showSecondsAction.checked
                 frame: cursor.frame
-                onFrameEditingFinished: cursor.frame = frame
+                onFrameEditingFinished: {
+                    cursor.frame = frame
+                    focus = false
+                }
 
                 selectByMouse: true
                 horizontalAlignment: TextInput.AlignRight
@@ -732,6 +741,7 @@ ApplicationWindow {
                                     frame: selectedThingar.startFrame
                                     onFrameEditingFinished: {
                                         selectedThingar.startFrame = frame
+                                        focus = false
                                     }
 
                                     Layout.fillWidth: true
@@ -746,6 +756,7 @@ ApplicationWindow {
                                     frame: selectedThingar.length
                                     onFrameEditingFinished: {
                                         selectedThingar.length = frame
+                                        focus = false
                                     }
 
                                     Layout.fillWidth: true
@@ -760,6 +771,7 @@ ApplicationWindow {
                                     frame: selectedThingar.startFrame + selectedThingar.length
                                     onFrameEditingFinished: {
                                         selectedThingar.length = frame - selectedThingar.startFrame
+                                        focus = false
                                     }
 
                                     Layout.fillWidth: true
