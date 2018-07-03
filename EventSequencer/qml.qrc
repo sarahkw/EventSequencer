@@ -14,5 +14,6 @@
         <file>CustomMenuItem.qml</file>
         <file>Dragger.qml</file>
         <file>ChannelPanel.qml</file>
+        <file>ScrollHelper.qml</file>
     </qresource>
 </RCC>

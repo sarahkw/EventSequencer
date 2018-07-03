@@ -1,5 +1,4 @@
 import QtQuick 2.0
-import "util.js" as Util
 
 Rectangle {
     id: cPanel
@@ -8,19 +7,21 @@ Rectangle {
 
     color: "white"
 
-    readonly property int initialIndex: -Math.ceil(yposition / channelPixels)
-    readonly property int initialPosition: Util.negmod(yposition, channelPixels)
+    ScrollHelper {
+        id: sh
+        itemSize: channelPixels
+        scrollbarSize: cPanel.height
+        currentPosition: yposition
+    }
 
     Repeater {
-        model: (cPanel.height / channelPixels +
-                2 /*one for before, one for after*/
-                )
+        model: sh.itemsToRender
 
         Item {
-            property int myIndex: index + initialIndex
+            property int myIndex: index + sh.initialIndex
             anchors.left: cPanel.left
             anchors.right: cPanel.right
-            y: (initialPosition + index * channelPixels)
+            y: (sh.initialPosition + index * channelPixels)
             height: channelPixels
 
             Rectangle {

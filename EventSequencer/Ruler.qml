@@ -1,5 +1,4 @@
 import QtQuick 2.0
-import "util.js" as Util
 
 Rectangle {
     property ZoomLogic zoom
@@ -10,21 +9,22 @@ Rectangle {
     color: "whitesmoke"
     clip: true
 
-    readonly property int initialIndex: -Math.ceil(xposition / sbHoriz.zoom.displayWidthPerRulerTick)
-    readonly property int initialPosition: Util.negmod(xposition, sbHoriz.zoom.displayWidthPerRulerTick)
+    ScrollHelper {
+        id: sh
+        itemSize: sbHoriz.zoom.displayWidthPerRulerTick
+        scrollbarSize: sbHoriz.width
+        currentPosition: xposition
+    }
 
     Repeater {
-        model: (sbHoriz.width /
-                sbHoriz.zoom.displayWidthPerRulerTick +
-                2 /*one for before, one for after*/
-               )
+        model: sh.itemsToRender
         Item {
-            property int myTickIndex: index + initialIndex
+            property int myTickIndex: index + sh.initialIndex
             property bool shouldShowNumber: zoom.tickIndexShouldShowNumber(myTickIndex)
 
             anchors.top: sbHoriz.top
             anchors.bottom: sbHoriz.bottom
-            x: (initialPosition +
+            x: (sh.initialPosition +
                 index * sbHoriz.zoom.displayWidthPerRulerTick)
             Rectangle {
                 width: 1
