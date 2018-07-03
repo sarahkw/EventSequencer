@@ -267,12 +267,11 @@ ApplicationWindow {
             anchors.right: propertiesDragger.left
 
             Item {
-                id: sbVertHolder
+                id: channelPanel
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.right: channelDragger.left
-                width: 20
             }
 
             Dragger {
