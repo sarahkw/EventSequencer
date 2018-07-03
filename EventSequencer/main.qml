@@ -644,7 +644,6 @@ ApplicationWindow {
         }
 
         Rectangle {
-            Drag.active: propertiesDraggerMouseArea.drag.active
             id: propertiesDragger
             anchors.top: parent.top
             anchors.bottom: parent.bottom
@@ -653,15 +652,7 @@ ApplicationWindow {
             x: parent.width - position
 
             width: 2
-            color: "white"
-
-            Rectangle {
-                color: "black"
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.right: parent.right
-                width: 1
-            }
+            color: "gray"
 
             MouseArea {
                 id: propertiesDraggerMouseArea
