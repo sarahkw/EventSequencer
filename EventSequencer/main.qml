@@ -297,7 +297,7 @@ ApplicationWindow {
                 id: channelDragger
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                position: 250
+                position: 125
                 color: "lightgrey"
             }
 

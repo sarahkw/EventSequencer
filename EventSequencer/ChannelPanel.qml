@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQuick.Controls 2.3
 
 Rectangle {
     id: cPanel
@@ -6,6 +7,9 @@ Rectangle {
     property int yposition
 
     property int activeChannel: 0
+
+    // Temporary!
+    property var channelToSelection: ({})
 
     color: "white"
 
@@ -33,14 +37,25 @@ Rectangle {
                 color: "lightgrey"
             }
 
-            Text {
-                text: myIndex
+            ComboBox {
+                anchors.leftMargin: 10
+                anchors.rightMargin: 10
+                anchors.left: parent.left
+                anchors.right: selectIndicator.left
+                anchors.verticalCenter: parent.verticalCenter
+                model: ["", "Generic", "Clock"]
+                currentIndex: channelToSelection[myIndex] === undefined ? 0 : channelToSelection[myIndex]
+                onCurrentIndexChanged: {
+                    channelToSelection[myIndex] = currentIndex
+                }
+                onFocusChanged: focus = false
             }
 
             Rectangle {
+                id: selectIndicator
                 readonly property bool amActive: activeChannel == myIndex
                 border.width: 1
-                border.color: amActive ? "grey" : "whitesmoke"
+                border.color: amActive ? "lightgrey" : "whitesmoke"
                 anchors.top: parent.top
                 anchors.topMargin: 5
                 anchors.right: parent.right
@@ -49,7 +64,7 @@ Rectangle {
                 anchors.bottomMargin: 5
                 width: 10
 
-                color: amActive ? "grey" : "white"
+                color: amActive ? "lightgrey" : "white"
             }
 
             MouseArea {
