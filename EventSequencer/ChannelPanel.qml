@@ -5,6 +5,8 @@ Rectangle {
     property int channelPixels
     property int yposition
 
+    property int activeChannel: 0
+
     color: "white"
 
     ScrollHelper {
@@ -36,15 +38,26 @@ Rectangle {
             }
 
             Rectangle {
+                readonly property bool amActive: activeChannel == myIndex
                 border.width: 1
-                border.color: "lightgrey"
+                border.color: amActive ? "grey" : "whitesmoke"
                 anchors.top: parent.top
                 anchors.topMargin: 5
                 anchors.right: parent.right
                 anchors.rightMargin: 2
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 5
-                width: 15
+                width: 10
+
+                color: amActive ? "grey" : "white"
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.RightButton
+                onClicked: {
+                    activeChannel = myIndex
+                }
             }
         }
     }
