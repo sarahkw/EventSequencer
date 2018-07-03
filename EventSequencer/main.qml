@@ -266,7 +266,7 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
             anchors.right: propertiesDragger.left
 
-            Item {
+            ChannelPanel {
                 id: channelPanel
                 anchors.left: parent.left
                 anchors.top: parent.top

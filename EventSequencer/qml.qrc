@@ -13,5 +13,6 @@
         <file>CustomMenu.qml</file>
         <file>CustomMenuItem.qml</file>
         <file>Dragger.qml</file>
+        <file>ChannelPanel.qml</file>
     </qresource>
 </RCC>
