@@ -16,7 +16,7 @@ Rectangle {
     Repeater {
         model: (sbHoriz.width /
                 sbHoriz.zoom.displayWidthPerRulerTick +
-                2 /*1 isn't enough. I don't know why, but 2 seems to work visually.*/
+                2 /*one for before, one for after*/
                )
         Item {
             property int myTickIndex: index + initialIndex

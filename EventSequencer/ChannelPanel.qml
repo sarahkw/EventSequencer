@@ -12,7 +12,9 @@ Rectangle {
     readonly property int initialPosition: Util.negmod(yposition, channelPixels)
 
     Repeater {
-        model: (cPanel.height / channelPixels + 2)
+        model: (cPanel.height / channelPixels +
+                2 /*one for before, one for after*/
+                )
 
         Item {
             property int myIndex: index + initialIndex
