@@ -266,6 +266,23 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
             anchors.right: propertiesDragger.left
 
+            Item {
+                id: sbVertHolder
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.right: channelDragger.left
+                width: 20
+            }
+
+            Dragger {
+                id: channelDragger
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                position: 250
+                color: "lightgrey"
+            }
+
             MouseArea {
                 anchors.fill: bodyView
                 acceptedButtons: Qt.RightButton
@@ -274,7 +291,7 @@ ApplicationWindow {
 
             Rectangle {
                 id: bodyView
-                anchors.left: sbVertHolder.right
+                anchors.left: channelDragger.right
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.bottom: sbHoriz.top
@@ -469,40 +486,9 @@ ApplicationWindow {
                 position: body.x
                 displayFrameNumber: appwin.displayFrameNumber
 
-                anchors.left: sbVertHolder.right
+                anchors.left: bodyView.left
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
-            }
-
-            Item {
-                id: sbVertHolder
-                anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.bottom: sbHoriz.top
-                width: 20
-                /*
-                Ruler {
-                    id: sbVert
-                    tickSize: channelPixels
-                    position: body.y
-                    height: parent.width
-                    width: parent.height
-                    y: -height
-
-                    // Hack hack hack hack
-                    rotation: 90
-                    transformOrigin: Item.BottomLeft
-                }
-                */
-            }
-
-            Rectangle {
-                id: sbDead
-                anchors.left: parent.left
-                anchors.top: sbVertHolder.bottom
-                anchors.bottom: parent.bottom
-                anchors.right: sbHoriz.left
-                color: "gray"
             }
 
             MouseArea {
