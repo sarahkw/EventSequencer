@@ -8,14 +8,17 @@ Rectangle {
 
     color: "white"
 
+    readonly property int initialIndex: -Math.ceil(yposition / channelPixels)
+    readonly property int initialPosition: Util.negmod(yposition, channelPixels)
+
     Repeater {
         model: (cPanel.height / channelPixels + 2)
 
         Item {
-            property int myIndex: index - Util.trunc(yposition / channelPixels)
+            property int myIndex: index + initialIndex
             anchors.left: cPanel.left
             anchors.right: cPanel.right
-            y: (yposition % channelPixels + index * channelPixels)
+            y: (initialPosition + index * channelPixels)
             height: channelPixels
 
             Rectangle {

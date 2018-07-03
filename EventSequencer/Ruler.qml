@@ -10,20 +10,21 @@ Rectangle {
     color: "whitesmoke"
     clip: true
 
+    readonly property int initialIndex: -Math.ceil(xposition / sbHoriz.zoom.displayWidthPerRulerTick)
+    readonly property int initialPosition: Util.negmod(xposition, sbHoriz.zoom.displayWidthPerRulerTick)
+
     Repeater {
         model: (sbHoriz.width /
                 sbHoriz.zoom.displayWidthPerRulerTick +
                 2 /*1 isn't enough. I don't know why, but 2 seems to work visually.*/
                )
         Item {
-            // Tick index compensated for any panning done by the user.
-            property int myTickIndex: (
-                index - Util.trunc(xposition / sbHoriz.zoom.displayWidthPerRulerTick))
+            property int myTickIndex: index + initialIndex
             property bool shouldShowNumber: zoom.tickIndexShouldShowNumber(myTickIndex)
 
             anchors.top: sbHoriz.top
             anchors.bottom: sbHoriz.bottom
-            x: (xposition % sbHoriz.zoom.displayWidthPerRulerTick +
+            x: (initialPosition +
                 index * sbHoriz.zoom.displayWidthPerRulerTick)
             Rectangle {
                 width: 1
