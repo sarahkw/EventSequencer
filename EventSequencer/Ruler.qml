@@ -2,7 +2,7 @@ import QtQuick 2.0
 import "util.js" as Util
 
 Rectangle {
-    property var zoom
+    property ZoomLogic zoom
     property int position
     property var displayFrameNumber
 
