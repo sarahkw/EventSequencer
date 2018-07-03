@@ -643,28 +643,12 @@ ApplicationWindow {
             }
         }
 
-        Rectangle {
+        Dragger {
             id: propertiesDragger
             anchors.top: parent.top
             anchors.bottom: parent.bottom
 
-            property int position: 200
-            x: parent.width - position
-
-            width: 2
-            color: "gray"
-
-            MouseArea {
-                id: propertiesDraggerMouseArea
-                anchors.fill: parent
-                cursorShape: Qt.SizeHorCursor
-                drag.target: propertiesDragger
-                drag.axis: Drag.XAxis
-            }
-
-            onXChanged: {
-                position = parent.width - x
-            }
+            position: 200
 
             states: [
                 State {

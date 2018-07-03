@@ -12,5 +12,6 @@
         <file>FrameTextField.qml</file>
         <file>CustomMenu.qml</file>
         <file>CustomMenuItem.qml</file>
+        <file>Dragger.qml</file>
     </qresource>
 </RCC>
