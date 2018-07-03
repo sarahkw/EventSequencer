@@ -43,7 +43,7 @@ Rectangle {
                 anchors.left: parent.left
                 anchors.right: selectIndicator.left
                 anchors.verticalCenter: parent.verticalCenter
-                model: ["", "Generic", "Clock"]
+                model: ["", "Dummy", "Clock", "Label", "JavaScript", "Sound", "Print"]
                 currentIndex: channelToSelection[myIndex] === undefined ? 0 : channelToSelection[myIndex]
                 onCurrentIndexChanged: {
                     channelToSelection[myIndex] = currentIndex
