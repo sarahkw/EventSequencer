@@ -1,6 +1,6 @@
 import QtQuick 2.0
 
-Rectangle {
+Item {
     id: dragger
 
     property int position
@@ -9,7 +9,16 @@ Rectangle {
     x: flip ? (parent.width - position) : position
 
     width: 2
-    color: "gray"
+    property color color: "gray"
+
+    Rectangle {
+        width: 1
+        color: parent.color
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: flip ? parent.left : undefined
+        anchors.right: !flip ? parent.right : undefined
+    }
 
     MouseArea {
         id: draggerMouseArea
