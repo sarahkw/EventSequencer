@@ -31,6 +31,22 @@ ApplicationWindow {
         CustomMenu {
             title: "View"
             Action {
+                text: "Go to Origin"
+                onTriggered: {
+                    body.x = 0
+                    body.y = 0
+                }
+            }
+            Action {
+                text: "Go to Cursor"
+                onTriggered: {
+                    var p = body.mapFromItem(cursor, 0, 0).x
+                    body.x = -p
+                }
+                shortcut: "Alt+Home"
+            }
+            MenuSeparator { }
+            Action {
                 id: showSecondsAction
                 text: "Show Seconds"
                 checkable: true
