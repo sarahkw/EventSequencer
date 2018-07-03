@@ -4,7 +4,9 @@ Rectangle {
     id: dragger
 
     property int position
-    x: parent.width - position
+    property bool flip: false
+
+    x: flip ? (parent.width - position) : position
 
     width: 2
     color: "gray"
@@ -18,6 +20,6 @@ Rectangle {
     }
 
     onXChanged: {
-        position = parent.width - x
+        position = flip ? (parent.width - x) : x
     }
 }

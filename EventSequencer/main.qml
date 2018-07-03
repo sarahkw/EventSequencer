@@ -658,6 +658,7 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
 
             position: 200
+            flip: true
 
             states: [
                 State {
