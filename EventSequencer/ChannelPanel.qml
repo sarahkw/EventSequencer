@@ -28,6 +28,11 @@ Rectangle {
         Control.BadClock {
         }
     }
+    Component {
+        id: badJSComponent
+        Control.BadJS {
+        }
+    }
 
     Repeater {
         model: sh.itemsToRender
@@ -59,8 +64,12 @@ Rectangle {
                     if (channelToSelection[myIndex] !== currentIndex) {
                         channelToSelection[myIndex] = currentIndex
                         var derp = model[currentIndex]
-                        if (derp === "BadClock") {
-                            var newval = badClockComponent.createObject()
+                        var herp = {
+                            "BadClock": badClockComponent,
+                            "BadJS": badJSComponent,
+                        }
+                        if (derp in herp) {
+                            var newval = herp[derp].createObject()
                             channelToControl[myIndex] = newval
                             var needFireSignal = false
                             newval.roles.forEach(function (role) {

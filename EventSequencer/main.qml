@@ -797,6 +797,18 @@ ApplicationWindow {
                                     selectByMouse: true
                                 }
                             }
+
+                            Loader {
+                                function x() {
+                                    var chan = selectedThingar.channel
+                                    var ctrl = channelPanel.channelToControl[chan]
+                                    if (ctrl) {
+                                        return ctrl.stripPropertiesComponent
+                                    }
+                                }
+                                sourceComponent: x()
+                            }
+
                             Item { // End Spacer
                                 width: 1
                                 height: 15
