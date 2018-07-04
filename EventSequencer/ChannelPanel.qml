@@ -53,7 +53,7 @@ Rectangle {
                 anchors.right: selectIndicator.left
                 anchors.verticalCenter: parent.verticalCenter
                 //model: ["", "Dummy", "BadClock", "Label", "JavaScript", "Sound", "Print"]
-                model: ["", "BadClock"]
+                model: ["", "BadClock", "BadJS", "DumbStrips"]
                 currentIndex: channelToSelection[myIndex] === undefined ? 0 : channelToSelection[myIndex]
                 onCurrentIndexChanged: {
                     if (channelToSelection[myIndex] !== currentIndex) {
