@@ -6,6 +6,18 @@ message Strip {
   int32 channel = 1;
   int32 startFrame = 2;
   int32 length = 3;
+
+  repeated ExtWrapper extWrapper = 4;
+
+  message ExtWrapper {
+    message BadJS {
+      string script = 1;
+    }
+
+    oneof ext {
+      BadJS badJS = 1;
+    }
+  }
 }
 
 message Document {
