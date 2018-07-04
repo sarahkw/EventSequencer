@@ -38,8 +38,200 @@ void protobuf_ShutdownFile_eventsequencer_2eproto();
 
 class Document;
 class Strip;
+class Strip_ExtWrapper;
+class Strip_ExtWrapper_BadJS;
 
 // ===================================================================
+
+class Strip_ExtWrapper_BadJS : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.Strip.ExtWrapper.BadJS) */ {
+ public:
+  Strip_ExtWrapper_BadJS();
+  virtual ~Strip_ExtWrapper_BadJS();
+
+  Strip_ExtWrapper_BadJS(const Strip_ExtWrapper_BadJS& from);
+
+  inline Strip_ExtWrapper_BadJS& operator=(const Strip_ExtWrapper_BadJS& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Strip_ExtWrapper_BadJS& default_instance();
+
+  void Swap(Strip_ExtWrapper_BadJS* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Strip_ExtWrapper_BadJS* New() const { return New(NULL); }
+
+  Strip_ExtWrapper_BadJS* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Strip_ExtWrapper_BadJS& from);
+  void MergeFrom(const Strip_ExtWrapper_BadJS& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(Strip_ExtWrapper_BadJS* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string script = 1;
+  void clear_script();
+  static const int kScriptFieldNumber = 1;
+  const ::std::string& script() const;
+  void set_script(const ::std::string& value);
+  void set_script(const char* value);
+  void set_script(const char* value, size_t size);
+  ::std::string* mutable_script();
+  ::std::string* release_script();
+  void set_allocated_script(::std::string* script);
+
+  // @@protoc_insertion_point(class_scope:pb.Strip.ExtWrapper.BadJS)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  ::google::protobuf::internal::ArenaStringPtr script_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static Strip_ExtWrapper_BadJS* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Strip_ExtWrapper : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.Strip.ExtWrapper) */ {
+ public:
+  Strip_ExtWrapper();
+  virtual ~Strip_ExtWrapper();
+
+  Strip_ExtWrapper(const Strip_ExtWrapper& from);
+
+  inline Strip_ExtWrapper& operator=(const Strip_ExtWrapper& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Strip_ExtWrapper& default_instance();
+
+  enum ExtCase {
+    kBadJS = 1,
+    EXT_NOT_SET = 0,
+  };
+
+  void Swap(Strip_ExtWrapper* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Strip_ExtWrapper* New() const { return New(NULL); }
+
+  Strip_ExtWrapper* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Strip_ExtWrapper& from);
+  void MergeFrom(const Strip_ExtWrapper& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(Strip_ExtWrapper* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  typedef Strip_ExtWrapper_BadJS BadJS;
+
+  // accessors -------------------------------------------------------
+
+  // optional .pb.Strip.ExtWrapper.BadJS badJS = 1;
+  bool has_badjs() const;
+  void clear_badjs();
+  static const int kBadJSFieldNumber = 1;
+  const ::pb::Strip_ExtWrapper_BadJS& badjs() const;
+  ::pb::Strip_ExtWrapper_BadJS* mutable_badjs();
+  ::pb::Strip_ExtWrapper_BadJS* release_badjs();
+  void set_allocated_badjs(::pb::Strip_ExtWrapper_BadJS* badjs);
+
+  ExtCase ext_case() const;
+  // @@protoc_insertion_point(class_scope:pb.Strip.ExtWrapper)
+ private:
+  inline void set_has_badjs();
+
+  inline bool has_ext() const;
+  void clear_ext();
+  inline void clear_has_ext();
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  union ExtUnion {
+    ExtUnion() {}
+    ::pb::Strip_ExtWrapper_BadJS* badjs_;
+  } ext_;
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _oneof_case_[1];
+
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static Strip_ExtWrapper* default_instance_;
+};
+// -------------------------------------------------------------------
 
 class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.Strip) */ {
  public:
@@ -99,6 +291,8 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 
   // nested types ----------------------------------------------------
 
+  typedef Strip_ExtWrapper ExtWrapper;
+
   // accessors -------------------------------------------------------
 
   // optional int32 channel = 1;
@@ -119,6 +313,18 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::google::protobuf::int32 length() const;
   void set_length(::google::protobuf::int32 value);
 
+  // repeated .pb.Strip.ExtWrapper extWrapper = 4;
+  int extwrapper_size() const;
+  void clear_extwrapper();
+  static const int kExtWrapperFieldNumber = 4;
+  const ::pb::Strip_ExtWrapper& extwrapper(int index) const;
+  ::pb::Strip_ExtWrapper* mutable_extwrapper(int index);
+  ::pb::Strip_ExtWrapper* add_extwrapper();
+  ::google::protobuf::RepeatedPtrField< ::pb::Strip_ExtWrapper >*
+      mutable_extwrapper();
+  const ::google::protobuf::RepeatedPtrField< ::pb::Strip_ExtWrapper >&
+      extwrapper() const;
+
   // @@protoc_insertion_point(class_scope:pb.Strip)
  private:
 
@@ -126,6 +332,7 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   bool _is_default_instance_;
   ::google::protobuf::int32 channel_;
   ::google::protobuf::int32 startframe_;
+  ::google::protobuf::RepeatedPtrField< ::pb::Strip_ExtWrapper > extwrapper_;
   ::google::protobuf::int32 length_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_eventsequencer_2eproto();
@@ -236,6 +443,115 @@ class Document : public ::google::protobuf::Message /* @@protoc_insertion_point(
 // ===================================================================
 
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
+// Strip_ExtWrapper_BadJS
+
+// optional string script = 1;
+inline void Strip_ExtWrapper_BadJS::clear_script() {
+  script_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Strip_ExtWrapper_BadJS::script() const {
+  // @@protoc_insertion_point(field_get:pb.Strip.ExtWrapper.BadJS.script)
+  return script_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Strip_ExtWrapper_BadJS::set_script(const ::std::string& value) {
+  
+  script_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.Strip.ExtWrapper.BadJS.script)
+}
+inline void Strip_ExtWrapper_BadJS::set_script(const char* value) {
+  
+  script_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.Strip.ExtWrapper.BadJS.script)
+}
+inline void Strip_ExtWrapper_BadJS::set_script(const char* value, size_t size) {
+  
+  script_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.Strip.ExtWrapper.BadJS.script)
+}
+inline ::std::string* Strip_ExtWrapper_BadJS::mutable_script() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.Strip.ExtWrapper.BadJS.script)
+  return script_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Strip_ExtWrapper_BadJS::release_script() {
+  // @@protoc_insertion_point(field_release:pb.Strip.ExtWrapper.BadJS.script)
+  
+  return script_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Strip_ExtWrapper_BadJS::set_allocated_script(::std::string* script) {
+  if (script != NULL) {
+    
+  } else {
+    
+  }
+  script_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), script);
+  // @@protoc_insertion_point(field_set_allocated:pb.Strip.ExtWrapper.BadJS.script)
+}
+
+// -------------------------------------------------------------------
+
+// Strip_ExtWrapper
+
+// optional .pb.Strip.ExtWrapper.BadJS badJS = 1;
+inline bool Strip_ExtWrapper::has_badjs() const {
+  return ext_case() == kBadJS;
+}
+inline void Strip_ExtWrapper::set_has_badjs() {
+  _oneof_case_[0] = kBadJS;
+}
+inline void Strip_ExtWrapper::clear_badjs() {
+  if (has_badjs()) {
+    delete ext_.badjs_;
+    clear_has_ext();
+  }
+}
+inline  const ::pb::Strip_ExtWrapper_BadJS& Strip_ExtWrapper::badjs() const {
+  // @@protoc_insertion_point(field_get:pb.Strip.ExtWrapper.badJS)
+  return has_badjs()
+      ? *ext_.badjs_
+      : ::pb::Strip_ExtWrapper_BadJS::default_instance();
+}
+inline ::pb::Strip_ExtWrapper_BadJS* Strip_ExtWrapper::mutable_badjs() {
+  if (!has_badjs()) {
+    clear_ext();
+    set_has_badjs();
+    ext_.badjs_ = new ::pb::Strip_ExtWrapper_BadJS;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.Strip.ExtWrapper.badJS)
+  return ext_.badjs_;
+}
+inline ::pb::Strip_ExtWrapper_BadJS* Strip_ExtWrapper::release_badjs() {
+  // @@protoc_insertion_point(field_release:pb.Strip.ExtWrapper.badJS)
+  if (has_badjs()) {
+    clear_has_ext();
+    ::pb::Strip_ExtWrapper_BadJS* temp = ext_.badjs_;
+    ext_.badjs_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void Strip_ExtWrapper::set_allocated_badjs(::pb::Strip_ExtWrapper_BadJS* badjs) {
+  clear_ext();
+  if (badjs) {
+    set_has_badjs();
+    ext_.badjs_ = badjs;
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.Strip.ExtWrapper.badJS)
+}
+
+inline bool Strip_ExtWrapper::has_ext() const {
+  return ext_case() != EXT_NOT_SET;
+}
+inline void Strip_ExtWrapper::clear_has_ext() {
+  _oneof_case_[0] = EXT_NOT_SET;
+}
+inline Strip_ExtWrapper::ExtCase Strip_ExtWrapper::ext_case() const {
+  return Strip_ExtWrapper::ExtCase(_oneof_case_[0]);
+}
+// -------------------------------------------------------------------
+
 // Strip
 
 // optional int32 channel = 1;
@@ -278,6 +594,36 @@ inline void Strip::set_length(::google::protobuf::int32 value) {
   
   length_ = value;
   // @@protoc_insertion_point(field_set:pb.Strip.length)
+}
+
+// repeated .pb.Strip.ExtWrapper extWrapper = 4;
+inline int Strip::extwrapper_size() const {
+  return extwrapper_.size();
+}
+inline void Strip::clear_extwrapper() {
+  extwrapper_.Clear();
+}
+inline const ::pb::Strip_ExtWrapper& Strip::extwrapper(int index) const {
+  // @@protoc_insertion_point(field_get:pb.Strip.extWrapper)
+  return extwrapper_.Get(index);
+}
+inline ::pb::Strip_ExtWrapper* Strip::mutable_extwrapper(int index) {
+  // @@protoc_insertion_point(field_mutable:pb.Strip.extWrapper)
+  return extwrapper_.Mutable(index);
+}
+inline ::pb::Strip_ExtWrapper* Strip::add_extwrapper() {
+  // @@protoc_insertion_point(field_add:pb.Strip.extWrapper)
+  return extwrapper_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::pb::Strip_ExtWrapper >*
+Strip::mutable_extwrapper() {
+  // @@protoc_insertion_point(field_mutable_list:pb.Strip.extWrapper)
+  return &extwrapper_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::pb::Strip_ExtWrapper >&
+Strip::extwrapper() const {
+  // @@protoc_insertion_point(field_list:pb.Strip.extWrapper)
+  return extwrapper_;
 }
 
 // -------------------------------------------------------------------
@@ -329,6 +675,10 @@ inline void Document::set_framespersecond(::google::protobuf::int32 value) {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 
