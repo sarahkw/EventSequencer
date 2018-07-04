@@ -799,6 +799,9 @@ ApplicationWindow {
                             }
 
                             Loader {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+
                                 function x() {
                                     var chan = selectedThingar.channel
                                     var ctrl = channelPanel.channelToControl[chan]
