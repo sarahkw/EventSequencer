@@ -389,36 +389,39 @@ ApplicationWindow {
                         Strip {
                             id: strip
 
+                            readonly property ES.Strip cppStrip: modelData
+
                             Component.onCompleted: {
-                                modelData.qmlStrip = strip
+                                cppStrip.qmlStrip = strip
                             }
 
-                            readonly property int startFrame: modelData.startFrame
-                            readonly property int channel: modelData.channel
-                            readonly property int length: modelData.length
+                            readonly property int startFrame: cppStrip.startFrame
+                            readonly property int channel: cppStrip.channel
+                            readonly property int length: cppStrip.length
+                            readonly property ES_Stripext.BadJs badJs: cppStrip.badJs
 
                             x: zoom.mapFrameToDisplayX(startFrame)
                             width: Math.max(zoom.mapLengthToDisplayWidth(length), minimumWidth)
                             y: channel * channelPixels
 
-                            selected: realIn(modelData, selectedCppStrips)
+                            selected: realIn(cppStrip, selectedCppStrips)
 
                             onSelectionClicked: {
                                 if (mouse.modifiers & Qt.ShiftModifier) {
                                     var tmp = selectedCppStrips
                                     selectedCppStrips = []
 
-                                    if (realIn(modelData, tmp)) {
+                                    if (realIn(cppStrip, tmp)) {
                                         tmp = tmp.filter(function (foo) {
-                                            return foo !== modelData;
+                                            return foo !== cppStrip;
                                         })
                                     } else {
-                                        tmp.push(modelData)
+                                        tmp.push(cppStrip)
                                     }
 
                                     selectedCppStrips = tmp
                                 } else {
-                                    selectedCppStrips = [modelData]
+                                    selectedCppStrips = [cppStrip]
                                 }
                             }
 
@@ -432,16 +435,16 @@ ApplicationWindow {
                                     if (selected) {
                                         switch (strip.selectionMode) {
                                         case strip.selectionMode_WHOLE:
-                                            modelData.startFrame += zoom.mapDisplayWidthToFullFrames(diffX)
-                                            modelData.channel += floorDiv(diffY, channelPixels)
+                                            cppStrip.startFrame += zoom.mapDisplayWidthToFullFrames(diffX)
+                                            cppStrip.channel += floorDiv(diffY, channelPixels)
                                             break;
                                         case strip.selectionMode_RIGHT:
-                                            modelData.length += zoom.mapDisplayWidthToFullFrames(diffX)
+                                            cppStrip.length += zoom.mapDisplayWidthToFullFrames(diffX)
                                             break;
                                         case strip.selectionMode_LEFT:
                                             var initialEndFrame = startFrame + length
-                                            modelData.length -= zoom.mapDisplayWidthToFullFrames(diffX)
-                                            modelData.startFrame = initialEndFrame - length
+                                            cppStrip.length -= zoom.mapDisplayWidthToFullFrames(diffX)
+                                            cppStrip.startFrame = initialEndFrame - length
                                             break;
                                         }
                                     }
@@ -467,7 +470,7 @@ ApplicationWindow {
                                         }
 
                                         PropertyChanges {
-                                            target: modelData
+                                            target: cppStrip
                                             startFrame: (initialFrame +
                                                          zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
                                             channel: (initialChannel +
@@ -486,7 +489,7 @@ ApplicationWindow {
                                         }
 
                                         PropertyChanges {
-                                            target: modelData
+                                            target: cppStrip
                                             length: (initialLength +
                                                      zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
                                         }
@@ -504,7 +507,7 @@ ApplicationWindow {
                                         }
 
                                         PropertyChanges {
-                                            target: modelData
+                                            target: cppStrip
                                             length: (initialLength -
                                                      zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
                                             startFrame: initialFrame - length
