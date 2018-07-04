@@ -395,14 +395,9 @@ ApplicationWindow {
                                 cppStrip.qmlStrip = strip
                             }
 
-                            readonly property int startFrame: cppStrip.startFrame
-                            readonly property int channel: cppStrip.channel
-                            readonly property int length: cppStrip.length
-                            readonly property ES_Stripext.BadJs badJs: cppStrip.badJs
-
-                            x: zoom.mapFrameToDisplayX(startFrame)
-                            width: Math.max(zoom.mapLengthToDisplayWidth(length), minimumWidth)
-                            y: channel * channelPixels
+                            x: zoom.mapFrameToDisplayX(cppStrip.startFrame)
+                            width: Math.max(zoom.mapLengthToDisplayWidth(cppStrip.length), minimumWidth)
+                            y: cppStrip.channel * channelPixels
 
                             selected: realIn(cppStrip, selectedCppStrips)
 
@@ -442,9 +437,9 @@ ApplicationWindow {
                                             cppStrip.length += zoom.mapDisplayWidthToFullFrames(diffX)
                                             break;
                                         case strip.selectionMode_LEFT:
-                                            var initialEndFrame = startFrame + length
+                                            var initialEndFrame = cppStrip.startFrame + cppStrip.length
                                             cppStrip.length -= zoom.mapDisplayWidthToFullFrames(diffX)
-                                            cppStrip.startFrame = initialEndFrame - length
+                                            cppStrip.startFrame = initialEndFrame - cppStrip.length
                                             break;
                                         }
                                     }
@@ -465,8 +460,8 @@ ApplicationWindow {
                                         PropertyChanges {
                                             target: strip
                                             explicit: true
-                                            initialFrame: startFrame
-                                            initialChannel: channel
+                                            initialFrame: cppStrip.startFrame
+                                            initialChannel: cppStrip.channel
                                         }
 
                                         PropertyChanges {
@@ -485,7 +480,7 @@ ApplicationWindow {
                                         PropertyChanges {
                                             target: strip
                                             explicit: true
-                                            initialLength: length
+                                            initialLength: cppStrip.length
                                         }
 
                                         PropertyChanges {
@@ -502,15 +497,15 @@ ApplicationWindow {
                                         PropertyChanges {
                                             target: strip
                                             explicit: true
-                                            initialFrame: startFrame + length
-                                            initialLength: length
+                                            initialFrame: cppStrip.startFrame + cppStrip.length
+                                            initialLength: cppStrip.length
                                         }
 
                                         PropertyChanges {
                                             target: cppStrip
                                             length: (initialLength -
                                                      zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
-                                            startFrame: initialFrame - length
+                                            startFrame: initialFrame - cppStrip.length
                                         }
                                     }
                                 ]
