@@ -729,7 +729,7 @@ ApplicationWindow {
                             anchors.left: parent.left
                             anchors.right: parent.right
 
-                            property var selectedThingar: selectedCppStrips[0]
+                            property var selectedCppStrip: selectedCppStrips[0]
 
                             Label {
                                 text: "Edit Strip"
@@ -752,11 +752,11 @@ ApplicationWindow {
                                 }
                                 TextField {
                                     Layout.fillWidth: true
-                                    text: selectedThingar.channel
+                                    text: selectedCppStrip.channel
                                     selectByMouse: true
                                     validator: IntValidator { }
                                     onEditingFinished: {
-                                        selectedThingar.channel = parseInt(text, 10)
+                                        selectedCppStrip.channel = parseInt(text, 10)
                                         focus = false
                                     }
                                 }
@@ -766,9 +766,9 @@ ApplicationWindow {
                                 FrameTextField {
                                     document: dokument
                                     shouldShowTime: showSecondsAction.checked
-                                    frame: selectedThingar.startFrame
+                                    frame: selectedCppStrip.startFrame
                                     onFrameEditingFinished: {
-                                        selectedThingar.startFrame = frame
+                                        selectedCppStrip.startFrame = frame
                                         focus = false
                                     }
 
@@ -781,9 +781,9 @@ ApplicationWindow {
                                 FrameTextField {
                                     document: dokument
                                     shouldShowTime: showSecondsAction.checked
-                                    frame: selectedThingar.length
+                                    frame: selectedCppStrip.length
                                     onFrameEditingFinished: {
-                                        selectedThingar.length = frame
+                                        selectedCppStrip.length = frame
                                         focus = false
                                     }
 
@@ -796,9 +796,9 @@ ApplicationWindow {
                                 FrameTextField {
                                     document: dokument
                                     shouldShowTime: showSecondsAction.checked
-                                    frame: selectedThingar.startFrame + selectedThingar.length
+                                    frame: selectedCppStrip.startFrame + selectedCppStrip.length
                                     onFrameEditingFinished: {
-                                        selectedThingar.length = frame - selectedThingar.startFrame
+                                        selectedCppStrip.length = frame - selectedCppStrip.startFrame
                                         focus = false
                                     }
 
@@ -812,7 +812,7 @@ ApplicationWindow {
                                 anchors.right: parent.right
 
                                 function x() {
-                                    var chan = selectedThingar.channel
+                                    var chan = selectedCppStrip.channel
                                     var ctrl = channelPanel.channelToControl[chan]
                                     if (ctrl) {
                                         return ctrl.stripPropertiesComponent
