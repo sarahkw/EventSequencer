@@ -15,6 +15,6 @@
         <file>Dragger.qml</file>
         <file>ChannelPanel.qml</file>
         <file>ScrollHelper.qml</file>
-        <file>Control/Clock.qml</file>
+        <file>Control/BadClock.qml</file>
     </qresource>
 </RCC>

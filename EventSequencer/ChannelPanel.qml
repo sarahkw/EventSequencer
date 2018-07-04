@@ -24,8 +24,8 @@ Rectangle {
     }
 
     Component {
-        id: clockComponent
-        Control.Clock {
+        id: badClockComponent
+        Control.BadClock {
         }
     }
 
@@ -52,14 +52,15 @@ Rectangle {
                 anchors.left: parent.left
                 anchors.right: selectIndicator.left
                 anchors.verticalCenter: parent.verticalCenter
-                model: ["", "Dummy", "Clock", "Label", "JavaScript", "Sound", "Print"]
+                //model: ["", "Dummy", "BadClock", "Label", "JavaScript", "Sound", "Print"]
+                model: ["", "BadClock"]
                 currentIndex: channelToSelection[myIndex] === undefined ? 0 : channelToSelection[myIndex]
                 onCurrentIndexChanged: {
                     if (channelToSelection[myIndex] !== currentIndex) {
                         channelToSelection[myIndex] = currentIndex
                         var derp = model[currentIndex]
-                        if (derp === "Clock") {
-                            var newval = clockComponent.createObject()
+                        if (derp === "BadClock") {
+                            var newval = badClockComponent.createObject()
                             channelToControl[myIndex] = newval
                             var needFireSignal = false
                             newval.roles.forEach(function (role) {
