@@ -25,14 +25,16 @@ SOURCES += \
     strip.cpp \
     document.cpp \
     eventsequencer.pb.cc \
-    framesandseconds.cpp
+    framesandseconds.cpp \
+    stripext/badjs.cpp
 
 
 HEADERS += \
     strip.h \
     document.h \
     eventsequencer.pb.h \
-    framesandseconds.h
+    framesandseconds.h \
+    stripext/badjs.h
 
 unix {
     target.path = /usr/lib

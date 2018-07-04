@@ -1,5 +1,7 @@
 #include "strip.h"
 
+#include "stripext/badjs.h"
+
 #include "eventsequencer.pb.h"
 
 int Strip::channel() const
@@ -41,6 +43,19 @@ void Strip::setLength(int length)
     }
 }
 
+stripext::BadJs *Strip::badJs() const
+{
+    return badJs_;
+}
+
+void Strip::setBadJs(stripext::BadJs *badJs)
+{
+    if (badJs_ != badJs) {
+        badJs_ = badJs;
+        emit badJsChanged();
+    }
+}
+
 Strip::Strip(QObject *parent) : QObject(parent)
 {
 
@@ -51,6 +66,9 @@ void Strip::toPb(pb::Strip &pb) const
     pb.set_channel(channel_);
     pb.set_startframe(startFrame_);
     pb.set_length(length_);
+    if (badJs() != nullptr) {
+        badJs()->toPb(*pb.mutable_badjs());
+    }
 }
 
 void Strip::fromPb(const pb::Strip &pb)
@@ -59,4 +77,9 @@ void Strip::fromPb(const pb::Strip &pb)
     setChannel(pb.channel());
     setStartFrame(pb.startframe());
     setLength(pb.length());
+    if (pb.has_badjs()) {
+        auto tmp = new stripext::BadJs(this);
+        tmp->fromPb(pb.badjs());
+        setBadJs(tmp);
+    }
 }
