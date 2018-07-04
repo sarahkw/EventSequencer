@@ -33,6 +33,11 @@ Rectangle {
         Control.BadJs {
         }
     }
+    Component {
+        id: textComponent
+        Control.TextControl {
+        }
+    }
 
     Repeater {
         model: sh.itemsToRender
@@ -58,7 +63,7 @@ Rectangle {
                 anchors.right: selectIndicator.left
                 anchors.verticalCenter: parent.verticalCenter
                 //model: ["", "Dummy", "BadClock", "Label", "JavaScript", "Sound", "Print"]
-                model: ["", "BadClock", "BadJs", "DumbStrips"]
+                model: ["", "BadClock", "BadJs", "Text"]
                 currentIndex: channelToSelection[myIndex] === undefined ? 0 : channelToSelection[myIndex]
                 onCurrentIndexChanged: {
                     if (channelToSelection[myIndex] !== currentIndex) {
@@ -67,6 +72,7 @@ Rectangle {
                         var herp = {
                             "BadClock": badClockComponent,
                             "BadJs": badJSComponent,
+                            "Text": textComponent,
                         }
                         if (derp in herp) {
                             var newval = herp[derp].createObject()

@@ -10,3 +10,12 @@ function negmod(a, b) {
     if (r > 0) r -= b
     return r
 }
+
+// Named after oracle SQL.
+function nvl(expr1, expr2) {
+    if (expr1 === undefined || expr1 === null) {
+        return expr2;
+    } else {
+        return expr1;
+    }
+}

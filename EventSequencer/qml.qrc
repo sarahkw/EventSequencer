@@ -17,5 +17,6 @@
         <file>ScrollHelper.qml</file>
         <file>Control/BadClock.qml</file>
         <file>Control/BadJs.qml</file>
+        <file>Control/TextControl.qml</file>
     </qresource>
 </RCC>

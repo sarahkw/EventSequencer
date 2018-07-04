@@ -2,6 +2,7 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import Qt.labs.platform 1.0 as Qlp
+import "util.js" as Util
 
 import eventsequencer 1.0 as ES
 
@@ -706,9 +707,10 @@ ApplicationWindow {
             ColumnLayout {
                 anchors.fill: parent
 
+                // strip properties
                 Loader {
                     Layout.fillWidth: true
-                    sourceComponent: selectedCppStrips.length == 1 ? propertiesComponent : blankComponent
+                    sourceComponent: selectedCppStrips.length == 1 ? stripPropertiesComponent : blankComponent
                     property alias dokument: document
 
                     Component {
@@ -719,7 +721,7 @@ ApplicationWindow {
                     }
 
                     Component {
-                        id: propertiesComponent
+                        id: stripPropertiesComponent
                         Column {
                             anchors.left: parent.left
                             anchors.right: parent.right
@@ -727,7 +729,7 @@ ApplicationWindow {
                             property ES.Strip selectedCppStrip: selectedCppStrips[0]
 
                             Label {
-                                text: "Edit Strip"
+                                text: "Strip"
                                 font.pixelSize: 16
                                 font.bold: true
                             }
@@ -824,8 +826,52 @@ ApplicationWindow {
 
                         }
                     }
-                }
+                } // strip properties
 
+                // channel properties
+                Loader {
+                    Layout.fillWidth: true
+
+                    property var ccc: (
+                        function () {
+                            var c = channelPanel.activeChannel
+                            var cc = channelPanel.channelToControl[c]
+                            if (cc === undefined) return undefined;
+                            var ccc = cc.channelPropertiesComponent;
+                            return ccc;
+                        }
+                    )()
+
+                    sourceComponent: ccc ? channelPropertiesComponent : blankComponent
+
+                    Component {
+                        id: channelPropertiesComponent
+                        Column {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            Label {
+                                text: "Channel"
+                                font.pixelSize: 16
+                                font.bold: true
+                            }
+                            Item { // Spacer
+                                width: 1
+                                height: 15
+                            }
+                            Loader {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                sourceComponent: ccc
+                            }
+                            Item { // End Spacer
+                                width: 1
+                                height: 15
+                            }
+                        }
+                    }
+                } // channel properties
+
+                // document properties
                 Column {
                     Layout.fillWidth: true
 
@@ -859,7 +905,7 @@ ApplicationWindow {
                             }
                         }
                     }
-                }
+                } // document properties
 
                 Item {
                     Layout.fillHeight: true
