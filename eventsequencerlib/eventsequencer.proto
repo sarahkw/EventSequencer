@@ -7,20 +7,15 @@ message Strip {
   int32 startFrame = 2;
   int32 length = 3;
 
-  repeated ExtWrapper extWrapper = 4;
+  BadJs badJs = 10;
 
-  message ExtWrapper {
-    message BadJS {
-      string script = 1;
-    }
-
-    oneof ext {
-      BadJS badJS = 1;
-    }
+  message BadJs {
+    string script = 1;
   }
 }
 
 message Document {
+  // TODO Should probably have a version number.
   repeated Strip strips = 1;
   int32 framesPerSecond = 2;
 }
