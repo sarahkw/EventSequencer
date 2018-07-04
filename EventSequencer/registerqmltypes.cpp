@@ -10,8 +10,8 @@
 void RegisterQmlTypes::registerQmlTypes()
 {
     qmlRegisterType<Document>("eventsequencer", 1, 0, "Document");
-    qmlRegisterType<stripext::BadJs>("eventsequencer.stripext", 1, 0, "BadJs");
-    qmlRegisterType<Strip>();
+    qmlRegisterUncreatableType<Strip>("eventsequencer", 1, 0, "Strip", "Created on C++ side");
+    qmlRegisterUncreatableType<stripext::BadJs>("eventsequencer.stripext", 1, 0, "BadJs", "Created on C++ side");
     qmlRegisterSingletonType<FramesAndSeconds>(
         "eventsequencer", 1, 0, "FramesAndSeconds",
         [](QQmlEngine*, QJSEngine*) -> QObject* {
