@@ -171,3 +171,10 @@ void Document::load(const QString &fileName)
     file.close();
     fromPb(doc);
 }
+
+void Document::dumpProtobuf()
+{
+    pb::Document doc;
+    toPb(doc);
+    qInfo() << doc.DebugString().data(); // .data() so qInfo doesn't quote it.
+}

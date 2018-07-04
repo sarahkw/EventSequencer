@@ -127,6 +127,12 @@ ApplicationWindow {
                     var obj = component.createObject(appwin, {visible: true})
                 }
             }
+            CustomMenuItem {
+                text: "Dump Protobuf"
+                onTriggered: {
+                    document.dumpProtobuf()
+                }
+            }
         }
 
     }

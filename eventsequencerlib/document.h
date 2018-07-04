@@ -42,6 +42,7 @@ public:
     Q_INVOKABLE QVariantList strips(); // QVariantList for QML
     Q_INVOKABLE void save(const QString& fileName);
     Q_INVOKABLE void load(const QString& fileName);
+    Q_INVOKABLE void dumpProtobuf();
 
     int framesPerSecond() const;
     void setFramesPerSecond(int framesPerSecond);
