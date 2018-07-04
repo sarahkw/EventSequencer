@@ -218,6 +218,7 @@ ApplicationWindow {
                 onClicked: cursor.frame = document.startFrame
             }
             RoundButton {
+                id: playButton
                 anchors.verticalCenter: parent.verticalCenter
                 text: checked ? controlUnicode.stop : controlUnicode.play
                 checkable: true
@@ -291,6 +292,19 @@ ApplicationWindow {
                 anchors.right: channelDragger.left
                 channelPixels: appwin.channelPixels
                 yposition: body.y
+
+                onRoleToControlChanged: {
+                    var clock = roleToControl["clock"]
+                    if (clock !== undefined) {
+                        clock.document = Qt.binding(function () { return document })
+                        clock.currentFrame = Qt.binding(function () { return cursor.frame })
+                        clock.changeFrame.connect(function (newFrame) {
+                            cursor.frame = newFrame
+                        })
+                        // Connect last, in case we're already playing.
+                        clock.isPlaying = Qt.binding(function () { return playButton.checked })
+                    }
+                }
             }
 
             Dragger {

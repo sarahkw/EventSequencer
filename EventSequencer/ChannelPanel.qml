@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
+import "Control" as Control
 
 Rectangle {
     id: cPanel
@@ -10,6 +11,8 @@ Rectangle {
 
     // Temporary!
     property var channelToSelection: ({})
+    property var channelToControl: ({})
+    property var roleToControl: ({})
 
     color: "white"
 
@@ -18,6 +21,12 @@ Rectangle {
         itemSize: channelPixels
         scrollbarSize: cPanel.height
         currentPosition: yposition
+    }
+
+    Component {
+        id: clockComponent
+        Control.Clock {
+        }
     }
 
     Repeater {
@@ -46,7 +55,27 @@ Rectangle {
                 model: ["", "Dummy", "Clock", "Label", "JavaScript", "Sound", "Print"]
                 currentIndex: channelToSelection[myIndex] === undefined ? 0 : channelToSelection[myIndex]
                 onCurrentIndexChanged: {
-                    channelToSelection[myIndex] = currentIndex
+                    if (channelToSelection[myIndex] !== currentIndex) {
+                        channelToSelection[myIndex] = currentIndex
+                        var derp = model[currentIndex]
+                        if (derp === "Clock") {
+                            var newval = clockComponent.createObject()
+                            channelToControl[myIndex] = newval
+                            var needFireSignal = false
+                            newval.roles.forEach(function (role) {
+                                roleToControl[role] = newval
+                                needFireSignal = true
+                            })
+                            if (needFireSignal) {
+                                var x = roleToControl
+                                roleToControl = {}
+                                roleToControl = x
+                            }
+                        } else {
+                            // TODO: Unmap roles
+                            delete channelToControl[myIndex]
+                        }
+                    }
                 }
                 onFocusChanged: focus = false
             }
