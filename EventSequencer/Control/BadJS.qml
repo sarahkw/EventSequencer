@@ -16,15 +16,19 @@ Item {
             TextArea {
                 anchors.left: parent.left
                 anchors.right: parent.right
-                id: ta
                 selectByMouse: true
                 background: Rectangle {
                     color: "white"
                 }
                 wrapMode: TextEdit.Wrap
                 onEditingFinished: {
-                    console.info("TODO: Commit")
+                    var savtext = text // initBadJs will wipe out text otherwise
+                    if (cppStrip.badJs === null) {
+                        cppStrip.initBadJs()
+                    }
+                    cppStrip.badJs.script = savtext
                 }
+                text: cppStrip.badJs !== null ? cppStrip.badJs.script : ""
             }
         }
     }

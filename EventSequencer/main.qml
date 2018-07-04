@@ -724,7 +724,7 @@ ApplicationWindow {
                             anchors.left: parent.left
                             anchors.right: parent.right
 
-                            property var selectedCppStrip: selectedCppStrips[0]
+                            property ES.Strip selectedCppStrip: selectedCppStrips[0]
 
                             Label {
                                 text: "Edit Strip"
@@ -814,6 +814,7 @@ ApplicationWindow {
                                     }
                                 }
                                 sourceComponent: x()
+                                property ES.Strip cppStrip: selectedCppStrip
                             }
 
                             Item { // End Spacer
