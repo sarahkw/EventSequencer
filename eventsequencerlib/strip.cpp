@@ -56,6 +56,11 @@ void Strip::setBadJs(stripext::BadJs *badJs)
     }
 }
 
+void Strip::initBadJs()
+{
+    setBadJs(new stripext::BadJs(this));
+}
+
 Strip::Strip(QObject *parent) : QObject(parent)
 {
 

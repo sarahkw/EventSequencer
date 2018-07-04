@@ -43,6 +43,7 @@ public:
 
     stripext::BadJs *badJs() const;
     void setBadJs(stripext::BadJs *badJs);
+    Q_INVOKABLE void initBadJs();
 
 signals:
 
