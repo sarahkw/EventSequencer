@@ -30,7 +30,7 @@ Rectangle {
     }
     Component {
         id: badJSComponent
-        Control.BadJS {
+        Control.BadJs {
         }
     }
 
@@ -58,7 +58,7 @@ Rectangle {
                 anchors.right: selectIndicator.left
                 anchors.verticalCenter: parent.verticalCenter
                 //model: ["", "Dummy", "BadClock", "Label", "JavaScript", "Sound", "Print"]
-                model: ["", "BadClock", "BadJS", "DumbStrips"]
+                model: ["", "BadClock", "BadJs", "DumbStrips"]
                 currentIndex: channelToSelection[myIndex] === undefined ? 0 : channelToSelection[myIndex]
                 onCurrentIndexChanged: {
                     if (channelToSelection[myIndex] !== currentIndex) {
@@ -66,7 +66,7 @@ Rectangle {
                         var derp = model[currentIndex]
                         var herp = {
                             "BadClock": badClockComponent,
-                            "BadJS": badJSComponent,
+                            "BadJs": badJSComponent,
                         }
                         if (derp in herp) {
                             var newval = herp[derp].createObject()

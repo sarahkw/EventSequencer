@@ -16,6 +16,6 @@
         <file>ChannelPanel.qml</file>
         <file>ScrollHelper.qml</file>
         <file>Control/BadClock.qml</file>
-        <file>Control/BadJS.qml</file>
+        <file>Control/BadJs.qml</file>
     </qresource>
 </RCC>

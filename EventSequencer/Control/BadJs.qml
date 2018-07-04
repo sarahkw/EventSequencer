@@ -11,7 +11,7 @@ Item {
             }
 
             Text {
-                text: "BadJS to be eval()'ed:"
+                text: "BadJs to be eval()'ed:"
             }
             TextArea {
                 anchors.left: parent.left
