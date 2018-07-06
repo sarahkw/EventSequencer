@@ -94,25 +94,32 @@ void Document::fromPb(const pb::Document &pb)
 
     for (auto& mappair : pb.channels()) {
         const int id = mappair.first;
+        QObject* addme = nullptr;
+
         const ::pb::ChannelData& cdata = mappair.second;
         switch (cdata.channel_case()) {
         case ::pb::ChannelData::kBadClock:
-            channels_[id] = new channel::BadClockChannel(this);
+            addme = new channel::BadClockChannel(this);
             break;
         case ::pb::ChannelData::kBadJs:
-            channels_[id] = new channel::BadJsChannel(this);
+            addme = new channel::BadJsChannel(this);
             break;
         case ::pb::ChannelData::kText:
         {
             auto c = new channel::TextChannel(this);
             c->setFontSize(cdata.text().fontsize());
-            channels_[id] = c;
+            addme = c;
             break;
         }
         case ::pb::ChannelData::CHANNEL_NOT_SET:
         default:
             qWarning() << "Unable to load channel index" << id;
             break;
+        }
+
+        if (addme != nullptr) {
+            channels_[id] = addme;
+            channelWaitFor_.afterAdd(id, addme);
         }
     }
 }
