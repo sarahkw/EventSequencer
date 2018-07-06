@@ -147,6 +147,11 @@ ApplicationWindow {
 
     ES.Document {
         id: document
+
+        property var localClockChannel: null
+        onLocalClockChannelChanged: {
+            console.info("localClockChannel", localClockChannel)
+        }
     }
 
     footer: ToolBar {
@@ -240,12 +245,50 @@ ApplicationWindow {
                 anchors.verticalCenter: parent.verticalCenter
             }
             ComboBox {
+                property var cache: document.channelsProvidingClock
+                property bool blockSignal: false
+
+                onCacheChanged: {
+                    var newIndex;
+                    if (document.localClockChannel === null) {
+                        newIndex = -1
+                    } else {
+                        newIndex = cache.indexOf(document.localClockChannel)
+                    }
+
+                    if (newIndex === -1 && cache.length > 0) {
+                        newIndex = 0
+                    }
+
+                    blockSignal = true
+                    model = cache
+                    currentIndex = newIndex
+                    blockSignal = false
+
+                    var newClockChannel
+                    if (currentIndex === -1) {
+                        newClockChannel = null
+                    } else {
+                        newClockChannel = cache[currentIndex]
+                    }
+
+                    if (document.localClockChannel !== newClockChannel) {
+                        document.localClockChannel = newClockChannel
+                    }
+                }
+
                 id: cmb
                 ToolTip.text: "Clock channel"
                 ToolTip.visible: hovered
                 anchors.verticalCenter: parent.verticalCenter
                 width: 50
-                model: document.channelsProvidingClock
+                model: cache
+
+                onCurrentIndexChanged: {
+                    if (!blockSignal) {
+                        document.localClockChannel = cache[currentIndex]
+                    }
+                }
             }
 
             Label {
