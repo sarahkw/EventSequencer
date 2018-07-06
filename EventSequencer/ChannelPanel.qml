@@ -13,9 +13,6 @@ Rectangle {
 
     property int activeChannel: 0
 
-    // Temporary!
-    property var channelToControl: ({})
-
     color: "white"
 
     ScrollHelper {
@@ -23,22 +20,6 @@ Rectangle {
         itemSize: channelPixels
         scrollbarSize: cPanel.height
         currentPosition: yposition
-    }
-
-    Component {
-        id: badClockComponent
-        Control.BadClock {
-        }
-    }
-    Component {
-        id: badJSComponent
-        Control.BadJs {
-        }
-    }
-    Component {
-        id: textComponent
-        Control.TextControl {
-        }
     }
 
     Repeater {
@@ -78,13 +59,6 @@ Rectangle {
                         case 3: return ES.ChannelType.Text;
                         }
                     },
-                    indexToComponent: function (v) {
-                        switch (v) {
-                        case 1: return badClockComponent;
-                        case 2: return badJSComponent;
-                        case 3: return textComponent;
-                        }
-                    },
                 }})()
 
                 anchors.leftMargin: 10
@@ -92,7 +66,7 @@ Rectangle {
                 anchors.left: parent.left
                 anchors.right: selectIndicator.left
                 anchors.verticalCenter: parent.verticalCenter
-                model: ["", "BadClock", "BadJs", "Text"]
+                model: modelUtil.model
                 currentIndex: cppChannel !== null ? modelUtil.enumToIndex(cppChannel.channelType) : 0
 
                 onCurrentIndexChanged: {
@@ -100,13 +74,7 @@ Rectangle {
                         if (cppChannel !== null) {
                             doc.deleteChannel(myIndex)
                         }
-
-                        delete channelToControl[myIndex]
-
                     } else if (cppChannel === null || modelUtil.enumToIndex(cppChannel.channelType) !== currentIndex) {
-                        var newval = modelUtil.indexToComponent(currentIndex).createObject()
-                        channelToControl[myIndex] = newval
-
                         doc.createChannel(myIndex, modelUtil.indexToEnum(currentIndex))
                     }
                 }

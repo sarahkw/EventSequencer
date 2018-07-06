@@ -862,14 +862,12 @@ ApplicationWindow {
                                 anchors.left: parent.left
                                 anchors.right: parent.right
 
-                                function x() {
-                                    var chan = selectedCppStrip.channel
-                                    var ctrl = channelPanel.channelToControl[chan]
-                                    if (ctrl) {
-                                        return ctrl.stripPropertiesComponent
-                                    }
-                                }
-                                sourceComponent: x()
+                                property ES.WaitFor waitForchannel: document.waitForChannel(selectedCppStrip.channel)
+                                property var channel: waitForchannel.result
+                                property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
+                                property var stripPropComp: control !== null ? control.stripPropertiesComponent : null
+
+                                sourceComponent: stripPropComp
                                 property ES.Strip cppStrip: selectedCppStrip
                             }
 
@@ -886,17 +884,12 @@ ApplicationWindow {
                 Loader {
                     Layout.fillWidth: true
 
-                    property var ccc: (
-                        function () {
-                            var c = channelPanel.activeChannel
-                            var cc = channelPanel.channelToControl[c]
-                            if (cc === undefined) return undefined;
-                            var ccc = cc.channelPropertiesComponent;
-                            return ccc;
-                        }
-                    )()
+                    property ES.WaitFor waitForchannel: document.waitForChannel(channelPanel.activeChannel)
+                    property var channel: waitForchannel.result
+                    property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
+                    property var chanPropComp: control !== null ? control.channelPropertiesComponent : null
 
-                    sourceComponent: ccc ? channelPropertiesComponent : blankComponent
+                    sourceComponent: chanPropComp !== null ? channelPropertiesComponent : blankComponent
 
                     Component {
                         id: channelPropertiesComponent
@@ -915,7 +908,7 @@ ApplicationWindow {
                             Loader {
                                 anchors.left: parent.left
                                 anchors.right: parent.right
-                                sourceComponent: ccc
+                                sourceComponent: chanPropComp
                             }
                             Item { // End Spacer
                                 width: 1
