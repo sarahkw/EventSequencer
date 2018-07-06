@@ -6,6 +6,8 @@
 
 #include <QAbstractListModel>
 
+#include <set>
+
 namespace pb {
 class Document;
 }
@@ -32,6 +34,11 @@ class Document : public QAbstractListModel
 
     std::map<int, QObject*> channels_;
     WaitForHost<int> channelWaitFor_;
+    std::set<int> channelsProvidingClock_;
+
+    Q_PROPERTY(QVector<int> channelsProvidingClock
+               READ channelsProvidingClock
+               NOTIFY channelsProvidingClockChanged)
 
 public:
 
@@ -64,6 +71,8 @@ public:
     int endFrame() const;
     void setEndFrame(int endFrame);
 
+    QVector<int> channelsProvidingClock() const;
+
 private:
 
     // Like signals, but not.
@@ -75,6 +84,8 @@ signals:
     void framesPerSecondChanged();
     void startFrameChanged();
     void endFrameChanged();
+
+    void channelsProvidingClockChanged();
 
 public slots:
 };

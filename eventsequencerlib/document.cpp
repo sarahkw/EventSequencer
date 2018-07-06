@@ -5,6 +5,7 @@
 #include "channel/badclockchannel.h"
 #include "channel/badjschannel.h"
 #include "channel/textchannel.h"
+#include "channel/iclockrole.h"
 
 #include <QDebug>
 #include <QFile>
@@ -48,14 +49,44 @@ void Document::setEndFrame(int endFrame)
     }
 }
 
+QVector<int> Document::channelsProvidingClock() const
+{
+    QVector<int> ret(channelsProvidingClock_.size());
+    std::copy(channelsProvidingClock_.begin(),
+              channelsProvidingClock_.end(),
+              std::back_inserter(ret));
+    return ret;
+}
+
 void Document::channelAfterAddOrReplace(int id, QObject *channel)
 {
     channelWaitFor_.afterAdd(id, channel);
+
+    // TODO If we know we're adding or replacing, we would use less resources.
+    auto iter = channelsProvidingClock_.find(id);
+    if (dynamic_cast<channel::IClockRole*>(channel)) {
+        if (iter == channelsProvidingClock_.end()) {
+            channelsProvidingClock_.insert(id);
+            emit channelsProvidingClockChanged();
+        }
+    } else {
+        // We could be replacing. This channel is no longer a clock.
+        if (iter != channelsProvidingClock_.end()) {
+            channelsProvidingClock_.erase(iter);
+            emit channelsProvidingClockChanged();
+        }
+    }
 }
 
 void Document::channelBeforeDelete(int id)
 {
     channelWaitFor_.beforeDelete(id);
+
+    auto iter = channelsProvidingClock_.find(id);
+    if (iter != channelsProvidingClock_.end()) {
+        channelsProvidingClock_.erase(id);
+        emit channelsProvidingClockChanged();
+    }
 }
 
 Document::Document(QObject *parent) : QAbstractListModel(parent)
