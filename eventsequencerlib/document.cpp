@@ -49,12 +49,12 @@ void Document::setEndFrame(int endFrame)
     }
 }
 
-QVector<int> Document::channelsProvidingClock() const
+QVariantList Document::channelsProvidingClock() const
 {
-    QVector<int> ret(channelsProvidingClock_.size());
-    std::copy(channelsProvidingClock_.begin(),
-              channelsProvidingClock_.end(),
-              std::back_inserter(ret));
+    QVariantList ret;
+    for (int id : channelsProvidingClock_) {
+        ret.push_back(QVariant(id));
+    }
     return ret;
 }
 

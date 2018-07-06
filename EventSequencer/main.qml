@@ -235,6 +235,18 @@ ApplicationWindow {
                 text: controlUnicode.next
                 onClicked: cursor.frame = document.endFrame
             }
+            Label {
+                text: "   "
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            ComboBox {
+                id: cmb
+                ToolTip.text: "Clock channel"
+                ToolTip.visible: hovered
+                anchors.verticalCenter: parent.verticalCenter
+                width: 50
+                model: document.channelsProvidingClock
+            }
 
             Label {
                 id: statusBar

@@ -36,7 +36,7 @@ class Document : public QAbstractListModel
     WaitForHost<int> channelWaitFor_;
     std::set<int> channelsProvidingClock_;
 
-    Q_PROPERTY(QVector<int> channelsProvidingClock
+    Q_PROPERTY(QVariantList channelsProvidingClock
                READ channelsProvidingClock
                NOTIFY channelsProvidingClockChanged)
 
@@ -71,7 +71,8 @@ public:
     int endFrame() const;
     void setEndFrame(int endFrame);
 
-    QVector<int> channelsProvidingClock() const;
+    // QVariantList for use as QML model.
+    QVariantList channelsProvidingClock() const;
 
 private:
 
