@@ -1,16 +1,19 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
+
+import eventsequencer 1.0 as ES
+
 import "Control" as Control
 
 Rectangle {
     id: cPanel
     property int channelPixels
     property int yposition
+    property ES.Document doc
 
     property int activeChannel: 0
 
     // Temporary!
-    property var channelToSelection: ({})
     property var channelToControl: ({})
     property var roleToControl: ({})
 
@@ -44,6 +47,9 @@ Rectangle {
 
         Item {
             property int myIndex: index + sh.initialIndex
+            property ES.WaitFor myWait: doc.waitForChannel(myIndex)
+            property var cppChannel: myWait.result
+
             anchors.left: cPanel.left
             anchors.right: cPanel.right
             y: (sh.initialPosition + index * channelPixels)
@@ -57,39 +63,63 @@ Rectangle {
             }
 
             ComboBox {
+                readonly property var modelUtil: (function () { return {
+                    model: ["", "BadClock", "BadJs", "Text"],
+                    enumToIndex: function (v) {
+                        switch (v) {
+                        case ES.ChannelType.BadClock: return 1;
+                        case ES.ChannelType.BadJs: return 2;
+                        case ES.ChannelType.Text: return 3;
+                        }
+                    },
+                    indexToEnum: function (v) {
+                        switch (v) {
+                        case 1: return ES.ChannelType.BadClock;
+                        case 2: return ES.ChannelType.BadJs;
+                        case 3: return ES.ChannelType.Text;
+                        }
+                    },
+                    indexToComponent: function (v) {
+                        switch (v) {
+                        case 1: return badClockComponent;
+                        case 2: return badJSComponent;
+                        case 3: return textComponent;
+                        }
+                    },
+                }})()
+
                 anchors.leftMargin: 10
                 anchors.rightMargin: 10
                 anchors.left: parent.left
                 anchors.right: selectIndicator.left
                 anchors.verticalCenter: parent.verticalCenter
-                //model: ["", "Dummy", "BadClock", "Label", "JavaScript", "Sound", "Print"]
                 model: ["", "BadClock", "BadJs", "Text"]
-                currentIndex: channelToSelection[myIndex] === undefined ? 0 : channelToSelection[myIndex]
+                currentIndex: cppChannel !== null ? modelUtil.enumToIndex(cppChannel.channelType) : 0
+
                 onCurrentIndexChanged: {
-                    if (channelToSelection[myIndex] !== currentIndex) {
-                        channelToSelection[myIndex] = currentIndex
-                        var derp = model[currentIndex]
-                        var herp = {
-                            "BadClock": badClockComponent,
-                            "BadJs": badJSComponent,
-                            "Text": textComponent,
+                    if (currentIndex === 0) {
+                        if (cppChannel !== null) {
+                            doc.deleteChannel(myIndex)
                         }
-                        if (derp in herp) {
-                            var newval = herp[derp].createObject()
-                            channelToControl[myIndex] = newval
-                            var needFireSignal = false
-                            newval.roles.forEach(function (role) {
-                                roleToControl[role] = newval
-                                needFireSignal = true
-                            })
-                            if (needFireSignal) {
-                                var x = roleToControl
-                                roleToControl = {}
-                                roleToControl = x
-                            }
-                        } else {
-                            // TODO: Unmap roles
-                            delete channelToControl[myIndex]
+
+                        // TODO: Unmap roles
+                        delete channelToControl[myIndex]
+
+                    } else if (cppChannel === null || modelUtil.enumToIndex(cppChannel.channelType) !== currentIndex) {
+                        var newval = modelUtil.indexToComponent(currentIndex).createObject()
+                        channelToControl[myIndex] = newval
+
+                        doc.createChannel(myIndex, modelUtil.indexToEnum(currentIndex))
+
+                        var needFireSignal = false
+                        newval.roles.forEach(function (role) {
+                            roleToControl[role] = newval
+                            needFireSignal = true
+                        })
+                        if (needFireSignal) {
+                            var x = roleToControl
+                            roleToControl = {}
+                            roleToControl = x
                         }
                     }
                 }

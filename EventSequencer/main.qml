@@ -299,6 +299,7 @@ ApplicationWindow {
                 anchors.right: channelDragger.left
                 channelPixels: appwin.channelPixels
                 yposition: body.y
+                doc: document
 
                 onRoleToControlChanged: {
                     var clock = roleToControl["clock"]

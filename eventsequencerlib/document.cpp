@@ -2,6 +2,9 @@
 
 #include "strip.h"
 #include "eventsequencer.pb.h"
+#include "channel/badclockchannel.h"
+#include "channel/badjschannel.h"
+#include "channel/textchannel.h"
 
 #include <QDebug>
 #include <QFile>
@@ -56,6 +59,23 @@ void Document::toPb(pb::Document &pb) const
         s->toPb(*pb.add_strips());
     }
     pb.set_framespersecond(framesPerSecond_);
+    pb.set_startframe(startFrame_);
+    pb.set_endframe(endFrame_);
+
+    auto* pb_channels = pb.mutable_channels();
+    for (auto& mappair : channels_) {
+        QObject* c = mappair.second;
+        if (qobject_cast<channel::BadClockChannel*>(c)) {
+            (*pb_channels)[mappair.first].mutable_badclock();
+        } else if (qobject_cast<channel::BadJsChannel*>(c)) {
+            (*pb_channels)[mappair.first].mutable_badjs();
+        } else if (channel::TextChannel* tc = qobject_cast<channel::TextChannel*>(c)) {
+            auto x = (*pb_channels)[mappair.first].mutable_text();
+            x->set_fontsize(tc->fontSize());
+        } else {
+            qWarning() << "Unable to serialize a channel.";
+        }
+    }
 }
 
 void Document::fromPb(const pb::Document &pb)
@@ -69,6 +89,32 @@ void Document::fromPb(const pb::Document &pb)
 
     // Calling setter to fire changed signals
     setFramesPerSecond(pb.framespersecond());
+    setStartFrame(pb.startframe());
+    setEndFrame(pb.endframe());
+
+    for (auto& mappair : pb.channels()) {
+        const int id = mappair.first;
+        const ::pb::ChannelData& cdata = mappair.second;
+        switch (cdata.channel_case()) {
+        case ::pb::ChannelData::kBadClock:
+            channels_[id] = new channel::BadClockChannel(this);
+            break;
+        case ::pb::ChannelData::kBadJs:
+            channels_[id] = new channel::BadJsChannel(this);
+            break;
+        case ::pb::ChannelData::kText:
+        {
+            auto c = new channel::TextChannel(this);
+            c->setFontSize(cdata.text().fontsize());
+            channels_[id] = c;
+            break;
+        }
+        case ::pb::ChannelData::CHANNEL_NOT_SET:
+        default:
+            qWarning() << "Unable to load channel index" << id;
+            break;
+        }
+    }
 }
 
 int Document::rowCount(const QModelIndex &parent) const
@@ -177,4 +223,55 @@ void Document::dumpProtobuf()
     pb::Document doc;
     toPb(doc);
     qInfo() << doc.DebugString().data(); // .data() so qInfo doesn't quote it.
+}
+
+QObject *Document::createChannel(int id, channel::ChannelType::Enum type)
+{
+    QObject* chan = nullptr;
+    switch (type) {
+    case channel::ChannelType::BadClock:
+        chan = new channel::BadClockChannel(this);
+        break;
+    case channel::ChannelType::BadJs:
+        chan = new channel::BadJsChannel(this);
+        break;
+    case channel::ChannelType::Text:
+        chan = new channel::TextChannel(this);
+        break;
+    default:
+        Q_ASSERT(false);
+    }
+
+    auto old = channels_.find(id);
+    if (old != channels_.end()) {
+        delete old->second;
+    }
+
+    channels_[id] = chan;
+    channelWaitFor_.afterAdd(id, chan);
+    return chan;
+}
+
+void Document::deleteChannel(int id)
+{
+    channelWaitFor_.beforeDelete(id);
+
+    auto it = channels_.find(id);
+    if (it != channels_.end()) {
+        QObject* o = it->second;
+        channels_.erase(it);
+        delete o;
+    } else {
+        qWarning() << "Nothing removed with id" << id;
+    }
+}
+
+WaitFor *Document::waitForChannel(int id)
+{
+    auto it = channels_.find(id);
+    if (it != channels_.end()) {
+        return channelWaitFor_.waitFor(id, it->second);
+    } else {
+        return channelWaitFor_.waitFor(id);
+    }
 }

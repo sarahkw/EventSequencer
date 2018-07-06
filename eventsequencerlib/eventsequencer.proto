@@ -14,8 +14,25 @@ message Strip {
   }
 }
 
+message ChannelData {
+  message BadClock { }
+  message BadJs { }
+  message Text {
+    int32 fontSize = 1;
+  }
+
+  oneof channel {
+    BadClock badClock = 10;
+    BadJs badJs = 11;
+    Text text = 12;
+  };
+}
+
 message Document {
   // TODO Should probably have a version number.
   repeated Strip strips = 1;
   int32 framesPerSecond = 2;
+  int32 startFrame = 4;
+  int32 endFrame = 5;
+  map<int32, ChannelData> channels = 3;
 }

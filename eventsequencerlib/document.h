@@ -1,6 +1,9 @@
 #ifndef DOCUMENT_H
 #define DOCUMENT_H
 
+#include "channel/channeltype.h"
+#include "waitforhost.h"
+
 #include <QAbstractListModel>
 
 namespace pb {
@@ -27,7 +30,11 @@ class Document : public QAbstractListModel
     Q_PROPERTY(int startFrame READ startFrame WRITE setStartFrame NOTIFY startFrameChanged)
     Q_PROPERTY(int endFrame READ endFrame WRITE setEndFrame NOTIFY endFrameChanged)
 
+    std::map<int, QObject*> channels_;
+    WaitForHost<int> channelWaitFor_;
+
 public:
+
     explicit Document(QObject *parent = nullptr);
 
     void toPb(pb::Document& pb) const;
@@ -43,6 +50,10 @@ public:
     Q_INVOKABLE void save(const QString& fileName);
     Q_INVOKABLE void load(const QString& fileName);
     Q_INVOKABLE void dumpProtobuf();
+
+    Q_INVOKABLE QObject* createChannel(int id, channel::ChannelType::Enum type);
+    Q_INVOKABLE void deleteChannel(int id);
+    Q_INVOKABLE WaitFor* waitForChannel(int id);
 
     int framesPerSecond() const;
     void setFramesPerSecond(int framesPerSecond);

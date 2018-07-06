@@ -26,7 +26,14 @@ SOURCES += \
     document.cpp \
     eventsequencer.pb.cc \
     framesandseconds.cpp \
-    stripext/badjs.cpp
+    stripext/badjs.cpp \
+    waitfor.cpp \
+    waitforhost.cpp \
+    channel/badclockchannel.cpp \
+    channel/badjschannel.cpp \
+    channel/textchannel.cpp \
+    channel/channeltype.cpp \
+    channel/channeltypeconversions.cpp
 
 
 HEADERS += \
@@ -34,7 +41,14 @@ HEADERS += \
     document.h \
     eventsequencer.pb.h \
     framesandseconds.h \
-    stripext/badjs.h
+    stripext/badjs.h \
+    waitfor.h \
+    waitforhost.h \
+    channel/badclockchannel.h \
+    channel/badjschannel.h \
+    channel/textchannel.h \
+    channel/channeltype.h \
+    channel/channeltypeconversions.h
 
 unix {
     target.path = /usr/lib

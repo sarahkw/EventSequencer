@@ -1,0 +1,37 @@
+#ifndef TEXTCHANNEL_H
+#define TEXTCHANNEL_H
+
+#include "channeltype.h"
+
+#include <QObject>
+
+namespace channel {
+
+class TextChannel : public QObject
+{
+    Q_OBJECT
+
+    Q_PROPERTY(channel::ChannelType::Enum channelType READ channelType CONSTANT)
+
+    int fontSize_ = 10;
+
+    Q_PROPERTY(int fontSize READ fontSize WRITE setFontSize NOTIFY fontSizeChanged)
+
+public:
+    explicit TextChannel(QObject *parent = nullptr);
+
+    ChannelType::Enum channelType() const;
+
+    int fontSize() const;
+    void setFontSize(int fontSize);
+
+signals:
+
+    void fontSizeChanged();
+
+public slots:
+};
+
+} // namespace channel
+
+#endif // TEXTCHANNEL_H

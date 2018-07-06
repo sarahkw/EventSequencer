@@ -26,6 +26,8 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
+#include <google/protobuf/map.h>
+#include <google/protobuf/map_field_inl.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
@@ -36,6 +38,10 @@ void protobuf_AddDesc_eventsequencer_2eproto();
 void protobuf_AssignDesc_eventsequencer_2eproto();
 void protobuf_ShutdownFile_eventsequencer_2eproto();
 
+class ChannelData;
+class ChannelData_BadClock;
+class ChannelData_BadJs;
+class ChannelData_Text;
 class Document;
 class Strip;
 class Strip_BadJs;
@@ -237,6 +243,367 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 };
 // -------------------------------------------------------------------
 
+class ChannelData_BadClock : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelData.BadClock) */ {
+ public:
+  ChannelData_BadClock();
+  virtual ~ChannelData_BadClock();
+
+  ChannelData_BadClock(const ChannelData_BadClock& from);
+
+  inline ChannelData_BadClock& operator=(const ChannelData_BadClock& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChannelData_BadClock& default_instance();
+
+  void Swap(ChannelData_BadClock* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ChannelData_BadClock* New() const { return New(NULL); }
+
+  ChannelData_BadClock* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ChannelData_BadClock& from);
+  void MergeFrom(const ChannelData_BadClock& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(ChannelData_BadClock* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:pb.ChannelData.BadClock)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static ChannelData_BadClock* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ChannelData_BadJs : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelData.BadJs) */ {
+ public:
+  ChannelData_BadJs();
+  virtual ~ChannelData_BadJs();
+
+  ChannelData_BadJs(const ChannelData_BadJs& from);
+
+  inline ChannelData_BadJs& operator=(const ChannelData_BadJs& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChannelData_BadJs& default_instance();
+
+  void Swap(ChannelData_BadJs* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ChannelData_BadJs* New() const { return New(NULL); }
+
+  ChannelData_BadJs* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ChannelData_BadJs& from);
+  void MergeFrom(const ChannelData_BadJs& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(ChannelData_BadJs* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:pb.ChannelData.BadJs)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static ChannelData_BadJs* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ChannelData_Text : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelData.Text) */ {
+ public:
+  ChannelData_Text();
+  virtual ~ChannelData_Text();
+
+  ChannelData_Text(const ChannelData_Text& from);
+
+  inline ChannelData_Text& operator=(const ChannelData_Text& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChannelData_Text& default_instance();
+
+  void Swap(ChannelData_Text* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ChannelData_Text* New() const { return New(NULL); }
+
+  ChannelData_Text* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ChannelData_Text& from);
+  void MergeFrom(const ChannelData_Text& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(ChannelData_Text* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int32 fontSize = 1;
+  void clear_fontsize();
+  static const int kFontSizeFieldNumber = 1;
+  ::google::protobuf::int32 fontsize() const;
+  void set_fontsize(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:pb.ChannelData.Text)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  ::google::protobuf::int32 fontsize_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static ChannelData_Text* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelData) */ {
+ public:
+  ChannelData();
+  virtual ~ChannelData();
+
+  ChannelData(const ChannelData& from);
+
+  inline ChannelData& operator=(const ChannelData& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChannelData& default_instance();
+
+  enum ChannelCase {
+    kBadClock = 10,
+    kBadJs = 11,
+    kText = 12,
+    CHANNEL_NOT_SET = 0,
+  };
+
+  void Swap(ChannelData* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ChannelData* New() const { return New(NULL); }
+
+  ChannelData* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ChannelData& from);
+  void MergeFrom(const ChannelData& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(ChannelData* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  typedef ChannelData_BadClock BadClock;
+  typedef ChannelData_BadJs BadJs;
+  typedef ChannelData_Text Text;
+
+  // accessors -------------------------------------------------------
+
+  // optional .pb.ChannelData.BadClock badClock = 10;
+  bool has_badclock() const;
+  void clear_badclock();
+  static const int kBadClockFieldNumber = 10;
+  const ::pb::ChannelData_BadClock& badclock() const;
+  ::pb::ChannelData_BadClock* mutable_badclock();
+  ::pb::ChannelData_BadClock* release_badclock();
+  void set_allocated_badclock(::pb::ChannelData_BadClock* badclock);
+
+  // optional .pb.ChannelData.BadJs badJs = 11;
+  bool has_badjs() const;
+  void clear_badjs();
+  static const int kBadJsFieldNumber = 11;
+  const ::pb::ChannelData_BadJs& badjs() const;
+  ::pb::ChannelData_BadJs* mutable_badjs();
+  ::pb::ChannelData_BadJs* release_badjs();
+  void set_allocated_badjs(::pb::ChannelData_BadJs* badjs);
+
+  // optional .pb.ChannelData.Text text = 12;
+  bool has_text() const;
+  void clear_text();
+  static const int kTextFieldNumber = 12;
+  const ::pb::ChannelData_Text& text() const;
+  ::pb::ChannelData_Text* mutable_text();
+  ::pb::ChannelData_Text* release_text();
+  void set_allocated_text(::pb::ChannelData_Text* text);
+
+  ChannelCase channel_case() const;
+  // @@protoc_insertion_point(class_scope:pb.ChannelData)
+ private:
+  inline void set_has_badclock();
+  inline void set_has_badjs();
+  inline void set_has_text();
+
+  inline bool has_channel() const;
+  void clear_channel();
+  inline void clear_has_channel();
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  union ChannelUnion {
+    ChannelUnion() {}
+    ::pb::ChannelData_BadClock* badclock_;
+    ::pb::ChannelData_BadJs* badjs_;
+    ::pb::ChannelData_Text* text_;
+  } channel_;
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _oneof_case_[1];
+
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static ChannelData* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class Document : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.Document) */ {
  public:
   Document();
@@ -295,6 +662,7 @@ class Document : public ::google::protobuf::Message /* @@protoc_insertion_point(
 
   // nested types ----------------------------------------------------
 
+
   // accessors -------------------------------------------------------
 
   // repeated .pb.Strip strips = 1;
@@ -315,6 +683,27 @@ class Document : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::int32 framespersecond() const;
   void set_framespersecond(::google::protobuf::int32 value);
 
+  // optional int32 startFrame = 4;
+  void clear_startframe();
+  static const int kStartFrameFieldNumber = 4;
+  ::google::protobuf::int32 startframe() const;
+  void set_startframe(::google::protobuf::int32 value);
+
+  // optional int32 endFrame = 5;
+  void clear_endframe();
+  static const int kEndFrameFieldNumber = 5;
+  ::google::protobuf::int32 endframe() const;
+  void set_endframe(::google::protobuf::int32 value);
+
+  // map<int32, .pb.ChannelData> channels = 3;
+  int channels_size() const;
+  void clear_channels();
+  static const int kChannelsFieldNumber = 3;
+  const ::google::protobuf::Map< ::google::protobuf::int32, ::pb::ChannelData >&
+      channels() const;
+  ::google::protobuf::Map< ::google::protobuf::int32, ::pb::ChannelData >*
+      mutable_channels();
+
   // @@protoc_insertion_point(class_scope:pb.Document)
  private:
 
@@ -322,6 +711,19 @@ class Document : public ::google::protobuf::Message /* @@protoc_insertion_point(
   bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::pb::Strip > strips_;
   ::google::protobuf::int32 framespersecond_;
+  ::google::protobuf::int32 startframe_;
+  typedef ::google::protobuf::internal::MapEntryLite<
+      ::google::protobuf::int32, ::pb::ChannelData,
+      ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
+      ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
+      0 >
+      Document_ChannelsEntry;
+  ::google::protobuf::internal::MapField<
+      ::google::protobuf::int32, ::pb::ChannelData,
+      ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
+      ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > channels_;
+  ::google::protobuf::int32 endframe_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_eventsequencer_2eproto();
   friend void protobuf_AssignDesc_eventsequencer_2eproto();
@@ -468,6 +870,189 @@ inline void Strip::set_allocated_badjs(::pb::Strip_BadJs* badjs) {
 
 // -------------------------------------------------------------------
 
+// ChannelData_BadClock
+
+// -------------------------------------------------------------------
+
+// ChannelData_BadJs
+
+// -------------------------------------------------------------------
+
+// ChannelData_Text
+
+// optional int32 fontSize = 1;
+inline void ChannelData_Text::clear_fontsize() {
+  fontsize_ = 0;
+}
+inline ::google::protobuf::int32 ChannelData_Text::fontsize() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.Text.fontSize)
+  return fontsize_;
+}
+inline void ChannelData_Text::set_fontsize(::google::protobuf::int32 value) {
+  
+  fontsize_ = value;
+  // @@protoc_insertion_point(field_set:pb.ChannelData.Text.fontSize)
+}
+
+// -------------------------------------------------------------------
+
+// ChannelData
+
+// optional .pb.ChannelData.BadClock badClock = 10;
+inline bool ChannelData::has_badclock() const {
+  return channel_case() == kBadClock;
+}
+inline void ChannelData::set_has_badclock() {
+  _oneof_case_[0] = kBadClock;
+}
+inline void ChannelData::clear_badclock() {
+  if (has_badclock()) {
+    delete channel_.badclock_;
+    clear_has_channel();
+  }
+}
+inline  const ::pb::ChannelData_BadClock& ChannelData::badclock() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.badClock)
+  return has_badclock()
+      ? *channel_.badclock_
+      : ::pb::ChannelData_BadClock::default_instance();
+}
+inline ::pb::ChannelData_BadClock* ChannelData::mutable_badclock() {
+  if (!has_badclock()) {
+    clear_channel();
+    set_has_badclock();
+    channel_.badclock_ = new ::pb::ChannelData_BadClock;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.badClock)
+  return channel_.badclock_;
+}
+inline ::pb::ChannelData_BadClock* ChannelData::release_badclock() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.badClock)
+  if (has_badclock()) {
+    clear_has_channel();
+    ::pb::ChannelData_BadClock* temp = channel_.badclock_;
+    channel_.badclock_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void ChannelData::set_allocated_badclock(::pb::ChannelData_BadClock* badclock) {
+  clear_channel();
+  if (badclock) {
+    set_has_badclock();
+    channel_.badclock_ = badclock;
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.badClock)
+}
+
+// optional .pb.ChannelData.BadJs badJs = 11;
+inline bool ChannelData::has_badjs() const {
+  return channel_case() == kBadJs;
+}
+inline void ChannelData::set_has_badjs() {
+  _oneof_case_[0] = kBadJs;
+}
+inline void ChannelData::clear_badjs() {
+  if (has_badjs()) {
+    delete channel_.badjs_;
+    clear_has_channel();
+  }
+}
+inline  const ::pb::ChannelData_BadJs& ChannelData::badjs() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.badJs)
+  return has_badjs()
+      ? *channel_.badjs_
+      : ::pb::ChannelData_BadJs::default_instance();
+}
+inline ::pb::ChannelData_BadJs* ChannelData::mutable_badjs() {
+  if (!has_badjs()) {
+    clear_channel();
+    set_has_badjs();
+    channel_.badjs_ = new ::pb::ChannelData_BadJs;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.badJs)
+  return channel_.badjs_;
+}
+inline ::pb::ChannelData_BadJs* ChannelData::release_badjs() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.badJs)
+  if (has_badjs()) {
+    clear_has_channel();
+    ::pb::ChannelData_BadJs* temp = channel_.badjs_;
+    channel_.badjs_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void ChannelData::set_allocated_badjs(::pb::ChannelData_BadJs* badjs) {
+  clear_channel();
+  if (badjs) {
+    set_has_badjs();
+    channel_.badjs_ = badjs;
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.badJs)
+}
+
+// optional .pb.ChannelData.Text text = 12;
+inline bool ChannelData::has_text() const {
+  return channel_case() == kText;
+}
+inline void ChannelData::set_has_text() {
+  _oneof_case_[0] = kText;
+}
+inline void ChannelData::clear_text() {
+  if (has_text()) {
+    delete channel_.text_;
+    clear_has_channel();
+  }
+}
+inline  const ::pb::ChannelData_Text& ChannelData::text() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.text)
+  return has_text()
+      ? *channel_.text_
+      : ::pb::ChannelData_Text::default_instance();
+}
+inline ::pb::ChannelData_Text* ChannelData::mutable_text() {
+  if (!has_text()) {
+    clear_channel();
+    set_has_text();
+    channel_.text_ = new ::pb::ChannelData_Text;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.text)
+  return channel_.text_;
+}
+inline ::pb::ChannelData_Text* ChannelData::release_text() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.text)
+  if (has_text()) {
+    clear_has_channel();
+    ::pb::ChannelData_Text* temp = channel_.text_;
+    channel_.text_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void ChannelData::set_allocated_text(::pb::ChannelData_Text* text) {
+  clear_channel();
+  if (text) {
+    set_has_text();
+    channel_.text_ = text;
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.text)
+}
+
+inline bool ChannelData::has_channel() const {
+  return channel_case() != CHANNEL_NOT_SET;
+}
+inline void ChannelData::clear_has_channel() {
+  _oneof_case_[0] = CHANNEL_NOT_SET;
+}
+inline ChannelData::ChannelCase ChannelData::channel_case() const {
+  return ChannelData::ChannelCase(_oneof_case_[0]);
+}
+// -------------------------------------------------------------------
+
 // Document
 
 // repeated .pb.Strip strips = 1;
@@ -514,7 +1099,61 @@ inline void Document::set_framespersecond(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:pb.Document.framesPerSecond)
 }
 
+// optional int32 startFrame = 4;
+inline void Document::clear_startframe() {
+  startframe_ = 0;
+}
+inline ::google::protobuf::int32 Document::startframe() const {
+  // @@protoc_insertion_point(field_get:pb.Document.startFrame)
+  return startframe_;
+}
+inline void Document::set_startframe(::google::protobuf::int32 value) {
+  
+  startframe_ = value;
+  // @@protoc_insertion_point(field_set:pb.Document.startFrame)
+}
+
+// optional int32 endFrame = 5;
+inline void Document::clear_endframe() {
+  endframe_ = 0;
+}
+inline ::google::protobuf::int32 Document::endframe() const {
+  // @@protoc_insertion_point(field_get:pb.Document.endFrame)
+  return endframe_;
+}
+inline void Document::set_endframe(::google::protobuf::int32 value) {
+  
+  endframe_ = value;
+  // @@protoc_insertion_point(field_set:pb.Document.endFrame)
+}
+
+// map<int32, .pb.ChannelData> channels = 3;
+inline int Document::channels_size() const {
+  return channels_.size();
+}
+inline void Document::clear_channels() {
+  channels_.Clear();
+}
+inline const ::google::protobuf::Map< ::google::protobuf::int32, ::pb::ChannelData >&
+Document::channels() const {
+  // @@protoc_insertion_point(field_map:pb.Document.channels)
+  return channels_.GetMap();
+}
+inline ::google::protobuf::Map< ::google::protobuf::int32, ::pb::ChannelData >*
+Document::mutable_channels() {
+  // @@protoc_insertion_point(field_mutable_map:pb.Document.channels)
+  return channels_.MutableMap();
+}
+
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
