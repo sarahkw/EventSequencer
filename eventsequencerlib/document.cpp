@@ -48,6 +48,16 @@ void Document::setEndFrame(int endFrame)
     }
 }
 
+void Document::channelAfterAddOrReplace(int id, QObject *channel)
+{
+    channelWaitFor_.afterAdd(id, channel);
+}
+
+void Document::channelBeforeDelete(int id)
+{
+    channelWaitFor_.beforeDelete(id);
+}
+
 Document::Document(QObject *parent) : QAbstractListModel(parent)
 {
 
@@ -119,7 +129,7 @@ void Document::fromPb(const pb::Document &pb)
 
         if (addme != nullptr) {
             channels_[id] = addme;
-            channelWaitFor_.afterAdd(id, addme);
+            channelAfterAddOrReplace(id, addme);
         }
     }
 }
@@ -255,13 +265,13 @@ QObject *Document::createChannel(int id, channel::ChannelType::Enum type)
     }
 
     channels_[id] = chan;
-    channelWaitFor_.afterAdd(id, chan);
+    channelAfterAddOrReplace(id, chan);
     return chan;
 }
 
 void Document::deleteChannel(int id)
 {
-    channelWaitFor_.beforeDelete(id);
+    channelBeforeDelete(id);
 
     auto it = channels_.find(id);
     if (it != channels_.end()) {

@@ -64,6 +64,12 @@ public:
     int endFrame() const;
     void setEndFrame(int endFrame);
 
+private:
+
+    // Like signals, but not.
+    void channelAfterAddOrReplace(int id, QObject* channel);
+    void channelBeforeDelete(int id);
+
 signals:
 
     void framesPerSecondChanged();
