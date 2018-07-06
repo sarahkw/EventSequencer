@@ -2,12 +2,13 @@
 #define BADCLOCKCHANNEL_H
 
 #include "channeltype.h"
+#include "iclockrole.h"
 
 #include <QObject>
 
 namespace channel {
 
-class BadClockChannel : public QObject
+class BadClockChannel : public QObject, public IClockRole
 {
     Q_OBJECT
 

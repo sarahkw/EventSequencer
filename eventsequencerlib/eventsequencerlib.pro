@@ -32,7 +32,8 @@ SOURCES += \
     channel/badclockchannel.cpp \
     channel/badjschannel.cpp \
     channel/textchannel.cpp \
-    channel/channeltype.cpp
+    channel/channeltype.cpp \
+    channel/iclockrole.cpp
 
 
 HEADERS += \
@@ -46,7 +47,8 @@ HEADERS += \
     channel/badclockchannel.h \
     channel/badjschannel.h \
     channel/textchannel.h \
-    channel/channeltype.h
+    channel/channeltype.h \
+    channel/iclockrole.h
 
 unix {
     target.path = /usr/lib
