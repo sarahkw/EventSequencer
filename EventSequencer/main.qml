@@ -3,6 +3,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import Qt.labs.platform 1.0 as Qlp
 import "util.js" as Util
+import "Control" as Ctrl
 
 import eventsequencer 1.0 as ES
 
@@ -147,6 +148,29 @@ ApplicationWindow {
 
     ES.Document {
         id: document
+    }
+
+    Item {
+        Ctrl.Resolver {
+            id: resolver
+        }
+
+        property alias clockChannel: cmbClockChannel.clockChannel
+        property ES.WaitFor waitForChannel: clockChannel !== null ? document.waitForChannel(clockChannel) : null
+        property var channel: waitForChannel !== null ? waitForChannel.result : null
+        property var control: channel !== null ? resolver.resolve(channel.channelType) : null
+        property var clockComponent: control !== null ? control.clockComponent : null
+
+        Loader {
+            sourceComponent: parent.clockComponent
+
+            property ES.Document document: document
+            property int currentFrame: cursor.frame
+            property bool isPlaying: playButton.checked
+            function changeFrame(newFrame) {
+                cursor.frame = newFrame
+            }
+        }
     }
 
     footer: ToolBar {
@@ -342,19 +366,6 @@ ApplicationWindow {
                 channelPixels: appwin.channelPixels
                 yposition: body.y
                 doc: document
-
-                onRoleToControlChanged: {
-                    var clock = roleToControl["clock"]
-                    if (clock !== undefined) {
-                        clock.document = Qt.binding(function () { return document })
-                        clock.currentFrame = Qt.binding(function () { return cursor.frame })
-                        clock.changeFrame.connect(function (newFrame) {
-                            cursor.frame = newFrame
-                        })
-                        // Connect last, in case we're already playing.
-                        clock.isPlaying = Qt.binding(function () { return playButton.checked })
-                    }
-                }
             }
 
             Dragger {

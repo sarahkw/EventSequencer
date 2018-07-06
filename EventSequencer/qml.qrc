@@ -18,5 +18,6 @@
         <file>Control/BadClock.qml</file>
         <file>Control/BadJs.qml</file>
         <file>Control/TextControl.qml</file>
+        <file>Control/Resolver.qml</file>
     </qresource>
 </RCC>

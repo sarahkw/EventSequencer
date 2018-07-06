@@ -15,7 +15,6 @@ Rectangle {
 
     // Temporary!
     property var channelToControl: ({})
-    property var roleToControl: ({})
 
     color: "white"
 
@@ -102,7 +101,6 @@ Rectangle {
                             doc.deleteChannel(myIndex)
                         }
 
-                        // TODO: Unmap roles
                         delete channelToControl[myIndex]
 
                     } else if (cppChannel === null || modelUtil.enumToIndex(cppChannel.channelType) !== currentIndex) {
@@ -110,17 +108,6 @@ Rectangle {
                         channelToControl[myIndex] = newval
 
                         doc.createChannel(myIndex, modelUtil.indexToEnum(currentIndex))
-
-                        var needFireSignal = false
-                        newval.roles.forEach(function (role) {
-                            roleToControl[role] = newval
-                            needFireSignal = true
-                        })
-                        if (needFireSignal) {
-                            var x = roleToControl
-                            roleToControl = {}
-                            roleToControl = x
-                        }
                     }
                 }
                 onFocusChanged: focus = false
