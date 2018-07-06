@@ -147,11 +147,6 @@ ApplicationWindow {
 
     ES.Document {
         id: document
-
-        property var localClockChannel: null
-        onLocalClockChannelChanged: {
-            console.info("localClockChannel", localClockChannel)
-        }
     }
 
     footer: ToolBar {
@@ -245,16 +240,13 @@ ApplicationWindow {
                 anchors.verticalCenter: parent.verticalCenter
             }
             ComboBox {
+                property var clockChannel: null
+
                 property var cache: document.channelsProvidingClock
                 property bool blockSignal: false
 
                 onCacheChanged: {
-                    var newIndex;
-                    if (document.localClockChannel === null) {
-                        newIndex = -1
-                    } else {
-                        newIndex = cache.indexOf(document.localClockChannel)
-                    }
+                    var newIndex = clockChannel === null ? -1 : cache.indexOf(clockChannel)
 
                     if (newIndex === -1 && cache.length > 0) {
                         newIndex = 0
@@ -265,19 +257,14 @@ ApplicationWindow {
                     currentIndex = newIndex
                     blockSignal = false
 
-                    var newClockChannel
-                    if (currentIndex === -1) {
-                        newClockChannel = null
-                    } else {
-                        newClockChannel = cache[currentIndex]
-                    }
+                    var newClockChannel = currentIndex === -1 ? null : cache[currentIndex]
 
-                    if (document.localClockChannel !== newClockChannel) {
-                        document.localClockChannel = newClockChannel
+                    if (clockChannel !== newClockChannel) {
+                        clockChannel = newClockChannel
                     }
                 }
 
-                id: cmb
+                id: cmbClockChannel
                 ToolTip.text: "Clock channel"
                 ToolTip.visible: hovered
                 anchors.verticalCenter: parent.verticalCenter
@@ -286,7 +273,7 @@ ApplicationWindow {
 
                 onCurrentIndexChanged: {
                     if (!blockSignal) {
-                        document.localClockChannel = cache[currentIndex]
+                        clockChannel = cache[currentIndex]
                     }
                 }
             }
