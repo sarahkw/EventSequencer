@@ -150,15 +150,15 @@ ApplicationWindow {
         id: document
     }
 
-    Item {
-        Ctrl.Resolver {
-            id: resolver
-        }
+    Ctrl.Resolver {
+        id: controlResolver
+    }
 
+    Item {
         property alias clockChannel: cmbClockChannel.clockChannel
         property ES.WaitFor waitForChannel: clockChannel !== null ? document.waitForChannel(clockChannel) : null
         property var channel: waitForChannel !== null ? waitForChannel.result : null
-        property var control: channel !== null ? resolver.resolve(channel.channelType) : null
+        property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
         property var clockComponent: control !== null ? control.clockComponent : null
 
         Loader {
