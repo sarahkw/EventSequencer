@@ -473,6 +473,8 @@ ApplicationWindow {
                                 } else {
                                     selectedCppStrips = [cppStrip]
                                 }
+
+                                channelPanel.activeChannel = cppStrip.channel
                             }
 
                             function floorDiv(a, b) {
