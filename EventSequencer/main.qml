@@ -889,9 +889,14 @@ ApplicationWindow {
                     property ES.WaitFor waitForchannel: document.waitForChannel(channelPanel.activeChannel)
                     property var channel: waitForchannel.result
                     property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
-                    property var chanPropComp: control !== null ? control.channelPropertiesComponent : null
+                    property var chanPropComp: (
+                        (control !== null && control.channelPropertiesComponent !== undefined) ?
+                            control.channelPropertiesComponent :
+                            null
+                    )
 
-                    sourceComponent: chanPropComp !== null ? channelPropertiesComponent : blankComponent
+                    sourceComponent: ((chanPropComp !== null && selectedCppStrips.length in [0, 1]) ?
+                                      channelPropertiesComponent : blankComponent)
 
                     Component {
                         id: channelPropertiesComponent
