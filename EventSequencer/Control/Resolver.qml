@@ -19,6 +19,6 @@ Item {
         case ES.ChannelType.BadJs: return badJs
         case ES.ChannelType.Text: return text
         }
-        console.error("Unable to resolve type")
+        console.assert(false, "Unable to resolve type")
     }
 }
