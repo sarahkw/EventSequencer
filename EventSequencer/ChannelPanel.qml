@@ -44,12 +44,13 @@ Rectangle {
 
             ComboBox {
                 readonly property var modelUtil: (function () { return {
-                    model: ["", "BadClock", "BadJs", "Text"],
+                    model: ["", "BadClock", "BadJs", "Text", "Audio"],
                     enumToIndex: function (v) {
                         switch (v) {
                         case ES.ChannelType.BadClock: return 1;
                         case ES.ChannelType.BadJs: return 2;
                         case ES.ChannelType.Text: return 3;
+                        case ES.ChannelType.Audio: return 4;
                         }
                     },
                     indexToEnum: function (v) {
@@ -57,6 +58,7 @@ Rectangle {
                         case 1: return ES.ChannelType.BadClock;
                         case 2: return ES.ChannelType.BadJs;
                         case 3: return ES.ChannelType.Text;
+                        case 4: return ES.ChannelType.Audio;
                         }
                     },
                 }})()

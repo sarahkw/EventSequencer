@@ -24,7 +24,8 @@ TextChannel::TextChannel(QObject *parent) : ChannelBase(parent)
 
 void TextChannel::toPb(pb::ChannelData &pb) const
 {
-    pb.mutable_text()->set_fontsize(fontSize());
+    auto mut = pb.mutable_text();
+    mut->set_fontsize(fontSize());
 }
 
 void TextChannel::fromPb(const pb::ChannelData &pb)

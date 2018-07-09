@@ -15,7 +15,8 @@ public:
     {
         BadClock,
         BadJs,
-        Text
+        Text,
+        Audio
     };
     Q_ENUM(Enum)
 };

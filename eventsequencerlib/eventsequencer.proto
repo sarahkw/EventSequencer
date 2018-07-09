@@ -20,11 +20,13 @@ message ChannelData {
   message Text {
     int32 fontSize = 1;
   }
+  message Audio {}
 
   oneof channel {
     BadClock badClock = 10;
     BadJs badJs = 11;
     Text text = 12;
+    Audio audio = 13;
   };
 }
 
