@@ -121,17 +121,7 @@ void Document::toPb(pb::Document &pb) const
 
     auto* pb_channels = pb.mutable_channels();
     for (auto& mappair : channels_) {
-        QObject* c = mappair.second;
-        if (qobject_cast<channel::BadClockChannel*>(c)) {
-            (*pb_channels)[mappair.first].mutable_badclock();
-        } else if (qobject_cast<channel::BadJsChannel*>(c)) {
-            (*pb_channels)[mappair.first].mutable_badjs();
-        } else if (channel::TextChannel* tc = qobject_cast<channel::TextChannel*>(c)) {
-            auto x = (*pb_channels)[mappair.first].mutable_text();
-            x->set_fontsize(tc->fontSize());
-        } else {
-            qWarning() << "Unable to serialize a channel.";
-        }
+        mappair.second->toPb((*pb_channels)[mappair.first]);
     }
 }
 

@@ -21,6 +21,8 @@ class TextChannel : public ChannelBase
 public:
     explicit TextChannel(QObject *parent = nullptr);
 
+    void toPb(pb::ChannelData& pb) const override;
+
     ChannelType::Enum channelType() const;
 
     int fontSize() const;

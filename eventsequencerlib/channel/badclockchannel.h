@@ -18,6 +18,8 @@ class BadClockChannel : public ChannelBase, public IClockRole
 public:
     explicit BadClockChannel(QObject *parent = nullptr);
 
+    void toPb(pb::ChannelData& pb) const override;
+
     ChannelType::Enum channelType() const;
 
 signals:

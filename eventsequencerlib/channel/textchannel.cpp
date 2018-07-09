@@ -1,5 +1,7 @@
 #include "textchannel.h"
 
+#include <eventsequencer.pb.h>
+
 namespace channel {
 
 int TextChannel::fontSize() const
@@ -18,6 +20,11 @@ void TextChannel::setFontSize(int fontSize)
 TextChannel::TextChannel(QObject *parent) : ChannelBase(parent)
 {
 
+}
+
+void TextChannel::toPb(pb::ChannelData &pb) const
+{
+    pb.mutable_text()->set_fontsize(fontSize());
 }
 
 ChannelType::Enum TextChannel::channelType() const

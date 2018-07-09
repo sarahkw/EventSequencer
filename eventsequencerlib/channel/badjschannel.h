@@ -17,6 +17,8 @@ class BadJsChannel : public ChannelBase
 public:
     explicit BadJsChannel(QObject *parent = nullptr);
 
+    void toPb(pb::ChannelData& pb) const override;
+
     ChannelType::Enum channelType() const;
 
 signals:
