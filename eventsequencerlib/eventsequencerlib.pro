@@ -34,7 +34,8 @@ SOURCES += \
     channel/textchannel.cpp \
     channel/channeltype.cpp \
     channel/iclockrole.cpp \
-    channel/channelbase.cpp
+    channel/channelbase.cpp \
+    channel/channelfactory.cpp
 
 
 HEADERS += \
@@ -50,7 +51,8 @@ HEADERS += \
     channel/textchannel.h \
     channel/channeltype.h \
     channel/iclockrole.h \
-    channel/channelbase.h
+    channel/channelbase.h \
+    channel/channelfactory.h
 
 unix {
     target.path = /usr/lib

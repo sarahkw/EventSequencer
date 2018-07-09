@@ -7,6 +7,7 @@
 #include "channel/textchannel.h"
 #include "channel/iclockrole.h"
 #include "channel/channelbase.h"
+#include "channel/channelfactory.h"
 
 #include <QDebug>
 #include <QFile>
@@ -141,29 +142,8 @@ void Document::fromPb(const pb::Document &pb)
 
     for (auto& mappair : pb.channels()) {
         const int id = mappair.first;
-        channel::ChannelBase* addme = nullptr;
-
-        const ::pb::ChannelData& cdata = mappair.second;
-        switch (cdata.channel_case()) {
-        case ::pb::ChannelData::kBadClock:
-            addme = new channel::BadClockChannel(this);
-            break;
-        case ::pb::ChannelData::kBadJs:
-            addme = new channel::BadJsChannel(this);
-            break;
-        case ::pb::ChannelData::kText:
-        {
-            auto c = new channel::TextChannel(this);
-            c->setFontSize(cdata.text().fontsize());
-            addme = c;
-            break;
-        }
-        case ::pb::ChannelData::CHANNEL_NOT_SET:
-        default:
-            qWarning() << "Unable to load channel index" << id;
-            break;
-        }
-
+        channel::ChannelBase* addme =
+                channel::ChannelFactory::Create(mappair.second, this);
         if (addme != nullptr) {
             channels_[id] = addme;
             channelAfterAddOrReplace(id, addme);

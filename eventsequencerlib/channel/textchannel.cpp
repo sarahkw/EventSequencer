@@ -27,6 +27,12 @@ void TextChannel::toPb(pb::ChannelData &pb) const
     pb.mutable_text()->set_fontsize(fontSize());
 }
 
+void TextChannel::fromPb(const pb::ChannelData &pb)
+{
+    Q_ASSERT(pb.has_text());
+    setFontSize(pb.text().fontsize());
+}
+
 ChannelType::Enum TextChannel::channelType() const
 {
     return ChannelType::Text;

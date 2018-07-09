@@ -18,6 +18,7 @@ public:
     explicit BadJsChannel(QObject *parent = nullptr);
 
     void toPb(pb::ChannelData& pb) const override;
+    void fromPb(const pb::ChannelData& pb) override;
 
     ChannelType::Enum channelType() const;
 

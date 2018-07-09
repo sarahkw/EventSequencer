@@ -14,6 +14,11 @@ void BadClockChannel::toPb(pb::ChannelData &pb) const
     pb.mutable_badclock();
 }
 
+void BadClockChannel::fromPb(const pb::ChannelData &pb)
+{
+    Q_ASSERT(pb.has_badclock());
+}
+
 ChannelType::Enum BadClockChannel::channelType() const
 {
     return ChannelType::BadClock;

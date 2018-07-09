@@ -16,6 +16,7 @@ public:
     explicit ChannelBase(QObject *parent = nullptr);
 
     virtual void toPb(pb::ChannelData& pb) const = 0;
+    virtual void fromPb(const pb::ChannelData& pb) = 0;
 
 signals:
 
