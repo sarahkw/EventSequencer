@@ -1,15 +1,15 @@
-#include "badjs.h"
+#include "badjsstripext.h"
 
 #include "../eventsequencer.pb.h"
 
 namespace stripext {
 
-QString BadJs::script() const
+QString BadJsStripExt::script() const
 {
     return script_;
 }
 
-void BadJs::setScript(const QString &script)
+void BadJsStripExt::setScript(const QString &script)
 {
     if (script_ != script) {
         script_ = script;
@@ -17,17 +17,17 @@ void BadJs::setScript(const QString &script)
     }
 }
 
-BadJs::BadJs(QObject *parent) : QObject(parent)
+BadJsStripExt::BadJsStripExt(QObject *parent) : QObject(parent)
 {
 
 }
 
-void BadJs::toPb(pb::Strip_BadJs &pb) const
+void BadJsStripExt::toPb(pb::Strip_BadJs &pb) const
 {
     pb.set_script(script().toStdString());
 }
 
-void BadJs::fromPb(const pb::Strip_BadJs &pb)
+void BadJsStripExt::fromPb(const pb::Strip_BadJs &pb)
 {
     setScript(QString::fromStdString(pb.script()));
 }

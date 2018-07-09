@@ -8,7 +8,7 @@ class Strip;
 }
 
 namespace stripext {
-class BadJs;
+class BadJsStripExt;
 }
 
 class Strip : public QObject
@@ -19,12 +19,12 @@ class Strip : public QObject
     int startFrame_ = 0;
     int length_ = 0;
 
-    stripext::BadJs* badJs_ = nullptr;
+    stripext::BadJsStripExt* badJs_ = nullptr;
 
     Q_PROPERTY(int channel READ channel WRITE setChannel NOTIFY channelChanged)
     Q_PROPERTY(int startFrame READ startFrame WRITE setStartFrame NOTIFY startFrameChanged)
     Q_PROPERTY(int length READ length WRITE setLength NOTIFY lengthChanged)
-    Q_PROPERTY(stripext::BadJs* badJs READ badJs WRITE setBadJs NOTIFY badJsChanged)
+    Q_PROPERTY(stripext::BadJsStripExt* badJs READ badJs WRITE setBadJs NOTIFY badJsChanged)
 
 public:
     explicit Strip(QObject *parent = nullptr);
@@ -41,8 +41,8 @@ public:
     int length() const;
     void setLength(int length);
 
-    stripext::BadJs *badJs() const;
-    void setBadJs(stripext::BadJs *badJs);
+    stripext::BadJsStripExt *badJs() const;
+    void setBadJs(stripext::BadJsStripExt *badJs);
     Q_INVOKABLE void initBadJs();
 
 signals:

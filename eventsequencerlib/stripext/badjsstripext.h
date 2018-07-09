@@ -1,5 +1,5 @@
-#ifndef BADJS_H
-#define BADJS_H
+#ifndef BADJSSTRIPEXT_H
+#define BADJSSTRIPEXT_H
 
 #include <QObject>
 
@@ -9,7 +9,7 @@ class Strip_BadJs;
 
 namespace stripext {
 
-class BadJs : public QObject
+class BadJsStripExt : public QObject
 {
     Q_OBJECT
 
@@ -18,7 +18,7 @@ class BadJs : public QObject
     Q_PROPERTY(QString script READ script WRITE setScript NOTIFY scriptChanged)
 
 public:
-    explicit BadJs(QObject *parent = nullptr);
+    explicit BadJsStripExt(QObject *parent = nullptr);
 
     void toPb(pb::Strip_BadJs& pb) const;
     void fromPb(const pb::Strip_BadJs& pb);
@@ -35,4 +35,4 @@ public slots:
 
 } // namespace stripext
 
-#endif // BADJS_H
+#endif // BADJSSTRIPEXT_H

@@ -26,7 +26,6 @@ SOURCES += \
     document.cpp \
     eventsequencer.pb.cc \
     framesandseconds.cpp \
-    stripext/badjs.cpp \
     waitfor.cpp \
     waitforhost.cpp \
     channel/badclockchannel.cpp \
@@ -36,7 +35,8 @@ SOURCES += \
     channel/iclockrole.cpp \
     channel/channelbase.cpp \
     channel/channelfactory.cpp \
-    channel/audiochannel.cpp
+    channel/audiochannel.cpp \
+    stripext/badjsstripext.cpp
 
 
 HEADERS += \
@@ -44,7 +44,6 @@ HEADERS += \
     document.h \
     eventsequencer.pb.h \
     framesandseconds.h \
-    stripext/badjs.h \
     waitfor.h \
     waitforhost.h \
     channel/badclockchannel.h \
@@ -54,7 +53,8 @@ HEADERS += \
     channel/iclockrole.h \
     channel/channelbase.h \
     channel/channelfactory.h \
-    channel/audiochannel.h
+    channel/audiochannel.h \
+    stripext/badjsstripext.h
 
 unix {
     target.path = /usr/lib

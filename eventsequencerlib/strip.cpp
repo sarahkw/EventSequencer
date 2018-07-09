@@ -1,6 +1,6 @@
 #include "strip.h"
 
-#include "stripext/badjs.h"
+#include "stripext/badjsstripext.h"
 
 #include "eventsequencer.pb.h"
 
@@ -43,12 +43,12 @@ void Strip::setLength(int length)
     }
 }
 
-stripext::BadJs *Strip::badJs() const
+stripext::BadJsStripExt *Strip::badJs() const
 {
     return badJs_;
 }
 
-void Strip::setBadJs(stripext::BadJs *badJs)
+void Strip::setBadJs(stripext::BadJsStripExt *badJs)
 {
     if (badJs_ != badJs) {
         badJs_ = badJs;
@@ -58,7 +58,7 @@ void Strip::setBadJs(stripext::BadJs *badJs)
 
 void Strip::initBadJs()
 {
-    setBadJs(new stripext::BadJs(this));
+    setBadJs(new stripext::BadJsStripExt(this));
 }
 
 Strip::Strip(QObject *parent) : QObject(parent)
@@ -83,7 +83,7 @@ void Strip::fromPb(const pb::Strip &pb)
     setStartFrame(pb.startframe());
     setLength(pb.length());
     if (pb.has_badjs()) {
-        auto tmp = new stripext::BadJs(this);
+        auto tmp = new stripext::BadJsStripExt(this);
         tmp->fromPb(pb.badjs());
         setBadJs(tmp);
     }
