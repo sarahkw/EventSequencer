@@ -12,7 +12,7 @@ ApplicationWindow {
     visible: true
     width: 800
     height: 600
-    title: "EventSequencer%1".arg(document.currentFileName != "" ? "[%1]".arg(document.currentFileName) : "")
+    title: "EventSequencer%1".arg(document.currentFileName != "" ? " [%1]".arg(document.currentFileName) : "")
 
     menuBar: MenuBar {
         CustomMenu {
