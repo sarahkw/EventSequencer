@@ -18,7 +18,11 @@ Item {
                     }
                 }
                 onTriggered: {
-                    playFrame(currentFrame + 1)
+                    if (isLoop && currentFrame + 1 >= document.endFrame) {
+                        playFrame(document.startFrame)
+                    } else {
+                        playFrame(currentFrame + 1)
+                    }
                 }
             }
         }

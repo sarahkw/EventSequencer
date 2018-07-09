@@ -186,6 +186,7 @@ ApplicationWindow {
             property ES.Document document: document
             property int currentFrame: cursor.frame
             property bool isPlaying: playButton.checked
+            property bool isLoop: playButton.loop
             function playFrame(frameNo) {
                 cursor.frame = frameNo
 
@@ -281,10 +282,28 @@ ApplicationWindow {
                 onClicked: cursor.frame = document.startFrame
             }
             RoundButton {
+                ToolTip.text: "Play/Stop (long press for menu)"
+                ToolTip.visible: hovered
+
+                property bool loop: false
                 id: playButton
                 anchors.verticalCenter: parent.verticalCenter
                 text: checked ? controlUnicode.stop : controlUnicode.play
                 checkable: true
+                Menu {
+                    id: playMenu
+                    MenuItem {
+                        text: "Loop Play"
+                        onClicked: {
+                            playButton.loop = true
+                            playButton.checked = true
+                        }
+                    }
+                }
+                onPressAndHold: {
+                    playMenu.open()
+                }
+                onClicked: playButton.loop = false
             }
             RoundButton {
                 anchors.verticalCenter: parent.verticalCenter
