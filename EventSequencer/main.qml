@@ -357,6 +357,7 @@ ApplicationWindow {
         id: saveFileDialog
         fileMode: Qlp.FileDialog.SaveFile
         nameFilters: ["Event sequencer files (*.evseq)", "All files (*)"]
+        defaultSuffix: "evseq"
         onAccepted: document.save(file)
     }
     Qlp.FileDialog {
