@@ -20,7 +20,7 @@ public:
     void toPb(pb::ChannelData& pb) const override;
     void fromPb(const pb::ChannelData& pb) override;
 
-    ChannelType::Enum channelType() const;
+    ChannelType::Enum channelType() const override;
 
 signals:
 

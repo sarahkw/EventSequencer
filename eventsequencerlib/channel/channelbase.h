@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include "channeltype.h"
+
 namespace pb {
 class ChannelData;
 }
@@ -17,6 +19,8 @@ public:
 
     virtual void toPb(pb::ChannelData& pb) const = 0;
     virtual void fromPb(const pb::ChannelData& pb) = 0;
+
+    virtual ChannelType::Enum channelType() const = 0;
 
 signals:
 
