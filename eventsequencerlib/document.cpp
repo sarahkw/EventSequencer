@@ -9,6 +9,7 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QUrl>
 
 int Document::framesPerSecond() const
 {
@@ -279,12 +280,11 @@ void Document::save(const QString& fileName)
     file.close();
 }
 
-void Document::load(const QString &fileName)
+void Document::load(const QUrl &url)
 {
-    qInfo() << "Reading instead from" << TMPFN;
-    qInfo() << "I'd like to read from" << fileName;
+    reset();
 
-    QFile file(TMPFN);
+    QFile file(url.toLocalFile());
     if (!file.open(QIODevice::ReadOnly)) {
         qWarning() << "Cannot open";
         return;

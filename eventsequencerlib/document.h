@@ -57,7 +57,7 @@ public:
     Q_INVOKABLE QVariantList stripsOnFrame(int frame);
     Q_INVOKABLE void reset();
     Q_INVOKABLE void save(const QString& fileName);
-    Q_INVOKABLE void load(const QString& fileName);
+    Q_INVOKABLE void load(const QUrl& url);
     Q_INVOKABLE void dumpProtobuf();
 
     Q_INVOKABLE QObject* createChannel(int id, channel::ChannelType::Enum type);
