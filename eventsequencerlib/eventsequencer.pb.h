@@ -45,6 +45,7 @@ class ChannelData_BadJs;
 class ChannelData_Text;
 class Document;
 class Strip;
+class Strip_Audio;
 class Strip_BadJs;
 
 // ===================================================================
@@ -136,6 +137,93 @@ class Strip_BadJs : public ::google::protobuf::Message /* @@protoc_insertion_poi
 };
 // -------------------------------------------------------------------
 
+class Strip_Audio : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.Strip.Audio) */ {
+ public:
+  Strip_Audio();
+  virtual ~Strip_Audio();
+
+  Strip_Audio(const Strip_Audio& from);
+
+  inline Strip_Audio& operator=(const Strip_Audio& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Strip_Audio& default_instance();
+
+  void Swap(Strip_Audio* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Strip_Audio* New() const { return New(NULL); }
+
+  Strip_Audio* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Strip_Audio& from);
+  void MergeFrom(const Strip_Audio& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(Strip_Audio* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string fileName = 1;
+  void clear_filename();
+  static const int kFileNameFieldNumber = 1;
+  const ::std::string& filename() const;
+  void set_filename(const ::std::string& value);
+  void set_filename(const char* value);
+  void set_filename(const char* value, size_t size);
+  ::std::string* mutable_filename();
+  ::std::string* release_filename();
+  void set_allocated_filename(::std::string* filename);
+
+  // @@protoc_insertion_point(class_scope:pb.Strip.Audio)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  ::google::protobuf::internal::ArenaStringPtr filename_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static Strip_Audio* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.Strip) */ {
  public:
   Strip();
@@ -195,6 +283,7 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   // nested types ----------------------------------------------------
 
   typedef Strip_BadJs BadJs;
+  typedef Strip_Audio Audio;
 
   // accessors -------------------------------------------------------
 
@@ -225,6 +314,15 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::pb::Strip_BadJs* release_badjs();
   void set_allocated_badjs(::pb::Strip_BadJs* badjs);
 
+  // optional .pb.Strip.Audio audio = 11;
+  bool has_audio() const;
+  void clear_audio();
+  static const int kAudioFieldNumber = 11;
+  const ::pb::Strip_Audio& audio() const;
+  ::pb::Strip_Audio* mutable_audio();
+  ::pb::Strip_Audio* release_audio();
+  void set_allocated_audio(::pb::Strip_Audio* audio);
+
   // @@protoc_insertion_point(class_scope:pb.Strip)
  private:
 
@@ -233,6 +331,7 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::google::protobuf::int32 channel_;
   ::google::protobuf::int32 startframe_;
   ::pb::Strip_BadJs* badjs_;
+  ::pb::Strip_Audio* audio_;
   ::google::protobuf::int32 length_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_eventsequencer_2eproto();
@@ -875,6 +974,54 @@ inline void Strip_BadJs::set_allocated_script(::std::string* script) {
 
 // -------------------------------------------------------------------
 
+// Strip_Audio
+
+// optional string fileName = 1;
+inline void Strip_Audio::clear_filename() {
+  filename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Strip_Audio::filename() const {
+  // @@protoc_insertion_point(field_get:pb.Strip.Audio.fileName)
+  return filename_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Strip_Audio::set_filename(const ::std::string& value) {
+  
+  filename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.Strip.Audio.fileName)
+}
+inline void Strip_Audio::set_filename(const char* value) {
+  
+  filename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.Strip.Audio.fileName)
+}
+inline void Strip_Audio::set_filename(const char* value, size_t size) {
+  
+  filename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.Strip.Audio.fileName)
+}
+inline ::std::string* Strip_Audio::mutable_filename() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.Strip.Audio.fileName)
+  return filename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Strip_Audio::release_filename() {
+  // @@protoc_insertion_point(field_release:pb.Strip.Audio.fileName)
+  
+  return filename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Strip_Audio::set_allocated_filename(::std::string* filename) {
+  if (filename != NULL) {
+    
+  } else {
+    
+  }
+  filename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), filename);
+  // @@protoc_insertion_point(field_set_allocated:pb.Strip.Audio.fileName)
+}
+
+// -------------------------------------------------------------------
+
 // Strip
 
 // optional int32 channel = 1;
@@ -955,6 +1102,44 @@ inline void Strip::set_allocated_badjs(::pb::Strip_BadJs* badjs) {
     
   }
   // @@protoc_insertion_point(field_set_allocated:pb.Strip.badJs)
+}
+
+// optional .pb.Strip.Audio audio = 11;
+inline bool Strip::has_audio() const {
+  return !_is_default_instance_ && audio_ != NULL;
+}
+inline void Strip::clear_audio() {
+  if (GetArenaNoVirtual() == NULL && audio_ != NULL) delete audio_;
+  audio_ = NULL;
+}
+inline const ::pb::Strip_Audio& Strip::audio() const {
+  // @@protoc_insertion_point(field_get:pb.Strip.audio)
+  return audio_ != NULL ? *audio_ : *default_instance_->audio_;
+}
+inline ::pb::Strip_Audio* Strip::mutable_audio() {
+  
+  if (audio_ == NULL) {
+    audio_ = new ::pb::Strip_Audio;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.Strip.audio)
+  return audio_;
+}
+inline ::pb::Strip_Audio* Strip::release_audio() {
+  // @@protoc_insertion_point(field_release:pb.Strip.audio)
+  
+  ::pb::Strip_Audio* temp = audio_;
+  audio_ = NULL;
+  return temp;
+}
+inline void Strip::set_allocated_audio(::pb::Strip_Audio* audio) {
+  delete audio_;
+  audio_ = audio;
+  if (audio) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.Strip.audio)
 }
 
 // -------------------------------------------------------------------
@@ -1287,6 +1472,8 @@ Document::mutable_channels() {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

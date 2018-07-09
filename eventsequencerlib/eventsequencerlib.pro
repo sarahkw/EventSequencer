@@ -36,7 +36,8 @@ SOURCES += \
     channel/channelbase.cpp \
     channel/channelfactory.cpp \
     channel/audiochannel.cpp \
-    stripext/badjsstripext.cpp
+    stripext/badjsstripext.cpp \
+    stripext/audiostripext.cpp
 
 
 HEADERS += \
@@ -54,7 +55,8 @@ HEADERS += \
     channel/channelbase.h \
     channel/channelfactory.h \
     channel/audiochannel.h \
-    stripext/badjsstripext.h
+    stripext/badjsstripext.h \
+    stripext/audiostripext.h
 
 unix {
     target.path = /usr/lib

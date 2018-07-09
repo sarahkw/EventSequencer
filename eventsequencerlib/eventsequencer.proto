@@ -8,9 +8,13 @@ message Strip {
   int32 length = 3;
 
   BadJs badJs = 10;
+  Audio audio = 11;
 
   message BadJs {
     string script = 1;
+  }
+  message Audio {
+    string fileName = 1;
   }
 }
 

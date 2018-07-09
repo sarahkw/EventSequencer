@@ -1,6 +1,7 @@
 #include "strip.h"
 
 #include "stripext/badjsstripext.h"
+#include "stripext/audiostripext.h"
 
 #include "eventsequencer.pb.h"
 
@@ -61,9 +62,27 @@ void Strip::initBadJs()
     setBadJs(new stripext::BadJsStripExt(this));
 }
 
+stripext::AudioStripExt *Strip::audio() const
+{
+    return audio_;
+}
+
+void Strip::setAudio(stripext::AudioStripExt *audio)
+{
+    if (audio_ != audio) {
+        audio_ = audio;
+        emit audioChanged();
+    }
+}
+
+void Strip::initAudio()
+{
+    setAudio(new stripext::AudioStripExt(this));
+}
+
 Strip::Strip(QObject *parent) : QObject(parent)
 {
-
+    
 }
 
 void Strip::toPb(pb::Strip &pb) const
@@ -73,6 +92,9 @@ void Strip::toPb(pb::Strip &pb) const
     pb.set_length(length_);
     if (badJs() != nullptr) {
         badJs()->toPb(*pb.mutable_badjs());
+    }
+    if (audio() != nullptr) {
+        audio()->toPb(*pb.mutable_audio());
     }
 }
 
@@ -86,5 +108,10 @@ void Strip::fromPb(const pb::Strip &pb)
         auto tmp = new stripext::BadJsStripExt(this);
         tmp->fromPb(pb.badjs());
         setBadJs(tmp);
+    }
+    if (pb.has_audio()) {
+        auto tmp = new stripext::AudioStripExt(this);
+        tmp->fromPb(pb.audio());
+        setAudio(tmp);
     }
 }

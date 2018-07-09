@@ -5,6 +5,8 @@
 #include "framesandseconds.h"
 #include "channel/channeltype.h"
 #include "waitfor.h"
+#include "stripext/audiostripext.h"
+#include "stripext/badjsstripext.h"
 
 #include <QQmlEngine>
 
@@ -14,6 +16,8 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterUncreatableType<Strip>("eventsequencer", 1, 0, "Strip", "Created on C++ side");
     qmlRegisterUncreatableType<channel::ChannelType>("eventsequencer", 1, 0, "ChannelType", "Only used for enumeration");
     qmlRegisterUncreatableType<WaitFor>("eventsequencer", 1, 0, "WaitFor", "Created on C++ side");
+    qmlRegisterType<stripext::AudioStripExt>();
+    qmlRegisterType<stripext::BadJsStripExt>();
     qmlRegisterSingletonType<FramesAndSeconds>(
         "eventsequencer", 1, 0, "FramesAndSeconds",
         [](QQmlEngine*, QJSEngine*) -> QObject* {
