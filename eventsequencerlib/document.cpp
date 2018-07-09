@@ -236,6 +236,25 @@ QVariantList Document::stripsOnFrame(int frame)
     return ret;
 }
 
+void Document::reset()
+{
+    if (strips_.size() > 0) {
+        beginRemoveRows(QModelIndex(), 0, strips_.size() - 1);
+        strips_.clear();
+        endRemoveRows();
+    }
+
+    setFramesPerSecond(30);
+    setStartFrame(0);
+    setEndFrame(250);
+
+    while (!channels_.empty()) {
+        auto it = channels_.begin();
+        channelBeforeDelete(it->first);
+        channels_.erase(it);
+    }
+}
+
 namespace {
 const char* TMPFN = "/tmp/eventsequencer.dat";
 }

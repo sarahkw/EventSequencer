@@ -18,6 +18,11 @@ ApplicationWindow {
         CustomMenu {
             title: "File"
             Action {
+                text: "New"
+                onTriggered: document.reset()
+                shortcut: "Ctrl+N"
+            }
+            Action {
                 id: openAction
                 text: "Open"
                 onTriggered: openFileDialog.open()
