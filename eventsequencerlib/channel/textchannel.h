@@ -2,12 +2,13 @@
 #define TEXTCHANNEL_H
 
 #include "channeltype.h"
+#include "channelbase.h"
 
 #include <QObject>
 
 namespace channel {
 
-class TextChannel : public QObject
+class TextChannel : public ChannelBase
 {
     Q_OBJECT
 

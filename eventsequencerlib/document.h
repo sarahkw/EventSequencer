@@ -13,6 +13,10 @@ namespace pb {
 class Document;
 }
 
+namespace channel {
+class ChannelBase;
+}
+
 class Strip;
 
 class Document : public QAbstractListModel
@@ -33,7 +37,7 @@ class Document : public QAbstractListModel
     Q_PROPERTY(int startFrame READ startFrame WRITE setStartFrame NOTIFY startFrameChanged)
     Q_PROPERTY(int endFrame READ endFrame WRITE setEndFrame NOTIFY endFrameChanged)
 
-    std::map<int, QObject*> channels_;
+    std::map<int, channel::ChannelBase*> channels_;
     WaitForHost<int> channelWaitFor_;
     std::set<int> channelsProvidingClock_;
 

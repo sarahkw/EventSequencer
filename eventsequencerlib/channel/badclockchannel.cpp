@@ -2,7 +2,7 @@
 
 namespace channel {
 
-BadClockChannel::BadClockChannel(QObject *parent) : QObject(parent)
+BadClockChannel::BadClockChannel(QObject *parent) : ChannelBase(parent)
 {
 
 }

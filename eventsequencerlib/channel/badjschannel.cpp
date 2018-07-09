@@ -2,7 +2,7 @@
 
 namespace channel {
 
-BadJsChannel::BadJsChannel(QObject *parent) : QObject(parent)
+BadJsChannel::BadJsChannel(QObject *parent) : ChannelBase(parent)
 {
 
 }

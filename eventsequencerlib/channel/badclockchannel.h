@@ -3,12 +3,13 @@
 
 #include "channeltype.h"
 #include "iclockrole.h"
+#include "channelbase.h"
 
 #include <QObject>
 
 namespace channel {
 
-class BadClockChannel : public QObject, public IClockRole
+class BadClockChannel : public ChannelBase, public IClockRole
 {
     Q_OBJECT
 

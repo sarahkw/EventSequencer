@@ -6,6 +6,7 @@
 #include "channel/badjschannel.h"
 #include "channel/textchannel.h"
 #include "channel/iclockrole.h"
+#include "channel/channelbase.h"
 
 #include <QDebug>
 #include <QFile>
@@ -150,7 +151,7 @@ void Document::fromPb(const pb::Document &pb)
 
     for (auto& mappair : pb.channels()) {
         const int id = mappair.first;
-        QObject* addme = nullptr;
+        channel::ChannelBase* addme = nullptr;
 
         const ::pb::ChannelData& cdata = mappair.second;
         switch (cdata.channel_case()) {
@@ -323,7 +324,7 @@ void Document::dumpProtobuf()
 
 QObject *Document::createChannel(int id, channel::ChannelType::Enum type)
 {
-    QObject* chan = nullptr;
+    channel::ChannelBase* chan = nullptr;
     switch (type) {
     case channel::ChannelType::BadClock:
         chan = new channel::BadClockChannel(this);

@@ -15,7 +15,7 @@ void TextChannel::setFontSize(int fontSize)
     }
 }
 
-TextChannel::TextChannel(QObject *parent) : QObject(parent)
+TextChannel::TextChannel(QObject *parent) : ChannelBase(parent)
 {
 
 }

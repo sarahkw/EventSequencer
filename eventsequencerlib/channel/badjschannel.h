@@ -2,12 +2,13 @@
 #define BADJSCHANNEL_H
 
 #include "channeltype.h"
+#include "channelbase.h"
 
 #include <QObject>
 
 namespace channel {
 
-class BadJsChannel : public QObject
+class BadJsChannel : public ChannelBase
 {
     Q_OBJECT
 
