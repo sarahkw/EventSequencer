@@ -57,9 +57,12 @@ void Strip::setBadJs(stripext::BadJsStripExt *badJs)
     }
 }
 
-void Strip::initBadJs()
+stripext::BadJsStripExt* Strip::mutableBadJs()
 {
-    setBadJs(new stripext::BadJsStripExt(this));
+    if (badJs() == nullptr) {
+        setBadJs(new stripext::BadJsStripExt(this));
+    }
+    return badJs();
 }
 
 stripext::AudioStripExt *Strip::audio() const
@@ -75,9 +78,12 @@ void Strip::setAudio(stripext::AudioStripExt *audio)
     }
 }
 
-void Strip::initAudio()
+stripext::AudioStripExt *Strip::mutableAudio()
 {
-    setAudio(new stripext::AudioStripExt(this));
+    if (audio() == nullptr) {
+        setAudio(new stripext::AudioStripExt(this));
+    }
+    return audio();
 }
 
 Strip::Strip(QObject *parent) : QObject(parent)

@@ -46,11 +46,11 @@ public:
 
     stripext::BadJsStripExt *badJs() const;
     void setBadJs(stripext::BadJsStripExt *badJs);
-    Q_INVOKABLE void initBadJs();
+    Q_INVOKABLE stripext::BadJsStripExt* mutableBadJs();
 
     stripext::AudioStripExt *audio() const;
     void setAudio(stripext::AudioStripExt *audio);
-    Q_INVOKABLE void initAudio();
+    Q_INVOKABLE stripext::AudioStripExt *mutableAudio();
 
 signals:
 

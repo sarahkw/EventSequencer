@@ -23,11 +23,8 @@ Item {
                 TextField {
                     Layout.fillWidth: true
                     onEditingFinished: {
-                        var savtext = text
-                        if (cppStrip.audio === null) {
-                            cppStrip.initAudio()
-                        }
-                        cppStrip.audio.fileName = savtext
+                        var savtext = text // Prevent binding from wiping out text.
+                        cppStrip.mutableAudio().fileName = savtext
                     }
                     text: cppStrip.audio !== null ? cppStrip.audio.fileName : ""
                 }

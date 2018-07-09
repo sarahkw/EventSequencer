@@ -22,10 +22,7 @@ Item {
                 wrapMode: TextEdit.Wrap
                 onEditingFinished: {
                     var savtext = text // initBadJs will wipe out text otherwise
-                    if (cppStrip.badJs === null) {
-                        cppStrip.initBadJs()
-                    }
-                    cppStrip.badJs.script = savtext
+                    cppStrip.mutableBadJs().script = savtext
                 }
                 text: cppStrip.badJs !== null ? cppStrip.badJs.script : ""
             }
