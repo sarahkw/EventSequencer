@@ -2,9 +2,6 @@
 
 #include "strip.h"
 #include "eventsequencer.pb.h"
-#include "channel/badclockchannel.h"
-#include "channel/badjschannel.h"
-#include "channel/textchannel.h"
 #include "channel/iclockrole.h"
 #include "channel/channelbase.h"
 #include "channel/channelfactory.h"
@@ -294,20 +291,7 @@ void Document::dumpProtobuf()
 
 QObject *Document::createChannel(int id, channel::ChannelType::Enum type)
 {
-    channel::ChannelBase* chan = nullptr;
-    switch (type) {
-    case channel::ChannelType::BadClock:
-        chan = new channel::BadClockChannel(this);
-        break;
-    case channel::ChannelType::BadJs:
-        chan = new channel::BadJsChannel(this);
-        break;
-    case channel::ChannelType::Text:
-        chan = new channel::TextChannel(this);
-        break;
-    default:
-        Q_ASSERT(false);
-    }
+    channel::ChannelBase* chan = channel::ChannelFactory::Create(type, this);
 
     auto old = channels_.find(id);
     if (old != channels_.end()) {

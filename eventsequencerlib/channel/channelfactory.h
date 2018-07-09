@@ -1,6 +1,8 @@
 #ifndef CHANNELFACTORY_H
 #define CHANNELFACTORY_H
 
+#include "channeltype.h"
+
 class QObject;
 
 namespace pb {
@@ -17,6 +19,7 @@ class ChannelFactory
 public:
 
     static ChannelBase* Create(const pb::ChannelData& pb, QObject* parent=nullptr);
+    static ChannelBase* Create(ChannelType::Enum type, QObject* parent=nullptr);
 
 };
 

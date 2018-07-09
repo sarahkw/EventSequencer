@@ -35,3 +35,17 @@ channel::ChannelBase *channel::ChannelFactory::Create(const pb::ChannelData &pb,
 
     return cb;
 }
+
+channel::ChannelBase *channel::ChannelFactory::Create(channel::ChannelType::Enum type, QObject *parent)
+{
+    switch (type) {
+    case channel::ChannelType::BadClock:
+        return new channel::BadClockChannel(parent);
+    case channel::ChannelType::BadJs:
+        return new channel::BadJsChannel(parent);
+    case channel::ChannelType::Text:
+        return new channel::TextChannel(parent);
+    }
+
+    Q_ASSERT(false);
+}
