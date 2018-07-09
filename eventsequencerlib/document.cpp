@@ -9,7 +9,6 @@
 
 #include <QDebug>
 #include <QFile>
-#include <QUrl>
 
 int Document::framesPerSecond() const
 {
@@ -87,6 +86,21 @@ void Document::channelBeforeDelete(int id)
     if (iter != channelsProvidingClock_.end()) {
         channelsProvidingClock_.erase(id);
         emit channelsProvidingClockChanged();
+    }
+}
+
+QUrl Document::currentUrl() const
+{
+    return currentUrl_;
+}
+
+void Document::setCurrentUrl(const QUrl &currentUrl)
+{
+    if (currentUrl_ != currentUrl) {
+        currentUrl_ = currentUrl;
+        emit currentUrlChanged();
+        currentFileName_ = currentUrl.toLocalFile();
+        emit currentFileNameChanged();
     }
 }
 
@@ -254,37 +268,37 @@ void Document::reset()
         channelBeforeDelete(it->first);
         channels_.erase(it);
     }
+
+    setCurrentUrl(QUrl());
 }
 
-namespace {
-const char* TMPFN = "/tmp/eventsequencer.dat";
-}
-
-void Document::save(const QString& fileName)
+void Document::save(const QUrl& url)
 {
     // TODO Error handling! Need to do more than just write to stdout.
 
-    qInfo() << "Writing to altfile until we trust to not corrupt anything." << TMPFN;
-    qInfo() << "I will eventually save to" << fileName;
     pb::Document doc;
     toPb(doc);
 
-    QFile file(TMPFN);
+    QFile file(url.toLocalFile());
     if (!file.open(QIODevice::WriteOnly)) {
-        qWarning() << "Cannot open";
+        qWarning() << "Cannot open" << url;
         return;
     }
     if (!doc.SerializeToFileDescriptor(file.handle())) {
         qWarning() << "Cannot serialize";
+        return;
     }
     file.close();
+
+    setCurrentUrl(url);
 }
 
 void Document::load(const QUrl &url)
 {
     reset();
 
-    QFile file(url.toLocalFile());
+    QString tmpFileName = url.toLocalFile();
+    QFile file(tmpFileName);
     if (!file.open(QIODevice::ReadOnly)) {
         qWarning() << "Cannot open";
         return;
@@ -296,6 +310,8 @@ void Document::load(const QUrl &url)
     }
     file.close();
     fromPb(doc);
+
+    setCurrentUrl(url);
 }
 
 void Document::dumpProtobuf()

@@ -12,7 +12,7 @@ ApplicationWindow {
     visible: true
     width: 800
     height: 600
-    title: qsTr("Hello World")
+    title: "EventSequencer%1".arg(document.currentFileName != "" ? "[%1]".arg(document.currentFileName) : "")
 
     menuBar: MenuBar {
         CustomMenu {
@@ -31,8 +31,18 @@ ApplicationWindow {
             Action {
                 id: saveAction
                 text: "Save"
-                onTriggered: saveFileDialog.open()
+                onTriggered: {
+                    if (document.currentUrl == "") {
+                        saveFileDialog.open()
+                    } else {
+                        document.save(document.currentUrl)
+                    }
+                }
                 shortcut: "Ctrl+S"
+            }
+            Action {
+                text: "Save As"
+                onTriggered: saveFileDialog.open()
             }
         }
         CustomMenu {

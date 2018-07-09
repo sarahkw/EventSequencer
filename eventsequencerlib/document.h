@@ -5,6 +5,7 @@
 #include "waitforhost.h"
 
 #include <QAbstractListModel>
+#include <QUrl>
 
 #include <set>
 
@@ -40,6 +41,12 @@ class Document : public QAbstractListModel
                READ channelsProvidingClock
                NOTIFY channelsProvidingClockChanged)
 
+    QUrl currentUrl_;
+    QString currentFileName_;
+
+    Q_PROPERTY(QUrl currentUrl READ currentUrl WRITE setCurrentUrl NOTIFY currentUrlChanged)
+    Q_PROPERTY(QString currentFileName MEMBER currentFileName_ NOTIFY currentFileNameChanged)
+
 public:
 
     explicit Document(QObject *parent = nullptr);
@@ -56,7 +63,7 @@ public:
     Q_INVOKABLE QVariantList strips(); // QVariantList for QML
     Q_INVOKABLE QVariantList stripsOnFrame(int frame);
     Q_INVOKABLE void reset();
-    Q_INVOKABLE void save(const QString& fileName);
+    Q_INVOKABLE void save(const QUrl& url);
     Q_INVOKABLE void load(const QUrl& url);
     Q_INVOKABLE void dumpProtobuf();
 
@@ -76,6 +83,9 @@ public:
     // QVariantList for use as QML model.
     QVariantList channelsProvidingClock() const;
 
+    QUrl currentUrl() const;
+    void setCurrentUrl(const QUrl &currentUrl);
+
 private:
 
     // Like signals, but not.
@@ -89,6 +99,9 @@ signals:
     void endFrameChanged();
 
     void channelsProvidingClockChanged();
+
+    void currentUrlChanged();
+    void currentFileNameChanged();
 
 public slots:
 };
