@@ -44,6 +44,10 @@ ApplicationWindow {
                 text: "Save As"
                 onTriggered: saveFileDialog.open()
             }
+            Action {
+                text: "Quit"
+                onTriggered: Qt.quit()
+            }
         }
         CustomMenu {
             title: "View"
