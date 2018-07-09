@@ -173,6 +173,30 @@ ApplicationWindow {
         }
     }
 
+    Item {
+        Connections {
+            target: cursor
+            onFrameChanged: {
+                if (!playButton.checked) {
+                    return;
+                }
+
+                document.stripsOnFrame(cursor.frame).forEach(function (cppStrip) {
+                    var chan = cppStrip.channel;
+                    var waitFor = document.waitForChannel(chan);
+                    if (waitFor.result === null) {
+                        return;
+                    }
+                    var chanType = waitFor.result.channelType;
+                    var ctrl = controlResolver.resolve(chanType);
+                    if ("playFrame" in ctrl) {
+                        ctrl.playFrame(cppStrip, cursor.frame - cppStrip.startFrame);
+                    }
+                });
+            }
+        }
+    }
+
     footer: ToolBar {
         Row {
             Label {

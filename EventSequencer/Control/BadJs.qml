@@ -31,4 +31,9 @@ Item {
             }
         }
     }
+
+    function playFrame(cppStrip, frame) {
+        var script = cppStrip.badJs !== null ? cppStrip.badJs.script : ""
+        eval(script);
+    }
 }

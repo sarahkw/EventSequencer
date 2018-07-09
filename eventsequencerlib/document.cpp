@@ -223,6 +223,19 @@ QVariantList Document::strips()
     return ret;
 }
 
+QVariantList Document::stripsOnFrame(int frame)
+{
+    QVariantList ret;
+    for (Strip* s : strips_) {
+        if (frame >= s->startFrame() && frame < (s->startFrame() + s->length())) {
+            QVariant v;
+            v.setValue(s);
+            ret.push_back(v);
+        }
+    }
+    return ret;
+}
+
 namespace {
 const char* TMPFN = "/tmp/eventsequencer.dat";
 }
