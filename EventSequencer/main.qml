@@ -356,13 +356,13 @@ ApplicationWindow {
     Qlp.FileDialog {
         id: saveFileDialog
         fileMode: Qlp.FileDialog.SaveFile
-        nameFilters: ["Data files (*.dat)", "All files (*)"]
+        nameFilters: ["Event sequencer files (*.evseq)", "All files (*)"]
         onAccepted: document.save(file)
     }
     Qlp.FileDialog {
         id: openFileDialog
         fileMode: Qlp.FileDialog.OpenFile
-        nameFilters: ["Data files (*.dat)", "All files (*)"]
+        nameFilters: ["Event sequencer files (*.evseq)", "All files (*)"]
         onAccepted: document.load(file)
     }
 
