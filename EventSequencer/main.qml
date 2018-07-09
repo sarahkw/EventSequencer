@@ -167,21 +167,10 @@ ApplicationWindow {
             property ES.Document document: document
             property int currentFrame: cursor.frame
             property bool isPlaying: playButton.checked
-            function changeFrame(newFrame) {
-                cursor.frame = newFrame
-            }
-        }
-    }
+            function playFrame(frameNo) {
+                cursor.frame = frameNo
 
-    Item {
-        Connections {
-            target: cursor
-            onFrameChanged: {
-                if (!playButton.checked) {
-                    return;
-                }
-
-                document.stripsOnFrame(cursor.frame).forEach(function (cppStrip) {
+                document.stripsOnFrame(frameNo).forEach(function (cppStrip) {
                     var chan = cppStrip.channel;
                     var waitFor = document.waitForChannel(chan);
                     if (waitFor.result === null) {
@@ -190,7 +179,7 @@ ApplicationWindow {
                     var chanType = waitFor.result.channelType;
                     var ctrl = controlResolver.resolve(chanType);
                     if ("playFrame" in ctrl) {
-                        ctrl.playFrame(cppStrip, cursor.frame - cppStrip.startFrame);
+                        ctrl.playFrame(cppStrip, frameNo - cppStrip.startFrame);
                     }
                 });
             }
