@@ -8,11 +8,6 @@ Item {
             anchors.left: parent.left
             anchors.right: parent.right
 
-            Item {
-                width: 1
-                height: 15
-            }
-
             Text {
                 text: "File:"
             }

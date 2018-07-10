@@ -4,11 +4,6 @@ import QtQuick.Controls 2.2
 Item {
     property Component stripPropertiesComponent: Component {
         Column {
-            Item {
-                width: 1
-                height: 15
-            }
-
             Text {
                 text: "BadJs to be eval()'ed:"
             }

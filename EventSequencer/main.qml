@@ -912,7 +912,14 @@ ApplicationWindow {
                                 }
                             }
 
+                            Item { // Spacer before the strip property.
+                                width: 1
+                                height: stripPropLoader.stripPropComp == null ? 0 : 15
+                            }
+
                             Loader {
+                                id: stripPropLoader
+
                                 anchors.left: parent.left
                                 anchors.right: parent.right
 
