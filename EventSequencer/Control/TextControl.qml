@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
 
+import "../" as Parent
+
 Item {
     property Component channelPropertiesComponent: Component {
         Text {
@@ -27,7 +29,15 @@ Item {
 
     property Component stripComponent: Component {
         Text {
-            text: cppStrip.text !== null ? cppStrip.text.content : ""
+            color: selected ? "blue" : "black"
+            text: cppStrip.text !== null ? cppStrip.text.content : '""'
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.RightButton
+                onClicked: {
+                    selectionClicked(mouse, Parent.SelectionMode.Whole)
+                }
+            }
         }
     }
 }

@@ -499,35 +499,46 @@ ApplicationWindow {
                             property int selectionMode: SelectionMode.Whole
                             property bool selected: realIn(cppStrip, selectedCppStrips)
 
-                            DefaultStripView {
-                                id: dsv
+                            function _selectionClicked(mouse, newSelectionMode) {
+                                if (mouse.modifiers & Qt.ShiftModifier) {
+                                    var tmp = selectedCppStrips
+                                    selectedCppStrips = []
+
+                                    if (realIn(cppStrip, tmp)) {
+                                        tmp = tmp.filter(function (foo) {
+                                            return foo !== cppStrip;
+                                        })
+                                    } else {
+                                        tmp.push(cppStrip)
+                                    }
+
+                                    selectedCppStrips = tmp
+                                } else {
+                                    selectedCppStrips = [cppStrip]
+                                }
+
+                                stripBase.selectionMode = newSelectionMode
+
+                                channelPanel.activeChannel = cppStrip.channel
+                            }
+
+                            Loader {
+                                sourceComponent: stripComponentResolver.stripComponent == null ? dsvComponent : null
                                 anchors.left: parent.left
                                 anchors.top: parent.top
                                 anchors.right: parent.right
 
-                                selected: stripBase.selected
-                                selectionMode: stripBase.selectionMode
-                                onSelectionClicked: {
-                                    if (mouse.modifiers & Qt.ShiftModifier) {
-                                        var tmp = selectedCppStrips
-                                        selectedCppStrips = []
+                                Component {
+                                    id: dsvComponent
+                                    DefaultStripView {
+                                        anchors.left: parent.left
+                                        anchors.top: parent.top
+                                        anchors.right: parent.right
 
-                                        if (realIn(cppStrip, tmp)) {
-                                            tmp = tmp.filter(function (foo) {
-                                                return foo !== cppStrip;
-                                            })
-                                        } else {
-                                            tmp.push(cppStrip)
-                                        }
-
-                                        selectedCppStrips = tmp
-                                    } else {
-                                        selectedCppStrips = [cppStrip]
+                                        selected: stripBase.selected
+                                        selectionMode: stripBase.selectionMode
+                                        onSelectionClicked: _selectionClicked(mouse, newSelectionMode)
                                     }
-
-                                    stripBase.selectionMode = newSelectionMode
-
-                                    channelPanel.activeChannel = cppStrip.channel
                                 }
                             }
 
@@ -541,7 +552,16 @@ ApplicationWindow {
 
                             Loader {
                                 sourceComponent: stripComponentResolver.stripComponent
+                                anchors.left: parent.left
+                                anchors.top: parent.top
+                                anchors.right: parent.right
+
                                 property ES.Strip cppStrip: stripBase.cppStrip
+                                property bool selected: stripBase.selected
+                                property int selectionMode: stripBase.selectionMode
+                                function selectionClicked() {
+                                    _selectionClicked.apply(this, arguments)
+                                }
                             }
 
                             readonly property ES.Strip cppStrip: modelData
