@@ -24,4 +24,10 @@ Item {
             }
         }
     }
+
+    property Component stripComponent: Component {
+        Text {
+            text: cppStrip.text !== null ? cppStrip.text.content : ""
+        }
+    }
 }

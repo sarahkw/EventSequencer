@@ -531,6 +531,19 @@ ApplicationWindow {
                                 }
                             }
 
+                            QtObject {
+                                id: stripComponentResolver
+                                property ES.WaitFor waitFor: document.waitForChannel(cppStrip.channel)
+                                property var chan: waitFor.result
+                                property var type: chan != null ? chan.channelType : null
+                                property var stripComponent: type != null ? controlResolver.resolve(type).stripComponent : null
+                            }
+
+                            Loader {
+                                sourceComponent: stripComponentResolver.stripComponent
+                                property ES.Strip cppStrip: stripBase.cppStrip
+                            }
+
                             readonly property ES.Strip cppStrip: modelData
 
                             Component.onCompleted: {
