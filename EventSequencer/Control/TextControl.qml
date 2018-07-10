@@ -32,7 +32,10 @@ Item {
             color: selected ? "blue" : "black"
             text: cppStrip.text !== null ? cppStrip.text.content : '""'
             MouseArea {
-                anchors.fill: parent
+                anchors.left: parent.left
+                anchors.top: parent.top
+                width: parent.contentWidth
+                height: parent.contentHeight
                 acceptedButtons: Qt.RightButton
                 onClicked: {
                     selectionClicked(mouse, Parent.SelectionMode.Whole)
