@@ -418,13 +418,6 @@ ApplicationWindow {
                 channelPixels: appwin.channelPixels
                 yposition: body.y
                 doc: document
-
-                onActiveChannelChanged: {
-                    // This makes sense, I swear. Otherwise, the properties
-                    // panel can show the properites of a different channel.
-                    // And that would be strange.
-                    selectedCppStrips = []
-                }
             }
 
             Dragger {
@@ -954,8 +947,10 @@ ApplicationWindow {
                             null
                     )
 
-                    sourceComponent: ((chanPropComp !== null && selectedCppStrips.length in [0, 1]) ?
-                                      channelPropertiesComponent : blankComponent)
+                    sourceComponent: ((chanPropComp !== null &&
+                                       selectedCppStrips.every(function (cppStrip) {
+                                           return cppStrip.channel === channelPanel.activeChannel
+                                       })) ? channelPropertiesComponent : blankComponent)
 
                     Component {
                         id: channelPropertiesComponent
