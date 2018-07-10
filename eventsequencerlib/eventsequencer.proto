@@ -9,12 +9,16 @@ message Strip {
 
   BadJs badJs = 10;
   Audio audio = 11;
+  Text text = 12;
 
   message BadJs {
     string script = 1;
   }
   message Audio {
     string fileName = 1;
+  }
+  message Text {
+    string content = 1;
   }
 }
 

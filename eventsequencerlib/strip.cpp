@@ -2,6 +2,7 @@
 
 #include "stripext/badjsstripext.h"
 #include "stripext/audiostripext.h"
+#include "stripext/textstripext.h"
 
 #include "eventsequencer.pb.h"
 
@@ -86,6 +87,27 @@ stripext::AudioStripExt *Strip::mutableAudio()
     return audio();
 }
 
+stripext::TextStripExt *Strip::text() const
+{
+    return text_;
+}
+
+void Strip::setText(stripext::TextStripExt *text)
+{
+    if (text_ != text) {
+        text_ = text;
+        emit textChanged();
+    }
+}
+
+stripext::TextStripExt *Strip::mutableText()
+{
+    if (text() == nullptr) {
+        setText(new stripext::TextStripExt(this));
+    }
+    return text();
+}
+
 Strip::Strip(QObject *parent) : QObject(parent)
 {
     
@@ -101,6 +123,9 @@ void Strip::toPb(pb::Strip &pb) const
     }
     if (audio() != nullptr) {
         audio()->toPb(*pb.mutable_audio());
+    }
+    if (text() != nullptr) {
+        text()->toPb(*pb.mutable_text());
     }
 }
 
@@ -119,5 +144,10 @@ void Strip::fromPb(const pb::Strip &pb)
         auto tmp = new stripext::AudioStripExt(this);
         tmp->fromPb(pb.audio());
         setAudio(tmp);
+    }
+    if (pb.has_text()) {
+        auto tmp = new stripext::TextStripExt(this);
+        tmp->fromPb(pb.text());
+        setText(tmp);
     }
 }

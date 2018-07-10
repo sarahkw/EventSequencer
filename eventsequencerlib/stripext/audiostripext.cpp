@@ -2,8 +2,6 @@
 
 #include <eventsequencer.pb.h>
 
-#include <QDebug>
-
 namespace stripext {
 
 AudioStripExt::AudioStripExt(QObject *parent) : QObject(parent)

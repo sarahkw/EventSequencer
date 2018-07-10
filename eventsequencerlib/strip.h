@@ -10,6 +10,7 @@ class Strip;
 namespace stripext {
 class BadJsStripExt;
 class AudioStripExt;
+class TextStripExt;
 }
 
 class Strip : public QObject
@@ -22,12 +23,14 @@ class Strip : public QObject
 
     stripext::BadJsStripExt* badJs_ = nullptr;
     stripext::AudioStripExt* audio_ = nullptr;
+    stripext::TextStripExt* text_ = nullptr;
 
     Q_PROPERTY(int channel READ channel WRITE setChannel NOTIFY channelChanged)
     Q_PROPERTY(int startFrame READ startFrame WRITE setStartFrame NOTIFY startFrameChanged)
     Q_PROPERTY(int length READ length WRITE setLength NOTIFY lengthChanged)
     Q_PROPERTY(stripext::BadJsStripExt* badJs READ badJs WRITE setBadJs NOTIFY badJsChanged)
     Q_PROPERTY(stripext::AudioStripExt* audio READ audio WRITE setAudio NOTIFY audioChanged)
+    Q_PROPERTY(stripext::TextStripExt* text READ text WRITE setText NOTIFY textChanged)
 
 public:
     explicit Strip(QObject *parent = nullptr);
@@ -52,6 +55,10 @@ public:
     void setAudio(stripext::AudioStripExt *audio);
     Q_INVOKABLE stripext::AudioStripExt *mutableAudio();
 
+    stripext::TextStripExt *text() const;
+    void setText(stripext::TextStripExt *text);
+    Q_INVOKABLE stripext::TextStripExt* mutableText();
+
 signals:
 
     void channelChanged();
@@ -59,6 +66,7 @@ signals:
     void lengthChanged();
     void badJsChanged();
     void audioChanged();
+    void textChanged();
 
 public slots:
 };
