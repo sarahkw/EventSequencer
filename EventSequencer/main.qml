@@ -94,7 +94,7 @@ ApplicationWindow {
                         var strips = document.strips()
                         strips.forEach(function (s) {
                             // This sucks, but user could have had the left/right selected.
-                            s.qmlStrip.selectionMode = s.qmlStrip.selectionMode_WHOLE
+                            s.qmlStrip.selectionMode = SelectionMode.Whole
                         })
                         selectedCppStrips = strips
                     }
@@ -538,14 +538,14 @@ ApplicationWindow {
                                 onFinalCommit: {
                                     if (selected) {
                                         switch (strip.selectionMode) {
-                                        case strip.selectionMode_WHOLE:
+                                        case SelectionMode.Whole:
                                             cppStrip.startFrame += zoom.mapDisplayWidthToFullFrames(diffX)
                                             cppStrip.channel += floorDiv(diffY, channelPixels)
                                             break;
-                                        case strip.selectionMode_RIGHT:
+                                        case SelectionMode.Right:
                                             cppStrip.length += zoom.mapDisplayWidthToFullFrames(diffX)
                                             break;
-                                        case strip.selectionMode_LEFT:
+                                        case SelectionMode.Left:
                                             var initialEndFrame = cppStrip.startFrame + cppStrip.length
                                             cppStrip.length -= zoom.mapDisplayWidthToFullFrames(diffX)
                                             cppStrip.startFrame = initialEndFrame - cppStrip.length
@@ -565,7 +565,7 @@ ApplicationWindow {
                                         name: "move_whole"
                                         when: (selected &&
                                                grabMode.grabState == grabMode.grabstate_MOVING &&
-                                               strip.selectionMode == strip.selectionMode_WHOLE)
+                                               strip.selectionMode === SelectionMode.Whole)
                                         PropertyChanges {
                                             target: strip
                                             explicit: true
@@ -585,7 +585,7 @@ ApplicationWindow {
                                         name: "move_right"
                                         when: (selected &&
                                                grabMode.grabState == grabMode.grabstate_MOVING &&
-                                               strip.selectionMode == strip.selectionMode_RIGHT)
+                                               strip.selectionMode === SelectionMode.Right)
                                         PropertyChanges {
                                             target: strip
                                             explicit: true
@@ -602,7 +602,7 @@ ApplicationWindow {
                                         name: "move_left"
                                         when: (selected &&
                                                grabMode.grabState == grabMode.grabstate_MOVING &&
-                                               strip.selectionMode == strip.selectionMode_LEFT)
+                                               strip.selectionMode === SelectionMode.Left)
                                         PropertyChanges {
                                             target: strip
                                             explicit: true

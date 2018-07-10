@@ -20,5 +20,6 @@
         <file>Control/TextControl.qml</file>
         <file>Control/Resolver.qml</file>
         <file>Control/AudioControl.qml</file>
+        <file>SelectionMode.qml</file>
     </qresource>
 </RCC>

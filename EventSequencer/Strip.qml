@@ -1,12 +1,8 @@
 import QtQuick 2.0
 
 Rectangle {
-    readonly property int selectionMode_WHOLE: 0
-    readonly property int selectionMode_LEFT: 1
-    readonly property int selectionMode_RIGHT: 2
-
     property bool selected: false
-    property int selectionMode: selectionMode_WHOLE
+    property int selectionMode: SelectionMode.Whole
 
     property color baseColor: "pink"
     property color handleColor: Qt.darker(baseColor, 1.1)
@@ -53,7 +49,7 @@ Rectangle {
         anchors.bottomMargin: parent.border.width
 
         width: handleWidth
-        color: (parent.selected && parent.selectionMode != parent.selectionMode_RIGHT) ? selectedColor : handleColor
+        color: (parent.selected && parent.selectionMode !== SelectionMode.Right) ? selectedColor : handleColor
         Triangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -76,7 +72,7 @@ Rectangle {
         anchors.bottomMargin: parent.border.width
 
         width: handleWidth
-        color: (parent.selected && parent.selectionMode != parent.selectionMode_LEFT) ? selectedColor : handleColor
+        color: (parent.selected && parent.selectionMode !== SelectionMode.Left) ? selectedColor : handleColor
         Triangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
@@ -97,7 +93,7 @@ Rectangle {
 
         acceptedButtons: Qt.RightButton
         onClicked: {
-            base.selectionMode = selectionMode_LEFT
+            base.selectionMode = SelectionMode.Left
             base.selectionClicked(mouse)
         }
     }
@@ -110,7 +106,7 @@ Rectangle {
 
         acceptedButtons: Qt.RightButton
         onClicked: {
-            base.selectionMode = selectionMode_RIGHT
+            base.selectionMode = SelectionMode.Right
             base.selectionClicked(mouse)
         }
     }
@@ -123,7 +119,7 @@ Rectangle {
 
         acceptedButtons: Qt.RightButton
         onClicked: {
-            base.selectionMode = selectionMode_WHOLE
+            base.selectionMode = SelectionMode.Whole
             base.selectionClicked(mouse)
         }
     }
