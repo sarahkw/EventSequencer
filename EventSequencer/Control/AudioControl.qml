@@ -5,10 +5,7 @@ import QtQuick.Layouts 1.3
 Item {
     property Component stripPropertiesComponent: Component {
         Column {
-            anchors.left: parent.left
-            anchors.right: parent.right
-
-            Text {
+            Label {
                 text: "File:"
             }
             RowLayout {
