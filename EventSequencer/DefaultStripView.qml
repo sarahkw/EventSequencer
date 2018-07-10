@@ -3,12 +3,11 @@ import QtQuick 2.0
 Rectangle {
     property bool selected: false
     property int selectionMode: SelectionMode.Whole
+    signal selectionClicked(var mouse, int newSelectionMode)
 
     property color baseColor: "pink"
     property color handleColor: Qt.darker(baseColor, 1.1)
     property color selectedColor: Qt.darker(baseColor, 2)
-
-    signal selectionClicked(var mouse)
 
     id: base
 
@@ -82,7 +81,6 @@ Rectangle {
             height: parent.height - 10
             color: "black"
         }
-
     }
 
     MouseArea {
@@ -93,8 +91,7 @@ Rectangle {
 
         acceptedButtons: Qt.RightButton
         onClicked: {
-            base.selectionMode = SelectionMode.Left
-            base.selectionClicked(mouse)
+            base.selectionClicked(mouse, SelectionMode.Left)
         }
     }
 
@@ -106,8 +103,7 @@ Rectangle {
 
         acceptedButtons: Qt.RightButton
         onClicked: {
-            base.selectionMode = SelectionMode.Right
-            base.selectionClicked(mouse)
+            base.selectionClicked(mouse, SelectionMode.Right)
         }
     }
 
@@ -119,8 +115,7 @@ Rectangle {
 
         acceptedButtons: Qt.RightButton
         onClicked: {
-            base.selectionMode = SelectionMode.Whole
-            base.selectionClicked(mouse)
+            base.selectionClicked(mouse, SelectionMode.Whole)
         }
     }
 

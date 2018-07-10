@@ -493,41 +493,53 @@ ApplicationWindow {
 
                     Repeater {
                         model: document
-                        Strip {
-                            id: strip
+                        Item {
+                            id: stripBase
+
+                            property int selectionMode: SelectionMode.Whole
+                            property bool selected: realIn(cppStrip, selectedCppStrips)
+
+                            DefaultStripView {
+                                id: dsv
+                                anchors.left: parent.left
+                                anchors.top: parent.top
+                                anchors.right: parent.right
+
+                                selected: stripBase.selected
+                                selectionMode: stripBase.selectionMode
+                                onSelectionClicked: {
+                                    if (mouse.modifiers & Qt.ShiftModifier) {
+                                        var tmp = selectedCppStrips
+                                        selectedCppStrips = []
+
+                                        if (realIn(cppStrip, tmp)) {
+                                            tmp = tmp.filter(function (foo) {
+                                                return foo !== cppStrip;
+                                            })
+                                        } else {
+                                            tmp.push(cppStrip)
+                                        }
+
+                                        selectedCppStrips = tmp
+                                    } else {
+                                        selectedCppStrips = [cppStrip]
+                                    }
+
+                                    stripBase.selectionMode = newSelectionMode
+
+                                    channelPanel.activeChannel = cppStrip.channel
+                                }
+                            }
 
                             readonly property ES.Strip cppStrip: modelData
 
                             Component.onCompleted: {
-                                cppStrip.qmlStrip = strip
+                                cppStrip.qmlStrip = stripBase
                             }
 
                             x: zoom.mapFrameToDisplayX(cppStrip.startFrame)
                             width: Math.max(zoom.mapLengthToDisplayWidth(cppStrip.length), minimumWidth)
                             y: cppStrip.channel * channelPixels
-
-                            selected: realIn(cppStrip, selectedCppStrips)
-
-                            onSelectionClicked: {
-                                if (mouse.modifiers & Qt.ShiftModifier) {
-                                    var tmp = selectedCppStrips
-                                    selectedCppStrips = []
-
-                                    if (realIn(cppStrip, tmp)) {
-                                        tmp = tmp.filter(function (foo) {
-                                            return foo !== cppStrip;
-                                        })
-                                    } else {
-                                        tmp.push(cppStrip)
-                                    }
-
-                                    selectedCppStrips = tmp
-                                } else {
-                                    selectedCppStrips = [cppStrip]
-                                }
-
-                                channelPanel.activeChannel = cppStrip.channel
-                            }
 
                             function floorDiv(a, b) {
                                 return Math.floor(a / b);
@@ -537,7 +549,7 @@ ApplicationWindow {
                                 target: grabMode
                                 onFinalCommit: {
                                     if (selected) {
-                                        switch (strip.selectionMode) {
+                                        switch (stripBase.selectionMode) {
                                         case SelectionMode.Whole:
                                             cppStrip.startFrame += zoom.mapDisplayWidthToFullFrames(diffX)
                                             cppStrip.channel += floorDiv(diffY, channelPixels)
@@ -565,9 +577,9 @@ ApplicationWindow {
                                         name: "move_whole"
                                         when: (selected &&
                                                grabMode.grabState == grabMode.grabstate_MOVING &&
-                                               strip.selectionMode === SelectionMode.Whole)
+                                               stripBase.selectionMode === SelectionMode.Whole)
                                         PropertyChanges {
-                                            target: strip
+                                            target: stripBase
                                             explicit: true
                                             initialFrame: cppStrip.startFrame
                                             initialChannel: cppStrip.channel
@@ -585,9 +597,9 @@ ApplicationWindow {
                                         name: "move_right"
                                         when: (selected &&
                                                grabMode.grabState == grabMode.grabstate_MOVING &&
-                                               strip.selectionMode === SelectionMode.Right)
+                                               stripBase.selectionMode === SelectionMode.Right)
                                         PropertyChanges {
-                                            target: strip
+                                            target: stripBase
                                             explicit: true
                                             initialLength: cppStrip.length
                                         }
@@ -602,9 +614,9 @@ ApplicationWindow {
                                         name: "move_left"
                                         when: (selected &&
                                                grabMode.grabState == grabMode.grabstate_MOVING &&
-                                               strip.selectionMode === SelectionMode.Left)
+                                               stripBase.selectionMode === SelectionMode.Left)
                                         PropertyChanges {
-                                            target: strip
+                                            target: stripBase
                                             explicit: true
                                             initialFrame: cppStrip.startFrame + cppStrip.length
                                             initialLength: cppStrip.length
