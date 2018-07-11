@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       -= gui
+#QT       -= gui
 
 TARGET = eventsequencerlib
 TEMPLATE = lib
@@ -38,7 +38,8 @@ SOURCES += \
     channel/audiochannel.cpp \
     stripext/badjsstripext.cpp \
     stripext/audiostripext.cpp \
-    stripext/textstripext.cpp
+    stripext/textstripext.cpp \
+    constrainedmetricsfontutil.cpp
 
 
 HEADERS += \
@@ -58,7 +59,8 @@ HEADERS += \
     channel/audiochannel.h \
     stripext/badjsstripext.h \
     stripext/audiostripext.h \
-    stripext/textstripext.h
+    stripext/textstripext.h \
+    constrainedmetricsfontutil.h
 
 unix {
     target.path = /usr/lib

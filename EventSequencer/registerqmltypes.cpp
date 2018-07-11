@@ -8,6 +8,7 @@
 #include "stripext/audiostripext.h"
 #include "stripext/badjsstripext.h"
 #include "stripext/textstripext.h"
+#include "constrainedmetricsfontutil.h"
 
 #include <QQmlEngine>
 
@@ -25,4 +26,5 @@ void RegisterQmlTypes::registerQmlTypes()
         [](QQmlEngine*, QJSEngine*) -> QObject* {
             return new FramesAndSeconds;
         });
+    qmlRegisterType<ConstrainedMetricsFontUtil>("eventsequencer", 1, 0, "ConstrainedMetricsFontUtil");
 }

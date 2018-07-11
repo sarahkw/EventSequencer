@@ -142,9 +142,16 @@ ApplicationWindow {
         CustomMenu {
             title: "Debug"
             CustomMenuItem {
-                text: "DebugCppModel"
+                text: "CppModel"
                 onTriggered: {
                     var component = Qt.createComponent("DebugCppModel.qml")
+                    var obj = component.createObject(appwin, {visible: true})
+                }
+            }
+            CustomMenuItem {
+                text: "ConstrainedMetricsFontUtil"
+                onTriggered: {
+                    var component = Qt.createComponent("DebugConstrainedMetricsFontUtil.qml")
                     var obj = component.createObject(appwin, {visible: true})
                 }
             }

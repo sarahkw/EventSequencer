@@ -21,5 +21,6 @@
         <file>Control/Resolver.qml</file>
         <file>Control/AudioControl.qml</file>
         <file>SelectionMode.qml</file>
+        <file>DebugConstrainedMetricsFontUtil.qml</file>
     </qresource>
 </RCC>
