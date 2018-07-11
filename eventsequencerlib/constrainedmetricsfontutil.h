@@ -12,7 +12,7 @@ public:
     explicit ConstrainedMetricsFontUtil(QObject *parent = nullptr);
 
     Q_INVOKABLE QFont makeFont(int pixelSize, qreal spacing);
-    Q_INVOKABLE int fontCharacterWidth(int pixelSize, qreal spacing);
+    Q_INVOKABLE int fontCharacterWidth(QFont font);
 
 signals:
 

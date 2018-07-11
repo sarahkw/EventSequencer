@@ -1,6 +1,7 @@
 import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Controls 2.2
+import Qt.labs.platform 1.0 as Qlp
 
 import eventsequencer 1.0
 
@@ -10,7 +11,13 @@ Window {
     height: 480
     title: "DebugConstrainedMetricsFontUtil"
 
-    property int gridSize: mf.fontCharacterWidth(sbox.value, sbLetterSpacing.value)
+    property font myFont: mf.makeFont(sbox.value, sbLetterSpacing.value)
+    property int gridSize: mf.fontCharacterWidth(txtLineMeUp.font)
+
+    Qlp.FontDialog {
+        id: fontDialog
+        options: Qlp.FontDialog.MonospacedFonts
+    }
 
     ConstrainedMetricsFontUtil {
         id: mf
@@ -29,30 +36,50 @@ Window {
     }
 
     Column {
-        Row {
-            Label {
-                text: "pixelSize"
-                anchors.verticalCenter: parent.verticalCenter
+        Item {
+            width: controls.width
+            height: controls.height
+
+            Rectangle {
+                color: "white"
+                anchors.fill: parent
             }
-            SpinBox {
-                id: sbox
-                value: 12
-            }
-        }
-        Row {
-            Label {
-                text: "letterSpacing"
-                anchors.verticalCenter: parent.verticalCenter
-            }
-            SpinBox {
-                id: sbLetterSpacing
-                from: -100
-                value: 0
+
+            Grid {
+                id: controls
+                spacing: 5
+                columns: 2
+                verticalItemAlignment: Grid.AlignVCenter
+                Button {
+                    text: "Font Dialog"
+                    onClicked: {
+                        fontDialog.open()
+                    }
+                }
+                Label {
+                    text: fontDialog.font
+                }
+                Label {
+                    text: "pixelSize"
+                }
+                SpinBox {
+                    id: sbox
+                    value: 12
+                }
+                Label {
+                    text: "letterSpacing"
+                }
+                SpinBox {
+                    id: sbLetterSpacing
+                    from: -100
+                    value: 0
+                }
             }
         }
         Text {
+            id: txtLineMeUp
             text: "These are some words that must line up."
-            font: mf.makeFont(sbox.value, sbLetterSpacing.value)
+            font: myFont
         }
     }
 }

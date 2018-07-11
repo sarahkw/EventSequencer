@@ -19,9 +19,8 @@ QFont ConstrainedMetricsFontUtil::makeFont(int pixelSize, qreal spacing)
     return ret;
 }
 
-int ConstrainedMetricsFontUtil::fontCharacterWidth(int pixelSize, qreal spacing)
+int ConstrainedMetricsFontUtil::fontCharacterWidth(QFont font)
 {
-    QFont f = makeFont(pixelSize, spacing);
-    QFontMetrics fm(f);
+    QFontMetrics fm(font);
     return fm.horizontalAdvance("x");
 }
