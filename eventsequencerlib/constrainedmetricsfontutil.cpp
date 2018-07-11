@@ -8,19 +8,21 @@ ConstrainedMetricsFontUtil::ConstrainedMetricsFontUtil(QObject *parent) : QObjec
 {
 }
 
-QFont ConstrainedMetricsFontUtil::makeFont(int pixelSize, qreal spacing)
+QFont ConstrainedMetricsFontUtil::defaultFont() const
 {
-    QFont ret("Courier New");
-    ret.setStyleStrategy(static_cast<QFont::StyleStrategy>(QFont::PreferDefault | QFont::ForceIntegerMetrics));
-    ret.setPixelSize(pixelSize);
-    ret.setKerning(false);
-    ret.setLetterSpacing(QFont::AbsoluteSpacing, spacing);
-
-    return ret;
+    return QFont("Courier New");
 }
 
 int ConstrainedMetricsFontUtil::fontCharacterWidth(QFont font)
 {
     QFontMetrics fm(font);
     return fm.horizontalAdvance("x");
+}
+
+QFont ConstrainedMetricsFontUtil::makeUniformPixelWidth(QFont input)
+{
+    QFont copy(input);
+    copy.setStyleStrategy(static_cast<QFont::StyleStrategy>(copy.styleStrategy() | QFont::ForceIntegerMetrics));
+    copy.setKerning(false);
+    return copy;
 }

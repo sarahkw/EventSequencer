@@ -11,8 +11,9 @@ class ConstrainedMetricsFontUtil : public QObject
 public:
     explicit ConstrainedMetricsFontUtil(QObject *parent = nullptr);
 
-    Q_INVOKABLE QFont makeFont(int pixelSize, qreal spacing);
+    Q_INVOKABLE QFont defaultFont() const;
     Q_INVOKABLE int fontCharacterWidth(QFont font);
+    Q_INVOKABLE QFont makeUniformPixelWidth(QFont input);
 
 signals:
 

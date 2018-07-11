@@ -11,12 +11,15 @@ Window {
     height: 480
     title: "DebugConstrainedMetricsFontUtil"
 
-    property font myFont: mf.makeFont(sbox.value, sbLetterSpacing.value)
-    property int gridSize: mf.fontCharacterWidth(txtLineMeUp.font)
+    property font myFont: mf.makeUniformPixelWidth(mf.defaultFont())
+    property int gridSize: mf.fontCharacterWidth(myFont)
 
     Qlp.FontDialog {
         id: fontDialog
         options: Qlp.FontDialog.MonospacedFonts
+        onAccepted: {
+            myFont = mf.makeUniformPixelWidth(font)
+        }
     }
 
     ConstrainedMetricsFontUtil {
@@ -57,7 +60,7 @@ Window {
                     }
                 }
                 Label {
-                    text: fontDialog.font
+                    text: myFont
                 }
                 Label {
                     text: "pixelSize"
@@ -65,6 +68,9 @@ Window {
                 SpinBox {
                     id: sbox
                     value: 12
+                    onValueChanged: {
+                        myFont.pixelSize = value
+                    }
                 }
                 Label {
                     text: "letterSpacing"
@@ -73,12 +79,15 @@ Window {
                     id: sbLetterSpacing
                     from: -100
                     value: 0
+                    onValueChanged: {
+                        myFont.letterSpacing = value
+                    }
                 }
             }
         }
         Text {
             id: txtLineMeUp
-            text: "These are some words that must line up."
+            text: "These letters must line up with the grid."
             font: myFont
         }
     }
