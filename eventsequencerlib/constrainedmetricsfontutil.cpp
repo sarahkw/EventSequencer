@@ -2,7 +2,7 @@
 
 #include <QDebug>
 #include <QFontMetrics>
-
+#include <QFontDatabase>
 
 ConstrainedMetricsFontUtil::ConstrainedMetricsFontUtil(QObject *parent) : QObject(parent)
 {
@@ -10,7 +10,7 @@ ConstrainedMetricsFontUtil::ConstrainedMetricsFontUtil(QObject *parent) : QObjec
 
 QFont ConstrainedMetricsFontUtil::defaultFont() const
 {
-    return QFont("Courier New");
+    return QFontDatabase::systemFont(QFontDatabase::FixedFont);
 }
 
 int ConstrainedMetricsFontUtil::fontCharacterWidth(QFont font)
