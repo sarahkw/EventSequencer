@@ -134,6 +134,8 @@ Window {
                 id: mfAuto
                 constrainByWidthValue: ctrl_constrainByWidthValue.value
                 addLetterSpacingToMatchWidth: ctrl_addLetterSpacingToMatchWidth.checked
+                constainByHeightEnabled: ctrl_constainByHeightEnabled.checked
+                constrainByHeightValue: ctrl_constrainByHeightValue.value
                 baseFont: myFont
             }
 
@@ -156,6 +158,18 @@ Window {
                     SpinBox {
                         id: ctrl_constrainByWidthValue
                         value: 12
+                    }
+                    Label {
+                        text: "constainByHeightEnabled"
+                    }
+                    CheckBox {
+                        id: ctrl_constainByHeightEnabled
+                    }
+                    Label {
+                        text: "constrainByHeightValue"
+                    }
+                    SpinBox {
+                        id: ctrl_constrainByHeightValue
                     }
                     Label {
                         text: "addLetterSpacingToMatchWidth"
