@@ -65,7 +65,7 @@ QFont ConstrainedMetricsFontUtil::baseFont() const
 void ConstrainedMetricsFontUtil::setBaseFont(const QFont &baseFont)
 {
     if (baseFont_ != baseFont) {
-        baseFont_ = baseFont;
+        baseFont_ = makeUniformPixelWidth(baseFont);
         emit baseFontChanged();
     }
 }

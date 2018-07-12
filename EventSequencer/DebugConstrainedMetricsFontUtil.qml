@@ -41,7 +41,7 @@ Window {
                 id: fontDialog
                 options: Qlp.FontDialog.MonospacedFonts
                 onAccepted: {
-                    mfAuto.baseFont = mfAuto.makeUniformPixelWidth(font)
+                    mfAuto.baseFont = font
                 }
             }
 
