@@ -1,5 +1,5 @@
-#ifndef MUHFONT_H
-#define MUHFONT_H
+#ifndef CONSTRAINEDMETRICSFONTUTIL_H
+#define CONSTRAINEDMETRICSFONTUTIL_H
 
 #include <QObject>
 #include <QFont>
@@ -76,4 +76,4 @@ signals:
 public slots:
 };
 
-#endif // MUHFONT_H
+#endif // CONSTRAINEDMETRICSFONTUTIL_H
