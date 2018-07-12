@@ -13,7 +13,9 @@ public:
 
     Q_INVOKABLE QFont defaultFont() const;
     Q_INVOKABLE int fontCharacterWidth(QFont font);
+    Q_INVOKABLE int fontHeight(QFont font);
     Q_INVOKABLE QFont makeUniformPixelWidth(QFont input);
+    Q_INVOKABLE void dumpFontInformation(QFont font);
 
 signals:
 

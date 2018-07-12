@@ -26,6 +26,7 @@ Window {
         id: mf
     }
 
+
     Repeater {
         anchors.fill: parent
         model: Math.ceil(width / gridSize)
@@ -62,6 +63,11 @@ Window {
                 Label {
                     text: myFont
                 }
+                Item { width: 1; height: 1 }
+                Button {
+                    text: "Dump Font Information"
+                    onClicked: mf.dumpFontInformation(myFont)
+                }
                 Label {
                     text: "pixelSize"
                 }
@@ -85,10 +91,20 @@ Window {
                 }
             }
         }
+
         Text {
             id: txtLineMeUp
             text: "These letters must line up with the grid."
             font: myFont
+
+            Rectangle {
+                border.width: 1
+                anchors.left: txtLineMeUp.left
+                anchors.top: txtLineMeUp.top
+                anchors.right: txtLineMeUp.right
+                height: mf.fontHeight(myFont)
+                color: "#00000000"
+            }
         }
     }
 }
