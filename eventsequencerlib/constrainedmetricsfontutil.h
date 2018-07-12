@@ -18,13 +18,15 @@ class ConstrainedMetricsFontUtil : public QObject
     QFont baseFont_;
 
     bool builtFontFailedToMeetConstraints_ = false;
+    int builtFontAddedSpacing_ = 0;
 
     Q_PROPERTY(int   constrainByWidthValue            READ constrainByWidthValue            WRITE setConstrainByWidthValue            NOTIFY constrainByWidthValueChanged)
     Q_PROPERTY(bool  constainByHeightEnabled          READ constainByHeightEnabled          WRITE setConstainByHeightEnabled          NOTIFY constainByHeightEnabledChanged)
     Q_PROPERTY(int   constrainByHeightValue           READ constrainByHeightValue           WRITE setConstrainByHeightValue           NOTIFY constrainByHeightValueChanged)
     Q_PROPERTY(bool  addLetterSpacingToMatchWidth     READ addLetterSpacingToMatchWidth     WRITE setAddLetterSpacingToMatchWidth     NOTIFY addLetterSpacingToMatchWidthChanged)
     Q_PROPERTY(QFont baseFont                         READ baseFont                         WRITE setBaseFont                         NOTIFY baseFontChanged)
-    Q_PROPERTY(bool  builtFontFailedToMeetConstraints READ builtFontFailedToMeetConstraints WRITE setBuiltFontFailedToMeetConstraints NOTIFY builtFontFailedToMeetConstraintsChanged)
+    Q_PROPERTY(bool  builtFontFailedToMeetConstraints READ builtFontFailedToMeetConstraints   NOTIFY builtFontFailedToMeetConstraintsChanged)
+    Q_PROPERTY(int   builtFontAddedSpacing            READ builtFontAddedSpacing              NOTIFY builtFontAddedSpacingChanged)
 
 public:
     explicit ConstrainedMetricsFontUtil(QObject *parent = nullptr);
@@ -54,7 +56,14 @@ public:
     Q_INVOKABLE QFont buildFont();
 
     bool builtFontFailedToMeetConstraints() const;
+private:
     void setBuiltFontFailedToMeetConstraints(bool builtFontFailedToMeetConstraints);
+public:
+
+    int builtFontAddedSpacing() const;
+private:
+    void setBuiltFontAddedSpacing(int builtFontAddedSpacing);
+public:
 
 signals:
 
@@ -64,6 +73,7 @@ signals:
     void addLetterSpacingToMatchWidthChanged();
     void baseFontChanged();
     void builtFontFailedToMeetConstraintsChanged();
+    void builtFontAddedSpacingChanged();
 
 public slots:
 };

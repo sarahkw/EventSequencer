@@ -96,6 +96,7 @@ QFont ConstrainedMetricsFontUtil::buildFont()
 
     if (addLetterSpacingToMatchWidth() && gotGoodCandidate) {
         candidate.setLetterSpacing(QFont::AbsoluteSpacing, goodCandidateMissingWidth);
+        setBuiltFontAddedSpacing(goodCandidateMissingWidth);
     } else {
         candidate.setLetterSpacing(QFont::AbsoluteSpacing, 0);
     }
@@ -114,6 +115,19 @@ void ConstrainedMetricsFontUtil::setBuiltFontFailedToMeetConstraints(bool builtF
     if (builtFontFailedToMeetConstraints_ != builtFontFailedToMeetConstraints) {
         builtFontFailedToMeetConstraints_ = builtFontFailedToMeetConstraints;
         emit builtFontFailedToMeetConstraintsChanged();
+    }
+}
+
+int ConstrainedMetricsFontUtil::builtFontAddedSpacing() const
+{
+    return builtFontAddedSpacing_;
+}
+
+void ConstrainedMetricsFontUtil::setBuiltFontAddedSpacing(int builtFontAddedSpacing)
+{
+    if (builtFontAddedSpacing_ != builtFontAddedSpacing) {
+        builtFontAddedSpacing_ = builtFontAddedSpacing;
+        emit builtFontAddedSpacingChanged();
     }
 }
 

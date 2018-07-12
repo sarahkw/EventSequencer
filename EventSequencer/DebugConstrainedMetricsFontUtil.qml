@@ -123,10 +123,6 @@ Window {
                         }
                     }
                 }
-                Button {
-                    anchors.right: parent.right
-                    text: "Use Manual Font"
-                }
             }
         }
 
@@ -176,6 +172,12 @@ Window {
                         text: "Value"
                         enabled: false
                         checked: mfAuto.builtFontFailedToMeetConstraints
+                    }
+                    Label {
+                        text: "builtFontAddedSpacing"
+                    }
+                    Label {
+                        text: mfAuto.builtFontAddedSpacing
                     }
                 }
                 Button {
