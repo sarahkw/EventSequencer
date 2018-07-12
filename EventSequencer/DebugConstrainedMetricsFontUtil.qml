@@ -145,7 +145,7 @@ Window {
                 }
                 Button {
                     anchors.right: parent.right
-                    text: "Use Auto Font (One-Shot)"
+                    text: "Apply"
                     onClicked: {
                         myFont = mfAuto.buildFont()
                         gridSize = ctrl_constrainByWidthValue.value
