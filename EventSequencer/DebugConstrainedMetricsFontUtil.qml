@@ -11,21 +11,20 @@ Window {
     height: 480
     title: "DebugConstrainedMetricsFontUtil"
 
-    property font myFont: mf.makeUniformPixelWidth(mf.defaultFont())
-    property int gridSize: mf.fontCharacterWidth(myFont)
+    property font myFont: mfManual.makeUniformPixelWidth(mfManual.defaultFont())
+    property int gridSize: mfManual.fontCharacterWidth(myFont)
 
     Qlp.FontDialog {
         id: fontDialog
         options: Qlp.FontDialog.MonospacedFonts
         onAccepted: {
-            myFont = mf.makeUniformPixelWidth(font)
+            myFont = mfManual.makeUniformPixelWidth(font)
         }
     }
 
     ConstrainedMetricsFontUtil {
-        id: mf
+        id: mfManual
     }
-
 
     Repeater {
         anchors.fill: parent
@@ -39,72 +38,145 @@ Window {
         }
     }
 
-    Column {
+    Row {
+        id: ctrlRow
+        y: 10
+        x: 10
+        spacing: 20
+
         Item {
-            width: controls.width
-            height: controls.height
+            width: basicControls.width
+            height: basicControls.height
 
             Rectangle {
                 color: "white"
+                border.width: 1
                 anchors.fill: parent
+                anchors.margins: -5
             }
 
-            Grid {
-                id: controls
-                spacing: 5
-                columns: 2
-                verticalItemAlignment: Grid.AlignVCenter
+            Column {
+                id: basicControls
+                Grid {
+                    spacing: 5
+                    columns: 2
+                    verticalItemAlignment: Grid.AlignVCenter
+                    Button {
+                        text: "Font Dialog"
+                        onClicked: {
+                            fontDialog.open()
+                        }
+                    }
+                    Label {
+                        text: myFont
+                    }
+                    Item { width: 1; height: 1 }
+                    Button {
+                        text: "Dump Font Information"
+                        onClicked: mfManual.dumpFontInformation(myFont)
+                    }
+                    Label {
+                        text: "pixelSize"
+                    }
+                    SpinBox {
+                        id: sbox
+                        value: 12
+                        onValueChanged: {
+                            myFont.pixelSize = value
+                        }
+                    }
+                    Label {
+                        text: "letterSpacing"
+                    }
+                    SpinBox {
+                        id: sbLetterSpacing
+                        from: -100
+                        value: 0
+                        onValueChanged: {
+                            myFont.letterSpacing = value
+                        }
+                    }
+                }
                 Button {
-                    text: "Font Dialog"
-                    onClicked: {
-                        fontDialog.open()
-                    }
-                }
-                Label {
-                    text: myFont
-                }
-                Item { width: 1; height: 1 }
-                Button {
-                    text: "Dump Font Information"
-                    onClicked: mf.dumpFontInformation(myFont)
-                }
-                Label {
-                    text: "pixelSize"
-                }
-                SpinBox {
-                    id: sbox
-                    value: 12
-                    onValueChanged: {
-                        myFont.pixelSize = value
-                    }
-                }
-                Label {
-                    text: "letterSpacing"
-                }
-                SpinBox {
-                    id: sbLetterSpacing
-                    from: -100
-                    value: 0
-                    onValueChanged: {
-                        myFont.letterSpacing = value
-                    }
+                    anchors.right: parent.right
+                    text: "Use Manual Font"
                 }
             }
         }
 
-        Text {
-            id: txtLineMeUp
-            text: "These letters must line up with the grid."
-            font: myFont
+        Item {
+            width: autoControls.width
+            height: autoControls.height
+
+            ConstrainedMetricsFontUtil {
+                id: mfAuto
+                constrainByWidthValue: ctrl_constrainByWidthValue.value
+                addLetterSpacingToMatchWidth: ctrl_addLetterSpacingToMatchWidth.checked
+            }
 
             Rectangle {
+                color: "white"
                 border.width: 1
-                anchors.left: txtLineMeUp.left
-                anchors.top: txtLineMeUp.top
-                anchors.right: txtLineMeUp.right
-                height: mf.fontHeight(myFont)
-                color: "#00000000"
+                anchors.fill: parent
+                anchors.margins: -5
             }
+
+            Column {
+                id: autoControls
+                Grid {
+                    spacing: 5
+                    columns: 2
+                    verticalItemAlignment: Grid.AlignVCenter
+                    Label {
+                        text: "constrainByWidthValue"
+                    }
+                    SpinBox {
+                        id: ctrl_constrainByWidthValue
+                        value: 12
+                    }
+                    Label {
+                        text: "addLetterSpacingToMatchWidth"
+                    }
+                    CheckBox {
+                        id: ctrl_addLetterSpacingToMatchWidth
+                        text: "Value"
+                    }
+                    Label {
+                        text: "builtFontFailedToMeetConstraints"
+                    }
+                    CheckBox {
+                        id: ctrl_builtFontFailedToMeetConstraints
+                        text: "Value"
+                        enabled: false
+                        checked: mfAuto.builtFontFailedToMeetConstraints
+                    }
+                }
+                Button {
+                    anchors.right: parent.right
+                    text: "Use Auto Font (One-Shot)"
+                    onClicked: {
+                        myFont = mfAuto.buildFont(mfAuto.makeUniformPixelWidth(mfAuto.defaultFont()))
+                        gridSize = ctrl_constrainByWidthValue.value
+                    }
+                }
+            }
+        }
+    }
+    Text {
+        anchors.top: ctrlRow.bottom
+        anchors.topMargin: 10
+
+        id: txtLineMeUp
+        text: "These letters must line up with the grid."
+        font: myFont
+
+        Rectangle {
+            border.width: 1
+            anchors.left: txtLineMeUp.left
+            anchors.top: txtLineMeUp.top
+            anchors.right: txtLineMeUp.right
+            height: mfManual.fontHeight(myFont)
+            color: "#00000000"
         }
     }
 }

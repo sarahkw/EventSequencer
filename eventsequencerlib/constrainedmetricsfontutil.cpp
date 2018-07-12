@@ -3,12 +3,111 @@
 #include <QDebug>
 #include <QFontMetrics>
 #include <QFontDatabase>
+#include <QFontInfo>
+
+int ConstrainedMetricsFontUtil::constrainByWidthValue() const
+{
+    return constrainByWidthValue_;
+}
+
+void ConstrainedMetricsFontUtil::setConstrainByWidthValue(int constrainByWidthValue)
+{
+    if (constrainByWidthValue_ != constrainByWidthValue) {
+        constrainByWidthValue_ = constrainByWidthValue;
+        emit constrainByWidthValueChanged();
+    }
+}
+
+bool ConstrainedMetricsFontUtil::constainByHeightEnabled() const
+{
+    return constainByHeightEnabled_;
+}
+
+void ConstrainedMetricsFontUtil::setConstainByHeightEnabled(bool constainByHeightEnabled)
+{
+    if (constainByHeightEnabled_ != constainByHeightEnabled) {
+        constainByHeightEnabled_ = constainByHeightEnabled;
+        emit constainByHeightEnabledChanged();
+    }
+}
+
+int ConstrainedMetricsFontUtil::constrainByHeightValue() const
+{
+    return constrainByHeightValue_;
+}
+
+void ConstrainedMetricsFontUtil::setConstrainByHeightValue(int constrainByHeightValue)
+{
+    if (constrainByHeightValue_ != constrainByHeightValue) {
+        constrainByHeightValue_ = constrainByHeightValue;
+        emit constrainByHeightValueChanged();
+    }
+}
+
+bool ConstrainedMetricsFontUtil::addLetterSpacingToMatchWidth() const
+{
+    return addLetterSpacingToMatchWidth_;
+}
+
+void ConstrainedMetricsFontUtil::setAddLetterSpacingToMatchWidth(bool addLetterSpacingToMatchWidth)
+{
+    if (addLetterSpacingToMatchWidth_ != addLetterSpacingToMatchWidth) {
+        addLetterSpacingToMatchWidth_ = addLetterSpacingToMatchWidth;
+        emit addLetterSpacingToMatchWidthChanged();
+    }
+}
+
+QFont ConstrainedMetricsFontUtil::buildFont(QFont baseFont)
+{
+    const int MAX_POINT_SIZE = 100;
+    QFont candidate = baseFont;
+    bool gotGoodCandidate = false;
+    int goodCandidateMissingWidth = -1;
+
+    for (int i = 1; i < MAX_POINT_SIZE; ++i) {
+        QFont experimental = baseFont;
+        experimental.setPointSize(i);
+        QFontMetrics fm(experimental);
+        const int charWidth = fm.horizontalAdvance("x");
+        if (charWidth > constrainByWidthValue()) {
+            break;
+        }
+        if (constainByHeightEnabled() && fm.height() > constrainByHeightValue()) {
+            break;
+        }
+        candidate = experimental;
+        gotGoodCandidate = true;
+        goodCandidateMissingWidth = constrainByWidthValue() - charWidth;
+    }
+
+    if (addLetterSpacingToMatchWidth() && gotGoodCandidate) {
+        candidate.setLetterSpacing(QFont::AbsoluteSpacing, goodCandidateMissingWidth);
+    } else {
+        candidate.setLetterSpacing(QFont::AbsoluteSpacing, 0);
+    }
+
+    setBuiltFontFailedToMeetConstraints(!gotGoodCandidate);
+    return candidate;
+}
+
+bool ConstrainedMetricsFontUtil::builtFontFailedToMeetConstraints() const
+{
+    return builtFontFailedToMeetConstraints_;
+}
+
+void ConstrainedMetricsFontUtil::setBuiltFontFailedToMeetConstraints(bool builtFontFailedToMeetConstraints)
+{
+    if (builtFontFailedToMeetConstraints_ != builtFontFailedToMeetConstraints) {
+        builtFontFailedToMeetConstraints_ = builtFontFailedToMeetConstraints;
+        emit builtFontFailedToMeetConstraintsChanged();
+    }
+}
 
 ConstrainedMetricsFontUtil::ConstrainedMetricsFontUtil(QObject *parent) : QObject(parent)
 {
 }
 
-QFont ConstrainedMetricsFontUtil::defaultFont() const
+QFont ConstrainedMetricsFontUtil::defaultFont()
 {
     return QFontDatabase::systemFont(QFontDatabase::FixedFont);
 }
@@ -35,6 +134,14 @@ QFont ConstrainedMetricsFontUtil::makeUniformPixelWidth(QFont input)
 
 void ConstrainedMetricsFontUtil::dumpFontInformation(QFont font)
 {
+    for (int i = 1; i < 64; ++i) {
+        font.setPointSize(i);
+        QFontInfo fi(font);
+        QFontMetrics fm(font);
+        qInfo() << "pointSize" << i << "realPointSize" << fi.pointSizeF() << "width" << fm.horizontalAdvance("x") << "height" << fm.height();
+    }
+
+/*
     QFontMetrics fm(font);
     qInfo() <<
 
@@ -57,4 +164,5 @@ void ConstrainedMetricsFontUtil::dumpFontInformation(QFont font)
 "lineWidth()        = " << fm.lineWidth()        << "\n" <<
 
 "";
+*/
 }

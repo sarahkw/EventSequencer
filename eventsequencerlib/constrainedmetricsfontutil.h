@@ -8,16 +8,54 @@ class ConstrainedMetricsFontUtil : public QObject
 {
     Q_OBJECT
 
+    int constrainByWidthValue_ = 0;
+
+    bool constainByHeightEnabled_ = false;
+    int constrainByHeightValue_ = 0;
+
+    bool addLetterSpacingToMatchWidth_ = false;
+
+    bool builtFontFailedToMeetConstraints_ = false;
+
+    Q_PROPERTY(int   constrainByWidthValue            READ constrainByWidthValue            WRITE setConstrainByWidthValue            NOTIFY constrainByWidthValueChanged)
+    Q_PROPERTY(bool  constainByHeightEnabled          READ constainByHeightEnabled          WRITE setConstainByHeightEnabled          NOTIFY constainByHeightEnabledChanged)
+    Q_PROPERTY(int   constrainByHeightValue           READ constrainByHeightValue           WRITE setConstrainByHeightValue           NOTIFY constrainByHeightValueChanged)
+    Q_PROPERTY(bool  addLetterSpacingToMatchWidth     READ addLetterSpacingToMatchWidth     WRITE setAddLetterSpacingToMatchWidth     NOTIFY addLetterSpacingToMatchWidthChanged)
+    Q_PROPERTY(bool  builtFontFailedToMeetConstraints READ builtFontFailedToMeetConstraints WRITE setBuiltFontFailedToMeetConstraints NOTIFY builtFontFailedToMeetConstraintsChanged)
+
 public:
     explicit ConstrainedMetricsFontUtil(QObject *parent = nullptr);
 
-    Q_INVOKABLE QFont defaultFont() const;
-    Q_INVOKABLE int fontCharacterWidth(QFont font);
-    Q_INVOKABLE int fontHeight(QFont font);
-    Q_INVOKABLE QFont makeUniformPixelWidth(QFont input);
-    Q_INVOKABLE void dumpFontInformation(QFont font);
+    Q_INVOKABLE static QFont defaultFont();
+    Q_INVOKABLE static int fontCharacterWidth(QFont font);
+    Q_INVOKABLE static int fontHeight(QFont font);
+    Q_INVOKABLE static QFont makeUniformPixelWidth(QFont input);
+    Q_INVOKABLE static void dumpFontInformation(QFont font);
+
+    int constrainByWidthValue() const;
+    void setConstrainByWidthValue(int constrainByWidthValue);
+
+    bool constainByHeightEnabled() const;
+    void setConstainByHeightEnabled(bool constainByHeightEnabled);
+
+    int constrainByHeightValue() const;
+    void setConstrainByHeightValue(int constrainByHeightValue);
+
+    bool addLetterSpacingToMatchWidth() const;
+    void setAddLetterSpacingToMatchWidth(bool addLetterSpacingToMatchWidth);
+
+    Q_INVOKABLE QFont buildFont(QFont baseFont);
+
+    bool builtFontFailedToMeetConstraints() const;
+    void setBuiltFontFailedToMeetConstraints(bool builtFontFailedToMeetConstraints);
 
 signals:
+
+    void constrainByWidthValueChanged();
+    void constainByHeightEnabledChanged();
+    void constrainByHeightValueChanged();
+    void addLetterSpacingToMatchWidthChanged();
+    void builtFontFailedToMeetConstraintsChanged();
 
 public slots:
 };
