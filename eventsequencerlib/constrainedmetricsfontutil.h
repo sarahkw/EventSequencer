@@ -35,7 +35,6 @@ public:
     Q_INVOKABLE static int fontCharacterWidth(QFont font);
     Q_INVOKABLE static int fontHeight(QFont font);
     Q_INVOKABLE static QFont makeUniformPixelWidth(QFont input);
-    Q_INVOKABLE static void dumpFontInformation(QFont font);
     Q_INVOKABLE static QString fontBriefInformation(QFont font);
 
     int constrainByWidthValue() const;

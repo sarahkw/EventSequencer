@@ -76,11 +76,6 @@ Window {
                 Label {
                     text: mfManual.fontBriefInformation(myFont)
                 }
-                Item { width: 1; height: 1 }
-                Button {
-                    text: "Dump Font Information"
-                    onClicked: mfManual.dumpFontInformation(myFont)
-                }
             }
         }
 

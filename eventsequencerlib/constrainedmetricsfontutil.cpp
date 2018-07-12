@@ -160,42 +160,6 @@ QFont ConstrainedMetricsFontUtil::makeUniformPixelWidth(QFont input)
     return copy;
 }
 
-void ConstrainedMetricsFontUtil::dumpFontInformation(QFont font)
-{
-    for (int i = 1; i < 64; ++i) {
-        font.setPointSize(i);
-        QFontInfo fi(font);
-        QFontMetrics fm(font);
-        qInfo() << "pointSize" << i << "realPointSize" << fi.pointSizeF() << "width" << fm.horizontalAdvance("x") << "height" << fm.height();
-    }
-
-/*
-    QFontMetrics fm(font);
-    qInfo() <<
-
-"ascent()           = " << fm.ascent()           << "\n" <<
-"capHeight()        = " << fm.capHeight()        << "\n" <<
-"descent()          = " << fm.descent()          << "\n" <<
-"height()           = " << fm.height()           << "\n" <<
-"leading()          = " << fm.leading()          << "\n" <<
-"lineSpacing()      = " << fm.lineSpacing()      << "\n" <<
-"minLeftBearing()   = " << fm.minLeftBearing()   << "\n" <<
-"minRightBearing()  = " << fm.minRightBearing()  << "\n" <<
-"maxWidth()         = " << fm.maxWidth()         << "\n" <<
-                                                    "\n" <<
-"xHeight()          = " << fm.xHeight()          << "\n" <<
-"averageCharWidth() = " << fm.averageCharWidth() << "\n" <<
-                                                    "\n" <<
-"underlinePos()     = " << fm.underlinePos()     << "\n" <<
-"overlinePos()      = " << fm.overlinePos()      << "\n" <<
-"strikeOutPos()     = " << fm.strikeOutPos()     << "\n" <<
-"lineWidth()        = " << fm.lineWidth()        << "\n" <<
-
-"";
-*/
-}
-
-
 QString ConstrainedMetricsFontUtil::fontBriefInformation(QFont font)
 {
     return QString("k = %1 sS = %2 cW = %3")
