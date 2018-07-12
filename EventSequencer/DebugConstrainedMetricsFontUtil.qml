@@ -66,12 +66,6 @@ Window {
                 Label {
                     text: myFont
                 }
-                Label {
-                    text: "fontBriefInformation"
-                }
-                Label {
-                    text: mfAuto.fontBriefInformation(myFont)
-                }
             }
         }
 

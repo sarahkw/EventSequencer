@@ -165,9 +165,3 @@ QFont ConstrainedMetricsFontUtil::makeUniformPixelWidth(QFont input)
     copy.setKerning(false);
     return copy;
 }
-
-QString ConstrainedMetricsFontUtil::fontBriefInformation(QFont font)
-{
-    return QString("k = %1 sS = %2 cW = %3")
-            .arg(font.kerning()).arg(font.styleStrategy()).arg(fontCharacterWidth(font));
-}
