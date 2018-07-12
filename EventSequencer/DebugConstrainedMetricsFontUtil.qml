@@ -11,12 +11,8 @@ Window {
     height: 480
     title: "DebugConstrainedMetricsFontUtil"
 
-    property font myFont: mfManual.makeUniformPixelWidth(mfManual.defaultFont())
-    property int gridSize: mfManual.fontCharacterWidth(myFont)
-
-    ConstrainedMetricsFontUtil {
-        id: mfManual
-    }
+    property font myFont: mfAuto.makeUniformPixelWidth(mfAuto.defaultFont())
+    property int gridSize: mfAuto.fontCharacterWidth(myFont)
 
     Repeater {
         anchors.fill: parent
@@ -45,7 +41,7 @@ Window {
                 id: fontDialog
                 options: Qlp.FontDialog.MonospacedFonts
                 onAccepted: {
-                    myFont = mfManual.makeUniformPixelWidth(font)
+                    myFont = mfAuto.makeUniformPixelWidth(font)
                 }
             }
 
@@ -74,49 +70,7 @@ Window {
                     text: "fontBriefInformation"
                 }
                 Label {
-                    text: mfManual.fontBriefInformation(myFont)
-                }
-            }
-        }
-
-        Item {
-            width: basicControls.width
-            height: basicControls.height
-
-            Rectangle {
-                color: "white"
-                border.width: 1
-                anchors.fill: parent
-                anchors.margins: -5
-            }
-
-            Column {
-                id: basicControls
-                Grid {
-                    spacing: 5
-                    columns: 2
-                    verticalItemAlignment: Grid.AlignVCenter
-                    Label {
-                        text: "pixelSize"
-                    }
-                    SpinBox {
-                        id: sbox
-                        value: 12
-                        onValueChanged: {
-                            myFont.pixelSize = value
-                        }
-                    }
-                    Label {
-                        text: "letterSpacing"
-                    }
-                    SpinBox {
-                        id: sbLetterSpacing
-                        from: -100
-                        value: 0
-                        onValueChanged: {
-                            myFont.letterSpacing = value
-                        }
-                    }
+                    text: mfAuto.fontBriefInformation(myFont)
                 }
             }
         }
@@ -213,7 +167,7 @@ Window {
             anchors.left: txtLineMeUp.left
             anchors.top: txtLineMeUp.top
             anchors.right: txtLineMeUp.right
-            height: mfManual.fontHeight(myFont)
+            height: mfAuto.fontHeight(myFont)
             color: "#00000000"
         }
     }
