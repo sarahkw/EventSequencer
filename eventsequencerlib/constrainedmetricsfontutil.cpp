@@ -1,9 +1,7 @@
 #include "constrainedmetricsfontutil.h"
 
-#include <QDebug>
 #include <QFontMetrics>
 #include <QFontDatabase>
-#include <QFontInfo>
 
 int ConstrainedMetricsFontUtil::constrainByWidthValue() const
 {
@@ -65,7 +63,7 @@ QFont ConstrainedMetricsFontUtil::baseFont() const
 void ConstrainedMetricsFontUtil::setBaseFont(const QFont &baseFont)
 {
     if (baseFont_ != baseFont) {
-        baseFont_ = makeUniformPixelWidth(baseFont);
+        baseFont_ = makeUniformPixelWidth(baseFont); // Bad stuff happens when not set.
         emit baseFontChanged();
     }
 }
