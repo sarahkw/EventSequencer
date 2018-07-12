@@ -138,6 +138,7 @@ void ConstrainedMetricsFontUtil::setBuiltFontAddedSpacing(int builtFontAddedSpac
 
 ConstrainedMetricsFontUtil::ConstrainedMetricsFontUtil(QObject *parent) : QObject(parent)
 {
+    baseFont_ = makeUniformPixelWidth(defaultFont());
 }
 
 QFont ConstrainedMetricsFontUtil::defaultFont()

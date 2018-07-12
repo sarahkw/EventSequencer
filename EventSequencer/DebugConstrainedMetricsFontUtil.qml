@@ -11,7 +11,7 @@ Window {
     height: 480
     title: "DebugConstrainedMetricsFontUtil"
 
-    property font myFont: mfAuto.makeUniformPixelWidth(mfAuto.defaultFont())
+    property font myFont: mfAuto.baseFont
     property int gridSize: mfAuto.fontCharacterWidth(myFont)
 
     Repeater {
@@ -41,7 +41,7 @@ Window {
                 id: fontDialog
                 options: Qlp.FontDialog.MonospacedFonts
                 onAccepted: {
-                    myFont = mfAuto.makeUniformPixelWidth(font)
+                    mfAuto.baseFont = mfAuto.makeUniformPixelWidth(font)
                 }
             }
 
@@ -85,7 +85,6 @@ Window {
                 addLetterSpacingToMatchWidth: ctrl_addLetterSpacingToMatchWidth.checked
                 constainByHeightEnabled: ctrl_constainByHeightEnabled.checked
                 constrainByHeightValue: ctrl_constrainByHeightValue.value
-                baseFont: myFont
             }
 
             Rectangle {
