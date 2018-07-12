@@ -74,11 +74,12 @@ QFont ConstrainedMetricsFontUtil::buildFont()
 {
     const int MAX_POINT_SIZE = 100;
     QFont candidate = baseFont_;
+    candidate.setLetterSpacing(QFont::AbsoluteSpacing, 0);
     bool gotGoodCandidate = false;
     int goodCandidateMissingWidth = -1;
 
     for (int i = 1; i < MAX_POINT_SIZE; ++i) {
-        QFont experimental = baseFont_;
+        QFont experimental = candidate;
         experimental.setPointSize(i);
         QFontMetrics fm(experimental);
         const int charWidth = fm.horizontalAdvance("x");
@@ -178,4 +179,11 @@ void ConstrainedMetricsFontUtil::dumpFontInformation(QFont font)
 
 "";
 */
+}
+
+
+QString ConstrainedMetricsFontUtil::fontBriefInformation(QFont font)
+{
+    return QString("k = %1 sS = %2 cW = %3")
+            .arg(font.kerning()).arg(font.styleStrategy()).arg(fontCharacterWidth(font));
 }

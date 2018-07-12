@@ -14,14 +14,6 @@ Window {
     property font myFont: mfManual.makeUniformPixelWidth(mfManual.defaultFont())
     property int gridSize: mfManual.fontCharacterWidth(myFont)
 
-    Qlp.FontDialog {
-        id: fontDialog
-        options: Qlp.FontDialog.MonospacedFonts
-        onAccepted: {
-            myFont = mfManual.makeUniformPixelWidth(font)
-        }
-    }
-
     ConstrainedMetricsFontUtil {
         id: mfManual
     }
@@ -45,6 +37,54 @@ Window {
         spacing: 20
 
         Item {
+            id: fontSelect
+            width: fontSelectInternal.width
+            height: fontSelectInternal.height
+
+            Qlp.FontDialog {
+                id: fontDialog
+                options: Qlp.FontDialog.MonospacedFonts
+                onAccepted: {
+                    myFont = mfManual.makeUniformPixelWidth(font)
+                }
+            }
+
+            Rectangle {
+                color: "white"
+                border.width: 1
+                anchors.fill: parent
+                anchors.margins: -5
+            }
+
+            Grid {
+                id: fontSelectInternal
+                spacing: 5
+                columns: 2
+                verticalItemAlignment: Grid.AlignVCenter
+                Button {
+                    text: "Font Dialog"
+                    onClicked: {
+                        fontDialog.open()
+                    }
+                }
+                Label {
+                    text: myFont
+                }
+                Label {
+                    text: "fontBriefInformation"
+                }
+                Label {
+                    text: mfManual.fontBriefInformation(myFont)
+                }
+                Item { width: 1; height: 1 }
+                Button {
+                    text: "Dump Font Information"
+                    onClicked: mfManual.dumpFontInformation(myFont)
+                }
+            }
+        }
+
+        Item {
             width: basicControls.width
             height: basicControls.height
 
@@ -61,20 +101,6 @@ Window {
                     spacing: 5
                     columns: 2
                     verticalItemAlignment: Grid.AlignVCenter
-                    Button {
-                        text: "Font Dialog"
-                        onClicked: {
-                            fontDialog.open()
-                        }
-                    }
-                    Label {
-                        text: myFont
-                    }
-                    Item { width: 1; height: 1 }
-                    Button {
-                        text: "Dump Font Information"
-                        onClicked: mfManual.dumpFontInformation(myFont)
-                    }
                     Label {
                         text: "pixelSize"
                     }
@@ -112,7 +138,7 @@ Window {
                 id: mfAuto
                 constrainByWidthValue: ctrl_constrainByWidthValue.value
                 addLetterSpacingToMatchWidth: ctrl_addLetterSpacingToMatchWidth.checked
-                baseFont: mfAuto.makeUniformPixelWidth(mfAuto.defaultFont())
+                baseFont: myFont
             }
 
             Rectangle {
