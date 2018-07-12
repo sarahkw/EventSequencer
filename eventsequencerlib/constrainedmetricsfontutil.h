@@ -15,12 +15,15 @@ class ConstrainedMetricsFontUtil : public QObject
 
     bool addLetterSpacingToMatchWidth_ = false;
 
+    QFont baseFont_;
+
     bool builtFontFailedToMeetConstraints_ = false;
 
     Q_PROPERTY(int   constrainByWidthValue            READ constrainByWidthValue            WRITE setConstrainByWidthValue            NOTIFY constrainByWidthValueChanged)
     Q_PROPERTY(bool  constainByHeightEnabled          READ constainByHeightEnabled          WRITE setConstainByHeightEnabled          NOTIFY constainByHeightEnabledChanged)
     Q_PROPERTY(int   constrainByHeightValue           READ constrainByHeightValue           WRITE setConstrainByHeightValue           NOTIFY constrainByHeightValueChanged)
     Q_PROPERTY(bool  addLetterSpacingToMatchWidth     READ addLetterSpacingToMatchWidth     WRITE setAddLetterSpacingToMatchWidth     NOTIFY addLetterSpacingToMatchWidthChanged)
+    Q_PROPERTY(QFont baseFont                         READ baseFont                         WRITE setBaseFont                         NOTIFY baseFontChanged)
     Q_PROPERTY(bool  builtFontFailedToMeetConstraints READ builtFontFailedToMeetConstraints WRITE setBuiltFontFailedToMeetConstraints NOTIFY builtFontFailedToMeetConstraintsChanged)
 
 public:
@@ -44,7 +47,10 @@ public:
     bool addLetterSpacingToMatchWidth() const;
     void setAddLetterSpacingToMatchWidth(bool addLetterSpacingToMatchWidth);
 
-    Q_INVOKABLE QFont buildFont(QFont baseFont);
+    QFont baseFont() const;
+    void setBaseFont(const QFont &baseFont);
+
+    Q_INVOKABLE QFont buildFont();
 
     bool builtFontFailedToMeetConstraints() const;
     void setBuiltFontFailedToMeetConstraints(bool builtFontFailedToMeetConstraints);
@@ -55,6 +61,7 @@ signals:
     void constainByHeightEnabledChanged();
     void constrainByHeightValueChanged();
     void addLetterSpacingToMatchWidthChanged();
+    void baseFontChanged();
     void builtFontFailedToMeetConstraintsChanged();
 
 public slots:

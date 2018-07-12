@@ -57,15 +57,28 @@ void ConstrainedMetricsFontUtil::setAddLetterSpacingToMatchWidth(bool addLetterS
     }
 }
 
-QFont ConstrainedMetricsFontUtil::buildFont(QFont baseFont)
+QFont ConstrainedMetricsFontUtil::baseFont() const
+{
+    return baseFont_;
+}
+
+void ConstrainedMetricsFontUtil::setBaseFont(const QFont &baseFont)
+{
+    if (baseFont_ != baseFont) {
+        baseFont_ = baseFont;
+        emit baseFontChanged();
+    }
+}
+
+QFont ConstrainedMetricsFontUtil::buildFont()
 {
     const int MAX_POINT_SIZE = 100;
-    QFont candidate = baseFont;
+    QFont candidate = baseFont_;
     bool gotGoodCandidate = false;
     int goodCandidateMissingWidth = -1;
 
     for (int i = 1; i < MAX_POINT_SIZE; ++i) {
-        QFont experimental = baseFont;
+        QFont experimental = baseFont_;
         experimental.setPointSize(i);
         QFontMetrics fm(experimental);
         const int charWidth = fm.horizontalAdvance("x");

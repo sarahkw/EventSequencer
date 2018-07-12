@@ -112,6 +112,7 @@ Window {
                 id: mfAuto
                 constrainByWidthValue: ctrl_constrainByWidthValue.value
                 addLetterSpacingToMatchWidth: ctrl_addLetterSpacingToMatchWidth.checked
+                baseFont: mfAuto.makeUniformPixelWidth(mfAuto.defaultFont())
             }
 
             Rectangle {
@@ -155,7 +156,7 @@ Window {
                     anchors.right: parent.right
                     text: "Use Auto Font (One-Shot)"
                     onClicked: {
-                        myFont = mfAuto.buildFont(mfAuto.makeUniformPixelWidth(mfAuto.defaultFont()))
+                        myFont = mfAuto.buildFont()
                         gridSize = ctrl_constrainByWidthValue.value
                     }
                 }
