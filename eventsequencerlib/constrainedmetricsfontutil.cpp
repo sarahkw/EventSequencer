@@ -72,17 +72,21 @@ void ConstrainedMetricsFontUtil::setBaseFont(const QFont &baseFont)
 
 QFont ConstrainedMetricsFontUtil::buildFont()
 {
+    const int MIN_POINT_SIZE = 1;
     const int MAX_POINT_SIZE = 100;
     QFont candidate = baseFont_;
+    candidate.setPointSize(MIN_POINT_SIZE);
     candidate.setLetterSpacing(QFont::AbsoluteSpacing, 0);
     bool gotGoodCandidate = false;
     int goodCandidateMissingWidth = -1;
+    int noCandidateMissingWidth = -1;
 
-    for (int i = 1; i < MAX_POINT_SIZE; ++i) {
+    for (int i = MIN_POINT_SIZE; i < MAX_POINT_SIZE; ++i) {
         QFont experimental = candidate;
         experimental.setPointSize(i);
         QFontMetrics fm(experimental);
         const int charWidth = fm.horizontalAdvance("x");
+        noCandidateMissingWidth = constrainByWidthValue() - charWidth;
         if (charWidth > constrainByWidthValue()) {
             break;
         }
@@ -91,12 +95,13 @@ QFont ConstrainedMetricsFontUtil::buildFont()
         }
         candidate = experimental;
         gotGoodCandidate = true;
-        goodCandidateMissingWidth = constrainByWidthValue() - charWidth;
+        goodCandidateMissingWidth = noCandidateMissingWidth;
     }
 
-    if (addLetterSpacingToMatchWidth() && gotGoodCandidate) {
-        candidate.setLetterSpacing(QFont::AbsoluteSpacing, goodCandidateMissingWidth);
-        setBuiltFontAddedSpacing(goodCandidateMissingWidth);
+    if (addLetterSpacingToMatchWidth()) {
+        int letterSpacing = gotGoodCandidate ? goodCandidateMissingWidth : noCandidateMissingWidth;
+        candidate.setLetterSpacing(QFont::AbsoluteSpacing, letterSpacing);
+        setBuiltFontAddedSpacing(letterSpacing);
     } else {
         candidate.setLetterSpacing(QFont::AbsoluteSpacing, 0);
     }
