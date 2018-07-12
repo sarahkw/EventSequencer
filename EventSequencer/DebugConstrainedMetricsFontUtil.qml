@@ -112,6 +112,7 @@ Window {
                     }
                     SpinBox {
                         id: ctrl_constrainByHeightValue
+                        value: 20
                     }
                     Label {
                         text: "addLetterSpacingToMatchWidth"
@@ -119,6 +120,7 @@ Window {
                     CheckBox {
                         id: ctrl_addLetterSpacingToMatchWidth
                         text: "Value"
+                        checked: true
                     }
                     Label {
                         text: "builtFontFailedToMeetConstraints"
