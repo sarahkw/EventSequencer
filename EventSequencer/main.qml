@@ -530,7 +530,7 @@ ApplicationWindow {
                             }
 
                             Loader {
-                                sourceComponent: stripComponentResolver.stripComponent == null ? dsvComponent : null
+                                sourceComponent: stripComponentResolver.stripComponent === undefined ? dsvComponent : undefined
                                 anchors.left: parent.left
                                 anchors.top: parent.top
                                 anchors.right: parent.right
@@ -553,8 +553,8 @@ ApplicationWindow {
                                 id: stripComponentResolver
                                 property ES.WaitFor waitFor: document.waitForChannel(cppStrip.channel)
                                 property var chan: waitFor.result
-                                property var type: chan != null ? chan.channelType : null
-                                property var stripComponent: type != null ? controlResolver.resolve(type).stripComponent : null
+                                property var type: chan !== null ? chan.channelType : null
+                                property var stripComponent: type !== null ? controlResolver.resolve(type).stripComponent : undefined
                             }
 
                             Loader {
@@ -974,7 +974,7 @@ ApplicationWindow {
 
                             Item { // Spacer before the strip property.
                                 width: 1
-                                height: stripPropLoader.stripPropComp == null ? 0 : 15
+                                height: stripPropLoader.stripPropComp === undefined ? 0 : 15
                             }
 
                             Loader {
@@ -986,7 +986,7 @@ ApplicationWindow {
                                 property ES.WaitFor waitForchannel: document.waitForChannel(selectedCppStrip.channel)
                                 property var channel: waitForchannel.result
                                 property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
-                                property var stripPropComp: control !== null ? control.stripPropertiesComponent : null
+                                property var stripPropComp: control !== null ? control.stripPropertiesComponent : undefined
 
                                 sourceComponent: stripPropComp
                                 property ES.Strip cppStrip: selectedCppStrip
