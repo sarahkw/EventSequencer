@@ -20,6 +20,8 @@ class ConstrainedMetricsFontUtil : public QObject
     bool builtFontFailedToMeetConstraints_ = false;
     int builtFontAddedSpacing_ = 0;
 
+    QFont builtFont_;
+
     Q_PROPERTY(int   constrainByWidthValue            READ constrainByWidthValue            WRITE setConstrainByWidthValue            NOTIFY constrainByWidthValueChanged)
     Q_PROPERTY(bool  constainByHeightEnabled          READ constainByHeightEnabled          WRITE setConstainByHeightEnabled          NOTIFY constainByHeightEnabledChanged)
     Q_PROPERTY(int   constrainByHeightValue           READ constrainByHeightValue           WRITE setConstrainByHeightValue           NOTIFY constrainByHeightValueChanged)
@@ -27,6 +29,9 @@ class ConstrainedMetricsFontUtil : public QObject
     Q_PROPERTY(QFont baseFont                         READ baseFont                         WRITE setBaseFont                         NOTIFY baseFontChanged)
     Q_PROPERTY(bool  builtFontFailedToMeetConstraints READ builtFontFailedToMeetConstraints   NOTIFY builtFontFailedToMeetConstraintsChanged)
     Q_PROPERTY(int   builtFontAddedSpacing            READ builtFontAddedSpacing              NOTIFY builtFontAddedSpacingChanged)
+    Q_PROPERTY(QFont builtFont                        READ builtFont                          NOTIFY builtFontChanged)
+
+    bool builtFontIsDirty_ = false;
 
 public:
     explicit ConstrainedMetricsFontUtil(QObject *parent = nullptr);
@@ -51,7 +56,9 @@ public:
     QFont baseFont() const;
     void setBaseFont(const QFont &baseFont);
 
-    Q_INVOKABLE QFont buildFont();
+private:
+    QFont buildFont();
+public:
 
     bool builtFontFailedToMeetConstraints() const;
 private:
@@ -63,6 +70,8 @@ private:
     void setBuiltFontAddedSpacing(int builtFontAddedSpacing);
 public:
 
+    QFont builtFont();
+
 signals:
 
     void constrainByWidthValueChanged();
@@ -72,6 +81,7 @@ signals:
     void baseFontChanged();
     void builtFontFailedToMeetConstraintsChanged();
     void builtFontAddedSpacingChanged();
+    void builtFontChanged();
 
 public slots:
 };

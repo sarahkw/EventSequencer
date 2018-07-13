@@ -11,8 +11,8 @@ Window {
     height: 480
     title: "DebugConstrainedMetricsFontUtil"
 
-    property font myFont: mfAuto.baseFont
-    property int gridSize: mfAuto.fontCharacterWidth(myFont)
+    property font myFont: mfAuto.builtFont
+    property int gridSize: ctrl_constrainByWidthValue.value
 
     Repeater {
         anchors.fill: parent
@@ -136,14 +136,6 @@ Window {
                     }
                     Label {
                         text: mfAuto.builtFontAddedSpacing
-                    }
-                }
-                Button {
-                    anchors.right: parent.right
-                    text: "Apply"
-                    onClicked: {
-                        myFont = mfAuto.buildFont()
-                        gridSize = ctrl_constrainByWidthValue.value
                     }
                 }
             }

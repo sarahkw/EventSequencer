@@ -13,6 +13,9 @@ void ConstrainedMetricsFontUtil::setConstrainByWidthValue(int constrainByWidthVa
     if (constrainByWidthValue_ != constrainByWidthValue) {
         constrainByWidthValue_ = constrainByWidthValue;
         emit constrainByWidthValueChanged();
+
+        builtFontIsDirty_ = true;
+        emit builtFontChanged();
     }
 }
 
@@ -26,6 +29,9 @@ void ConstrainedMetricsFontUtil::setConstainByHeightEnabled(bool constainByHeigh
     if (constainByHeightEnabled_ != constainByHeightEnabled) {
         constainByHeightEnabled_ = constainByHeightEnabled;
         emit constainByHeightEnabledChanged();
+
+        builtFontIsDirty_ = true;
+        emit builtFontChanged();
     }
 }
 
@@ -39,6 +45,9 @@ void ConstrainedMetricsFontUtil::setConstrainByHeightValue(int constrainByHeight
     if (constrainByHeightValue_ != constrainByHeightValue) {
         constrainByHeightValue_ = constrainByHeightValue;
         emit constrainByHeightValueChanged();
+
+        builtFontIsDirty_ = true;
+        emit builtFontChanged();
     }
 }
 
@@ -52,6 +61,9 @@ void ConstrainedMetricsFontUtil::setAddLetterSpacingToMatchWidth(bool addLetterS
     if (addLetterSpacingToMatchWidth_ != addLetterSpacingToMatchWidth) {
         addLetterSpacingToMatchWidth_ = addLetterSpacingToMatchWidth;
         emit addLetterSpacingToMatchWidthChanged();
+
+        builtFontIsDirty_ = true;
+        emit builtFontChanged();
     }
 }
 
@@ -65,6 +77,9 @@ void ConstrainedMetricsFontUtil::setBaseFont(const QFont &baseFont)
     if (baseFont_ != baseFont) {
         baseFont_ = makeUniformPixelWidth(baseFont); // Bad stuff happens when not set.
         emit baseFontChanged();
+
+        builtFontIsDirty_ = true;
+        emit builtFontChanged();
     }
 }
 
@@ -134,9 +149,25 @@ void ConstrainedMetricsFontUtil::setBuiltFontAddedSpacing(int builtFontAddedSpac
     }
 }
 
+QFont ConstrainedMetricsFontUtil::builtFont()
+{
+    if (builtFontIsDirty_) {
+        // XXX After profiling, perhaps find a way to reduce buildFont
+        //     calls during initialization. Perhaps encapsulate all
+        //     the parameters in a structure that has dependencies on
+        //     all the necessary params.
+        //
+        // qInfo() << "builtFont";
+        builtFont_ = buildFont();
+        builtFontIsDirty_ = false;
+    }
+    return builtFont_;
+}
+
 ConstrainedMetricsFontUtil::ConstrainedMetricsFontUtil(QObject *parent) : QObject(parent)
 {
     baseFont_ = makeUniformPixelWidth(defaultFont());
+    builtFont_ = baseFont_;
 }
 
 QFont ConstrainedMetricsFontUtil::defaultFont()
