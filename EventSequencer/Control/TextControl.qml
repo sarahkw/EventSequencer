@@ -31,6 +31,11 @@ Item {
         Text {
             color: selected ? "blue" : "black"
             text: cppStrip.text !== null ? cppStrip.text.content : '""'
+            font: cmfuAlignedFont.builtFont
+            elide: Text.ElideRight
+            anchors.left: parent.left
+            anchors.right: parent.right
+
             MouseArea {
                 anchors.left: parent.left
                 anchors.top: parent.top

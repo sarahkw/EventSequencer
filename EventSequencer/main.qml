@@ -566,6 +566,14 @@ ApplicationWindow {
                                 property ES.Strip cppStrip: stripBase.cppStrip
                                 property bool selected: stripBase.selected
                                 property int selectionMode: stripBase.selectionMode
+
+                                property ES.ConstrainedMetricsFontUtil cmfuAlignedFont: ES.ConstrainedMetricsFontUtil {
+                                    constrainByWidthValue: zoom.displayWidthPerRulerTick
+                                    addLetterSpacingToMatchWidth: true
+                                    constainByHeightEnabled: true
+                                    constrainByHeightValue: channelPixels
+                                }
+
                                 function selectionClicked() {
                                     _selectionClicked.apply(this, arguments)
                                 }
