@@ -10,7 +10,7 @@ class ConstrainedMetricsFontUtil : public QObject
 
     int constrainByWidthValue_ = 0;
 
-    bool constainByHeightEnabled_ = false;
+    bool constrainByHeightEnabled_ = false;
     int constrainByHeightValue_ = 0;
 
     bool addLetterSpacingToMatchWidth_ = false;
@@ -23,7 +23,7 @@ class ConstrainedMetricsFontUtil : public QObject
     QFont builtFont_;
 
     Q_PROPERTY(int   constrainByWidthValue            READ constrainByWidthValue            WRITE setConstrainByWidthValue            NOTIFY constrainByWidthValueChanged)
-    Q_PROPERTY(bool  constainByHeightEnabled          READ constainByHeightEnabled          WRITE setConstainByHeightEnabled          NOTIFY constainByHeightEnabledChanged)
+    Q_PROPERTY(bool  constrainByHeightEnabled         READ constrainByHeightEnabled         WRITE setconstrainByHeightEnabled         NOTIFY constrainByHeightEnabledChanged)
     Q_PROPERTY(int   constrainByHeightValue           READ constrainByHeightValue           WRITE setConstrainByHeightValue           NOTIFY constrainByHeightValueChanged)
     Q_PROPERTY(bool  addLetterSpacingToMatchWidth     READ addLetterSpacingToMatchWidth     WRITE setAddLetterSpacingToMatchWidth     NOTIFY addLetterSpacingToMatchWidthChanged)
     Q_PROPERTY(QFont baseFont                         READ baseFont                         WRITE setBaseFont                         NOTIFY baseFontChanged)
@@ -44,8 +44,8 @@ public:
     int constrainByWidthValue() const;
     void setConstrainByWidthValue(int constrainByWidthValue);
 
-    bool constainByHeightEnabled() const;
-    void setConstainByHeightEnabled(bool constainByHeightEnabled);
+    bool constrainByHeightEnabled() const;
+    void setconstrainByHeightEnabled(bool constrainByHeightEnabled);
 
     int constrainByHeightValue() const;
     void setConstrainByHeightValue(int constrainByHeightValue);
@@ -75,7 +75,7 @@ public:
 signals:
 
     void constrainByWidthValueChanged();
-    void constainByHeightEnabledChanged();
+    void constrainByHeightEnabledChanged();
     void constrainByHeightValueChanged();
     void addLetterSpacingToMatchWidthChanged();
     void baseFontChanged();

@@ -77,7 +77,7 @@ Window {
                 id: mfAuto
                 constrainByWidthValue: ctrl_constrainByWidthValue.value
                 addLetterSpacingToMatchWidth: ctrl_addLetterSpacingToMatchWidth.checked
-                constainByHeightEnabled: ctrl_constainByHeightEnabled.checked
+                constrainByHeightEnabled: ctrl_constrainByHeightEnabled.checked
                 constrainByHeightValue: ctrl_constrainByHeightValue.value
             }
 
@@ -102,10 +102,10 @@ Window {
                         value: 12
                     }
                     Label {
-                        text: "constainByHeightEnabled"
+                        text: "constrainByHeightEnabled"
                     }
                     CheckBox {
-                        id: ctrl_constainByHeightEnabled
+                        id: ctrl_constrainByHeightEnabled
                     }
                     Label {
                         text: "constrainByHeightValue"

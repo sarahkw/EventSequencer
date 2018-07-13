@@ -570,7 +570,7 @@ ApplicationWindow {
                                 property ES.ConstrainedMetricsFontUtil cmfuAlignedFont: ES.ConstrainedMetricsFontUtil {
                                     constrainByWidthValue: zoom.displayWidthPerRulerTick
                                     addLetterSpacingToMatchWidth: true
-                                    constainByHeightEnabled: true
+                                    constrainByHeightEnabled: true
                                     constrainByHeightValue: channelPixels
                                 }
 

@@ -19,16 +19,16 @@ void ConstrainedMetricsFontUtil::setConstrainByWidthValue(int constrainByWidthVa
     }
 }
 
-bool ConstrainedMetricsFontUtil::constainByHeightEnabled() const
+bool ConstrainedMetricsFontUtil::constrainByHeightEnabled() const
 {
-    return constainByHeightEnabled_;
+    return constrainByHeightEnabled_;
 }
 
-void ConstrainedMetricsFontUtil::setConstainByHeightEnabled(bool constainByHeightEnabled)
+void ConstrainedMetricsFontUtil::setconstrainByHeightEnabled(bool constrainByHeightEnabled)
 {
-    if (constainByHeightEnabled_ != constainByHeightEnabled) {
-        constainByHeightEnabled_ = constainByHeightEnabled;
-        emit constainByHeightEnabledChanged();
+    if (constrainByHeightEnabled_ != constrainByHeightEnabled) {
+        constrainByHeightEnabled_ = constrainByHeightEnabled;
+        emit constrainByHeightEnabledChanged();
 
         builtFontIsDirty_ = true;
         emit builtFontChanged();
@@ -103,7 +103,7 @@ QFont ConstrainedMetricsFontUtil::buildFont()
         if (charWidth > constrainByWidthValue()) {
             break;
         }
-        if (constainByHeightEnabled() && fm.height() > constrainByHeightValue()) {
+        if (constrainByHeightEnabled() && fm.height() > constrainByHeightValue()) {
             break;
         }
         candidate = experimental;
