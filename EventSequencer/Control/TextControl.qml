@@ -33,8 +33,8 @@ Item {
             text: cppStrip.text !== null ? cppStrip.text.content : '""'
             font: cmfuAlignedFont.builtFont
             elide: Text.ElideRight
-            anchors.left: parent.left
-            anchors.right: parent.right
+            anchors.fill: parent
+            verticalAlignment: Text.AlignVCenter
 
             MouseArea {
                 anchors.left: parent.left

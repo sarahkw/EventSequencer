@@ -405,7 +405,7 @@ ApplicationWindow {
     property var selectedCppStrips: []
 
     property ZoomLogic zoom: ZoomLogic {}
-    property int channelPixels: 35
+    property int channelPixels: 30
 
     Item {
         anchors.fill: parent
@@ -531,20 +531,22 @@ ApplicationWindow {
 
                             Loader {
                                 sourceComponent: stripComponentResolver.stripComponent === undefined ? dsvComponent : undefined
-                                anchors.left: parent.left
-                                anchors.top: parent.top
-                                anchors.right: parent.right
+                                anchors.fill: parent
 
                                 Component {
                                     id: dsvComponent
-                                    DefaultStripView {
-                                        anchors.left: parent.left
-                                        anchors.top: parent.top
-                                        anchors.right: parent.right
+                                    Item {
+                                        anchors.fill: parent
+                                        DefaultStripView {
+                                            id: dsv
+                                            anchors.left: parent.left
+                                            anchors.right: parent.right
+                                            anchors.verticalCenter: parent.verticalCenter
 
-                                        selected: stripBase.selected
-                                        selectionMode: stripBase.selectionMode
-                                        onSelectionClicked: _selectionClicked(mouse, newSelectionMode)
+                                            selected: stripBase.selected
+                                            selectionMode: stripBase.selectionMode
+                                            onSelectionClicked: _selectionClicked(mouse, newSelectionMode)
+                                        }
                                     }
                                 }
                             }
@@ -559,9 +561,7 @@ ApplicationWindow {
 
                             Loader {
                                 sourceComponent: stripComponentResolver.stripComponent
-                                anchors.left: parent.left
-                                anchors.top: parent.top
-                                anchors.right: parent.right
+                                anchors.fill: parent
 
                                 property ES.Strip cppStrip: stripBase.cppStrip
                                 property bool selected: stripBase.selected
@@ -588,6 +588,7 @@ ApplicationWindow {
                             x: zoom.mapFrameToDisplayX(cppStrip.startFrame)
                             width: Math.max(zoom.mapLengthToDisplayWidth(cppStrip.length), minimumWidth)
                             y: cppStrip.channel * channelPixels
+                            height: channelPixels
 
                             function floorDiv(a, b) {
                                 return Math.floor(a / b);
