@@ -19,3 +19,18 @@ function nvl(expr1, expr2) {
         return expr1;
     }
 }
+
+function nvlobjprop(obj, prop, default_) {
+    if (obj !== null && obj !== undefined) {
+        return obj[prop]
+    } else {
+        return default_
+    }
+}
+
+// Purpose: If "text" is bound to something, calling .mutable*() will wipe out
+//          the text value before we get to save it.
+function mutableobjset(base, mutable, prop, value) {
+    var obj = base[mutable]()
+    obj[prop] = value
+}

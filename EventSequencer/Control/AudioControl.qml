@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import "../util.js" as Util
 
 Item {
     property Component stripPropertiesComponent: Component {
@@ -14,11 +15,8 @@ Item {
 
                 TextField {
                     Layout.fillWidth: true
-                    onEditingFinished: {
-                        var savtext = text // Prevent binding from wiping out text.
-                        cppStrip.mutableAudio().fileName = savtext
-                    }
-                    text: cppStrip.audio !== null ? cppStrip.audio.fileName : ""
+                    onEditingFinished: Util.mutableobjset(cppStrip, "mutableAudio", "fileName", text)
+                    text: Util.nvlobjprop(cppStrip.audio, "fileName", "")
                 }
                 Button {
                     text: "Browse"

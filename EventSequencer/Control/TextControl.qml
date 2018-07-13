@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
+import "../util.js" as Util
 
 import "../" as Parent
 
@@ -18,11 +19,8 @@ Item {
             TextField {
                 anchors.left: parent.left
                 anchors.right: parent.right
-                onEditingFinished: {
-                    var savtext = text
-                    cppStrip.mutableText().content = savtext
-                }
-                text: cppStrip.text !== null ? cppStrip.text.content : ""
+                onEditingFinished: Util.mutableobjset(cppStrip, "mutableText", "content", text)
+                text: Util.nvlobjprop(cppStrip.text, "content", "")
             }
         }
     }
@@ -30,7 +28,7 @@ Item {
     property Component stripComponent: Component {
         Text {
             color: selected ? "blue" : "black"
-            text: cppStrip.text !== null ? cppStrip.text.content : '""'
+            text: Util.nvlobjprop(cppStrip.text, "content", '""')
             font: cmfuAlignedFont.builtFont
             elide: Text.ElideRight
             anchors.fill: parent

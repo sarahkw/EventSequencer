@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
+import "../util.js" as Util
 
 Item {
     property Component stripPropertiesComponent: Component {
@@ -15,17 +16,14 @@ Item {
                     color: "white"
                 }
                 wrapMode: TextEdit.Wrap
-                onEditingFinished: {
-                    var savtext = text // initBadJs will wipe out text otherwise
-                    cppStrip.mutableBadJs().script = savtext
-                }
-                text: cppStrip.badJs !== null ? cppStrip.badJs.script : ""
+                onEditingFinished: Util.mutableobjset(cppStrip, mutableBadJs, script, text)
+                text: Util.nvlobjprop(cppStrip.badJs, "script", "")
             }
         }
     }
 
     function playFrame(cppStrip, frame) {
-        var script = cppStrip.badJs !== null ? cppStrip.badJs.script : ""
+        var script = Util.nvlobjprop(cppStrip.badJs, "script", "")
         eval(script);
     }
 }
