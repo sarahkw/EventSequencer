@@ -15,7 +15,7 @@ Item {
 
                 TextField {
                     Layout.fillWidth: true
-                    onEditingFinished: Util.mutableobjset(cppStrip, "mutableAudio", "fileName", text)
+                    onEditingFinished: Util.mutableobjset(cppStrip.mutableAudio, "fileName", text)
                     text: Util.nvlobjprop(cppStrip.audio, "fileName", "")
                 }
                 Button {

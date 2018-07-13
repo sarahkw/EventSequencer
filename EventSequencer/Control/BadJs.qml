@@ -16,7 +16,7 @@ Item {
                     color: "white"
                 }
                 wrapMode: TextEdit.Wrap
-                onEditingFinished: Util.mutableobjset(cppStrip, mutableBadJs, script, text)
+                onEditingFinished: Util.mutableobjset(cppStrip.mutableBadJs, "script", text)
                 text: Util.nvlobjprop(cppStrip.badJs, "script", "")
             }
         }

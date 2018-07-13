@@ -30,7 +30,6 @@ function nvlobjprop(obj, prop, default_) {
 
 // Purpose: If "text" is bound to something, calling .mutable*() will wipe out
 //          the text value before we get to save it.
-function mutableobjset(base, mutable, prop, value) {
-    var obj = base[mutable]()
-    obj[prop] = value
+function mutableobjset(mutablefn, prop, value) {
+    mutablefn()[prop] = value
 }

@@ -19,7 +19,7 @@ Item {
             TextField {
                 anchors.left: parent.left
                 anchors.right: parent.right
-                onEditingFinished: Util.mutableobjset(cppStrip, "mutableText", "content", text)
+                onEditingFinished: Util.mutableobjset(cppStrip.mutableText, "content", text)
                 text: Util.nvlobjprop(cppStrip.text, "content", "")
             }
         }
