@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import Qt.labs.platform 1.0 as Qlp
 import "../util.js" as Util
 
 Item {
@@ -20,10 +21,14 @@ Item {
                 }
                 Button {
                     text: "Browse"
+                    onClicked: fopenDialog.open()
+
+                    Qlp.FileDialog {
+                        id: fopenDialog
+                        onAccepted: Util.mutableobjset(cppStrip.mutableAudio, "fileName", currentFile)
+                    }
                 }
             }
-
         }
     }
-
 }
