@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include "channeltype.h"
+#include "ipb.h"
 
 namespace pb {
 class ChannelData;
@@ -11,7 +12,7 @@ class ChannelData;
 
 namespace channel {
 
-class ChannelBase : public QObject
+class ChannelBase : public QObject, public virtual IPb
 {
     Q_OBJECT
 
@@ -19,9 +20,6 @@ class ChannelBase : public QObject
 
 public:
     explicit ChannelBase(QObject *parent = nullptr);
-
-    virtual void toPb(pb::ChannelData& pb) const = 0;
-    virtual void fromPb(const pb::ChannelData& pb) = 0;
 
     virtual ChannelType::Enum channelType() const = 0;
 

@@ -41,7 +41,9 @@ SOURCES += \
     channel/badaudiochannel.cpp \
     stripext/badaudiostripext.cpp \
     channel/labelchannel.cpp \
-    stripext/labelstripext.cpp
+    stripext/labelstripext.cpp \
+    channel/ipb.cpp \
+    channel/nodatapb.cpp
 
 
 HEADERS += \
@@ -64,7 +66,9 @@ HEADERS += \
     channel/badaudiochannel.h \
     stripext/badaudiostripext.h \
     channel/labelchannel.h \
-    stripext/labelstripext.h
+    stripext/labelstripext.h \
+    channel/ipb.h \
+    channel/nodatapb.h
 
 unix {
     target.path = /usr/lib
