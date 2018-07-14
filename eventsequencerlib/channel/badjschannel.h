@@ -12,8 +12,6 @@ class BadJsChannel : public ChannelBase
 {
     Q_OBJECT
 
-    Q_PROPERTY(channel::ChannelType::Enum channelType READ channelType CONSTANT)
-
 public:
     explicit BadJsChannel(QObject *parent = nullptr);
 

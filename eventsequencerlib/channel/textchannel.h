@@ -12,8 +12,6 @@ class TextChannel : public ChannelBase
 {
     Q_OBJECT
 
-    Q_PROPERTY(channel::ChannelType::Enum channelType READ channelType CONSTANT)
-
     int fontSize_ = 10;
 
     Q_PROPERTY(int fontSize READ fontSize WRITE setFontSize NOTIFY fontSizeChanged)

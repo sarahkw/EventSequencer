@@ -14,6 +14,9 @@ namespace channel {
 class ChannelBase : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(channel::ChannelType::Enum channelType READ channelType CONSTANT)
+
 public:
     explicit ChannelBase(QObject *parent = nullptr);
 

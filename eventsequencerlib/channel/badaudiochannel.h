@@ -11,8 +11,6 @@ class BadAudioChannel : public ChannelBase
 {
     Q_OBJECT
 
-    Q_PROPERTY(channel::ChannelType::Enum channelType READ channelType CONSTANT)
-
 public:
     explicit BadAudioChannel(QObject *parent = nullptr);
 
