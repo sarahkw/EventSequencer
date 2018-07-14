@@ -22,5 +22,6 @@
         <file>Control/BadAudioControl.qml</file>
         <file>SelectionMode.qml</file>
         <file>DebugConstrainedMetricsFontUtil.qml</file>
+        <file>Control/LabelControl.qml</file>
     </qresource>
 </RCC>

@@ -8,6 +8,7 @@
 #include "stripext/badaudiostripext.h"
 #include "stripext/badjsstripext.h"
 #include "stripext/textstripext.h"
+#include "stripext/labelstripext.h"
 #include "constrainedmetricsfontutil.h"
 
 #include <QQmlEngine>
@@ -21,6 +22,7 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<stripext::BadAudioStripExt>();
     qmlRegisterType<stripext::BadJsStripExt>();
     qmlRegisterType<stripext::TextStripExt>();
+    qmlRegisterType<stripext::LabelStripExt>();
     qmlRegisterSingletonType<FramesAndSeconds>(
         "eventsequencer", 1, 0, "FramesAndSeconds",
         [](QQmlEngine*, QJSEngine*) -> QObject* {

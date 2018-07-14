@@ -3,6 +3,7 @@
 #include "stripext/badjsstripext.h"
 #include "stripext/badaudiostripext.h"
 #include "stripext/textstripext.h"
+#include "stripext/labelstripext.h"
 
 #include "eventsequencer.pb.h"
 
@@ -108,6 +109,27 @@ stripext::TextStripExt *Strip::mutableText()
     return text();
 }
 
+stripext::LabelStripExt *Strip::label() const
+{
+    return label_;
+}
+
+void Strip::setLabel(stripext::LabelStripExt *label)
+{
+    if (label_ != label) {
+        label_ = label;
+        emit labelChanged();
+    }
+}
+
+stripext::LabelStripExt *Strip::mutableLabel()
+{
+    if (label() == nullptr) {
+        setLabel(new stripext::LabelStripExt(this));
+    }
+    return label();
+}
+
 Strip::Strip(QObject *parent) : QObject(parent)
 {
     
@@ -126,6 +148,9 @@ void Strip::toPb(pb::Strip &pb) const
     }
     if (text() != nullptr) {
         text()->toPb(*pb.mutable_text());
+    }
+    if (label() != nullptr) {
+        label()->toPb(*pb.mutable_label());
     }
 }
 
@@ -149,5 +174,10 @@ void Strip::fromPb(const pb::Strip &pb)
         auto tmp = new stripext::TextStripExt(this);
         tmp->fromPb(pb.text());
         setText(tmp);
+    }
+    if (pb.has_label()) {
+        auto tmp = new stripext::LabelStripExt(this);
+        tmp->fromPb(pb.label());
+        setLabel(tmp);
     }
 }

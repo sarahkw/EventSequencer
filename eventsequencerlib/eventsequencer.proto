@@ -10,6 +10,7 @@ message Strip {
   BadJs badJs = 10;
   BadAudio badAudio = 11;
   Text text = 12;
+  Label label = 13;
 
   message BadJs {
     string script = 1;
@@ -18,6 +19,9 @@ message Strip {
     string fileName = 1;
   }
   message Text {
+    string content = 1;
+  }
+  message Label {
     string content = 1;
   }
 }
@@ -29,12 +33,14 @@ message ChannelData {
     int32 fontSize = 1;
   }
   message BadAudio {}
+  message Label {}
 
   oneof channel {
     BadClock badClock = 10;
     BadJs badJs = 11;
     Text text = 12;
     BadAudio badAudio = 13;
+    Label label = 14;
   };
 }
 

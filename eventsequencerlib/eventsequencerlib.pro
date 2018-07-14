@@ -39,7 +39,9 @@ SOURCES += \
     stripext/textstripext.cpp \
     constrainedmetricsfontutil.cpp \
     channel/badaudiochannel.cpp \
-    stripext/badaudiostripext.cpp
+    stripext/badaudiostripext.cpp \
+    channel/labelchannel.cpp \
+    stripext/labelstripext.cpp
 
 
 HEADERS += \
@@ -60,7 +62,9 @@ HEADERS += \
     stripext/textstripext.h \
     constrainedmetricsfontutil.h \
     channel/badaudiochannel.h \
-    stripext/badaudiostripext.h
+    stripext/badaudiostripext.h \
+    channel/labelchannel.h \
+    stripext/labelstripext.h
 
 unix {
     target.path = /usr/lib
