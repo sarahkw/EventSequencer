@@ -2,22 +2,20 @@
 #define BADAUDIOCHANNEL_H
 
 #include "channelbase.h"
-#include "nodatapb.h"
-#include <eventsequencer.pb.h>
 
 #include <QObject>
 
 namespace channel {
 
-class BadAudioChannel : public ChannelBase,
-        public NoDataPb<pb::ChannelData_BadAudio,
-        &pb::ChannelData::mutable_badaudio,
-        &pb::ChannelData::has_badaudio>
+class BadAudioChannel : public ChannelBase
 {
     Q_OBJECT
 
 public:
     explicit BadAudioChannel(QObject *parent = nullptr);
+
+    virtual void toPb(pb::ChannelData& pb) const override;
+    virtual void fromPb(const pb::ChannelData& pb) override;
 
     virtual ChannelType::Enum channelType() const override;
 
