@@ -24,7 +24,7 @@ channel::ChannelBase *channel::ChannelFactory::Create(const pb::ChannelData &pb,
     case ::pb::ChannelData::kText:
         cb = new channel::TextChannel(parent);
         break;
-    case ::pb::ChannelData::kAudio:
+    case ::pb::ChannelData::kBadAudio:
         cb = new channel::AudioChannel(parent);
         break;
     case ::pb::ChannelData::CHANNEL_NOT_SET:

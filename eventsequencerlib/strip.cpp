@@ -122,7 +122,7 @@ void Strip::toPb(pb::Strip &pb) const
         badJs()->toPb(*pb.mutable_badjs());
     }
     if (audio() != nullptr) {
-        audio()->toPb(*pb.mutable_audio());
+        audio()->toPb(*pb.mutable_badaudio());
     }
     if (text() != nullptr) {
         text()->toPb(*pb.mutable_text());
@@ -140,9 +140,9 @@ void Strip::fromPb(const pb::Strip &pb)
         tmp->fromPb(pb.badjs());
         setBadJs(tmp);
     }
-    if (pb.has_audio()) {
+    if (pb.has_badaudio()) {
         auto tmp = new stripext::AudioStripExt(this);
-        tmp->fromPb(pb.audio());
+        tmp->fromPb(pb.badaudio());
         setAudio(tmp);
     }
     if (pb.has_text()) {

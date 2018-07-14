@@ -5,7 +5,7 @@
 #include <QUrl>
 
 namespace pb {
-class Strip_Audio;
+class Strip_BadAudio;
 }
 
 namespace stripext {
@@ -23,8 +23,8 @@ class AudioStripExt : public QObject
 public:
     explicit AudioStripExt(QObject *parent = nullptr);
 
-    void toPb(pb::Strip_Audio& pb) const;
-    void fromPb(const pb::Strip_Audio& pb);
+    void toPb(pb::Strip_BadAudio& pb) const;
+    void fromPb(const pb::Strip_BadAudio& pb);
 
     QUrl fileNameUrl() const;
     void setFileNameUrl(const QUrl &fileNameUrl);

@@ -11,12 +11,12 @@ AudioChannel::AudioChannel(QObject *parent) : ChannelBase(parent)
 
 void AudioChannel::toPb(pb::ChannelData &pb) const
 {
-    pb.mutable_audio();
+    pb.mutable_badaudio();
 }
 
 void AudioChannel::fromPb(const pb::ChannelData &pb)
 {
-    Q_ASSERT(pb.has_audio());
+    Q_ASSERT(pb.has_badaudio());
 }
 
 ChannelType::Enum AudioChannel::channelType() const

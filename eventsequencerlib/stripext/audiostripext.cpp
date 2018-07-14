@@ -41,12 +41,12 @@ void AudioStripExt::setFileNameUrl(const QUrl &fileNameUrl)
     }
 }
 
-void AudioStripExt::toPb(pb::Strip_Audio &pb) const
+void AudioStripExt::toPb(pb::Strip_BadAudio &pb) const
 {
     pb.set_filename(fileName_.toStdString());
 }
 
-void AudioStripExt::fromPb(const pb::Strip_Audio &pb)
+void AudioStripExt::fromPb(const pb::Strip_BadAudio &pb)
 {
     setFileName(QString::fromStdString(pb.filename()));
 }

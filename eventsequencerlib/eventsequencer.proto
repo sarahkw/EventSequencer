@@ -8,13 +8,13 @@ message Strip {
   int32 length = 3;
 
   BadJs badJs = 10;
-  Audio audio = 11;
+  BadAudio badAudio = 11;
   Text text = 12;
 
   message BadJs {
     string script = 1;
   }
-  message Audio {
+  message BadAudio {
     string fileName = 1;
   }
   message Text {
@@ -28,13 +28,13 @@ message ChannelData {
   message Text {
     int32 fontSize = 1;
   }
-  message Audio {}
+  message BadAudio {}
 
   oneof channel {
     BadClock badClock = 10;
     BadJs badJs = 11;
     Text text = 12;
-    Audio audio = 13;
+    BadAudio badAudio = 13;
   };
 }
 
