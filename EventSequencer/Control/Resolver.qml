@@ -3,10 +3,10 @@ import QtQuick 2.0
 import eventsequencer 1.0 as ES
 
 Item {
-    BadClock {
+    BadClockControl {
         id: badClock
     }
-    BadJs {
+    BadJsControl {
         id: badJs
     }
     TextControl {
