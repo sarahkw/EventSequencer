@@ -35,11 +35,11 @@ SOURCES += \
     channel/iclockrole.cpp \
     channel/channelbase.cpp \
     channel/channelfactory.cpp \
-    channel/audiochannel.cpp \
     stripext/badjsstripext.cpp \
-    stripext/audiostripext.cpp \
     stripext/textstripext.cpp \
-    constrainedmetricsfontutil.cpp
+    constrainedmetricsfontutil.cpp \
+    channel/badaudiochannel.cpp \
+    stripext/badaudiostripext.cpp
 
 
 HEADERS += \
@@ -56,11 +56,11 @@ HEADERS += \
     channel/iclockrole.h \
     channel/channelbase.h \
     channel/channelfactory.h \
-    channel/audiochannel.h \
     stripext/badjsstripext.h \
-    stripext/audiostripext.h \
     stripext/textstripext.h \
-    constrainedmetricsfontutil.h
+    constrainedmetricsfontutil.h \
+    channel/badaudiochannel.h \
+    stripext/badaudiostripext.h
 
 unix {
     target.path = /usr/lib

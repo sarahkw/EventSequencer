@@ -1,15 +1,15 @@
-#include "audiostripext.h"
+#include "badaudiostripext.h"
 
 #include <eventsequencer.pb.h>
 
 namespace stripext {
 
-QString AudioStripExt::fileName() const
+QString BadAudioStripExt::fileName() const
 {
     return fileName_;
 }
 
-void AudioStripExt::setFileName(const QString &fileName)
+void BadAudioStripExt::setFileName(const QString &fileName)
 {
     if (fileName_ != fileName) {
         fileName_ = fileName;
@@ -20,17 +20,17 @@ void AudioStripExt::setFileName(const QString &fileName)
     }
 }
 
-AudioStripExt::AudioStripExt(QObject *parent) : QObject(parent)
+BadAudioStripExt::BadAudioStripExt(QObject *parent) : QObject(parent)
 {
 
 }
 
-QUrl AudioStripExt::fileNameUrl() const
+QUrl BadAudioStripExt::fileNameUrl() const
 {
     return fileNameUrl_;
 }
 
-void AudioStripExt::setFileNameUrl(const QUrl &fileNameUrl)
+void BadAudioStripExt::setFileNameUrl(const QUrl &fileNameUrl)
 {
     if (fileNameUrl_ != fileNameUrl) {
         fileNameUrl_ = fileNameUrl;
@@ -41,12 +41,12 @@ void AudioStripExt::setFileNameUrl(const QUrl &fileNameUrl)
     }
 }
 
-void AudioStripExt::toPb(pb::Strip_BadAudio &pb) const
+void BadAudioStripExt::toPb(pb::Strip_BadAudio &pb) const
 {
     pb.set_filename(fileName_.toStdString());
 }
 
-void AudioStripExt::fromPb(const pb::Strip_BadAudio &pb)
+void BadAudioStripExt::fromPb(const pb::Strip_BadAudio &pb)
 {
     setFileName(QString::fromStdString(pb.filename()));
 }

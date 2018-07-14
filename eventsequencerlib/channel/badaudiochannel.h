@@ -1,5 +1,5 @@
-#ifndef AUDIOCHANNEL_H
-#define AUDIOCHANNEL_H
+#ifndef BADAUDIOCHANNEL_H
+#define BADAUDIOCHANNEL_H
 
 #include "channelbase.h"
 
@@ -7,14 +7,14 @@
 
 namespace channel {
 
-class AudioChannel : public ChannelBase
+class BadAudioChannel : public ChannelBase
 {
     Q_OBJECT
 
     Q_PROPERTY(channel::ChannelType::Enum channelType READ channelType CONSTANT)
 
 public:
-    explicit AudioChannel(QObject *parent = nullptr);
+    explicit BadAudioChannel(QObject *parent = nullptr);
 
     virtual void toPb(pb::ChannelData& pb) const override;
     virtual void fromPb(const pb::ChannelData& pb) override;
@@ -28,4 +28,4 @@ public slots:
 
 } // namespace channel
 
-#endif // AUDIOCHANNEL_H
+#endif // BADAUDIOCHANNEL_H

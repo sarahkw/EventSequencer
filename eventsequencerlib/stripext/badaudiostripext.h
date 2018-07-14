@@ -1,5 +1,5 @@
-#ifndef AUDIOSTRIPEXT_H
-#define AUDIOSTRIPEXT_H
+#ifndef BADAUDIOSTRIPEXT_H
+#define BADAUDIOSTRIPEXT_H
 
 #include <QObject>
 #include <QUrl>
@@ -10,7 +10,7 @@ class Strip_BadAudio;
 
 namespace stripext {
 
-class AudioStripExt : public QObject
+class BadAudioStripExt : public QObject
 {
     Q_OBJECT
 
@@ -21,7 +21,7 @@ class AudioStripExt : public QObject
     Q_PROPERTY(QString fileName READ fileName WRITE setFileName NOTIFY fileNameChanged)
 
 public:
-    explicit AudioStripExt(QObject *parent = nullptr);
+    explicit BadAudioStripExt(QObject *parent = nullptr);
 
     void toPb(pb::Strip_BadAudio& pb) const;
     void fromPb(const pb::Strip_BadAudio& pb);
@@ -42,4 +42,4 @@ public slots:
 
 } // namespace stripext
 
-#endif // AUDIOSTRIPEXT_H
+#endif // BADAUDIOSTRIPEXT_H

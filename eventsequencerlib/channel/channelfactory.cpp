@@ -3,7 +3,7 @@
 #include "badclockchannel.h"
 #include "badjschannel.h"
 #include "textchannel.h"
-#include "audiochannel.h"
+#include "badaudiochannel.h"
 
 #include <eventsequencer.pb.h>
 
@@ -25,7 +25,7 @@ channel::ChannelBase *channel::ChannelFactory::Create(const pb::ChannelData &pb,
         cb = new channel::TextChannel(parent);
         break;
     case ::pb::ChannelData::kBadAudio:
-        cb = new channel::AudioChannel(parent);
+        cb = new channel::BadAudioChannel(parent);
         break;
     case ::pb::ChannelData::CHANNEL_NOT_SET:
         qWarning() << "Unknown channel! Loading file from newer version?";
@@ -49,7 +49,7 @@ channel::ChannelBase *channel::ChannelFactory::Create(channel::ChannelType::Enum
     case channel::ChannelType::Text:
         return new channel::TextChannel(parent);
     case channel::ChannelType::Audio:
-        return new channel::AudioChannel(parent);
+        return new channel::BadAudioChannel(parent);
     }
 
     Q_ASSERT(false);
