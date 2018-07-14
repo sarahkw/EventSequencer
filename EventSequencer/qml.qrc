@@ -19,7 +19,7 @@
         <file>Control/BadJs.qml</file>
         <file>Control/TextControl.qml</file>
         <file>Control/Resolver.qml</file>
-        <file>Control/AudioControl.qml</file>
+        <file>Control/BadAudioControl.qml</file>
         <file>SelectionMode.qml</file>
         <file>DebugConstrainedMetricsFontUtil.qml</file>
     </qresource>

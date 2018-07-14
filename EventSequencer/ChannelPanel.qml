@@ -43,8 +43,9 @@ Rectangle {
             }
 
             ComboBox {
+                // TODO move modelUtil to Controls/
                 readonly property var modelUtil: (function () { return {
-                    model: ["", "BadClock", "BadJs", "Text", "Audio"],
+                    model: ["", "BadClock", "BadJs", "Text", "BadAudio"],
                     enumToIndex: function (v) {
                         switch (v) {
                         case ES.ChannelType.BadClock: return 1;
