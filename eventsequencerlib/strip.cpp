@@ -66,25 +66,25 @@ stripext::BadJsStripExt* Strip::mutableBadJs()
     return badJs();
 }
 
-stripext::BadAudioStripExt *Strip::audio() const
+stripext::BadAudioStripExt *Strip::badAudio() const
 {
-    return audio_;
+    return badAudio_;
 }
 
-void Strip::setAudio(stripext::BadAudioStripExt *audio)
+void Strip::setBadAudio(stripext::BadAudioStripExt *badAudio)
 {
-    if (audio_ != audio) {
-        audio_ = audio;
-        emit audioChanged();
+    if (badAudio_ != badAudio) {
+        badAudio_ = badAudio;
+        emit badAudioChanged();
     }
 }
 
-stripext::BadAudioStripExt *Strip::mutableAudio()
+stripext::BadAudioStripExt *Strip::mutableBadAudio()
 {
-    if (audio() == nullptr) {
-        setAudio(new stripext::BadAudioStripExt(this));
+    if (badAudio() == nullptr) {
+        setBadAudio(new stripext::BadAudioStripExt(this));
     }
-    return audio();
+    return badAudio();
 }
 
 stripext::TextStripExt *Strip::text() const
@@ -121,8 +121,8 @@ void Strip::toPb(pb::Strip &pb) const
     if (badJs() != nullptr) {
         badJs()->toPb(*pb.mutable_badjs());
     }
-    if (audio() != nullptr) {
-        audio()->toPb(*pb.mutable_badaudio());
+    if (badAudio() != nullptr) {
+        badAudio()->toPb(*pb.mutable_badaudio());
     }
     if (text() != nullptr) {
         text()->toPb(*pb.mutable_text());
@@ -143,7 +143,7 @@ void Strip::fromPb(const pb::Strip &pb)
     if (pb.has_badaudio()) {
         auto tmp = new stripext::BadAudioStripExt(this);
         tmp->fromPb(pb.badaudio());
-        setAudio(tmp);
+        setBadAudio(tmp);
     }
     if (pb.has_text()) {
         auto tmp = new stripext::TextStripExt(this);

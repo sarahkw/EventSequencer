@@ -22,14 +22,14 @@ class Strip : public QObject
     int length_ = 0;
 
     stripext::BadJsStripExt* badJs_ = nullptr;
-    stripext::BadAudioStripExt* audio_ = nullptr;
+    stripext::BadAudioStripExt* badAudio_ = nullptr;
     stripext::TextStripExt* text_ = nullptr;
 
     Q_PROPERTY(int channel READ channel WRITE setChannel NOTIFY channelChanged)
     Q_PROPERTY(int startFrame READ startFrame WRITE setStartFrame NOTIFY startFrameChanged)
     Q_PROPERTY(int length READ length WRITE setLength NOTIFY lengthChanged)
     Q_PROPERTY(stripext::BadJsStripExt* badJs READ badJs WRITE setBadJs NOTIFY badJsChanged)
-    Q_PROPERTY(stripext::BadAudioStripExt* audio READ audio WRITE setAudio NOTIFY audioChanged)
+    Q_PROPERTY(stripext::BadAudioStripExt* badAudio READ badAudio WRITE setBadAudio NOTIFY badAudioChanged)
     Q_PROPERTY(stripext::TextStripExt* text READ text WRITE setText NOTIFY textChanged)
 
 public:
@@ -51,9 +51,9 @@ public:
     void setBadJs(stripext::BadJsStripExt *badJs);
     Q_INVOKABLE stripext::BadJsStripExt* mutableBadJs();
 
-    stripext::BadAudioStripExt *audio() const;
-    void setAudio(stripext::BadAudioStripExt *audio);
-    Q_INVOKABLE stripext::BadAudioStripExt *mutableAudio();
+    stripext::BadAudioStripExt *badAudio() const;
+    void setBadAudio(stripext::BadAudioStripExt *badAudio);
+    Q_INVOKABLE stripext::BadAudioStripExt *mutableBadAudio();
 
     stripext::TextStripExt *text() const;
     void setText(stripext::TextStripExt *text);
@@ -65,7 +65,7 @@ signals:
     void startFrameChanged();
     void lengthChanged();
     void badJsChanged();
-    void audioChanged();
+    void badAudioChanged();
     void textChanged();
 
 public slots:

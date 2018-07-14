@@ -21,7 +21,7 @@ Item {
         case ES.ChannelType.BadClock: return badClock
         case ES.ChannelType.BadJs: return badJs
         case ES.ChannelType.Text: return text
-        case ES.ChannelType.Audio: return audio
+        case ES.ChannelType.BadAudio: return audio
         }
         console.assert(false, "Unable to resolve type")
     }

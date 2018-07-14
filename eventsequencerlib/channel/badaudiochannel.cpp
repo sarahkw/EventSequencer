@@ -21,7 +21,7 @@ void BadAudioChannel::fromPb(const pb::ChannelData &pb)
 
 ChannelType::Enum BadAudioChannel::channelType() const
 {
-    return ChannelType::Audio;
+    return ChannelType::BadAudio;
 }
 
 } // namespace channel

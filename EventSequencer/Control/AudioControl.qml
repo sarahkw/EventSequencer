@@ -16,8 +16,8 @@ Item {
 
                 TextField {
                     Layout.fillWidth: true
-                    text: Util.nvlobjprop(cppStrip.audio, "fileName", "")
-                    onEditingFinished: Util.mutableobjset(cppStrip.mutableAudio, "fileName", text)
+                    text: Util.nvlobjprop(cppStrip.badAudio, "fileName", "")
+                    onEditingFinished: Util.mutableobjset(cppStrip.mutableBadAudio, "fileName", text)
                 }
                 Button {
                     text: "Browse"
@@ -25,7 +25,7 @@ Item {
 
                     Qlp.FileDialog {
                         id: fopenDialog
-                        onAccepted: Util.mutableobjset(cppStrip.mutableAudio, "fileNameUrl", currentFile)
+                        onAccepted: Util.mutableobjset(cppStrip.mutableBadAudio, "fileNameUrl", currentFile)
                     }
                 }
             }

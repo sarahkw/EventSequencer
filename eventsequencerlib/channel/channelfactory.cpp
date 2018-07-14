@@ -48,7 +48,7 @@ channel::ChannelBase *channel::ChannelFactory::Create(channel::ChannelType::Enum
         return new channel::BadJsChannel(parent);
     case channel::ChannelType::Text:
         return new channel::TextChannel(parent);
-    case channel::ChannelType::Audio:
+    case channel::ChannelType::BadAudio:
         return new channel::BadAudioChannel(parent);
     }
 
