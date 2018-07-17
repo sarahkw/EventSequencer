@@ -117,9 +117,14 @@ QFont ConstrainedMetricsFontUtil::buildFont()
         setBuiltFontAddedSpacing(letterSpacing);
     } else {
         candidate.setLetterSpacing(QFont::AbsoluteSpacing, 0);
+        setBuiltFontAddedSpacing(0);
     }
 
     setBuiltFontFailedToMeetConstraints(!gotGoodCandidate);
+
+    QFontMetrics fm(candidate); // XXX I hope this is fast.
+    setBuiltFontHeight(fm.height());
+
     return candidate;
 }
 
@@ -146,6 +151,19 @@ void ConstrainedMetricsFontUtil::setBuiltFontAddedSpacing(int builtFontAddedSpac
     if (builtFontAddedSpacing_ != builtFontAddedSpacing) {
         builtFontAddedSpacing_ = builtFontAddedSpacing;
         emit builtFontAddedSpacingChanged();
+    }
+}
+
+int ConstrainedMetricsFontUtil::builtFontHeight() const
+{
+    return builtFontHeight_;
+}
+
+void ConstrainedMetricsFontUtil::setBuiltFontHeight(int builtFontHeight)
+{
+    if (builtFontHeight_ != builtFontHeight) {
+        builtFontHeight_ = builtFontHeight;
+        emit builtFontHeightChanged();
     }
 }
 

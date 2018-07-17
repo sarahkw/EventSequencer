@@ -23,5 +23,6 @@
         <file>SelectionMode.qml</file>
         <file>DebugConstrainedMetricsFontUtil.qml</file>
         <file>Control/LabelControl.qml</file>
+        <file>DebugWordWrappedTextTrack.qml</file>
     </qresource>
 </RCC>

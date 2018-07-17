@@ -10,6 +10,7 @@
 #include "stripext/textstripext.h"
 #include "stripext/labelstripext.h"
 #include "constrainedmetricsfontutil.h"
+#include "wordwrappedtexttrack.h"
 
 #include <QQmlEngine>
 
@@ -29,4 +30,5 @@ void RegisterQmlTypes::registerQmlTypes()
             return new FramesAndSeconds;
         });
     qmlRegisterType<ConstrainedMetricsFontUtil>("eventsequencer", 1, 0, "ConstrainedMetricsFontUtil");
+    qmlRegisterType<WordWrappedTextTrack>("eventsequencer", 1, 0, "WordWrappedTextTrack");
 }

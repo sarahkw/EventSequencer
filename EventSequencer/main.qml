@@ -156,6 +156,13 @@ ApplicationWindow {
                 }
             }
             CustomMenuItem {
+                text: "WordWrappedTextTrack"
+                onTriggered: {
+                    var component = Qt.createComponent("DebugWordWrappedTextTrack.qml")
+                    var obj = component.createObject(appwin, {visible: true})
+                }
+            }
+            CustomMenuItem {
                 text: "Dump Protobuf"
                 onTriggered: {
                     document.dumpProtobuf()
