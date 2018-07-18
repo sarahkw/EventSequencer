@@ -297,9 +297,15 @@ QVariantList Document::stripsOnFrame(int frame)
 void Document::reset()
 {
     if (strips_.size() > 0) {
+        std::vector<Strip*> deleteStrips;
+
         stripsModel_.beginRemoveRows(QModelIndex(), 0, strips_.size() - 1);
-        strips_.clear();
+        strips_.swap(deleteStrips);
         stripsModel_.endRemoveRows();
+
+        for (auto s : deleteStrips) {
+            delete s;
+        }
     }
 
     setFramesPerSecond(30);
