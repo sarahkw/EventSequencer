@@ -18,14 +18,30 @@ class ChannelBase;
 }
 
 class Strip;
+class Document;
 
-class Document : public QAbstractListModel
+class DocumentStripsModel : public QAbstractListModel
 {
     Q_OBJECT
-
+    friend class Document;
     enum CustomRoles {
         ModelDataRole = Qt::UserRole + 1
     };
+    Document& d_;
+    DocumentStripsModel(Document& d) : d_(d) { }
+public:
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QHash<int,QByteArray> roleNames() const override;
+};
+
+class Document : public QObject
+{
+    Q_OBJECT
+
+    friend class DocumentStripsModel;
+    DocumentStripsModel stripsModel_;
+    Q_PROPERTY(QAbstractListModel* stripsModel READ stripsModel CONSTANT)
 
     std::vector<Strip*> strips_;
 
@@ -58,10 +74,7 @@ public:
     void toPb(pb::Document& pb) const;
     void fromPb(const pb::Document& pb);
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-    QHash<int,QByteArray> roleNames() const override;
-
+    QAbstractListModel* stripsModel();
     Q_INVOKABLE Strip* createStrip();
     Q_INVOKABLE void deleteStrip(Strip* strip);
     Q_INVOKABLE QVariantList strips(); // QVariantList for QML

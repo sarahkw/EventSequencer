@@ -506,7 +506,7 @@ ApplicationWindow {
                     implicitHeight: childrenRect.height + childrenRect.y
 
                     Repeater {
-                        model: document
+                        model: document.stripsModel
                         Item {
                             id: stripBase
 

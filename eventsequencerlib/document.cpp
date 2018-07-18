@@ -9,6 +9,34 @@
 #include <QDebug>
 #include <QFile>
 
+/******************************************************************************/
+
+int DocumentStripsModel::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent)
+    return d_.strips_.size();
+}
+
+QVariant DocumentStripsModel::data(const QModelIndex &index, int role) const
+{
+    if (role == ModelDataRole) {
+        Q_ASSERT(index.row() >= 0);
+        Q_ASSERT(static_cast<size_t>(index.row()) < d_.strips_.size());
+
+        QVariant var;
+        var.setValue(d_.strips_[index.row()]);
+        return var;
+    }
+    return QVariant();
+}
+
+QHash<int,QByteArray> DocumentStripsModel::roleNames() const
+{
+    return {{ModelDataRole, "modelData"}};
+}
+
+/******************************************************************************/
+
 int Document::framesPerSecond() const
 {
     return framesPerSecond_;
@@ -103,7 +131,7 @@ void Document::setCurrentUrl(const QUrl &currentUrl)
     }
 }
 
-Document::Document(QObject *parent) : QAbstractListModel(parent)
+Document::Document(QObject *parent) : QObject(parent), stripsModel_(*this)
 {
 
 }
@@ -148,37 +176,18 @@ void Document::fromPb(const pb::Document &pb)
     }
 }
 
-int Document::rowCount(const QModelIndex &parent) const
+QAbstractListModel *Document::stripsModel()
 {
-    Q_UNUSED(parent)
-    return strips_.size();
-}
-
-QVariant Document::data(const QModelIndex &index, int role) const
-{
-    if (role == ModelDataRole) {
-        Q_ASSERT(index.row() >= 0);
-        Q_ASSERT(static_cast<size_t>(index.row()) < strips_.size());
-
-        QVariant var;
-        var.setValue(strips_[index.row()]);
-        return var;
-    }
-    return QVariant();
-}
-
-QHash<int, QByteArray> Document::roleNames() const
-{
-    return {{ModelDataRole, "modelData"}};
+    return &stripsModel_;
 }
 
 Strip* Document::createStrip()
 {
     Strip* s = new Strip(this);
 
-    beginInsertRows(QModelIndex(), strips_.size(), strips_.size());
+    stripsModel_.beginInsertRows(QModelIndex(), strips_.size(), strips_.size());
     strips_.push_back(s);
-    endInsertRows();
+    stripsModel_.endInsertRows();
 
     return s;
 }
@@ -189,9 +198,9 @@ void Document::deleteStrip(Strip* strip)
     Q_ASSERT(found != strips_.end());
     Strip* s = *found;
     auto rmIndex = found - strips_.begin();
-    beginRemoveRows(QModelIndex(), rmIndex, rmIndex);
+    stripsModel_.beginRemoveRows(QModelIndex(), rmIndex, rmIndex);
     strips_.erase(found);
-    endRemoveRows();
+    stripsModel_.endRemoveRows();
     delete s;
 }
 
@@ -222,9 +231,9 @@ QVariantList Document::stripsOnFrame(int frame)
 void Document::reset()
 {
     if (strips_.size() > 0) {
-        beginRemoveRows(QModelIndex(), 0, strips_.size() - 1);
+        stripsModel_.beginRemoveRows(QModelIndex(), 0, strips_.size() - 1);
         strips_.clear();
-        endRemoveRows();
+        stripsModel_.endRemoveRows();
     }
 
     setFramesPerSecond(30);
