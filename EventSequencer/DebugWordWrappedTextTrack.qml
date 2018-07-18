@@ -21,7 +21,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
     WordWrappedTextTrack {
         id: wwtt
-        width: destRect.width
+        width: destRect.width - cmfu.constrainByWidthValue /*For wrapped space or NewLine*/
         text: crazyText
         font: cmfu.builtFont
     }
