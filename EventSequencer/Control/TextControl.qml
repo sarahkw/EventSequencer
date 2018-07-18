@@ -10,11 +10,25 @@ Item {
             Label {
                 text: "Content"
             }
-            TextField {
+            Item {
                 anchors.left: parent.left
                 anchors.right: parent.right
-                onEditingFinished: cppChannel.content = text
-                text: cppChannel.content
+                height: sv.height
+                Rectangle {
+                    color: "white"
+                    anchors.fill: sv
+                }
+                ScrollView {
+                    id: sv
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: 200
+                    TextArea {
+                        onEditingFinished: cppChannel.content = text
+                        text: cppChannel.content
+                        selectByMouse: true
+                    }
+                }
             }
         }
     }
