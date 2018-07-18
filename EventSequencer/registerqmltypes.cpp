@@ -11,6 +11,7 @@
 #include "stripext/labelstripext.h"
 #include "constrainedmetricsfontutil.h"
 #include "wordwrappedtexttrack.h"
+#include "showmultiplelinesononeline.h"
 
 #include <QQmlEngine>
 
@@ -31,4 +32,5 @@ void RegisterQmlTypes::registerQmlTypes()
         });
     qmlRegisterType<ConstrainedMetricsFontUtil>("eventsequencer", 1, 0, "ConstrainedMetricsFontUtil");
     qmlRegisterType<WordWrappedTextTrack>("eventsequencer", 1, 0, "WordWrappedTextTrack");
+    qmlRegisterType<ShowMultipleLinesOnOneLine>("eventsequencer", 1, 0, "ShowMultipleLinesOnOneLine");
 }

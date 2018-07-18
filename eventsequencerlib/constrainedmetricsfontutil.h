@@ -20,6 +20,7 @@ class ConstrainedMetricsFontUtil : public QObject
     bool builtFontFailedToMeetConstraints_ = false;
     int builtFontAddedSpacing_ = 0;
     int builtFontHeight_ = 0;
+    int builtFontWidth_ = 0;
 
     QFont builtFont_;
 
@@ -31,6 +32,7 @@ class ConstrainedMetricsFontUtil : public QObject
     Q_PROPERTY(bool  builtFontFailedToMeetConstraints READ builtFontFailedToMeetConstraints   NOTIFY builtFontFailedToMeetConstraintsChanged)
     Q_PROPERTY(int   builtFontAddedSpacing            READ builtFontAddedSpacing              NOTIFY builtFontAddedSpacingChanged)
     Q_PROPERTY(int   builtFontHeight                  READ builtFontHeight                    NOTIFY builtFontHeightChanged)
+    Q_PROPERTY(int   builtFontWidth                   READ builtFontWidth                     NOTIFY builtFontWidthChanged)
     Q_PROPERTY(QFont builtFont                        READ builtFont                          NOTIFY builtFontChanged)
 
     bool builtFontIsDirty_ = false;
@@ -77,6 +79,11 @@ private:
     void setBuiltFontHeight(int builtFontHeight);
 public:
 
+    int builtFontWidth() const;
+private:
+    void setBuiltFontWidth(int builtFontWidth);
+public:
+
     QFont builtFont();
 
 signals:
@@ -89,6 +96,7 @@ signals:
     void builtFontFailedToMeetConstraintsChanged();
     void builtFontAddedSpacingChanged();
     void builtFontHeightChanged();
+    void builtFontWidthChanged();
     void builtFontChanged();
 
 public slots:

@@ -42,7 +42,8 @@ SOURCES += \
     stripext/badaudiostripext.cpp \
     channel/labelchannel.cpp \
     stripext/labelstripext.cpp \
-    wordwrappedtexttrack.cpp
+    wordwrappedtexttrack.cpp \
+    showmultiplelinesononeline.cpp
 
 
 HEADERS += \
@@ -66,7 +67,8 @@ HEADERS += \
     stripext/badaudiostripext.h \
     channel/labelchannel.h \
     stripext/labelstripext.h \
-    wordwrappedtexttrack.h
+    wordwrappedtexttrack.h \
+    showmultiplelinesononeline.h
 
 unix {
     target.path = /usr/lib

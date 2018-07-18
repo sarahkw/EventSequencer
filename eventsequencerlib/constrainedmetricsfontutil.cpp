@@ -124,6 +124,7 @@ QFont ConstrainedMetricsFontUtil::buildFont()
 
     QFontMetrics fm(candidate); // XXX I hope this is fast.
     setBuiltFontHeight(fm.height());
+    setBuiltFontWidth(fm.horizontalAdvance("x"));
 
     return candidate;
 }
@@ -164,6 +165,19 @@ void ConstrainedMetricsFontUtil::setBuiltFontHeight(int builtFontHeight)
     if (builtFontHeight_ != builtFontHeight) {
         builtFontHeight_ = builtFontHeight;
         emit builtFontHeightChanged();
+    }
+}
+
+int ConstrainedMetricsFontUtil::builtFontWidth() const
+{
+    return builtFontWidth_;
+}
+
+void ConstrainedMetricsFontUtil::setBuiltFontWidth(int builtFontWidth)
+{
+    if (builtFontWidth_ != builtFontWidth) {
+        builtFontWidth_ = builtFontWidth;
+        emit builtFontWidthChanged();
     }
 }
 

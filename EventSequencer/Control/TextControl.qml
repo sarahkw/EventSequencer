@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
 import "../util.js" as Util
+import eventsequencer 1.0
 
 import "../" as Parent
 
@@ -77,13 +78,35 @@ Item {
 
     property Component channelTrackComponent: Component {
         Text {
-            text: cppChannel.content
+            id: txtChannelTrack
+            text: smlool.output
             font: cmfuAlignedFont.builtFont
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             verticalAlignment: Text.AlignVCenter
-            width: zoom.mapLengthToDisplayWidth(cppChannel.content.length) // One frame per letter
+            width: zoom.mapLengthToDisplayWidth(text.length) // One frame per letter
             elide: Text.ElideRight
+
+            ShowMultipleLinesOnOneLine {
+                id: smlool
+                input: cppChannel.content
+            }
+
+            Repeater {
+                model: smlool.outputNewLinePositions
+                Item {
+                    visible: x + width <= txtChannelTrack.width
+                    width: cmfuAlignedFont.builtFontWidth
+                    height: txtChannelTrack.height
+                    x: width * modelData
+                    Rectangle {
+                        color: "salmon"
+                        anchors.centerIn: parent
+                        width: Math.min(parent.width, parent.height) - 2
+                        height: width
+                    }
+                }
+            }
         }
     }
 }
