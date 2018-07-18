@@ -163,6 +163,13 @@ ApplicationWindow {
                 }
             }
             CustomMenuItem {
+                text: "DebugChannelsModel"
+                onTriggered: {
+                    var component = Qt.createComponent("DebugChannelsModel.qml")
+                    var obj = component.createObject(appwin, {visible: true, model: document.channelsModel})
+                }
+            }
+            CustomMenuItem {
                 text: "Dump Protobuf"
                 onTriggered: {
                     document.dumpProtobuf()

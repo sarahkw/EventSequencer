@@ -24,5 +24,6 @@
         <file>DebugConstrainedMetricsFontUtil.qml</file>
         <file>Control/LabelControl.qml</file>
         <file>DebugWordWrappedTextTrack.qml</file>
+        <file>DebugChannelsModel.qml</file>
     </qresource>
 </RCC>

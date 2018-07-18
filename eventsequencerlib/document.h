@@ -35,6 +35,30 @@ public:
     QHash<int,QByteArray> roleNames() const override;
 };
 
+class DocumentChannelsModel : public QAbstractListModel
+{
+    Q_OBJECT
+    friend class Document;
+    Document& d_;
+    DocumentChannelsModel(Document& d) : d_(d) { }
+
+    enum CustomRoles {
+        ModelDataRole = Qt::UserRole + 1,
+        ChannelIndexRole
+    };
+
+    std::vector<int> displayRows_;
+
+    void afterAdd(int id);
+
+    void beforeDelete(int id);
+
+public:
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QHash<int,QByteArray> roleNames() const override;
+};
+
 class Document : public QObject
 {
     Q_OBJECT
@@ -42,6 +66,10 @@ class Document : public QObject
     friend class DocumentStripsModel;
     DocumentStripsModel stripsModel_;
     Q_PROPERTY(QAbstractListModel* stripsModel READ stripsModel CONSTANT)
+
+    friend class DocumentChannelsModel;
+    DocumentChannelsModel channelsModel_;
+    Q_PROPERTY(QAbstractItemModel* channelsModel READ channelsModel CONSTANT)
 
     std::vector<Strip*> strips_;
 
@@ -84,6 +112,7 @@ public:
     Q_INVOKABLE void load(const QUrl& url);
     Q_INVOKABLE void dumpProtobuf();
 
+    QAbstractListModel* channelsModel();
     Q_INVOKABLE QObject* createChannel(int id, channel::ChannelType::Enum type);
     Q_INVOKABLE void deleteChannel(int id);
     Q_INVOKABLE WaitFor* waitForChannel(int id);
@@ -105,8 +134,11 @@ public:
 
 private:
 
-    // Like signals, but not.
-    void channelAfterAddOrReplace(int id, QObject* channel);
+    enum class AddOrReplace {
+        Add,
+        Replace
+    };
+    void channelAfterAddOrReplace(int id, QObject* channel, AddOrReplace mode);
     void channelBeforeDelete(int id);
 
 signals:

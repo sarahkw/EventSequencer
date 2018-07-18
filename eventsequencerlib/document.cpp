@@ -37,6 +37,57 @@ QHash<int,QByteArray> DocumentStripsModel::roleNames() const
 
 /******************************************************************************/
 
+void DocumentChannelsModel::afterAdd(int id)
+{
+    beginInsertRows(QModelIndex(), displayRows_.size(), displayRows_.size());
+    displayRows_.push_back(id);
+    endInsertRows();
+}
+
+void DocumentChannelsModel::beforeDelete(int id)
+{
+    auto location = std::find(displayRows_.begin(), displayRows_.end(), id);
+    if (location == displayRows_.end()) {
+        qWarning() << __PRETTY_FUNCTION__ << "Doesn't exist" << id;
+        return;
+    }
+    auto index = location - displayRows_.begin();
+    beginRemoveRows(QModelIndex(), index, index);
+    displayRows_.erase(location);
+    endRemoveRows();
+}
+
+int DocumentChannelsModel::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return displayRows_.size();
+}
+
+QVariant DocumentChannelsModel::data(const QModelIndex &index, int role) const
+{
+    if (!index.isValid() || index.column() != 0) return QVariant();
+    if (index.row() >= 0 && static_cast<unsigned>(index.row()) < displayRows_.size()) {
+        if (role == ModelDataRole) {
+            QVariant var;
+            var.setValue(d_.channels_[displayRows_[index.row()]]);
+            return var;
+        } else if (role == ChannelIndexRole) {
+            return displayRows_[index.row()];
+        }
+    }
+    return QVariant();
+}
+
+QHash<int, QByteArray> DocumentChannelsModel::roleNames() const
+{
+    return {
+        {ModelDataRole, "modelData"},
+        {ChannelIndexRole, "channelIndex"}
+    };
+}
+
+/******************************************************************************/
+
 int Document::framesPerSecond() const
 {
     return framesPerSecond_;
@@ -85,7 +136,7 @@ QVariantList Document::channelsProvidingClock() const
     return ret;
 }
 
-void Document::channelAfterAddOrReplace(int id, QObject *channel)
+void Document::channelAfterAddOrReplace(int id, QObject *channel, AddOrReplace mode)
 {
     channelWaitFor_.afterAdd(id, channel);
 
@@ -103,6 +154,16 @@ void Document::channelAfterAddOrReplace(int id, QObject *channel)
             emit channelsProvidingClockChanged();
         }
     }
+
+    switch (mode) {
+    case AddOrReplace::Add:
+        channelsModel_.afterAdd(id);
+        break;
+    case AddOrReplace::Replace:
+        channelsModel_.beforeDelete(id);
+        channelsModel_.afterAdd(id);
+        break;
+    }
 }
 
 void Document::channelBeforeDelete(int id)
@@ -114,6 +175,8 @@ void Document::channelBeforeDelete(int id)
         channelsProvidingClock_.erase(id);
         emit channelsProvidingClockChanged();
     }
+
+    channelsModel_.beforeDelete(id);
 }
 
 QUrl Document::currentUrl() const
@@ -131,7 +194,8 @@ void Document::setCurrentUrl(const QUrl &currentUrl)
     }
 }
 
-Document::Document(QObject *parent) : QObject(parent), stripsModel_(*this)
+Document::Document(QObject *parent)
+    : QObject(parent), stripsModel_(*this), channelsModel_(*this)
 {
 
 }
@@ -165,13 +229,15 @@ void Document::fromPb(const pb::Document &pb)
     setStartFrame(pb.startframe());
     setEndFrame(pb.endframe());
 
+    Q_ASSERT(channels_.empty()); // Because channelAfterAddOrReplace will always say Add. Replace not implemented.
+
     for (auto& mappair : pb.channels()) {
         const int id = mappair.first;
         channel::ChannelBase* addme =
                 channel::ChannelFactory::Create(mappair.second, this);
         if (addme != nullptr) {
             channels_[id] = addme;
-            channelAfterAddOrReplace(id, addme);
+            channelAfterAddOrReplace(id, addme, AddOrReplace::Add);
         }
     }
 }
@@ -298,17 +364,25 @@ void Document::dumpProtobuf()
     qInfo() << doc.DebugString().data(); // .data() so qInfo doesn't quote it.
 }
 
+QAbstractListModel *Document::channelsModel()
+{
+    return &channelsModel_;
+}
+
 QObject *Document::createChannel(int id, channel::ChannelType::Enum type)
 {
     channel::ChannelBase* chan = channel::ChannelFactory::Create(type, this);
 
+    AddOrReplace mode = AddOrReplace::Add;
+
     auto old = channels_.find(id);
     if (old != channels_.end()) {
         delete old->second;
+        mode = AddOrReplace::Replace;
     }
 
     channels_[id] = chan;
-    channelAfterAddOrReplace(id, chan);
+    channelAfterAddOrReplace(id, chan, mode);
     return chan;
 }
 
