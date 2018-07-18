@@ -12,9 +12,9 @@ class TextChannel : public ChannelBase
 {
     Q_OBJECT
 
-    int fontSize_ = 10;
+    QString content_;
 
-    Q_PROPERTY(int fontSize READ fontSize WRITE setFontSize NOTIFY fontSizeChanged)
+    Q_PROPERTY(QString content READ content WRITE setContent NOTIFY contentChanged)
 
 public:
     explicit TextChannel(QObject *parent = nullptr);
@@ -24,12 +24,12 @@ public:
 
     ChannelType::Enum channelType() const override;
 
-    int fontSize() const;
-    void setFontSize(int fontSize);
+    QString content() const;
+    void setContent(const QString &content);
 
 signals:
 
-    void fontSizeChanged();
+    void contentChanged();
 
 public slots:
 };

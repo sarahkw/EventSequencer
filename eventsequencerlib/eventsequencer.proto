@@ -30,7 +30,8 @@ message ChannelData {
   message BadClock { }
   message BadJs { }
   message Text {
-    int32 fontSize = 1;
+    reserved 1;
+    string content = 2;
   }
   message BadAudio {}
   message Label {}

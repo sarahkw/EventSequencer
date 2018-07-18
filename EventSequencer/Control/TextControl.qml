@@ -6,8 +6,16 @@ import "../" as Parent
 
 Item {
     property Component channelPropertiesComponent: Component {
-        Text {
-            text: "Hello from Text properties!"
+        Column {
+            Label {
+                text: "Content"
+            }
+            TextField {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                onEditingFinished: cppChannel.content = text
+                text: cppChannel.content
+            }
         }
     }
 

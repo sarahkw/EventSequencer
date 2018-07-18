@@ -1045,6 +1045,8 @@ ApplicationWindow {
                                 anchors.left: parent.left
                                 anchors.right: parent.right
                                 sourceComponent: chanPropComp
+
+                                property var cppChannel: channel
                             }
                             Item { // End Spacer
                                 width: 1

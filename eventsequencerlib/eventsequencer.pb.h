@@ -752,18 +752,23 @@ class ChannelData_Text : public ::google::protobuf::Message /* @@protoc_insertio
 
   // accessors -------------------------------------------------------
 
-  // optional int32 fontSize = 1;
-  void clear_fontsize();
-  static const int kFontSizeFieldNumber = 1;
-  ::google::protobuf::int32 fontsize() const;
-  void set_fontsize(::google::protobuf::int32 value);
+  // optional string content = 2;
+  void clear_content();
+  static const int kContentFieldNumber = 2;
+  const ::std::string& content() const;
+  void set_content(const ::std::string& value);
+  void set_content(const char* value);
+  void set_content(const char* value, size_t size);
+  ::std::string* mutable_content();
+  ::std::string* release_content();
+  void set_allocated_content(::std::string* content);
 
   // @@protoc_insertion_point(class_scope:pb.ChannelData.Text)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
-  ::google::protobuf::int32 fontsize_;
+  ::google::protobuf::internal::ArenaStringPtr content_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_eventsequencer_2eproto();
   friend void protobuf_AssignDesc_eventsequencer_2eproto();
@@ -1613,18 +1618,48 @@ inline void Strip::set_allocated_label(::pb::Strip_Label* label) {
 
 // ChannelData_Text
 
-// optional int32 fontSize = 1;
-inline void ChannelData_Text::clear_fontsize() {
-  fontsize_ = 0;
+// optional string content = 2;
+inline void ChannelData_Text::clear_content() {
+  content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::google::protobuf::int32 ChannelData_Text::fontsize() const {
-  // @@protoc_insertion_point(field_get:pb.ChannelData.Text.fontSize)
-  return fontsize_;
+inline const ::std::string& ChannelData_Text::content() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.Text.content)
+  return content_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void ChannelData_Text::set_fontsize(::google::protobuf::int32 value) {
+inline void ChannelData_Text::set_content(const ::std::string& value) {
   
-  fontsize_ = value;
-  // @@protoc_insertion_point(field_set:pb.ChannelData.Text.fontSize)
+  content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.ChannelData.Text.content)
+}
+inline void ChannelData_Text::set_content(const char* value) {
+  
+  content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.ChannelData.Text.content)
+}
+inline void ChannelData_Text::set_content(const char* value, size_t size) {
+  
+  content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.ChannelData.Text.content)
+}
+inline ::std::string* ChannelData_Text::mutable_content() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.Text.content)
+  return content_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ChannelData_Text::release_content() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.Text.content)
+  
+  return content_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ChannelData_Text::set_allocated_content(::std::string* content) {
+  if (content != NULL) {
+    
+  } else {
+    
+  }
+  content_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), content);
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.Text.content)
 }
 
 // -------------------------------------------------------------------

@@ -4,16 +4,16 @@
 
 namespace channel {
 
-int TextChannel::fontSize() const
+QString TextChannel::content() const
 {
-    return fontSize_;
+    return content_;
 }
 
-void TextChannel::setFontSize(int fontSize)
+void TextChannel::setContent(const QString &content)
 {
-    if (fontSize_ != fontSize) {
-        fontSize_ = fontSize;
-        emit fontSizeChanged();
+    if (content_ != content) {
+        content_ = content;
+        emit contentChanged();
     }
 }
 
@@ -25,13 +25,13 @@ TextChannel::TextChannel(QObject *parent) : ChannelBase(parent)
 void TextChannel::toPb(pb::ChannelData &pb) const
 {
     auto mut = pb.mutable_text();
-    mut->set_fontsize(fontSize());
+    mut->set_content(content().toStdString());
 }
 
 void TextChannel::fromPb(const pb::ChannelData &pb)
 {
     Q_ASSERT(pb.has_text());
-    setFontSize(pb.text().fontsize());
+    setContent(QString::fromStdString(pb.text().content()));
 }
 
 ChannelType::Enum TextChannel::channelType() const
