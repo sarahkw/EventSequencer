@@ -46,6 +46,7 @@ void DocumentChannelsModel::afterAdd(int id)
 
 void DocumentChannelsModel::beforeDelete(int id)
 {
+    // XXX O(n^2) to delete all channels. Maybe have a "clear channels" function.
     auto location = std::find(displayRows_.begin(), displayRows_.end(), id);
     if (location == displayRows_.end()) {
         qWarning() << __PRETTY_FUNCTION__ << "Doesn't exist" << id;
