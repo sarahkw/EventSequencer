@@ -34,24 +34,42 @@ Item {
     }
 
     property Component stripComponent: Component {
-        Text {
-            color: selected ? "blue" : "black"
-            text: Util.nvlobjprop(cppStrip.text, "content", '""')
-            font: cmfuAlignedFont.builtFont
-            elide: Text.ElideRight
-            anchors.fill: parent
-            verticalAlignment: Text.AlignVCenter
+        Rectangle {
+            width: txt.width
+            height: txt.height
+            color: "whitesmoke"
+            Text {
+                id: txt
+                color: selected ? "blue" : "black"
+                text: Util.nvlobjprop(cppStrip.text, "content", '""')
+                font: cmfuAlignedFont.builtFont
+                elide: Text.ElideRight
+                anchors.fill: parent
+                verticalAlignment: Text.AlignVCenter
 
-            MouseArea {
-                anchors.left: parent.left
-                anchors.top: parent.top
-                width: parent.contentWidth
-                height: parent.contentHeight
-                acceptedButtons: Qt.RightButton
-                onClicked: {
-                    selectionClicked(mouse, Parent.SelectionMode.Whole)
+                MouseArea {
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    width: parent.contentWidth
+                    height: parent.contentHeight
+                    acceptedButtons: Qt.RightButton
+                    onClicked: {
+                        selectionClicked(mouse, Parent.SelectionMode.Whole)
+                    }
                 }
             }
+        }
+    }
+
+    property Component channelTrackComponent: Component {
+        Text {
+            text: cppChannel.content
+            font: cmfuAlignedFont.builtFont
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            verticalAlignment: Text.AlignVCenter
+            width: zoom.mapLengthToDisplayWidth(cppChannel.content.length) // One frame per letter
+            elide: Text.ElideRight
         }
     }
 }

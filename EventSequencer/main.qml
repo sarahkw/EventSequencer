@@ -512,6 +512,25 @@ ApplicationWindow {
                     implicitWidth: childrenRect.width + childrenRect.x
                     implicitHeight: childrenRect.height + childrenRect.y
 
+                    property ES.ConstrainedMetricsFontUtil cmfuAlignedFont: ES.ConstrainedMetricsFontUtil {
+                        constrainByWidthValue: zoom.displayWidthPerRulerTick
+                        addLetterSpacingToMatchWidth: true
+                        constrainByHeightEnabled: true
+                        constrainByHeightValue: channelPixels
+                    }
+
+                    Repeater {
+                        model: document.channelsModel
+                        Loader {
+                            sourceComponent: controlResolver.resolve(modelData.channelType).channelTrackComponent
+                            property var cppChannel: modelData
+                            y: channelIndex * channelPixels
+                            height: channelPixels
+                            property ES.ConstrainedMetricsFontUtil cmfuAlignedFont: body.cmfuAlignedFont
+                            property ZoomLogic zoom: appwin.zoom
+                        }
+                    }
+
                     Repeater {
                         model: document.stripsModel
                         Item {
@@ -581,12 +600,7 @@ ApplicationWindow {
                                 property bool selected: stripBase.selected
                                 property int selectionMode: stripBase.selectionMode
 
-                                property ES.ConstrainedMetricsFontUtil cmfuAlignedFont: ES.ConstrainedMetricsFontUtil {
-                                    constrainByWidthValue: zoom.displayWidthPerRulerTick
-                                    addLetterSpacingToMatchWidth: true
-                                    constrainByHeightEnabled: true
-                                    constrainByHeightValue: channelPixels
-                                }
+                                property ES.ConstrainedMetricsFontUtil cmfuAlignedFont: body.cmfuAlignedFont
 
                                 function selectionClicked() {
                                     _selectionClicked.apply(this, arguments)
