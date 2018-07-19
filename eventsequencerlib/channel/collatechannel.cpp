@@ -49,12 +49,24 @@ bool CollateChannel::event(QEvent *event)
     return ChannelBase::event(event);
 }
 
+void CollateChannel::triggerRefresh()
+{
+    if (!refreshPending_) {
+        refreshPending_ = true;
+        QCoreApplication::postEvent(this, new CollateChannelRefreshEvent);
+    }
+}
+
 CollateChannel::CollateChannel(Document& d, QObject *parent)
     : ChannelBase(parent), d_(d)
 {
     QObject::connect(&d, &Document::stripAfterPlaced, this, &CollateChannel::stripAfterAdd);
     QObject::connect(&d, &Document::stripBeforeDelete, this, &CollateChannel::stripBeforeDelete);
     QObject::connect(&d, &Document::stripMoved, this, &CollateChannel::stripMoved);
+    QObject::connect(&d, &Document::startFrameChanged, this, &CollateChannel::triggerRefresh);
+    QObject::connect(&d, &Document::endFrameChanged, this, &CollateChannel::triggerRefresh);
+
+    triggerRefresh();
 }
 
 void CollateChannel::toPb(pb::ChannelData &pb) const
@@ -96,20 +108,20 @@ void CollateChannel::stripMoved(Strip *strip, int previousChannel, int previousS
 
 void CollateChannel::channelAffected(int channel)
 {
-    if (refreshPending_) {
+    if (refreshPending_) { // Optimization
         return;
     }
 
-    bool needRefresh = channel >= channelFrom() && channel < channelTo();
-
-    if (needRefresh) {
-        refreshPending_ = true;
-        QCoreApplication::postEvent(this, new CollateChannelRefreshEvent);
+    if (channel >= channelFrom() && channel < channelTo()) {
+        triggerRefresh();
     }
 }
 
 void CollateChannel::recalculate()
 {
+    d_.startFrame();
+    d_.endFrame();
+
     // TODO
     qInfo() << __PRETTY_FUNCTION__ << "TODO";
 }

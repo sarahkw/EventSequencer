@@ -47,6 +47,8 @@ signals:
 
 private slots:
 
+    void triggerRefresh();
+
     void stripAfterAdd(Strip* strip);
     void stripBeforeDelete(Strip* strip);
     void stripMoved(Strip* strip,
