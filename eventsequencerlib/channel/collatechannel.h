@@ -6,6 +6,7 @@
 #include <QObject>
 
 class Document;
+class Strip;
 
 namespace channel {
 
@@ -24,6 +25,13 @@ public:
     virtual ChannelType::Enum channelType() const override;
 
 signals:
+
+private slots:
+
+    void stripMoved(Strip* strip,
+                    int previousChannel,
+                    int previousStartFrame,
+                    int previousLength);
 
 public slots:
 };
