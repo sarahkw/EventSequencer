@@ -17,7 +17,8 @@ public:
         BadJs,
         Text,
         BadAudio,
-        Label
+        Label,
+        Collate
     };
     Q_ENUM(Enum)
 };

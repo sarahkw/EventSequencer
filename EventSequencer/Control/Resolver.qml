@@ -18,6 +18,9 @@ Item {
     LabelControl {
         id: label
     }
+    CollateControl {
+        id: collate
+    }
 
     function resolve(type) {
         switch (type) {
@@ -26,6 +29,7 @@ Item {
         case ES.ChannelType.Text: return text
         case ES.ChannelType.BadAudio: return badAudio
         case ES.ChannelType.Label: return label
+        case ES.ChannelType.Collate: return collate
         }
         console.assert(false, "Unable to resolve type")
     }

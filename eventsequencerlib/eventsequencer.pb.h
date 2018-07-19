@@ -42,6 +42,7 @@ class ChannelData;
 class ChannelData_BadAudio;
 class ChannelData_BadClock;
 class ChannelData_BadJs;
+class ChannelData_Collate;
 class ChannelData_Label;
 class ChannelData_Text;
 class Document;
@@ -929,6 +930,81 @@ class ChannelData_Label : public ::google::protobuf::Message /* @@protoc_inserti
 };
 // -------------------------------------------------------------------
 
+class ChannelData_Collate : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelData.Collate) */ {
+ public:
+  ChannelData_Collate();
+  virtual ~ChannelData_Collate();
+
+  ChannelData_Collate(const ChannelData_Collate& from);
+
+  inline ChannelData_Collate& operator=(const ChannelData_Collate& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChannelData_Collate& default_instance();
+
+  void Swap(ChannelData_Collate* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ChannelData_Collate* New() const { return New(NULL); }
+
+  ChannelData_Collate* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ChannelData_Collate& from);
+  void MergeFrom(const ChannelData_Collate& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(ChannelData_Collate* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:pb.ChannelData.Collate)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static ChannelData_Collate* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelData) */ {
  public:
   ChannelData();
@@ -950,6 +1026,7 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
     kText = 12,
     kBadAudio = 13,
     kLabel = 14,
+    kCollate = 15,
     CHANNEL_NOT_SET = 0,
   };
 
@@ -1001,6 +1078,7 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
   typedef ChannelData_Text Text;
   typedef ChannelData_BadAudio BadAudio;
   typedef ChannelData_Label Label;
+  typedef ChannelData_Collate Collate;
 
   // accessors -------------------------------------------------------
 
@@ -1049,6 +1127,15 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::pb::ChannelData_Label* release_label();
   void set_allocated_label(::pb::ChannelData_Label* label);
 
+  // optional .pb.ChannelData.Collate collate = 15;
+  bool has_collate() const;
+  void clear_collate();
+  static const int kCollateFieldNumber = 15;
+  const ::pb::ChannelData_Collate& collate() const;
+  ::pb::ChannelData_Collate* mutable_collate();
+  ::pb::ChannelData_Collate* release_collate();
+  void set_allocated_collate(::pb::ChannelData_Collate* collate);
+
   ChannelCase channel_case() const;
   // @@protoc_insertion_point(class_scope:pb.ChannelData)
  private:
@@ -1057,6 +1144,7 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
   inline void set_has_text();
   inline void set_has_badaudio();
   inline void set_has_label();
+  inline void set_has_collate();
 
   inline bool has_channel() const;
   void clear_channel();
@@ -1071,6 +1159,7 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
     ::pb::ChannelData_Text* text_;
     ::pb::ChannelData_BadAudio* badaudio_;
     ::pb::ChannelData_Label* label_;
+    ::pb::ChannelData_Collate* collate_;
   } channel_;
   mutable int _cached_size_;
   ::google::protobuf::uint32 _oneof_case_[1];
@@ -1672,6 +1761,10 @@ inline void ChannelData_Text::set_allocated_content(::std::string* content) {
 
 // -------------------------------------------------------------------
 
+// ChannelData_Collate
+
+// -------------------------------------------------------------------
+
 // ChannelData
 
 // optional .pb.ChannelData.BadClock badClock = 10;
@@ -1914,6 +2007,54 @@ inline void ChannelData::set_allocated_label(::pb::ChannelData_Label* label) {
   // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.label)
 }
 
+// optional .pb.ChannelData.Collate collate = 15;
+inline bool ChannelData::has_collate() const {
+  return channel_case() == kCollate;
+}
+inline void ChannelData::set_has_collate() {
+  _oneof_case_[0] = kCollate;
+}
+inline void ChannelData::clear_collate() {
+  if (has_collate()) {
+    delete channel_.collate_;
+    clear_has_channel();
+  }
+}
+inline  const ::pb::ChannelData_Collate& ChannelData::collate() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.collate)
+  return has_collate()
+      ? *channel_.collate_
+      : ::pb::ChannelData_Collate::default_instance();
+}
+inline ::pb::ChannelData_Collate* ChannelData::mutable_collate() {
+  if (!has_collate()) {
+    clear_channel();
+    set_has_collate();
+    channel_.collate_ = new ::pb::ChannelData_Collate;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.collate)
+  return channel_.collate_;
+}
+inline ::pb::ChannelData_Collate* ChannelData::release_collate() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.collate)
+  if (has_collate()) {
+    clear_has_channel();
+    ::pb::ChannelData_Collate* temp = channel_.collate_;
+    channel_.collate_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void ChannelData::set_allocated_collate(::pb::ChannelData_Collate* collate) {
+  clear_channel();
+  if (collate) {
+    set_has_collate();
+    channel_.collate_ = collate;
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.collate)
+}
+
 inline bool ChannelData::has_channel() const {
   return channel_case() != CHANNEL_NOT_SET;
 }
@@ -2018,6 +2159,8 @@ Document::mutable_channels() {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

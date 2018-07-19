@@ -35,6 +35,7 @@ message ChannelData {
   }
   message BadAudio {}
   message Label {}
+  message Collate {}
 
   oneof channel {
     BadClock badClock = 10;
@@ -42,6 +43,7 @@ message ChannelData {
     Text text = 12;
     BadAudio badAudio = 13;
     Label label = 14;
+    Collate collate = 15;
   };
 }
 

@@ -5,6 +5,7 @@
 #include "textchannel.h"
 #include "badaudiochannel.h"
 #include "labelchannel.h"
+#include "collatechannel.h"
 
 #include <eventsequencer.pb.h>
 
@@ -31,6 +32,9 @@ channel::ChannelBase *channel::ChannelFactory::Create(const pb::ChannelData &pb,
     case ::pb::ChannelData::kLabel:
         cb = new channel::LabelChannel(parent);
         break;
+    case ::pb::ChannelData::kCollate:
+        cb = new channel::CollateChannel(parent);
+        break;
     case ::pb::ChannelData::CHANNEL_NOT_SET:
         qWarning() << "Unknown channel! Loading file from newer version?";
         break;
@@ -56,6 +60,8 @@ channel::ChannelBase *channel::ChannelFactory::Create(channel::ChannelType::Enum
         return new channel::BadAudioChannel(parent);
     case channel::ChannelType::Label:
         return new channel::LabelChannel(parent);
+    case channel::ChannelType::Collate:
+        return new channel::CollateChannel(parent);
     }
 
     Q_ASSERT(false);

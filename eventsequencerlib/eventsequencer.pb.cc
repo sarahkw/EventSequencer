@@ -45,6 +45,7 @@ struct ChannelDataOneofInstance {
   const ::pb::ChannelData_Text* text_;
   const ::pb::ChannelData_BadAudio* badaudio_;
   const ::pb::ChannelData_Label* label_;
+  const ::pb::ChannelData_Collate* collate_;
 }* ChannelData_default_oneof_instance_ = NULL;
 const ::google::protobuf::Descriptor* ChannelData_BadClock_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
@@ -61,6 +62,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* ChannelData_Label_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ChannelData_Label_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ChannelData_Collate_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ChannelData_Collate_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Document_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Document_reflection_ = NULL;
@@ -158,12 +162,13 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_Label, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_Label, _is_default_instance_));
   ChannelData_descriptor_ = file->message_type(1);
-  static const int ChannelData_offsets_[6] = {
+  static const int ChannelData_offsets_[7] = {
     PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, badclock_),
     PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, badjs_),
     PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, text_),
     PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, badaudio_),
     PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, label_),
+    PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, collate_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData, channel_),
   };
   ChannelData_reflection_ =
@@ -250,6 +255,20 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       sizeof(ChannelData_Label),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Label, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Label, _is_default_instance_));
+  ChannelData_Collate_descriptor_ = ChannelData_descriptor_->nested_type(5);
+  static const int ChannelData_Collate_offsets_[1] = {
+  };
+  ChannelData_Collate_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      ChannelData_Collate_descriptor_,
+      ChannelData_Collate::default_instance_,
+      ChannelData_Collate_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(ChannelData_Collate),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Collate, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Collate, _is_default_instance_));
   Document_descriptor_ = file->message_type(2);
   static const int Document_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, strips_),
@@ -306,6 +325,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       ChannelData_Label_descriptor_, &ChannelData_Label::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      ChannelData_Collate_descriptor_, &ChannelData_Collate::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       Document_descriptor_, &Document::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
         Document_ChannelsEntry_descriptor_,
@@ -344,6 +365,8 @@ void protobuf_ShutdownFile_eventsequencer_2eproto() {
   delete ChannelData_BadAudio_reflection_;
   delete ChannelData_Label::default_instance_;
   delete ChannelData_Label_reflection_;
+  delete ChannelData_Collate::default_instance_;
+  delete ChannelData_Collate_reflection_;
   delete Document::default_instance_;
   delete Document_reflection_;
 }
@@ -364,20 +387,21 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
     " \001(\0132\017.pb.Strip.Label\032\027\n\005BadJs\022\016\n\006script"
     "\030\001 \001(\t\032\034\n\010BadAudio\022\020\n\010fileName\030\001 \001(\t\032\027\n\004"
     "Text\022\017\n\007content\030\001 \001(\t\032\030\n\005Label\022\017\n\007conten"
-    "t\030\001 \001(\t\"\263\002\n\013ChannelData\022,\n\010badClock\030\n \001("
+    "t\030\001 \001(\t\"\352\002\n\013ChannelData\022,\n\010badClock\030\n \001("
     "\0132\030.pb.ChannelData.BadClockH\000\022&\n\005badJs\030\013"
     " \001(\0132\025.pb.ChannelData.BadJsH\000\022$\n\004text\030\014 "
     "\001(\0132\024.pb.ChannelData.TextH\000\022,\n\010badAudio\030"
     "\r \001(\0132\030.pb.ChannelData.BadAudioH\000\022&\n\005lab"
-    "el\030\016 \001(\0132\025.pb.ChannelData.LabelH\000\032\n\n\010Bad"
-    "Clock\032\007\n\005BadJs\032\035\n\004Text\022\017\n\007content\030\002 \001(\tJ"
-    "\004\010\001\020\002\032\n\n\010BadAudio\032\007\n\005LabelB\t\n\007channel\"\324\001"
-    "\n\010Document\022\031\n\006strips\030\001 \003(\0132\t.pb.Strip\022\027\n"
-    "\017framesPerSecond\030\002 \001(\005\022\022\n\nstartFrame\030\004 \001"
-    "(\005\022\020\n\010endFrame\030\005 \001(\005\022,\n\010channels\030\003 \003(\0132\032"
-    ".pb.Document.ChannelsEntry\032@\n\rChannelsEn"
-    "try\022\013\n\003key\030\001 \001(\005\022\036\n\005value\030\002 \001(\0132\017.pb.Cha"
-    "nnelData:\0028\001b\006proto3", 860);
+    "el\030\016 \001(\0132\025.pb.ChannelData.LabelH\000\022*\n\007col"
+    "late\030\017 \001(\0132\027.pb.ChannelData.CollateH\000\032\n\n"
+    "\010BadClock\032\007\n\005BadJs\032\035\n\004Text\022\017\n\007content\030\002 "
+    "\001(\tJ\004\010\001\020\002\032\n\n\010BadAudio\032\007\n\005Label\032\t\n\007Collat"
+    "eB\t\n\007channel\"\324\001\n\010Document\022\031\n\006strips\030\001 \003("
+    "\0132\t.pb.Strip\022\027\n\017framesPerSecond\030\002 \001(\005\022\022\n"
+    "\nstartFrame\030\004 \001(\005\022\020\n\010endFrame\030\005 \001(\005\022,\n\010c"
+    "hannels\030\003 \003(\0132\032.pb.Document.ChannelsEntr"
+    "y\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022\036\n\005value"
+    "\030\002 \001(\0132\017.pb.ChannelData:\0028\001b\006proto3", 915);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "eventsequencer.proto", &protobuf_RegisterTypes);
   Strip::default_instance_ = new Strip();
@@ -392,6 +416,7 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
   ChannelData_Text::default_instance_ = new ChannelData_Text();
   ChannelData_BadAudio::default_instance_ = new ChannelData_BadAudio();
   ChannelData_Label::default_instance_ = new ChannelData_Label();
+  ChannelData_Collate::default_instance_ = new ChannelData_Collate();
   Document::default_instance_ = new Document();
   Strip::default_instance_->InitAsDefaultInstance();
   Strip_BadJs::default_instance_->InitAsDefaultInstance();
@@ -404,6 +429,7 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
   ChannelData_Text::default_instance_->InitAsDefaultInstance();
   ChannelData_BadAudio::default_instance_->InitAsDefaultInstance();
   ChannelData_Label::default_instance_->InitAsDefaultInstance();
+  ChannelData_Collate::default_instance_->InitAsDefaultInstance();
   Document::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_eventsequencer_2eproto);
 }
@@ -3185,11 +3211,189 @@ void ChannelData_Label::InternalSwap(ChannelData_Label* other) {
 // -------------------------------------------------------------------
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ChannelData_Collate::ChannelData_Collate()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.ChannelData.Collate)
+}
+
+void ChannelData_Collate::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+}
+
+ChannelData_Collate::ChannelData_Collate(const ChannelData_Collate& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:pb.ChannelData.Collate)
+}
+
+void ChannelData_Collate::SharedCtor() {
+    _is_default_instance_ = false;
+  _cached_size_ = 0;
+}
+
+ChannelData_Collate::~ChannelData_Collate() {
+  // @@protoc_insertion_point(destructor:pb.ChannelData.Collate)
+  SharedDtor();
+}
+
+void ChannelData_Collate::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void ChannelData_Collate::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ChannelData_Collate::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ChannelData_Collate_descriptor_;
+}
+
+const ChannelData_Collate& ChannelData_Collate::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_eventsequencer_2eproto();
+  return *default_instance_;
+}
+
+ChannelData_Collate* ChannelData_Collate::default_instance_ = NULL;
+
+ChannelData_Collate* ChannelData_Collate::New(::google::protobuf::Arena* arena) const {
+  ChannelData_Collate* n = new ChannelData_Collate;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ChannelData_Collate::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.ChannelData.Collate)
+}
+
+bool ChannelData_Collate::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.ChannelData.Collate)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+  handle_unusual:
+    if (tag == 0 ||
+        ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      goto success;
+    }
+    DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.ChannelData.Collate)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.ChannelData.Collate)
+  return false;
+#undef DO_
+}
+
+void ChannelData_Collate::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.ChannelData.Collate)
+  // @@protoc_insertion_point(serialize_end:pb.ChannelData.Collate)
+}
+
+::google::protobuf::uint8* ChannelData_Collate::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:pb.ChannelData.Collate)
+  // @@protoc_insertion_point(serialize_to_array_end:pb.ChannelData.Collate)
+  return target;
+}
+
+int ChannelData_Collate::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.ChannelData.Collate)
+  int total_size = 0;
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ChannelData_Collate::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.ChannelData.Collate)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  const ChannelData_Collate* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const ChannelData_Collate>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.ChannelData.Collate)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.ChannelData.Collate)
+    MergeFrom(*source);
+  }
+}
+
+void ChannelData_Collate::MergeFrom(const ChannelData_Collate& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.ChannelData.Collate)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+}
+
+void ChannelData_Collate::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.ChannelData.Collate)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ChannelData_Collate::CopyFrom(const ChannelData_Collate& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.ChannelData.Collate)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ChannelData_Collate::IsInitialized() const {
+
+  return true;
+}
+
+void ChannelData_Collate::Swap(ChannelData_Collate* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ChannelData_Collate::InternalSwap(ChannelData_Collate* other) {
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ChannelData_Collate::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ChannelData_Collate_descriptor_;
+  metadata.reflection = ChannelData_Collate_reflection_;
+  return metadata;
+}
+
+
+// -------------------------------------------------------------------
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int ChannelData::kBadClockFieldNumber;
 const int ChannelData::kBadJsFieldNumber;
 const int ChannelData::kTextFieldNumber;
 const int ChannelData::kBadAudioFieldNumber;
 const int ChannelData::kLabelFieldNumber;
+const int ChannelData::kCollateFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ChannelData::ChannelData()
@@ -3205,6 +3409,7 @@ void ChannelData::InitAsDefaultInstance() {
   ChannelData_default_oneof_instance_->text_ = const_cast< ::pb::ChannelData_Text*>(&::pb::ChannelData_Text::default_instance());
   ChannelData_default_oneof_instance_->badaudio_ = const_cast< ::pb::ChannelData_BadAudio*>(&::pb::ChannelData_BadAudio::default_instance());
   ChannelData_default_oneof_instance_->label_ = const_cast< ::pb::ChannelData_Label*>(&::pb::ChannelData_Label::default_instance());
+  ChannelData_default_oneof_instance_->collate_ = const_cast< ::pb::ChannelData_Collate*>(&::pb::ChannelData_Collate::default_instance());
 }
 
 ChannelData::ChannelData(const ChannelData& from)
@@ -3280,6 +3485,10 @@ void ChannelData::clear_channel() {
     }
     case kLabel: {
       delete channel_.label_;
+      break;
+    }
+    case kCollate: {
+      delete channel_.collate_;
       break;
     }
     case CHANNEL_NOT_SET: {
@@ -3365,6 +3574,19 @@ bool ChannelData::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(122)) goto parse_collate;
+        break;
+      }
+
+      // optional .pb.ChannelData.Collate collate = 15;
+      case 15: {
+        if (tag == 122) {
+         parse_collate:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_collate()));
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -3423,6 +3645,12 @@ void ChannelData::SerializeWithCachedSizes(
       14, *channel_.label_, output);
   }
 
+  // optional .pb.ChannelData.Collate collate = 15;
+  if (has_collate()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      15, *channel_.collate_, output);
+  }
+
   // @@protoc_insertion_point(serialize_end:pb.ChannelData)
 }
 
@@ -3462,6 +3690,13 @@ void ChannelData::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         14, *channel_.label_, false, target);
+  }
+
+  // optional .pb.ChannelData.Collate collate = 15;
+  if (has_collate()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        15, *channel_.collate_, false, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:pb.ChannelData)
@@ -3506,6 +3741,13 @@ int ChannelData::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *channel_.label_);
+      break;
+    }
+    // optional .pb.ChannelData.Collate collate = 15;
+    case kCollate: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *channel_.collate_);
       break;
     }
     case CHANNEL_NOT_SET: {
@@ -3559,6 +3801,10 @@ void ChannelData::MergeFrom(const ChannelData& from) {
     }
     case kLabel: {
       mutable_label()->::pb::ChannelData_Label::MergeFrom(from.label());
+      break;
+    }
+    case kCollate: {
+      mutable_collate()->::pb::ChannelData_Collate::MergeFrom(from.collate());
       break;
     }
     case CHANNEL_NOT_SET: {
@@ -3667,6 +3913,10 @@ void ChannelData_Text::clear_content() {
 // -------------------------------------------------------------------
 
 // ChannelData_Label
+
+// -------------------------------------------------------------------
+
+// ChannelData_Collate
 
 // -------------------------------------------------------------------
 
@@ -3910,6 +4160,54 @@ void ChannelData::set_allocated_label(::pb::ChannelData_Label* label) {
     channel_.label_ = label;
   }
   // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.label)
+}
+
+// optional .pb.ChannelData.Collate collate = 15;
+bool ChannelData::has_collate() const {
+  return channel_case() == kCollate;
+}
+void ChannelData::set_has_collate() {
+  _oneof_case_[0] = kCollate;
+}
+void ChannelData::clear_collate() {
+  if (has_collate()) {
+    delete channel_.collate_;
+    clear_has_channel();
+  }
+}
+ const ::pb::ChannelData_Collate& ChannelData::collate() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.collate)
+  return has_collate()
+      ? *channel_.collate_
+      : ::pb::ChannelData_Collate::default_instance();
+}
+::pb::ChannelData_Collate* ChannelData::mutable_collate() {
+  if (!has_collate()) {
+    clear_channel();
+    set_has_collate();
+    channel_.collate_ = new ::pb::ChannelData_Collate;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.collate)
+  return channel_.collate_;
+}
+::pb::ChannelData_Collate* ChannelData::release_collate() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.collate)
+  if (has_collate()) {
+    clear_has_channel();
+    ::pb::ChannelData_Collate* temp = channel_.collate_;
+    channel_.collate_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void ChannelData::set_allocated_collate(::pb::ChannelData_Collate* collate) {
+  clear_channel();
+  if (collate) {
+    set_has_collate();
+    channel_.collate_ = collate;
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.collate)
 }
 
 bool ChannelData::has_channel() const {
