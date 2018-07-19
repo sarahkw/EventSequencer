@@ -12,6 +12,7 @@
 #include <QDebug>
 
 channel::ChannelBase *channel::ChannelFactory::Create(const pb::ChannelData &pb,
+                                                      Document& d,
                                                       QObject *parent)
 {
     ChannelBase* cb = nullptr;
@@ -33,7 +34,7 @@ channel::ChannelBase *channel::ChannelFactory::Create(const pb::ChannelData &pb,
         cb = new channel::LabelChannel(parent);
         break;
     case ::pb::ChannelData::kCollate:
-        cb = new channel::CollateChannel(parent);
+        cb = new channel::CollateChannel(d, parent);
         break;
     case ::pb::ChannelData::CHANNEL_NOT_SET:
         qWarning() << "Unknown channel! Loading file from newer version?";
@@ -47,7 +48,9 @@ channel::ChannelBase *channel::ChannelFactory::Create(const pb::ChannelData &pb,
     return cb;
 }
 
-channel::ChannelBase *channel::ChannelFactory::Create(channel::ChannelType::Enum type, QObject *parent)
+channel::ChannelBase *channel::ChannelFactory::Create(channel::ChannelType::Enum type,
+                                                      Document& d,
+                                                      QObject *parent)
 {
     switch (type) {
     case channel::ChannelType::BadClock:
@@ -61,7 +64,7 @@ channel::ChannelBase *channel::ChannelFactory::Create(channel::ChannelType::Enum
     case channel::ChannelType::Label:
         return new channel::LabelChannel(parent);
     case channel::ChannelType::Collate:
-        return new channel::CollateChannel(parent);
+        return new channel::CollateChannel(d, parent);
     }
 
     Q_ASSERT(false);

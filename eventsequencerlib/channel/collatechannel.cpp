@@ -4,7 +4,8 @@
 
 namespace channel {
 
-CollateChannel::CollateChannel(QObject *parent) : ChannelBase(parent)
+CollateChannel::CollateChannel(Document& d, QObject *parent)
+    : ChannelBase(parent), d_(d)
 {
 
 }

@@ -5,13 +5,18 @@
 
 #include <QObject>
 
+class Document;
+
 namespace channel {
 
 class CollateChannel : public ChannelBase
 {
     Q_OBJECT
+
+    Document& d_;
+
 public:
-    explicit CollateChannel(QObject *parent = nullptr);
+    explicit CollateChannel(Document& d, QObject *parent = nullptr);
 
     virtual void toPb(pb::ChannelData& pb) const override;
     virtual void fromPb(const pb::ChannelData& pb) override;

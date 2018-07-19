@@ -235,7 +235,7 @@ void Document::fromPb(const pb::Document &pb)
     for (auto& mappair : pb.channels()) {
         const int id = mappair.first;
         channel::ChannelBase* addme =
-                channel::ChannelFactory::Create(mappair.second, this);
+                channel::ChannelFactory::Create(mappair.second, *this, this);
         if (addme != nullptr) {
             channels_[id] = addme;
             channelAfterAddOrReplace(id, addme, AddOrReplace::Add);
@@ -250,7 +250,7 @@ QAbstractListModel *Document::stripsModel()
 
 Strip* Document::createStrip()
 {
-    Strip* s = new Strip(this);
+    Strip* s = new Strip(*this, this);
 
     stripsModel_.beginInsertRows(QModelIndex(), strips_.size(), strips_.size());
     strips_.push_back(s);
@@ -378,7 +378,7 @@ QAbstractListModel *Document::channelsModel()
 
 QObject *Document::createChannel(int id, channel::ChannelType::Enum type)
 {
-    channel::ChannelBase* chan = channel::ChannelFactory::Create(type, this);
+    channel::ChannelBase* chan = channel::ChannelFactory::Create(type, *this, this);
 
     AddOrReplace mode = AddOrReplace::Add;
 

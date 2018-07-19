@@ -152,6 +152,11 @@ signals:
     void currentUrlChanged();
     void currentFileNameChanged();
 
+    void stripMoved(Strip* strip,
+                    int previousChannel,
+                    int previousStartFrame,
+                    int previousLength);
+
 public slots:
 };
 

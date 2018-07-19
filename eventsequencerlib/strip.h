@@ -14,9 +14,13 @@ class TextStripExt;
 class LabelStripExt;
 }
 
+class Document;
+
 class Strip : public QObject
 {
     Q_OBJECT
+
+    Document& d_;
 
     int channel_ = 0;
     int startFrame_ = 0;
@@ -36,7 +40,7 @@ class Strip : public QObject
     Q_PROPERTY(stripext::LabelStripExt* label READ label WRITE setLabel NOTIFY labelChanged)
 
 public:
-    explicit Strip(QObject *parent = nullptr);
+    explicit Strip(Document& d, QObject *parent = nullptr);
 
     void toPb(pb::Strip& pb) const;
     void fromPb(const pb::Strip& pb);

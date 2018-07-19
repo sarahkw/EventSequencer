@@ -1,5 +1,7 @@
 #include "strip.h"
 
+#include "document.h"
+
 #include "stripext/badjsstripext.h"
 #include "stripext/badaudiostripext.h"
 #include "stripext/textstripext.h"
@@ -15,8 +17,10 @@ int Strip::channel() const
 void Strip::setChannel(int channel)
 {
     if (channel_ != channel) {
+        auto oldChannel = channel_;
         channel_ = channel;
         emit channelChanged();
+        emit d_.stripMoved(this, oldChannel, startFrame_, length_);
     }
 }
 
@@ -28,8 +32,10 @@ int Strip::startFrame() const
 void Strip::setStartFrame(int startFrame)
 {
     if (startFrame_ != startFrame) {
+        auto oldStartFrame = startFrame_;
         startFrame_ = startFrame;
         emit startFrameChanged();
+        emit d_.stripMoved(this, channel_, oldStartFrame, length_);
     }
 }
 
@@ -41,8 +47,10 @@ int Strip::length() const
 void Strip::setLength(int length)
 {
     if (length_ != length) {
+        auto oldLength = length_;
         length_ = length;
         emit lengthChanged();
+        emit d_.stripMoved(this, channel_, startFrame_, oldLength);
     }
 }
 
@@ -130,7 +138,7 @@ stripext::LabelStripExt *Strip::mutableLabel()
     return label();
 }
 
-Strip::Strip(QObject *parent) : QObject(parent)
+Strip::Strip(Document& d, QObject *parent) : QObject(parent), d_(d)
 {
     
 }
