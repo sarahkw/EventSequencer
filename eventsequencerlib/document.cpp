@@ -271,7 +271,7 @@ void Document::deleteStrip(Strip* strip)
     delete s;
 }
 
-QVariantList Document::stripsForQml()
+QVariantList Document::stripsForQml() const
 {
     QVariantList ret;
     for (Strip* s : strips_) {
@@ -282,7 +282,7 @@ QVariantList Document::stripsForQml()
     return ret;
 }
 
-QVariantList Document::stripsOnFrame(int frame)
+QVariantList Document::stripsOnFrame(int frame) const
 {
     QVariantList ret;
     for (Strip* s : strips_) {
@@ -293,6 +293,11 @@ QVariantList Document::stripsOnFrame(int frame)
         }
     }
     return ret;
+}
+
+const std::vector<Strip *> &Document::strips() const
+{
+    return strips_;
 }
 
 void Document::reset()
@@ -364,7 +369,7 @@ void Document::load(const QUrl &url)
     setCurrentUrl(url);
 }
 
-void Document::dumpProtobuf()
+void Document::dumpProtobuf() const
 {
     pb::Document doc;
     toPb(doc);
