@@ -990,11 +990,25 @@ class ChannelData_Collate : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
+  // optional int32 channelFrom = 10;
+  void clear_channelfrom();
+  static const int kChannelFromFieldNumber = 10;
+  ::google::protobuf::int32 channelfrom() const;
+  void set_channelfrom(::google::protobuf::int32 value);
+
+  // optional int32 channelTo = 11;
+  void clear_channelto();
+  static const int kChannelToFieldNumber = 11;
+  ::google::protobuf::int32 channelto() const;
+  void set_channelto(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:pb.ChannelData.Collate)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
+  ::google::protobuf::int32 channelfrom_;
+  ::google::protobuf::int32 channelto_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_eventsequencer_2eproto();
   friend void protobuf_AssignDesc_eventsequencer_2eproto();
@@ -1762,6 +1776,34 @@ inline void ChannelData_Text::set_allocated_content(::std::string* content) {
 // -------------------------------------------------------------------
 
 // ChannelData_Collate
+
+// optional int32 channelFrom = 10;
+inline void ChannelData_Collate::clear_channelfrom() {
+  channelfrom_ = 0;
+}
+inline ::google::protobuf::int32 ChannelData_Collate::channelfrom() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.Collate.channelFrom)
+  return channelfrom_;
+}
+inline void ChannelData_Collate::set_channelfrom(::google::protobuf::int32 value) {
+  
+  channelfrom_ = value;
+  // @@protoc_insertion_point(field_set:pb.ChannelData.Collate.channelFrom)
+}
+
+// optional int32 channelTo = 11;
+inline void ChannelData_Collate::clear_channelto() {
+  channelto_ = 0;
+}
+inline ::google::protobuf::int32 ChannelData_Collate::channelto() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.Collate.channelTo)
+  return channelto_;
+}
+inline void ChannelData_Collate::set_channelto(::google::protobuf::int32 value) {
+  
+  channelto_ = value;
+  // @@protoc_insertion_point(field_set:pb.ChannelData.Collate.channelTo)
+}
 
 // -------------------------------------------------------------------
 

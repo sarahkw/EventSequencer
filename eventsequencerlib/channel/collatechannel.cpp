@@ -6,6 +6,32 @@
 
 namespace channel {
 
+int CollateChannel::channelFrom() const
+{
+    return channelFrom_;
+}
+
+void CollateChannel::setChannelFrom(int channelFrom)
+{
+    if (channelFrom_ != channelFrom) {
+        channelFrom_ = channelFrom;
+        emit channelFromChanged();
+    }
+}
+
+int CollateChannel::channelTo() const
+{
+    return channelTo_;
+}
+
+void CollateChannel::setChannelTo(int channelTo)
+{
+    if (channelTo_ != channelTo) {
+        channelTo_ = channelTo;
+        emit channelToChanged();
+    }
+}
+
 CollateChannel::CollateChannel(Document& d, QObject *parent)
     : ChannelBase(parent), d_(d)
 {
@@ -14,12 +40,16 @@ CollateChannel::CollateChannel(Document& d, QObject *parent)
 
 void CollateChannel::toPb(pb::ChannelData &pb) const
 {
-    pb.mutable_collate();
+    auto mut = pb.mutable_collate();
+    mut->set_channelfrom(channelFrom());
+    mut->set_channelto(channelTo());
 }
 
 void CollateChannel::fromPb(const pb::ChannelData &pb)
 {
     Q_ASSERT(pb.has_collate());
+    setChannelFrom(pb.collate().channelfrom());
+    setChannelTo(pb.collate().channelto());
 }
 
 ChannelType::Enum CollateChannel::channelType() const

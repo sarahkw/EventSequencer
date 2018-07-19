@@ -35,7 +35,10 @@ message ChannelData {
   }
   message BadAudio {}
   message Label {}
-  message Collate {}
+  message Collate {
+    int32 channelFrom = 10;
+    int32 channelTo = 11;
+  }
 
   oneof channel {
     BadClock badClock = 10;

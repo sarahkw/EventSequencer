@@ -256,7 +256,9 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Label, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Label, _is_default_instance_));
   ChannelData_Collate_descriptor_ = ChannelData_descriptor_->nested_type(5);
-  static const int ChannelData_Collate_offsets_[1] = {
+  static const int ChannelData_Collate_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Collate, channelfrom_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Collate, channelto_),
   };
   ChannelData_Collate_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -387,7 +389,7 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
     " \001(\0132\017.pb.Strip.Label\032\027\n\005BadJs\022\016\n\006script"
     "\030\001 \001(\t\032\034\n\010BadAudio\022\020\n\010fileName\030\001 \001(\t\032\027\n\004"
     "Text\022\017\n\007content\030\001 \001(\t\032\030\n\005Label\022\017\n\007conten"
-    "t\030\001 \001(\t\"\352\002\n\013ChannelData\022,\n\010badClock\030\n \001("
+    "t\030\001 \001(\t\"\222\003\n\013ChannelData\022,\n\010badClock\030\n \001("
     "\0132\030.pb.ChannelData.BadClockH\000\022&\n\005badJs\030\013"
     " \001(\0132\025.pb.ChannelData.BadJsH\000\022$\n\004text\030\014 "
     "\001(\0132\024.pb.ChannelData.TextH\000\022,\n\010badAudio\030"
@@ -395,13 +397,14 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
     "el\030\016 \001(\0132\025.pb.ChannelData.LabelH\000\022*\n\007col"
     "late\030\017 \001(\0132\027.pb.ChannelData.CollateH\000\032\n\n"
     "\010BadClock\032\007\n\005BadJs\032\035\n\004Text\022\017\n\007content\030\002 "
-    "\001(\tJ\004\010\001\020\002\032\n\n\010BadAudio\032\007\n\005Label\032\t\n\007Collat"
-    "eB\t\n\007channel\"\324\001\n\010Document\022\031\n\006strips\030\001 \003("
+    "\001(\tJ\004\010\001\020\002\032\n\n\010BadAudio\032\007\n\005Label\0321\n\007Collat"
+    "e\022\023\n\013channelFrom\030\n \001(\005\022\021\n\tchannelTo\030\013 \001("
+    "\005B\t\n\007channel\"\324\001\n\010Document\022\031\n\006strips\030\001 \003("
     "\0132\t.pb.Strip\022\027\n\017framesPerSecond\030\002 \001(\005\022\022\n"
     "\nstartFrame\030\004 \001(\005\022\020\n\010endFrame\030\005 \001(\005\022,\n\010c"
     "hannels\030\003 \003(\0132\032.pb.Document.ChannelsEntr"
     "y\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022\036\n\005value"
-    "\030\002 \001(\0132\017.pb.ChannelData:\0028\001b\006proto3", 915);
+    "\030\002 \001(\0132\017.pb.ChannelData:\0028\001b\006proto3", 955);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "eventsequencer.proto", &protobuf_RegisterTypes);
   Strip::default_instance_ = new Strip();
@@ -3211,6 +3214,8 @@ void ChannelData_Label::InternalSwap(ChannelData_Label* other) {
 // -------------------------------------------------------------------
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ChannelData_Collate::kChannelFromFieldNumber;
+const int ChannelData_Collate::kChannelToFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ChannelData_Collate::ChannelData_Collate()
@@ -3234,6 +3239,8 @@ ChannelData_Collate::ChannelData_Collate(const ChannelData_Collate& from)
 void ChannelData_Collate::SharedCtor() {
     _is_default_instance_ = false;
   _cached_size_ = 0;
+  channelfrom_ = 0;
+  channelto_ = 0;
 }
 
 ChannelData_Collate::~ChannelData_Collate() {
@@ -3273,6 +3280,27 @@ ChannelData_Collate* ChannelData_Collate::New(::google::protobuf::Arena* arena) 
 
 void ChannelData_Collate::Clear() {
 // @@protoc_insertion_point(message_clear_start:pb.ChannelData.Collate)
+#if defined(__clang__)
+#define ZR_HELPER_(f) \
+  _Pragma("clang diagnostic push") \
+  _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
+  __builtin_offsetof(ChannelData_Collate, f) \
+  _Pragma("clang diagnostic pop")
+#else
+#define ZR_HELPER_(f) reinterpret_cast<char*>(\
+  &reinterpret_cast<ChannelData_Collate*>(16)->f)
+#endif
+
+#define ZR_(first, last) do {\
+  ::memset(&first, 0,\
+           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
+} while (0)
+
+  ZR_(channelfrom_, channelto_);
+
+#undef ZR_HELPER_
+#undef ZR_
+
 }
 
 bool ChannelData_Collate::MergePartialFromCodedStream(
@@ -3284,13 +3312,47 @@ bool ChannelData_Collate::MergePartialFromCodedStream(
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0 ||
-        ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      goto success;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional int32 channelFrom = 10;
+      case 10: {
+        if (tag == 80) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &channelfrom_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(88)) goto parse_channelTo;
+        break;
+      }
+
+      // optional int32 channelTo = 11;
+      case 11: {
+        if (tag == 88) {
+         parse_channelTo:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &channelto_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
   }
 success:
   // @@protoc_insertion_point(parse_success:pb.ChannelData.Collate)
@@ -3304,12 +3366,32 @@ failure:
 void ChannelData_Collate::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:pb.ChannelData.Collate)
+  // optional int32 channelFrom = 10;
+  if (this->channelfrom() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(10, this->channelfrom(), output);
+  }
+
+  // optional int32 channelTo = 11;
+  if (this->channelto() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(11, this->channelto(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:pb.ChannelData.Collate)
 }
 
 ::google::protobuf::uint8* ChannelData_Collate::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:pb.ChannelData.Collate)
+  // optional int32 channelFrom = 10;
+  if (this->channelfrom() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(10, this->channelfrom(), target);
+  }
+
+  // optional int32 channelTo = 11;
+  if (this->channelto() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(11, this->channelto(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:pb.ChannelData.Collate)
   return target;
 }
@@ -3317,6 +3399,20 @@ void ChannelData_Collate::SerializeWithCachedSizes(
 int ChannelData_Collate::ByteSize() const {
 // @@protoc_insertion_point(message_byte_size_start:pb.ChannelData.Collate)
   int total_size = 0;
+
+  // optional int32 channelFrom = 10;
+  if (this->channelfrom() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->channelfrom());
+  }
+
+  // optional int32 channelTo = 11;
+  if (this->channelto() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->channelto());
+  }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -3346,6 +3442,12 @@ void ChannelData_Collate::MergeFrom(const ChannelData_Collate& from) {
   if (GOOGLE_PREDICT_FALSE(&from == this)) {
     ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
   }
+  if (from.channelfrom() != 0) {
+    set_channelfrom(from.channelfrom());
+  }
+  if (from.channelto() != 0) {
+    set_channelto(from.channelto());
+  }
 }
 
 void ChannelData_Collate::CopyFrom(const ::google::protobuf::Message& from) {
@@ -3372,6 +3474,8 @@ void ChannelData_Collate::Swap(ChannelData_Collate* other) {
   InternalSwap(other);
 }
 void ChannelData_Collate::InternalSwap(ChannelData_Collate* other) {
+  std::swap(channelfrom_, other->channelfrom_);
+  std::swap(channelto_, other->channelto_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -3917,6 +4021,34 @@ void ChannelData_Text::clear_content() {
 // -------------------------------------------------------------------
 
 // ChannelData_Collate
+
+// optional int32 channelFrom = 10;
+void ChannelData_Collate::clear_channelfrom() {
+  channelfrom_ = 0;
+}
+ ::google::protobuf::int32 ChannelData_Collate::channelfrom() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.Collate.channelFrom)
+  return channelfrom_;
+}
+ void ChannelData_Collate::set_channelfrom(::google::protobuf::int32 value) {
+  
+  channelfrom_ = value;
+  // @@protoc_insertion_point(field_set:pb.ChannelData.Collate.channelFrom)
+}
+
+// optional int32 channelTo = 11;
+void ChannelData_Collate::clear_channelto() {
+  channelto_ = 0;
+}
+ ::google::protobuf::int32 ChannelData_Collate::channelto() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.Collate.channelTo)
+  return channelto_;
+}
+ void ChannelData_Collate::set_channelto(::google::protobuf::int32 value) {
+  
+  channelto_ = value;
+  // @@protoc_insertion_point(field_set:pb.ChannelData.Collate.channelTo)
+}
 
 // -------------------------------------------------------------------
 
