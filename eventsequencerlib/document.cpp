@@ -324,8 +324,10 @@ void Document::reset()
 
     while (!channels_.empty()) {
         auto it = channels_.begin();
+        channel::ChannelBase* chan = it->second;
         channelBeforeDelete(it->first);
         channels_.erase(it);
+        delete chan;
     }
 
     setCurrentUrl(QUrl());
