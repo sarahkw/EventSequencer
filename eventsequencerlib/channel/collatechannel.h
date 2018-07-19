@@ -5,6 +5,7 @@
 
 #include <QObject>
 #include <QAbstractListModel>
+#include <QColor>
 
 class Document;
 class Strip;
@@ -20,7 +21,9 @@ class CollateChannelModel : public QAbstractListModel {
     CollateChannelModel(CollateChannel& cc) : cc_(cc) { }
 
     enum CustomRoles {
-        ModelDataRole = Qt::UserRole + 1
+        SegmentStartRole = Qt::UserRole + 1,
+        SegmentLengthRole,
+        SegmentColorRole
     };
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -45,6 +48,13 @@ class CollateChannel : public ChannelBase
 
     Q_PROPERTY(int channelFrom READ channelFrom WRITE setChannelFrom NOTIFY channelFromChanged)
     Q_PROPERTY(int channelTo READ channelTo WRITE setChannelTo NOTIFY channelToChanged)
+
+    struct Segment {
+        int segmentStart;
+        int segmentLength;
+        QColor segmentColor;
+    };
+    std::vector<Segment> segments_;
 
 public:
     explicit CollateChannel(Document& d, QObject *parent = nullptr);

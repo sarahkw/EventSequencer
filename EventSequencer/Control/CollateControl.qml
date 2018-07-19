@@ -24,4 +24,17 @@ Item {
             }
         }
     }
+
+    property Component channelTrackComponent: Component {
+        Repeater {
+            model: cppChannel.model
+            Rectangle {
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                x: zoom.mapFrameToDisplayX(segmentStart)
+                width: zoom.mapLengthToDisplayWidth(segmentLength)
+                color: segmentColor
+            }
+        }
+    }
 }

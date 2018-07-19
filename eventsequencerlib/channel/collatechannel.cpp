@@ -14,19 +14,30 @@ namespace channel {
 int CollateChannelModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return 0;
+    return cc_.segments_.size();
 }
 
 QVariant CollateChannelModel::data(const QModelIndex &index, int role) const
 {
-    Q_UNUSED(index)
-    Q_UNUSED(role)
+    if (index.column() == 0 && index.row() >= 0 &&
+            static_cast<unsigned>(index.row()) < cc_.segments_.size()) {
+        switch (role) {
+        case SegmentStartRole: return cc_.segments_[index.row()].segmentStart;
+        case SegmentLengthRole: return cc_.segments_[index.row()].segmentLength;
+        case SegmentColorRole: return cc_.segments_[index.row()].segmentColor;
+        }
+    }
+
     return QVariant();
 }
 
 QHash<int, QByteArray> CollateChannelModel::roleNames() const
 {
-    return {{ModelDataRole, "modelData"}};
+    return {
+        {SegmentStartRole, "segmentStart"},
+        {SegmentLengthRole, "segmentLength"},
+        {SegmentColorRole, "segmentColor"}
+    };
 }
 
 /******************************************************************************/
@@ -41,7 +52,7 @@ void CollateChannel::setChannelFrom(int channelFrom)
     if (channelFrom_ != channelFrom) {
         channelFrom_ = channelFrom;
         emit channelFromChanged();
-        recalculate();
+        triggerRefresh();
     }
 }
 
@@ -55,7 +66,7 @@ void CollateChannel::setChannelTo(int channelTo)
     if (channelTo_ != channelTo) {
         channelTo_ = channelTo;
         emit channelToChanged();
-        recalculate();
+        triggerRefresh();
     }
 }
 
@@ -144,8 +155,13 @@ void CollateChannel::channelAffected(int channel)
 
 void CollateChannel::recalculate()
 {
-    d_.startFrame();
-    d_.endFrame();
+    model_.beginResetModel();
+    segments_.clear();
+    segments_.push_back({d_.startFrame(),
+                         d_.endFrame() - d_.startFrame(),
+                         QColor(Qt::black)
+                        });
+    model_.endResetModel();
 
     // TODO
     qInfo() << __PRETTY_FUNCTION__ << "TODO";
