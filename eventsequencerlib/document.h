@@ -154,6 +154,8 @@ signals:
     void currentUrlChanged();
     void currentFileNameChanged();
 
+    void stripAfterPlaced(Strip* strip);
+    void stripBeforeDelete(Strip* strip);
     void stripMoved(Strip* strip,
                     int previousChannel,
                     int previousStartFrame,

@@ -152,6 +152,7 @@ Strip::Strip(Document& d, QObject *parent) : QObject(parent), d_(d)
 void Strip::markAsPlaced()
 {
     hasPlaced_ = true;
+    emit d_.stripAfterPlaced(this);
 }
 
 void Strip::toPb(pb::Strip &pb) const

@@ -21,6 +21,7 @@ void CollateChannel::setChannelFrom(int channelFrom)
     if (channelFrom_ != channelFrom) {
         channelFrom_ = channelFrom;
         emit channelFromChanged();
+        recalculate();
     }
 }
 
@@ -34,6 +35,7 @@ void CollateChannel::setChannelTo(int channelTo)
     if (channelTo_ != channelTo) {
         channelTo_ = channelTo;
         emit channelToChanged();
+        recalculate();
     }
 }
 
@@ -41,8 +43,7 @@ bool CollateChannel::event(QEvent *event)
 {
     if (event->type() == CollateChannelRefreshEvent::s_CustomType) {
         refreshPending_ = false;
-        // TODO refresh
-        qInfo() << __PRETTY_FUNCTION__ << "refresh! (TODO)";
+        recalculate();
         return true;
     }
     return ChannelBase::event(event);
@@ -51,6 +52,8 @@ bool CollateChannel::event(QEvent *event)
 CollateChannel::CollateChannel(Document& d, QObject *parent)
     : ChannelBase(parent), d_(d)
 {
+    QObject::connect(&d, &Document::stripAfterPlaced, this, &CollateChannel::stripAfterAdd);
+    QObject::connect(&d, &Document::stripBeforeDelete, this, &CollateChannel::stripBeforeDelete);
     QObject::connect(&d, &Document::stripMoved, this, &CollateChannel::stripMoved);
 }
 
@@ -73,23 +76,42 @@ ChannelType::Enum CollateChannel::channelType() const
     return ChannelType::Collate;
 }
 
+void CollateChannel::stripAfterAdd(Strip *strip)
+{
+    channelAffected(strip->channel());
+}
+
+void CollateChannel::stripBeforeDelete(Strip *strip)
+{
+    channelAffected(strip->channel());
+}
+
 void CollateChannel::stripMoved(Strip *strip, int previousChannel, int previousStartFrame, int previousLength)
+{
+    Q_UNUSED(previousStartFrame)
+    Q_UNUSED(previousLength)
+    channelAffected(strip->channel());
+    channelAffected(previousChannel);
+}
+
+void CollateChannel::channelAffected(int channel)
 {
     if (refreshPending_) {
         return;
     }
 
-    Q_UNUSED(strip)
-    Q_UNUSED(previousChannel)
-    Q_UNUSED(previousStartFrame)
-    Q_UNUSED(previousLength)
-    // TODO Fill me in
+    bool needRefresh = channel >= channelFrom() && channel < channelTo();
 
-    bool needRefresh = true;
     if (needRefresh) {
         refreshPending_ = true;
         QCoreApplication::postEvent(this, new CollateChannelRefreshEvent);
     }
+}
+
+void CollateChannel::recalculate()
+{
+    // TODO
+    qInfo() << __PRETTY_FUNCTION__ << "TODO";
 }
 
 } // namespace channel

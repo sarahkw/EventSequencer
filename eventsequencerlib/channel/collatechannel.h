@@ -47,10 +47,17 @@ signals:
 
 private slots:
 
+    void stripAfterAdd(Strip* strip);
+    void stripBeforeDelete(Strip* strip);
     void stripMoved(Strip* strip,
                     int previousChannel,
                     int previousStartFrame,
                     int previousLength);
+
+private:
+
+    void channelAffected(int channel);
+    void recalculate();
 
 public slots:
 };

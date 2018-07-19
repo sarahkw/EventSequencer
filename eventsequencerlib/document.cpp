@@ -265,9 +265,12 @@ void Document::deleteStrip(Strip* strip)
     Q_ASSERT(found != strips_.end());
     Strip* s = *found;
     auto rmIndex = found - strips_.begin();
+
     stripsModel_.beginRemoveRows(QModelIndex(), rmIndex, rmIndex);
     strips_.erase(found);
     stripsModel_.endRemoveRows();
+
+    emit stripBeforeDelete(s);
     delete s;
 }
 
@@ -310,6 +313,7 @@ void Document::reset()
         stripsModel_.endRemoveRows();
 
         for (auto s : deleteStrips) {
+            emit stripBeforeDelete(s);
             delete s;
         }
     }
