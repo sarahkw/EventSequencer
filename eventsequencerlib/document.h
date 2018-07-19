@@ -105,7 +105,7 @@ public:
     QAbstractListModel* stripsModel();
     Q_INVOKABLE Strip* createStrip();
     Q_INVOKABLE void deleteStrip(Strip* strip);
-    Q_INVOKABLE QVariantList strips(); // QVariantList for QML
+    Q_INVOKABLE QVariantList stripsForQml();
     Q_INVOKABLE QVariantList stripsOnFrame(int frame);
     Q_INVOKABLE void reset();
     Q_INVOKABLE void save(const QUrl& url);

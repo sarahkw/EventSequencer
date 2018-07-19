@@ -91,7 +91,7 @@ ApplicationWindow {
                         selectedCppStrips = []
                     } else {
                         // Select All
-                        var strips = document.strips()
+                        var strips = document.stripsForQml()
                         strips.forEach(function (s) {
                             // This sucks, but user could have had the left/right selected.
                             s.qmlStrip.selectionMode = SelectionMode.Whole

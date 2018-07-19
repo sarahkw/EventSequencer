@@ -271,7 +271,7 @@ void Document::deleteStrip(Strip* strip)
     delete s;
 }
 
-QVariantList Document::strips()
+QVariantList Document::stripsForQml()
 {
     QVariantList ret;
     for (Strip* s : strips_) {
