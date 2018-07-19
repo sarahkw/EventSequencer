@@ -116,6 +116,7 @@ ApplicationWindow {
                     cppStrip.channel = channelPanel.activeChannel
                     cppStrip.startFrame = cursor.frame
                     cppStrip.length = 10 // Maybe make this one large tick instead
+                    cppStrip.markAsPlaced()
                     selectedCppStrips = [cppStrip]
                 }
             }

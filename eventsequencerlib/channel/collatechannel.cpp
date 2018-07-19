@@ -4,6 +4,11 @@
 #include <document.h>
 #include <strip.h>
 
+#include "collatechannelrefreshevent.h"
+
+#include <QDebug>
+#include <QCoreApplication>
+
 namespace channel {
 
 int CollateChannel::channelFrom() const
@@ -30,6 +35,17 @@ void CollateChannel::setChannelTo(int channelTo)
         channelTo_ = channelTo;
         emit channelToChanged();
     }
+}
+
+bool CollateChannel::event(QEvent *event)
+{
+    if (event->type() == CollateChannelRefreshEvent::s_CustomType) {
+        refreshPending_ = false;
+        // TODO refresh
+        qInfo() << __PRETTY_FUNCTION__ << "refresh! (TODO)";
+        return true;
+    }
+    return ChannelBase::event(event);
 }
 
 CollateChannel::CollateChannel(Document& d, QObject *parent)
@@ -59,11 +75,21 @@ ChannelType::Enum CollateChannel::channelType() const
 
 void CollateChannel::stripMoved(Strip *strip, int previousChannel, int previousStartFrame, int previousLength)
 {
+    if (refreshPending_) {
+        return;
+    }
+
     Q_UNUSED(strip)
     Q_UNUSED(previousChannel)
     Q_UNUSED(previousStartFrame)
     Q_UNUSED(previousLength)
     // TODO Fill me in
+
+    bool needRefresh = true;
+    if (needRefresh) {
+        refreshPending_ = true;
+        QCoreApplication::postEvent(this, new CollateChannelRefreshEvent);
+    }
 }
 
 } // namespace channel

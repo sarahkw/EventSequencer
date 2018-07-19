@@ -22,6 +22,10 @@ class Strip : public QObject
 
     Document& d_;
 
+    // XXX This is hacky. Perhaps have constructor take all the placement values
+    //     so we'll never be "not placed".
+    bool hasPlaced_ = false;
+
     int channel_ = 0;
     int startFrame_ = 0;
     int length_ = 0;
@@ -41,6 +45,8 @@ class Strip : public QObject
 
 public:
     explicit Strip(Document& d, QObject *parent = nullptr);
+
+    Q_INVOKABLE void markAsPlaced();
 
     void toPb(pb::Strip& pb) const;
     void fromPb(const pb::Strip& pb);

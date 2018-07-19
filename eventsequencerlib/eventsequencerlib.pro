@@ -44,7 +44,8 @@ SOURCES += \
     stripext/labelstripext.cpp \
     wordwrappedtexttrack.cpp \
     showmultiplelinesononeline.cpp \
-    channel/collatechannel.cpp
+    channel/collatechannel.cpp \
+    channel/collatechannelrefreshevent.cpp
 
 
 HEADERS += \
@@ -70,7 +71,8 @@ HEADERS += \
     stripext/labelstripext.h \
     wordwrappedtexttrack.h \
     showmultiplelinesononeline.h \
-    channel/collatechannel.h
+    channel/collatechannel.h \
+    channel/collatechannelrefreshevent.h
 
 unix {
     target.path = /usr/lib

@@ -20,7 +20,9 @@ void Strip::setChannel(int channel)
         auto oldChannel = channel_;
         channel_ = channel;
         emit channelChanged();
-        emit d_.stripMoved(this, oldChannel, startFrame_, length_);
+        if (hasPlaced_) {
+            emit d_.stripMoved(this, oldChannel, startFrame_, length_);
+        }
     }
 }
 
@@ -35,7 +37,9 @@ void Strip::setStartFrame(int startFrame)
         auto oldStartFrame = startFrame_;
         startFrame_ = startFrame;
         emit startFrameChanged();
-        emit d_.stripMoved(this, channel_, oldStartFrame, length_);
+        if (hasPlaced_) {
+            emit d_.stripMoved(this, channel_, oldStartFrame, length_);
+        }
     }
 }
 
@@ -50,7 +54,9 @@ void Strip::setLength(int length)
         auto oldLength = length_;
         length_ = length;
         emit lengthChanged();
-        emit d_.stripMoved(this, channel_, startFrame_, oldLength);
+        if (hasPlaced_) {
+            emit d_.stripMoved(this, channel_, startFrame_, oldLength);
+        }
     }
 }
 
@@ -143,6 +149,11 @@ Strip::Strip(Document& d, QObject *parent) : QObject(parent), d_(d)
     
 }
 
+void Strip::markAsPlaced()
+{
+    hasPlaced_ = true;
+}
+
 void Strip::toPb(pb::Strip &pb) const
 {
     pb.set_channel(channel_);
@@ -168,6 +179,8 @@ void Strip::fromPb(const pb::Strip &pb)
     setChannel(pb.channel());
     setStartFrame(pb.startframe());
     setLength(pb.length());
+    markAsPlaced();
+
     if (pb.has_badjs()) {
         auto tmp = new stripext::BadJsStripExt(this);
         tmp->fromPb(pb.badjs());

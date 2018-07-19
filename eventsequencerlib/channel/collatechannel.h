@@ -16,6 +16,8 @@ class CollateChannel : public ChannelBase
 
     Document& d_;
 
+    bool refreshPending_ = false;
+
     int channelFrom_ = 0;
     int channelTo_ = 0;
 
@@ -35,6 +37,8 @@ public:
 
     int channelTo() const;
     void setChannelTo(int channelTo);
+
+    bool event(QEvent *event) override;
 
 signals:
 
