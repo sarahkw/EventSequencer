@@ -4,15 +4,37 @@
 #include "channelbase.h"
 
 #include <QObject>
+#include <QAbstractListModel>
 
 class Document;
 class Strip;
 
 namespace channel {
 
+class CollateChannel;
+
+class CollateChannelModel : public QAbstractListModel {
+    Q_OBJECT
+    friend class CollateChannel;
+    CollateChannel& cc_;
+    CollateChannelModel(CollateChannel& cc) : cc_(cc) { }
+
+    enum CustomRoles {
+        ModelDataRole = Qt::UserRole + 1
+    };
+public:
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QHash<int,QByteArray> roleNames() const override;
+};
+
 class CollateChannel : public ChannelBase
 {
     Q_OBJECT
+
+    friend class CollateChannelModel;
+    CollateChannelModel model_;
+    Q_PROPERTY(QAbstractListModel* model READ model CONSTANT)
 
     Document& d_;
 
@@ -31,6 +53,8 @@ public:
     virtual void fromPb(const pb::ChannelData& pb) override;
 
     virtual ChannelType::Enum channelType() const override;
+
+    QAbstractListModel* model();
 
     int channelFrom() const;
     void setChannelFrom(int channelFrom);

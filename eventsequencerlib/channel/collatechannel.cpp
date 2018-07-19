@@ -11,6 +11,26 @@
 
 namespace channel {
 
+int CollateChannelModel::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent)
+    return 0;
+}
+
+QVariant CollateChannelModel::data(const QModelIndex &index, int role) const
+{
+    Q_UNUSED(index)
+    Q_UNUSED(role)
+    return QVariant();
+}
+
+QHash<int, QByteArray> CollateChannelModel::roleNames() const
+{
+    return {{ModelDataRole, "modelData"}};
+}
+
+/******************************************************************************/
+
 int CollateChannel::channelFrom() const
 {
     return channelFrom_;
@@ -58,7 +78,7 @@ void CollateChannel::triggerRefresh()
 }
 
 CollateChannel::CollateChannel(Document& d, QObject *parent)
-    : ChannelBase(parent), d_(d)
+    : ChannelBase(parent), model_(*this), d_(d)
 {
     QObject::connect(&d, &Document::stripAfterPlaced, this, &CollateChannel::stripAfterAdd);
     QObject::connect(&d, &Document::stripBeforeDelete, this, &CollateChannel::stripBeforeDelete);
@@ -86,6 +106,11 @@ void CollateChannel::fromPb(const pb::ChannelData &pb)
 ChannelType::Enum CollateChannel::channelType() const
 {
     return ChannelType::Collate;
+}
+
+QAbstractListModel *CollateChannel::model()
+{
+    return &model_;
 }
 
 void CollateChannel::stripAfterAdd(Strip *strip)
