@@ -45,7 +45,8 @@ SOURCES += \
     wordwrappedtexttrack.cpp \
     showmultiplelinesononeline.cpp \
     channel/collatechannel.cpp \
-    channel/collatechannelrefreshevent.cpp
+    channel/collatechannelrefreshevent.cpp \
+    collatenonoverlappingsegments.cpp
 
 
 HEADERS += \
@@ -72,7 +73,8 @@ HEADERS += \
     wordwrappedtexttrack.h \
     showmultiplelinesononeline.h \
     channel/collatechannel.h \
-    channel/collatechannelrefreshevent.h
+    channel/collatechannelrefreshevent.h \
+    collatenonoverlappingsegments.h
 
 unix {
     target.path = /usr/lib
