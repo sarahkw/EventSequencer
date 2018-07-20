@@ -5,6 +5,13 @@
 
 using namespace testing;
 
+inline void PrintTo(const CollateNonOverlappingSegments<int>::Segment& s,
+                    ::std::ostream *os)
+{
+    *os << "(Segment " << s.start << " " << s.length << " " <<
+           s.representsOverlappedSpace << ")";
+}
+
 MATCHER_P2(IsRangeN, start, length, "") {
     return arg.start == start && arg.length == length && !arg.representsOverlappedSpace;
 }
