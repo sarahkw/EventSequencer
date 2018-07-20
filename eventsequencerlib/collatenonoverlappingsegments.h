@@ -3,6 +3,7 @@
 
 #include <map>
 #include <set>
+#include <vector>
 
 #include <iostream>
 
@@ -82,6 +83,11 @@ public:
     SegmentIterator end() const
     {
         return SegmentIterator(chosenRanges_.end(), occupiedRanges_.end());
+    }
+
+    std::vector<Segment> segments()
+    {
+        return {};
     }
 
     void mergeSegment(int start, int length,
