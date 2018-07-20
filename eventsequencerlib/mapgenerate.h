@@ -92,4 +92,12 @@ MapGenerate<SourceIter, GenerateLogic> makeMapGenerate(SourceIter sourceBegin,
     return MapGenerate<SourceIter, GenerateLogic>(sourceBegin, sourceEnd);
 }
 
+template <typename Func, typename SourceIter>
+MapGenerate<SourceIter, MapGenerateNoGenerate<Func>> makeMapGenerateNoGenerate(
+    SourceIter sourceBegin, SourceIter sourceEnd)
+{
+    return MapGenerate<SourceIter, MapGenerateNoGenerate<Func>>(sourceBegin,
+                                                                sourceEnd);
+}
+
 #endif // MAPGENERATE_H

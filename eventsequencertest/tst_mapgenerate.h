@@ -63,7 +63,7 @@ TEST(MapGenerate, NoGenerate)
         }
     };
 
-    auto mg = makeMapGenerate<MapGenerateNoGenerate<Func>>(inputs.begin(), inputs.end());
+    auto mg = makeMapGenerateNoGenerate<Func>(inputs.begin(), inputs.end());
 
     EXPECT_THAT(mg, testing::ElementsAre("10 cats", "20 cats", "30 cats"));
 }
