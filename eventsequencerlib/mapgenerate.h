@@ -3,6 +3,17 @@
 
 #include <iterator>
 
+template <typename MapFunctor>
+struct MapGenerateNoGenerate {
+    using value_type = typename MapFunctor::DstType;
+    bool nextState() { return false; }
+    bool operator==(const MapGenerateNoGenerate&) { return true; }
+    typename MapFunctor::DstType mapGenerate(const typename MapFunctor::SrcType& src)
+    {
+        return MapFunctor()(src);
+    }
+};
+
 template <typename SourceIter, typename GenerateLogic>
 class MapGenerate {
     SourceIter sourceBegin_;
@@ -11,6 +22,8 @@ public:
 
     using value_type = typename GenerateLogic::value_type;
 
+    // TODO Make this satisfy InputIterator. Currently just adding missing parts
+    //      as needed.
     class const_iterator : public std::iterator<std::input_iterator_tag, value_type> {
         SourceIter me_;
         GenerateLogic genLogic_;

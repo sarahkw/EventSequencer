@@ -49,3 +49,21 @@ TEST(MapGenerate, Sample)
         EXPECT_EQ(it++.beforeMap(), 30);
     }
 }
+
+
+TEST(MapGenerate, NoGenerate)
+{
+    std::vector<int> inputs = {10, 20, 30};
+    struct Func {
+        using SrcType = int;
+        using DstType = std::string;
+        DstType operator()(const SrcType& src)
+        {
+            return std::to_string(src) + " cats";
+        }
+    };
+
+    auto mg = makeMapGenerate<MapGenerateNoGenerate<Func>>(inputs.begin(), inputs.end());
+
+    EXPECT_THAT(mg, testing::ElementsAre("10 cats", "20 cats", "30 cats"));
+}
