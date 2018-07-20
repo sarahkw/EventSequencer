@@ -28,6 +28,12 @@ public:
             valueIsSet_ = false;
             return *this;
         }
+        const_iterator operator++(int) // Postfix
+        {
+            const_iterator ret(*this);
+            operator++();
+            return ret;
+        }
         bool operator==(const const_iterator& other)
         {
             return me_ == other.me_ && genLogic_ == other.genLogic_;
@@ -43,6 +49,10 @@ public:
                 valueIsSet_ = true;
             }
             return value_;
+        }
+        const typename SourceIter::reference beforeMap()
+        {
+            return *me_;
         }
     };
 

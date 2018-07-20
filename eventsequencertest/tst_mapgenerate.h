@@ -37,4 +37,15 @@ TEST(MapGenerate, Sample)
         static_cast<void>(i);
         // This should compile
     }
+
+    {
+        auto it = mg.begin();
+
+        EXPECT_EQ(it++.beforeMap(), 10);
+        EXPECT_EQ(it++.beforeMap(), 10);
+        EXPECT_EQ(it++.beforeMap(), 20);
+        EXPECT_EQ(it++.beforeMap(), 20);
+        EXPECT_EQ(it++.beforeMap(), 30);
+        EXPECT_EQ(it++.beforeMap(), 30);
+    }
 }
