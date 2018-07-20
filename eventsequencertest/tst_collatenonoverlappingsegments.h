@@ -39,7 +39,7 @@ TEST(CollateNonOverlappingSegments, OverlapBefore)
 
     ASSERT_THAT(cnos.segments(),
                 ElementsAre(Pair(_, IsRangeN(2, 5 - 2)),
-                            Pair(_, IsRangeN(5, 10 - 5))));
+                            Pair(_, IsRangeY(5, 10 - 5))));
 }
 
 TEST(CollateNonOverlappingSegments, OverlapAfter)
@@ -49,7 +49,7 @@ TEST(CollateNonOverlappingSegments, OverlapAfter)
     cnos.mergeSegment(2, 5 - 2);
 
     ASSERT_THAT(cnos.segments(),
-                ElementsAre(Pair(_, IsRangeN(2, 4 - 2)),
+                ElementsAre(Pair(_, IsRangeY(2, 4 - 2)),
                             Pair(_, IsRangeN(4, 10 - 4))));
 }
 
