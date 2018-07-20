@@ -87,7 +87,26 @@ public:
     void mergeSegment(int start, int length,
                       ReplaceMode mode=ReplaceMode::No, T data=T())
     {
+        Range me{start, length};
 
+        if (chosenRanges_.count(me) == 0) {
+            if (mode == ReplaceMode::IfFitsInEmptySpace ||
+                    (mode == ReplaceMode::No && occupiedRanges_.count(me) == 0)) {
+                chosenRanges_.insert(std::make_pair(me, data));
+            }
+        }
+
+        int earliest = start;
+        int latest = start + length;
+        auto intersection = occupiedRanges_.equal_range(me);
+        if (intersection.first != occupiedRanges_.end()) {
+            auto other = intersection.second;
+            --other;
+            earliest = std::min(earliest, intersection.first->start);
+            latest = std::max(latest, intersection.second->start + intersection.second->length);
+        }
+        occupiedRanges_.erase(intersection.first, intersection.second);
+        occupiedRanges_.insert({earliest, latest - earliest});
 
 #if 0
         Segment me{false, start, length, data};

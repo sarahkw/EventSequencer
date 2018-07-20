@@ -26,7 +26,7 @@ TEST(CollateNonOverlappingSegments, NonOverlapping)
     cnos.mergeSegment(2, 5 - 2);
     cnos.mergeSegment(5, 10 - 5);
 
-    ASSERT_THAT(cnos,
+    ASSERT_THAT(cnos.segments(),
                 ElementsAre(IsRangeN(2, 5 - 2),
                             IsRangeN(5, 10 - 5)));
 }
@@ -37,7 +37,7 @@ TEST(CollateNonOverlappingSegments, OverlapBefore)
     cnos.mergeSegment(2, 5 - 2);
     cnos.mergeSegment(4, 10 - 4);
 
-    ASSERT_THAT(cnos,
+    ASSERT_THAT(cnos.segments(),
                 ElementsAre(IsRangeN(2, 5 - 2),
                             IsRangeY(5, 10 - 5)));
 }
@@ -48,7 +48,7 @@ TEST(CollateNonOverlappingSegments, OverlapAfter)
     cnos.mergeSegment(4, 10 - 4);
     cnos.mergeSegment(2, 5 - 2);
 
-    ASSERT_THAT(cnos,
+    ASSERT_THAT(cnos.segments(),
                 ElementsAre(IsRangeY(2, 4 - 2),
                             IsRangeN(4, 10 - 4)));
 }
@@ -60,7 +60,7 @@ TEST(CollateNonOverlappingSegments, OverlapBetween)
     cnos.mergeSegment(6, 10 - 6);
     cnos.mergeSegment(3, 7 - 3);
 
-    ASSERT_THAT(cnos,
+    ASSERT_THAT(cnos.segments(),
                 ElementsAre(IsRangeN(2, 5 - 2),
                             IsRangeY(5, 6 - 5),
                             IsRangeN(6, 10 - 6)));
@@ -72,7 +72,7 @@ TEST(CollateNonOverlappingSegments, OverlapWrapped)
     cnos.mergeSegment(2, 5 - 2);
     cnos.mergeSegment(0, 10 - 0);
 
-    ASSERT_THAT(cnos,
+    ASSERT_THAT(cnos.segments(),
                 ElementsAre(IsRangeY(0, 2 - 0),
                             IsRangeN(2, 5 - 2),
                             IsRangeY(5, 10 - 5)));
@@ -86,7 +86,7 @@ TEST(CollateNonOverlappingSegments, Replace)
     cnos.mergeSegment(2, 10 - 2, Cnos::ReplaceMode::IfFitsInEmptySpace); // Make empty space
     cnos.mergeSegment(6, 7 - 6, Cnos::ReplaceMode::IfFitsInEmptySpace);
 
-    ASSERT_THAT(cnos,
+    ASSERT_THAT(cnos.segments(),
                 ElementsAre(IsRangeN(0, 5 - 0),
                             IsRangeY(5, 6 - 5),
                             IsRangeN(6, 7 - 6),
@@ -100,7 +100,7 @@ TEST(CollateNonOverlappingSegments, NoReplace)
     cnos.mergeSegment(2, 10 - 2); // Make empty space
     cnos.mergeSegment(6, 7 - 6);
 
-    ASSERT_THAT(cnos,
+    ASSERT_THAT(cnos.segments(),
                 ElementsAre(IsRangeN(0, 5 - 0),
                             IsRangeY(5, 10 - 5)));
 }
@@ -112,7 +112,7 @@ TEST(CollateNonOverlappingSegments, ExpandEmptySpace)
     cnos.mergeSegment(2, 10 - 2);
     cnos.mergeSegment(7, 15 - 7);
 
-    ASSERT_THAT(cnos,
+    ASSERT_THAT(cnos.segments(),
                 ElementsAre(IsRangeN(0, 5 - 0),
                             IsRangeY(5, 15 - 5)));
 }
