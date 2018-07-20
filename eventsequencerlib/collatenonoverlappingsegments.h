@@ -2,6 +2,7 @@
 #define COLLATENONOVERLAPPINGSEGMENTS_H
 
 #include <map>
+#include <set>
 
 #include <iostream>
 
@@ -9,90 +10,105 @@ template <typename T>
 class CollateNonOverlappingSegments
 {
 public:
-    struct Segment {
-        bool representsOverlappedSpace;
-        int start;
-        int length;
-        T data;
-    };
-
     enum class ReplaceMode {
         No,
         IfFitsInEmptySpace
     };
 
-private:
-    std::map<int, Segment> segments_;
+    struct Range {
+        int start;
+        int length;
+    };
 
-    class IntersectsWith {
-        const std::map<int, Segment>& segments_;
-        int start_;
-        int length_;
-        using IterType = typename std::map<int, Segment>::const_iterator;
-        IterType iter_;
-        bool hasNext_ = false;
-    public:
-        IntersectsWith(const std::map<int, Segment>& segments, int start,
-                       int length)
-            : segments_(segments), start_(start), length_(length)
+    struct CompareRanges {
+        bool operator()(const Range& a, const Range& b) const
         {
-            if (segments_.empty()) {
-                hasNext_ = false;
-                return;
-            }
-
-            // Find the left-most item that collides with us. It could be before
-            // lower bound, or at the lower bound.
-
-            iter_ = segments_.lower_bound(start);
-            if (iter_ != segments_.begin()) {
-                --iter_;
-                // Does iter_ run into us?
-                if (iter_->first + iter_->second.length > start_) {
-                    std::cout << "ran into us" << std::endl;
-                    hasNext_ = true;
-                    return;
-                }
-                ++iter_;
-            }
-
-            if (iter_ != segments_.end() && start_ + length_ > iter_->first) {
-                std::cout << "run into them\n";
-                hasNext_ = true;
-                return;
-            }
-
-            hasNext_ = false;
-        }
-        bool hasNext() const
-        {
-            return hasNext_;
-        }
-        IterType next()
-        {
-            auto ret = iter_;
-            ++iter_;
-            if (iter_ == segments_.end()) {
-                hasNext_ = false;
-            } else if (start_ + length_ > iter_->first) {
-                hasNext_ = true;
-            } else {
-                hasNext_ = false;
-            }
-            return ret;
+            bool collides = (a.start < b.start ?
+                                 (a.start + a.length > b.start) :
+                                 (b.start + b.length > a.start));
+            if (collides) return false;
+            return a.start < b.start;
         }
     };
 
+    struct Segment {
+        int start;
+        int length;
+        bool representsOverlappedSpace;
+        T data;
+    };
+
+    using ChosenRangesType = std::map<Range, T, CompareRanges>;
+    using OccupiedRangesType = std::set<Range, CompareRanges>;
+
+    class SegmentIterator : public std::iterator<std::input_iterator_tag, Segment> {
+        typename ChosenRangesType::const_iterator crIter_;
+        typename OccupiedRangesType::const_iterator orIter_;
+    public:
+        SegmentIterator(typename ChosenRangesType::const_iterator crIter,
+                        typename OccupiedRangesType::const_iterator orIter)
+            : crIter_(crIter), orIter_(orIter)
+        {
+        }
+        SegmentIterator& operator++()
+        {
+            return *this;
+        }
+        bool operator!=(const SegmentIterator& other)
+        {
+            return !(crIter_ == other.crIter_ && orIter_ == other.orIter_);
+        }
+        const Segment& operator*()
+        {
+            static Segment placeholder;
+            return placeholder;
+        }
+    };
+
+    using value_type = Segment;
+    using const_iterator = SegmentIterator;
+
+private:
+    ChosenRangesType chosenRanges_;
+    OccupiedRangesType occupiedRanges_;
+
 public:
 
-    const std::map<int, Segment>& segments()
+    SegmentIterator begin() const
     {
-        return segments_;
+        return SegmentIterator(chosenRanges_.begin(), occupiedRanges_.begin());
+    }
+
+    SegmentIterator end() const
+    {
+        return SegmentIterator(chosenRanges_.end(), occupiedRanges_.end());
     }
 
     void mergeSegment(int start, int length,
                       ReplaceMode mode=ReplaceMode::No, T data=T())
     {
+
+
+#if 0
+        Segment me{false, start, length, data};
+        if (segments_.count(me) == 0) {
+            segments_.insert(std::move(me));
+            return;
+        }
+
+        auto intersect = segments_.equal_range(me);
+
+        if (intersect.first != intersect.second) {
+            auto iter = intersect.first;
+            ++iter;
+            for (; iter != intersect.second; ++iter) {
+
+            }
+        }
+#endif
+
+
+#if 0
         std::cout << "mergeSegment" << std::endl;
         IntersectsWith iw(segments_, start, length);
         if (!iw.hasNext()) {
@@ -127,6 +143,7 @@ public:
                 }
             }
         }
+#endif
     }
 };
 

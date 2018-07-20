@@ -26,9 +26,9 @@ TEST(CollateNonOverlappingSegments, NonOverlapping)
     cnos.mergeSegment(2, 5 - 2);
     cnos.mergeSegment(5, 10 - 5);
 
-    ASSERT_THAT(cnos.segments(),
-                ElementsAre(Pair(_, IsRangeN(2, 5 - 2)),
-                            Pair(_, IsRangeN(5, 10 - 5))));
+    ASSERT_THAT(cnos,
+                ElementsAre(IsRangeN(2, 5 - 2),
+                            IsRangeN(5, 10 - 5)));
 }
 
 TEST(CollateNonOverlappingSegments, OverlapBefore)
@@ -37,9 +37,9 @@ TEST(CollateNonOverlappingSegments, OverlapBefore)
     cnos.mergeSegment(2, 5 - 2);
     cnos.mergeSegment(4, 10 - 4);
 
-    ASSERT_THAT(cnos.segments(),
-                ElementsAre(Pair(_, IsRangeN(2, 5 - 2)),
-                            Pair(_, IsRangeY(5, 10 - 5))));
+    ASSERT_THAT(cnos,
+                ElementsAre(IsRangeN(2, 5 - 2),
+                            IsRangeY(5, 10 - 5)));
 }
 
 TEST(CollateNonOverlappingSegments, OverlapAfter)
@@ -48,9 +48,9 @@ TEST(CollateNonOverlappingSegments, OverlapAfter)
     cnos.mergeSegment(4, 10 - 4);
     cnos.mergeSegment(2, 5 - 2);
 
-    ASSERT_THAT(cnos.segments(),
-                ElementsAre(Pair(_, IsRangeY(2, 4 - 2)),
-                            Pair(_, IsRangeN(4, 10 - 4))));
+    ASSERT_THAT(cnos,
+                ElementsAre(IsRangeY(2, 4 - 2),
+                            IsRangeN(4, 10 - 4)));
 }
 
 TEST(CollateNonOverlappingSegments, OverlapBetween)
@@ -60,10 +60,10 @@ TEST(CollateNonOverlappingSegments, OverlapBetween)
     cnos.mergeSegment(6, 10 - 6);
     cnos.mergeSegment(3, 7 - 3);
 
-    ASSERT_THAT(cnos.segments(),
-                ElementsAre(Pair(_, IsRangeN(2, 5 - 2)),
-                            Pair(_, IsRangeY(5, 6 - 5)),
-                            Pair(_, IsRangeN(6, 10 - 6))));
+    ASSERT_THAT(cnos,
+                ElementsAre(IsRangeN(2, 5 - 2),
+                            IsRangeY(5, 6 - 5),
+                            IsRangeN(6, 10 - 6)));
 }
 
 TEST(CollateNonOverlappingSegments, OverlapWrapped)
@@ -72,10 +72,10 @@ TEST(CollateNonOverlappingSegments, OverlapWrapped)
     cnos.mergeSegment(2, 5 - 2);
     cnos.mergeSegment(0, 10 - 0);
 
-    ASSERT_THAT(cnos.segments(),
-                ElementsAre(Pair(_, IsRangeY(0, 2 - 0)),
-                            Pair(_, IsRangeN(2, 5 - 2)),
-                            Pair(_, IsRangeY(5, 10 - 5))));
+    ASSERT_THAT(cnos,
+                ElementsAre(IsRangeY(0, 2 - 0),
+                            IsRangeN(2, 5 - 2),
+                            IsRangeY(5, 10 - 5)));
 }
 
 TEST(CollateNonOverlappingSegments, Replace)
@@ -86,11 +86,11 @@ TEST(CollateNonOverlappingSegments, Replace)
     cnos.mergeSegment(2, 10 - 2, Cnos::ReplaceMode::IfFitsInEmptySpace); // Make empty space
     cnos.mergeSegment(6, 7 - 6, Cnos::ReplaceMode::IfFitsInEmptySpace);
 
-    ASSERT_THAT(cnos.segments(),
-                ElementsAre(Pair(_, IsRangeN(0, 5 - 0)),
-                            Pair(_, IsRangeY(5, 6 - 5)),
-                            Pair(_, IsRangeN(6, 7 - 6)),
-                            Pair(_, IsRangeY(7, 10 - 7))));
+    ASSERT_THAT(cnos,
+                ElementsAre(IsRangeN(0, 5 - 0),
+                            IsRangeY(5, 6 - 5),
+                            IsRangeN(6, 7 - 6),
+                            IsRangeY(7, 10 - 7)));
 }
 
 TEST(CollateNonOverlappingSegments, NoReplace)
@@ -100,9 +100,9 @@ TEST(CollateNonOverlappingSegments, NoReplace)
     cnos.mergeSegment(2, 10 - 2); // Make empty space
     cnos.mergeSegment(6, 7 - 6);
 
-    ASSERT_THAT(cnos.segments(),
-                ElementsAre(Pair(_, IsRangeN(0, 5 - 0)),
-                            Pair(_, IsRangeY(5, 10 - 5))));
+    ASSERT_THAT(cnos,
+                ElementsAre(IsRangeN(0, 5 - 0),
+                            IsRangeY(5, 10 - 5)));
 }
 
 TEST(CollateNonOverlappingSegments, ExpandEmptySpace)
@@ -112,7 +112,7 @@ TEST(CollateNonOverlappingSegments, ExpandEmptySpace)
     cnos.mergeSegment(2, 10 - 2);
     cnos.mergeSegment(7, 15 - 7);
 
-    ASSERT_THAT(cnos.segments(),
-                ElementsAre(Pair(_, IsRangeN(0, 5 - 0)),
-                            Pair(_, IsRangeY(5, 15 - 5))));
+    ASSERT_THAT(cnos,
+                ElementsAre(IsRangeN(0, 5 - 0),
+                            IsRangeY(5, 15 - 5)));
 }
