@@ -5,8 +5,7 @@
 
 enum class MergeRangeSelect {
     Range1,
-    Range2,
-    RangeEqual
+    Range2
 };
 
 template <typename T1, typename T2>
@@ -28,6 +27,7 @@ public:
 
     struct value_type {
         MergeRangeSelect select;
+        // I wonder if this should be an union.
         R1Iter range1;
         R2Iter range2;
     };
@@ -44,19 +44,13 @@ public:
             // an invalid iterator, I guess.
 
             if (me_.range1 == parent_->r1End_) {
-                if (me_.range2 == parent_->r2End_) {
-                    return MergeRangeSelect::RangeEqual;
-                } else {
-                    return MergeRangeSelect::Range2;
-                }
+                return MergeRangeSelect::Range2;
             } else if (me_.range2 == parent_->r2End_) {
-                return MergeRangeSelect::Range1;
-            } else if (Comp()(*me_.range1, *me_.range2)) {
                 return MergeRangeSelect::Range1;
             } else if (Comp()(*me_.range2, *me_.range1)) {
                 return MergeRangeSelect::Range2;
             } else {
-                return MergeRangeSelect::RangeEqual;
+                return MergeRangeSelect::Range1;
             }
         }
 
@@ -80,10 +74,6 @@ public:
                 ++me_.range1;
                 break;
             case MergeRangeSelect::Range2:
-                ++me_.range2;
-                break;
-            case MergeRangeSelect::RangeEqual:
-                ++me_.range1;
                 ++me_.range2;
                 break;
             }

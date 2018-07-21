@@ -14,9 +14,6 @@ void PrintTo(const typename Merge<std::vector<int>::iterator,
     case MergeRangeSelect::Range2:
         *os << "(Range2: " << *v.range2 << ")";
         break;
-    case MergeRangeSelect::RangeEqual:
-        *os << "(RangeBoth: " << *v.range2 << ")";
-        break;
     }
 }
 
@@ -27,8 +24,6 @@ MATCHER_P(HasValue, val, "")
         return *(arg.range1) == val;
     case MergeRangeSelect::Range2:
         return *(arg.range2) == val;
-    case MergeRangeSelect::RangeEqual:
-        return *(arg.range1) == val;
     }
     return false; // Compiler happiness
 }
@@ -78,13 +73,15 @@ TEST(Merge, OnlyRight)
 TEST(Merge, Duplicate)
 {
     std::vector<int> range1 = {2, 4, 6};
-    std::vector<int> range2 = {1, 4};
+    std::vector<int> range2 = {1, 4, 4};
 
     auto merge = makeMerge(range1.begin(), range1.end(),
                            range2.begin(), range2.end());
 
     EXPECT_THAT(merge, testing::ElementsAre(HasValue(1),
                                             HasValue(2),
+                                            HasValue(4),
+                                            HasValue(4),
                                             HasValue(4),
                                             HasValue(6)));
 }
