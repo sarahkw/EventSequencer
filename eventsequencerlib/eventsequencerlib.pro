@@ -47,7 +47,8 @@ SOURCES += \
     channel/collatechannel.cpp \
     channel/collatechannelrefreshevent.cpp \
     collatenonoverlappingsegments.cpp \
-    mapgenerate.cpp
+    mapgenerate.cpp \
+    merge.cpp
 
 
 HEADERS += \
@@ -76,7 +77,8 @@ HEADERS += \
     channel/collatechannel.h \
     channel/collatechannelrefreshevent.h \
     collatenonoverlappingsegments.h \
-    mapgenerate.h
+    mapgenerate.h \
+    merge.h
 
 unix {
     target.path = /usr/lib

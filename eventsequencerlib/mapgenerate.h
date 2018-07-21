@@ -22,8 +22,6 @@ public:
 
     using value_type = typename GenerateLogic::value_type;
 
-    // TODO Make this satisfy InputIterator. Currently just adding missing parts
-    //      as needed.
     class const_iterator : public std::iterator<std::input_iterator_tag, value_type> {
         SourceIter me_;
         GenerateLogic genLogic_;

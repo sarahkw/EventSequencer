@@ -1,3 +1,4 @@
+#include "tst_merge.h"
 #include "tst_mapgenerate.h"
 #include "tst_testcasename.h"
 #include "tst_strip.h"

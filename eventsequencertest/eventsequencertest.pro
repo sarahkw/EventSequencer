@@ -10,7 +10,8 @@ HEADERS += \
     tst_strip.h \
     tst_framesandseconds.h \
     tst_collatenonoverlappingsegments.h \
-    tst_mapgenerate.h
+    tst_mapgenerate.h \
+    tst_merge.h
 
 SOURCES += \
         main.cpp
