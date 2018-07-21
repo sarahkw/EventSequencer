@@ -50,6 +50,9 @@ public:
         }
 
     public:
+        const_iterator()
+        {
+        }
         const_iterator(SourceIter me) : me_(me)
         {
         }
@@ -67,11 +70,11 @@ public:
             operator++();
             return ret;
         }
-        bool operator==(const const_iterator& other)
+        bool operator==(const const_iterator& other) const
         {
             return me_ == other.me_ && genLogic_ == other.genLogic_;
         }
-        bool operator!=(const const_iterator& other)
+        bool operator!=(const const_iterator& other) const
         {
             return !operator==(other);
         }

@@ -33,19 +33,23 @@ public:
     };
 
     class const_iterator : public std::iterator<std::input_iterator_tag, value_type> {
-        const Merge& parent_;
+        const Merge* parent_ = nullptr;
         value_type me_;
         bool classified_ = false;
 
-        MergeRangeSelect classify() const
+        MergeRangeSelect classify()
         {
-            if (me_.range1 == parent_.r1End_) {
-                if (me_.range2 == parent_.r2End_) {
+            // Will deref parent_ nullptr if we're default
+            // constructed. Bad things happen when you try to access
+            // an invalid iterator, I guess.
+
+            if (me_.range1 == parent_->r1End_) {
+                if (me_.range2 == parent_->r2End_) {
                     return MergeRangeSelect::RangeEqual;
                 } else {
                     return MergeRangeSelect::Range2;
                 }
-            } else if (me_.range2 == parent_.r2End_) {
+            } else if (me_.range2 == parent_->r2End_) {
                 return MergeRangeSelect::Range1;
             } else if (Comp()(*me_.range1, *me_.range2)) {
                 return MergeRangeSelect::Range1;
@@ -57,9 +61,10 @@ public:
         }
 
     public:
+        const_iterator() {}
         const_iterator(const Merge& parent,
                        R1Iter range1,
-                       R2Iter range2) : parent_(parent)
+                       R2Iter range2) : parent_(&parent)
         {
             me_.range1 = range1;
             me_.range2 = range2;
@@ -85,12 +90,12 @@ public:
             classified_ = false;
             return *this;
         }
-        bool operator==(const const_iterator& other)
+        bool operator==(const const_iterator& other) const
         {
             return (me_.range1 == other.me_.range1 &&
                     me_.range2 == other.me_.range2);
         }
-        bool operator!=(const const_iterator& other)
+        bool operator!=(const const_iterator& other) const
         {
             return !operator==(other);
         }
