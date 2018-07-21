@@ -43,6 +43,7 @@ public:
     using ChosenRangesType = std::map<Range, T, CompareRanges>;
     using OccupiedRangesType = std::set<Range, CompareRanges>;
 
+#if 0
     class SegmentIterator : public std::iterator<std::input_iterator_tag, Segment> {
         typename ChosenRangesType::const_iterator crIter_;
         typename OccupiedRangesType::const_iterator orIter_;
@@ -69,6 +70,7 @@ public:
 
     using value_type = Segment;
     using const_iterator = SegmentIterator;
+#endif
 
 private:
     ChosenRangesType chosenRanges_;
@@ -76,6 +78,7 @@ private:
 
 public:
 
+#if 0
     SegmentIterator begin() const
     {
         return SegmentIterator(chosenRanges_.begin(), occupiedRanges_.begin());
@@ -85,6 +88,7 @@ public:
     {
         return SegmentIterator(chosenRanges_.end(), occupiedRanges_.end());
     }
+#endif
 
     std::vector<Segment> segments()
     {
