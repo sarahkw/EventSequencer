@@ -3,6 +3,7 @@
 
 #include "mapgenerate.h"
 #include "merge.h"
+#include "groupby.h"
 
 #include <map>
 #include <set>
@@ -183,6 +184,15 @@ public:
         auto merge = makeMergeComp<BrokenDownCompare>(
                     bdChosen.begin(), bdChosen.end(),
                     bdOccupied.begin(), bdOccupied.end());
+
+        struct GetKeyFunctor {
+            int operator()(typename decltype(merge)::value_type& e) const
+            {
+                return e.derefHelper().thePoint;
+            }
+        };
+
+        auto groupby = makeGroupBy<int, GetKeyFunctor>(merge.begin(), merge.end());
 
         std::vector<Segment> segments;
 
