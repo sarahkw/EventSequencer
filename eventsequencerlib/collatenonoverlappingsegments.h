@@ -184,8 +184,35 @@ public:
                     bdChosen.begin(), bdChosen.end(),
                     bdOccupied.begin(), bdOccupied.end());
 
+        std::vector<Segment> segments;
 
-        return {};
+        bool hasCurrentChosenRange = false;
+        typename ChosenRangesType::const_iterator currentChosenRange;
+
+        bool hasCurrentOccupiedRange = false;
+        typename OccupiedRangesType::const_iterator currentOccupiedRange;
+
+        for (auto& mergeResult : merge) {
+            if (mergeResult.select == MergeRangeSelect::Range1 || mergeResult.select == MergeRangeSelect::RangeEqual) {
+                //*mergeResult.range1;
+
+            }
+
+            if (mergeResult.select == MergeRangeSelect::Range2 || mergeResult.select == MergeRangeSelect::RangeEqual) {
+
+            }
+
+#if 0
+            switch (mergeResult.select) {
+            case MergeRangeSelect::Range1:
+            case MergeRangeSelect::Range2:
+            case MergeRangeSelect::RangeEqual:
+                break;
+            }
+#endif
+        }
+
+        return segments;
     }
 
     void mergeSegment(int start, int length,
