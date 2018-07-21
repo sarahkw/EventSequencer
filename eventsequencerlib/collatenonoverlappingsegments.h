@@ -193,23 +193,47 @@ public:
         typename OccupiedRangesType::const_iterator currentOccupiedRange;
 
         for (auto& mergeResult : merge) {
-            if (mergeResult.select == MergeRangeSelect::Range1 || mergeResult.select == MergeRangeSelect::RangeEqual) {
-                //*mergeResult.range1;
+            bool startedChosen = false;
+            bool endedChosen = false;
+            bool startedOccupied = false;
+            bool endedOccupied = false;
 
+            if (mergeResult.select == MergeRangeSelect::Range1 || mergeResult.select == MergeRangeSelect::RangeEqual) {
+                BrokenDown& bd = *mergeResult.range1;
+                Q_ASSERT(bd.whichRange == BrokenDown::WhichRange::Chosen);
+                switch (bd.whichPoint) {
+                case BrokenDown::WhichPoint::Start:
+                    hasCurrentChosenRange = true;
+                    currentChosenRange = bd.chosen;
+                    startedChosen = true;
+                    break;
+                case BrokenDown::WhichPoint::End:
+                    Q_ASSERT(hasCurrentChosenRange);
+                    hasCurrentChosenRange = false;
+                    endedChosen = true;
+                    break;
+                }
             }
 
             if (mergeResult.select == MergeRangeSelect::Range2 || mergeResult.select == MergeRangeSelect::RangeEqual) {
-
+                BrokenDown& bd = *mergeResult.range2;
+                Q_ASSERT(bd.whichRange == BrokenDown::WhichRange::Occupied);
+                switch (bd.whichPoint) {
+                case BrokenDown::WhichPoint::Start:
+                    hasCurrentOccupiedRange = true;
+                    currentOccupiedRange = bd.occupied;
+                    startedOccupied = true;
+                    break;
+                case BrokenDown::WhichPoint::End:
+                    Q_ASSERT(hasCurrentOccupiedRange);
+                    hasCurrentOccupiedRange = false;
+                    endedOccupied = true;
+                    break;
+                }
             }
 
-#if 0
-            switch (mergeResult.select) {
-            case MergeRangeSelect::Range1:
-            case MergeRangeSelect::Range2:
-            case MergeRangeSelect::RangeEqual:
-                break;
-            }
-#endif
+
+
         }
 
         return segments;
