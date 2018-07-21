@@ -198,6 +198,7 @@ public:
             bool startedOccupied = false;
             bool endedOccupied = false;
 
+#if 0
             if (mergeResult.select == MergeRangeSelect::Range1 || mergeResult.select == MergeRangeSelect::RangeEqual) {
                 BrokenDown& bd = *mergeResult.range1;
                 Q_ASSERT(bd.whichRange == BrokenDown::WhichRange::Chosen);
@@ -231,7 +232,7 @@ public:
                     break;
                 }
             }
-
+#endif
 
 
         }
