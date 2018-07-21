@@ -5,6 +5,7 @@
 
 template <typename MapFunctor>
 struct MapGenerateNoGenerate {
+    struct NoIteratorFlag {};
     using value_type = typename MapFunctor::DstType;
     bool nextState() { return false; }
     bool operator==(const MapGenerateNoGenerate&) { return true; }
@@ -27,6 +28,27 @@ public:
         GenerateLogic genLogic_;
         value_type value_;
         bool valueIsSet_ = false;
+
+        template <typename GL>
+        const value_type& dispatchDeref(typename GL::UseIteratorFlag* =nullptr)
+        {
+            if (!valueIsSet_) {
+                value_ = genLogic_.mapGenerateIterator(me_);
+                valueIsSet_ = true;
+            }
+            return value_;
+        }
+
+        template <typename GL>
+        const value_type& dispatchDeref(typename GL::NoIteratorFlag* =nullptr)
+        {
+            if (!valueIsSet_) {
+                value_ = genLogic_.mapGenerate(*me_);
+                valueIsSet_ = true;
+            }
+            return value_;
+        }
+
     public:
         const_iterator(SourceIter me) : me_(me)
         {
@@ -55,11 +77,7 @@ public:
         }
         const value_type& operator*()
         {
-            if (!valueIsSet_) {
-                value_ = genLogic_.mapGenerate(*me_);
-                valueIsSet_ = true;
-            }
-            return value_;
+            return dispatchDeref<GenerateLogic>(); // SFINAE
         }
         const typename SourceIter::reference beforeMap()
         {

@@ -7,6 +7,7 @@ TEST(MapGenerate, Sample)
 {
     std::vector<int> inputs = {10, 20, 30};
     struct GenerateLogic {
+        struct NoIteratorFlag {};
         using value_type = int;
         int state = 0;
         bool nextState()
@@ -66,4 +67,36 @@ TEST(MapGenerate, NoGenerate)
     auto mg = makeMapGenerateNoGenerate<Func>(inputs.begin(), inputs.end());
 
     EXPECT_THAT(mg, testing::ElementsAre("10 cats", "20 cats", "30 cats"));
+}
+
+TEST(MapGenerate, MapUsingIterator)
+{
+    std::vector<int> inputs = {10, 20, 30};
+    struct GenerateLogic {
+        struct UseIteratorFlag {};
+        using value_type = int;
+        int state = 0;
+        bool nextState()
+        {
+            ++state;
+            if (state == 2) {
+                state = 0;
+                return false;
+            } else {
+                return true;
+            }
+        }
+        int mapGenerateIterator(std::vector<int>::const_iterator iter)
+        {
+            return *iter + state;
+        }
+        bool operator==(const GenerateLogic& gl) const
+        {
+            return state == gl.state;
+        }
+    };
+
+    auto mg = makeMapGenerate<GenerateLogic>(inputs.begin(), inputs.end());
+
+    EXPECT_THAT(mg, testing::ElementsAre(10, 11, 20, 21, 30, 31));
 }
