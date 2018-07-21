@@ -30,7 +30,7 @@ public:
         bool valueIsSet_ = false;
 
         template <typename GL>
-        const value_type& dispatchDeref(typename GL::UseIteratorFlag* =nullptr)
+        value_type& dispatchDeref(typename GL::UseIteratorFlag* =nullptr)
         {
             if (!valueIsSet_) {
                 value_ = genLogic_.mapGenerateIterator(me_);
@@ -40,7 +40,7 @@ public:
         }
 
         template <typename GL>
-        const value_type& dispatchDeref(typename GL::NoIteratorFlag* =nullptr)
+        value_type& dispatchDeref(typename GL::NoIteratorFlag* =nullptr)
         {
             if (!valueIsSet_) {
                 value_ = genLogic_.mapGenerate(*me_);
@@ -78,7 +78,7 @@ public:
         {
             return !operator==(other);
         }
-        const value_type& operator*()
+        value_type& operator*()
         {
             return dispatchDeref<GenerateLogic>(); // SFINAE
         }

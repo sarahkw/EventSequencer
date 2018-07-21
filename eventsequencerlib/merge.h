@@ -99,7 +99,7 @@ public:
         {
             return !operator==(other);
         }
-        const value_type& operator*()
+        value_type& operator*()
         {
             if (!classified_) {
                 me_.select = classify();
