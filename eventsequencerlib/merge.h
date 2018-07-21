@@ -9,7 +9,16 @@ enum class MergeRangeSelect {
     RangeEqual
 };
 
-template <typename R1Iter, typename R2Iter>
+template <typename T1, typename T2>
+struct MergeDefaultCompare {
+    bool operator()(const T1& a, const T2& b) const
+    {
+        return a < b;
+    }
+};
+
+template <typename R1Iter, typename R2Iter,
+          typename Comp=MergeDefaultCompare<typename R1Iter::value_type, typename R2Iter::value_type>>
 class Merge {
     R1Iter r1Begin_;
     R1Iter r1End_;
@@ -38,9 +47,9 @@ public:
                 }
             } else if (me_.range2 == parent_.r2End_) {
                 return MergeRangeSelect::Range1;
-            } else if (*me_.range1 < *me_.range2) {
+            } else if (Comp()(*me_.range1, *me_.range2)) {
                 return MergeRangeSelect::Range1;
-            } else if (*me_.range2 < *me_.range1) {
+            } else if (Comp()(*me_.range2, *me_.range1)) {
                 return MergeRangeSelect::Range2;
             } else {
                 return MergeRangeSelect::RangeEqual;
