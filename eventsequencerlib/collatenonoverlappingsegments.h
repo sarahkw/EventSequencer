@@ -116,10 +116,12 @@ public:
             }
         };
 
-        struct MapGenerateChosenRange {
+        class MapGenerateChosenRange {
+            bool start = true;
+        public:
             struct UseIteratorFlag {};
             using value_type = BrokenDown;
-            bool start = true;
+
             bool nextState() {
                 start = !start;
                 return start; // Return true when flipping to true.
@@ -144,10 +146,11 @@ public:
             }
         };
 
-        struct MapGenerateOccupiedRange {
+        class MapGenerateOccupiedRange {
+            bool start = true;
+        public:
             struct UseIteratorFlag {};
             using value_type = BrokenDown;
-            bool start = true;
             bool nextState() {
                 start = !start;
                 return start; // Return true when flipping to true.
@@ -166,7 +169,7 @@ public:
                 }
                 return ret;
             }
-            bool operator==(const MapGenerateChosenRange& o) const
+            bool operator==(const MapGenerateOccupiedRange& o) const
             {
                 return start == o.start;
             }
@@ -174,7 +177,7 @@ public:
 
         auto bdChosen = makeMapGenerate<MapGenerateChosenRange>(
                     chosenRanges_.begin(), chosenRanges_.end());
-        auto bdOccupied = makeMapGenerate<OccupiedRangesType>(
+        auto bdOccupied = makeMapGenerate<MapGenerateOccupiedRange>(
                     occupiedRanges_.begin(), occupiedRanges_.end());
 
         auto merge = makeMergeComp<BrokenDownCompare>(
