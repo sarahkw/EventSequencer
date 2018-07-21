@@ -8,7 +8,7 @@ struct MapGenerateNoGenerate {
     struct NoIteratorFlag {};
     using value_type = typename MapFunctor::DstType;
     bool nextState() { return false; }
-    bool operator==(const MapGenerateNoGenerate&) { return true; }
+    bool operator==(const MapGenerateNoGenerate&) const { return true; }
     typename MapFunctor::DstType mapGenerate(const typename MapFunctor::SrcType& src)
     {
         return MapFunctor()(src);
