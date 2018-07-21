@@ -196,54 +196,26 @@ public:
 
         std::vector<Segment> segments;
 
-        bool hasCurrentChosenRange = false;
-        typename ChosenRangesType::const_iterator currentChosenRange;
+        for (auto& group : groupby) {
+            const BrokenDown* startedChosen = nullptr;
+            const BrokenDown* endedChosen = nullptr;
+            const BrokenDown* startedOccupied = nullptr;
+            const BrokenDown* endedOccupied = nullptr;
 
-        bool hasCurrentOccupiedRange = false;
-        typename OccupiedRangesType::const_iterator currentOccupiedRange;
-
-        for (auto& mergeResult : merge) {
-            bool startedChosen = false;
-            bool endedChosen = false;
-            bool startedOccupied = false;
-            bool endedOccupied = false;
-
-#if 0
-            if (mergeResult.select == MergeRangeSelect::Range1 || mergeResult.select == MergeRangeSelect::RangeEqual) {
-                BrokenDown& bd = *mergeResult.range1;
-                Q_ASSERT(bd.whichRange == BrokenDown::WhichRange::Chosen);
-                switch (bd.whichPoint) {
-                case BrokenDown::WhichPoint::Start:
-                    hasCurrentChosenRange = true;
-                    currentChosenRange = bd.chosen;
-                    startedChosen = true;
-                    break;
-                case BrokenDown::WhichPoint::End:
-                    Q_ASSERT(hasCurrentChosenRange);
-                    hasCurrentChosenRange = false;
-                    endedChosen = true;
-                    break;
-                }
+            for (auto& itemIter : group.items) {
+                BrokenDown& bd = itemIter->derefHelper();
+                const BrokenDown** target = nullptr;
+                     if (bd.whichPoint == BrokenDown::WhichPoint::Start && bd.whichRange == BrokenDown::WhichRange::Chosen  ) target = &startedChosen;
+                else if (bd.whichPoint == BrokenDown::WhichPoint::End   && bd.whichRange == BrokenDown::WhichRange::Chosen  ) target = &endedChosen;
+                else if (bd.whichPoint == BrokenDown::WhichPoint::Start && bd.whichRange == BrokenDown::WhichRange::Occupied) target = &startedOccupied;
+                else if (bd.whichPoint == BrokenDown::WhichPoint::End   && bd.whichRange == BrokenDown::WhichRange::Occupied) target = &endedOccupied;
+                Q_ASSERT(target != nullptr);
+                Q_ASSERT(*target == nullptr);
+                *target = &bd;
             }
+            Q_ASSERT(startedChosen != nullptr || endedChosen != nullptr || startedOccupied != nullptr || endedOccupied != nullptr);
 
-            if (mergeResult.select == MergeRangeSelect::Range2 || mergeResult.select == MergeRangeSelect::RangeEqual) {
-                BrokenDown& bd = *mergeResult.range2;
-                Q_ASSERT(bd.whichRange == BrokenDown::WhichRange::Occupied);
-                switch (bd.whichPoint) {
-                case BrokenDown::WhichPoint::Start:
-                    hasCurrentOccupiedRange = true;
-                    currentOccupiedRange = bd.occupied;
-                    startedOccupied = true;
-                    break;
-                case BrokenDown::WhichPoint::End:
-                    Q_ASSERT(hasCurrentOccupiedRange);
-                    hasCurrentOccupiedRange = false;
-                    endedOccupied = true;
-                    break;
-                }
-            }
-#endif
-
+            // TODO
 
         }
 
