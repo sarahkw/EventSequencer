@@ -48,3 +48,54 @@ TEST(Merge, Simple)
                                             HasValue(5),
                                             HasValue(6)));
 }
+
+TEST(Merge, OnlyLeft)
+{
+    std::vector<int> range1 = {2, 4, 6};
+    std::vector<int> range2 = {};
+
+    auto merge = makeMerge(range1.begin(), range1.end(),
+                           range2.begin(), range2.end());
+
+    EXPECT_THAT(merge, testing::ElementsAre(HasValue(2),
+                                            HasValue(4),
+                                            HasValue(6)));
+}
+
+TEST(Merge, OnlyRight)
+{
+    std::vector<int> range1 = {};
+    std::vector<int> range2 = {1, 3, 5};
+
+    auto merge = makeMerge(range1.begin(), range1.end(),
+                           range2.begin(), range2.end());
+
+    EXPECT_THAT(merge, testing::ElementsAre(HasValue(1),
+                                            HasValue(3),
+                                            HasValue(5)));
+}
+
+TEST(Merge, Duplicate)
+{
+    std::vector<int> range1 = {2, 4, 6};
+    std::vector<int> range2 = {1, 4};
+
+    auto merge = makeMerge(range1.begin(), range1.end(),
+                           range2.begin(), range2.end());
+
+    EXPECT_THAT(merge, testing::ElementsAre(HasValue(1),
+                                            HasValue(2),
+                                            HasValue(4),
+                                            HasValue(6)));
+}
+
+TEST(Merge, Blanks)
+{
+    std::vector<int> range1 = {};
+    std::vector<int> range2 = {};
+
+    auto merge = makeMerge(range1.begin(), range1.end(),
+                           range2.begin(), range2.end());
+
+    EXPECT_THAT(merge, testing::ElementsAre());
+}
