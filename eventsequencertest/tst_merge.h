@@ -96,3 +96,35 @@ TEST(Merge, Blanks)
 
     EXPECT_THAT(merge, testing::ElementsAre());
 }
+
+TEST(Merge, DerefHelper)
+{
+    std::vector<int> range1 = {2, 4, 6};
+    std::vector<int> range2 = {1, 3, 5};
+
+    auto merge = makeMerge(range1.begin(), range1.end(),
+                           range2.begin(), range2.end());
+
+    auto iter = merge.begin();
+    EXPECT_EQ(iter->derefHelper(), 1); ++iter;
+    EXPECT_EQ(iter->derefHelper(), 2); ++iter;
+    EXPECT_EQ(iter->derefHelper(), 3); ++iter;
+}
+
+TEST(Merge, StillCompilesWithDifferentType)
+{
+    // Just won't have derefHelper.
+    std::vector<int> range1 = {2, 4, 6};
+    std::vector<short> range2 = {1, 3, 5};
+
+    auto merge = makeMerge(range1.begin(), range1.end(),
+                           range2.begin(), range2.end());
+    EXPECT_THAT(merge, testing::ElementsAre(HasValue(1),
+                                            HasValue(2),
+                                            HasValue(3),
+                                            HasValue(4),
+                                            HasValue(5),
+                                            HasValue(6)));
+    // This call makes it not compile.
+    //merge.begin()->derefHelper();
+}

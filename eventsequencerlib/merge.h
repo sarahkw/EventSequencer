@@ -30,6 +30,20 @@ public:
         // I wonder if this should be an union.
         R1Iter range1;
         R2Iter range2;
+
+        // Will be helpful if types are the same. Otherwise it won't compile
+        // if you use the fn.
+        typename R1Iter::reference derefHelper()
+        {
+            switch (select) {
+            case MergeRangeSelect::Range1:
+                return *range1;
+            case MergeRangeSelect::Range2:
+                return *range2;
+            }
+            // Make compiler happy
+            typename R1Iter::pointer p(nullptr); return *p;
+        }
     };
 
     class const_iterator : public std::iterator<std::input_iterator_tag, value_type> {
@@ -96,6 +110,10 @@ public:
                 classified_ = true;
             }
             return me_;
+        }
+        value_type* operator->()
+        {
+            return &operator*();
         }
     };
 
