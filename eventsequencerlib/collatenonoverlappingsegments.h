@@ -5,6 +5,7 @@
 #include <set>
 #include <vector>
 
+#include <QDebug>
 #include <iostream>
 
 template <typename T>
@@ -87,12 +88,19 @@ public:
 
     std::vector<Segment> segments()
     {
+
+
         return {};
     }
 
     void mergeSegment(int start, int length,
                       ReplaceMode mode=ReplaceMode::No, T data=T())
     {
+        if (length <= 0) {
+            qWarning() << "Ignored segment of length" << length;
+            return;
+        }
+
         Range me{start, length};
 
         if (chosenRanges_.count(me) == 0) {
