@@ -11,7 +11,8 @@ HEADERS += \
     tst_framesandseconds.h \
     tst_collatenonoverlappingsegments.h \
     tst_mapgenerate.h \
-    tst_merge.h
+    tst_merge.h \
+    tst_groupby.h
 
 SOURCES += \
         main.cpp
