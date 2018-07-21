@@ -127,4 +127,11 @@ Merge<R1Iter, R2Iter> makeMerge(R1Iter r1Begin, R1Iter r1End, R2Iter r2Begin,
     return Merge<R1Iter, R2Iter>(r1Begin, r1End, r2Begin, r2End);
 }
 
+template <typename Comp, typename R1Iter, typename R2Iter>
+Merge<R1Iter, R2Iter, Comp> makeMergeComp(R1Iter r1Begin, R1Iter r1End,
+                                          R2Iter r2Begin, R2Iter r2End)
+{
+    return Merge<R1Iter, R2Iter, Comp>(r1Begin, r1End, r2Begin, r2End);
+}
+
 #endif // MERGE_H

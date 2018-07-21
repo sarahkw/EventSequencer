@@ -1,6 +1,9 @@
 #ifndef COLLATENONOVERLAPPINGSEGMENTS_H
 #define COLLATENONOVERLAPPINGSEGMENTS_H
 
+#include "mapgenerate.h"
+#include "merge.h"
+
 #include <map>
 #include <set>
 #include <vector>
@@ -92,6 +95,91 @@ public:
 
     std::vector<Segment> segments()
     {
+        struct BrokenDown {
+            enum class WhichRange {
+                Chosen,
+                Occupied
+            } whichRange;
+            enum class WhichPoint {
+                Start,
+                End
+            } whichPoint;
+            int thePoint;
+            typename ChosenRangesType::const_iterator chosen;
+            typename OccupiedRangesType::const_iterator occupied;
+        };
+
+        struct BrokenDownCompare {
+            bool operator()(const BrokenDown& a, const BrokenDown& b) const
+            {
+                return a.thePoint < b.thePoint;
+            }
+        };
+
+        struct MapGenerateChosenRange {
+            struct UseIteratorFlag {};
+            using value_type = BrokenDown;
+            bool start = true;
+            bool nextState() {
+                start = !start;
+                return start; // Return true when flipping to true.
+            }
+            BrokenDown mapGenerateIterator(typename ChosenRangesType::const_iterator iter)
+            {
+                BrokenDown ret;
+                ret.whichRange = BrokenDown::WhichRange::Chosen;
+                ret.chosen = iter;
+                if (start) {
+                    ret.whichPoint = BrokenDown::WhichPoint::Start;
+                    ret.thePoint = iter->first.start;
+                } else {
+                    ret.whichPoint = BrokenDown::WhichPoint::End;
+                    ret.thePoint = iter->first.start + iter->first.length;
+                }
+                return ret;
+            }
+            bool operator==(const MapGenerateChosenRange& o) const
+            {
+                return start == o.start;
+            }
+        };
+
+        struct MapGenerateOccupiedRange {
+            struct UseIteratorFlag {};
+            using value_type = BrokenDown;
+            bool start = true;
+            bool nextState() {
+                start = !start;
+                return start; // Return true when flipping to true.
+            }
+            BrokenDown mapGenerateIterator(typename OccupiedRangesType::const_iterator iter)
+            {
+                BrokenDown ret;
+                ret.whichRange = BrokenDown::WhichRange::Occupied;
+                ret.occupied = iter;
+                if (start) {
+                    ret.whichPoint = BrokenDown::WhichPoint::Start;
+                    ret.thePoint = iter->start;
+                } else {
+                    ret.whichPoint = BrokenDown::WhichPoint::End;
+                    ret.thePoint = iter->start + iter->length;
+                }
+                return ret;
+            }
+            bool operator==(const MapGenerateChosenRange& o) const
+            {
+                return start == o.start;
+            }
+        };
+
+        auto bdChosen = makeMapGenerate<MapGenerateChosenRange>(
+                    chosenRanges_.begin(), chosenRanges_.end());
+        auto bdOccupied = makeMapGenerate<OccupiedRangesType>(
+                    occupiedRanges_.begin(), occupiedRanges_.end());
+
+        auto merge = makeMergeComp<BrokenDownCompare>(
+                    bdChosen.begin(), bdChosen.end(),
+                    bdOccupied.begin(), bdOccupied.end());
 
 
         return {};
