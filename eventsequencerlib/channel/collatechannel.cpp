@@ -167,7 +167,7 @@ void CollateChannel::recalculate()
     model_.beginResetModel();
     segments_.clear();
 
-    for (auto& segment : cnos.segments(cnos.WantEmpties::DoWantEmpties)) {
+    for (auto& segment : cnos.segments(cnos.WantEmpties::DoWantBoundaryEmpties, d_.startFrame(), d_.endFrame() - d_.startFrame())) {
         QColor col;
         switch (segment.type) {
         case segment.Type::Empty:

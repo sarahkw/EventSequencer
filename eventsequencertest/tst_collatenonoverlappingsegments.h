@@ -155,3 +155,22 @@ TEST(CollateNonOverlappingSegments, EmptyInBetween)
                             IsRange(10, 20 - 10, SegmentType::Empty),
                             IsRange(20, 30 - 20, SegmentType::Chosen)));
 }
+
+TEST(CollateNonOverlappingSegments, BoundaryEmptyBlank)
+{
+    CollateNonOverlappingSegments<int> cnos;
+
+    ASSERT_THAT(cnos.segments(cnos.WantEmpties::DoWantBoundaryEmpties, 10, 90),
+                ElementsAre(IsRange(10, 90, SegmentType::Empty)));
+}
+
+TEST(CollateNonOverlappingSegments, BoundaryEmptySurround)
+{
+    CollateNonOverlappingSegments<int> cnos;
+    cnos.mergeSegment(10, 20 - 10);
+
+    ASSERT_THAT(cnos.segments(cnos.WantEmpties::DoWantBoundaryEmpties, 0, 30),
+                ElementsAre(IsRange(0, 10, SegmentType::Empty),
+                            IsRange(10, 20 - 10, SegmentType::Chosen),
+                            IsRange(20, 30 - 20, SegmentType::Empty)));
+}

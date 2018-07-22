@@ -55,10 +55,13 @@ public:
 
     enum WantEmpties {
         DontWantEmpties,
-        DoWantEmpties
+        DoWantEmpties,
+        DoWantBoundaryEmpties
     };
 
-    std::vector<Segment> segments(WantEmpties wantEmpties=WantEmpties::DontWantEmpties)
+    std::vector<Segment> segments(
+        WantEmpties wantEmpties = WantEmpties::DontWantEmpties,
+        int boundaryStart = 0, int boundaryLength = 0)
     {
         class Time {
         public:
@@ -109,14 +112,25 @@ public:
         int emptySince = 0;
         bool hasCurrentEmpty = false;
 
+        if (wantEmpties == WantEmpties::DoWantBoundaryEmpties) {
+            if (times.empty() || times.begin()->first > boundaryStart) {
+                emptySince = boundaryStart;
+                hasCurrentEmpty = true;
+            }
+        }
+
+        auto emitEmpty = [&](int atTime) {
+            if (wantEmpties != WantEmpties::DontWantEmpties) {
+                if (atTime > emptySince) { // Don't want empty entries.
+                    segments.push_back({ emptySince, atTime - emptySince, Segment::Type::Empty, T() });
+                }
+            }
+        };
+
         for (auto& time : times) {
             auto emitOccupied = [&]() {
-                segments.push_back({ occupiedSince, time.first - occupiedSince, Segment::Type::Conflict, T() });
-            };
-
-            auto emitEmpty = [&]() {
-                if (wantEmpties == WantEmpties::DoWantEmpties) {
-                    segments.push_back({ emptySince, time.first - emptySince, Segment::Type::Empty, T() });
+                if (time.first > occupiedSince) { // Don't want empty entries.
+                    segments.push_back({ occupiedSince, time.first - occupiedSince, Segment::Type::Conflict, T() });
                 }
             };
 
@@ -156,11 +170,18 @@ public:
 
             if (time.second.hasOccupiedBegin()) {
                 if (hasCurrentEmpty) {
-                    emitEmpty();
+                    emitEmpty(time.first);
                     hasCurrentEmpty = false;
                 }
                 occupiedSince = time.first;
                 hasCurrentOccupied = true;
+            }
+        }
+
+        if (wantEmpties == WantEmpties::DoWantBoundaryEmpties) {
+            if (hasCurrentEmpty && emptySince < (boundaryStart + boundaryLength)) {
+                emitEmpty(boundaryStart + boundaryLength);
+                hasCurrentEmpty = true;
             }
         }
 
