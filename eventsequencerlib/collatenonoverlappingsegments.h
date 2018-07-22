@@ -155,14 +155,6 @@ public:
                 segments.push_back({ currentChosen->first.start, currentChosen->first.length, Segment::Type::Chosen, currentChosen->second });
             };
 
-            if (time.second.hasOccupiedEnd()) {
-                Q_ASSERT(hasCurrentOccupied);
-                if (!hasCurrentChosen) {
-                    emitOccupied();
-                }
-                hasCurrentOccupied = false;
-            }
-
             if (time.second.hasChosenEnd()) {
                 Q_ASSERT(hasCurrentChosen);
                 emitChosen();
@@ -171,6 +163,13 @@ public:
                 if (hasCurrentOccupied) {
                     occupiedSince = time.first;
                 }
+            } else if (time.second.hasOccupiedEnd()) {
+                Q_ASSERT(hasCurrentOccupied);
+                emitOccupied();
+            }
+
+            if (time.second.hasOccupiedEnd()) {
+                hasCurrentOccupied = false;
             }
 
             if (time.second.hasChosenBegin()) {
