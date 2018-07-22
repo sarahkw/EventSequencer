@@ -53,7 +53,12 @@ private:
 
 public:
 
-    std::vector<Segment> segments(bool wantEmpties=false)
+    enum WantEmpties {
+        DontWantEmpties,
+        DoWantEmpties
+    };
+
+    std::vector<Segment> segments(WantEmpties wantEmpties=WantEmpties::DontWantEmpties)
     {
         class Time {
         public:
@@ -101,9 +106,18 @@ public:
         int occupiedSince = 0;
         bool hasCurrentOccupied = false;
 
+        int emptySince = 0;
+        bool hasCurrentEmpty = false;
+
         for (auto& time : times) {
             auto emitOccupied = [&]() {
                 segments.push_back({ occupiedSince, time.first - occupiedSince, Segment::Type::Conflict, T() });
+            };
+
+            auto emitEmpty = [&]() {
+                if (wantEmpties == WantEmpties::DoWantEmpties) {
+                    segments.push_back({ emptySince, time.first - emptySince, Segment::Type::Empty, T() });
+                }
             };
 
             auto emitChosen = [&]() {
@@ -125,6 +139,9 @@ public:
 
             if (time.second.hasOccupiedEnd()) {
                 hasCurrentOccupied = false;
+
+                emptySince = time.first;
+                hasCurrentEmpty = true;
             }
 
             if (time.second.hasChosenBegin()) {
@@ -138,6 +155,10 @@ public:
             }
 
             if (time.second.hasOccupiedBegin()) {
+                if (hasCurrentEmpty) {
+                    emitEmpty();
+                    hasCurrentEmpty = false;
+                }
                 occupiedSince = time.first;
                 hasCurrentOccupied = true;
             }

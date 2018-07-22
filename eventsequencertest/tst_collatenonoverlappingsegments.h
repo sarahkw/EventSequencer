@@ -156,8 +156,8 @@ TEST(CollateNonOverlappingSegments, EmptyInBetween)
     cnos.mergeSegment(20, 30 - 20);
 
 
-    ASSERT_THAT(cnos.segments(true),
+    ASSERT_THAT(cnos.segments(cnos.WantEmpties::DoWantEmpties),
                 ElementsAre(IsRangeN(0, 10 - 0),
                             IsRangeE(10, 20 - 10),
-                            IsRangeN(20, 30 - 30)));
+                            IsRangeN(20, 30 - 20)));
 }

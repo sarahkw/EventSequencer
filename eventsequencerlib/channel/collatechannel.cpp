@@ -166,18 +166,23 @@ void CollateChannel::recalculate()
 
     model_.beginResetModel();
     segments_.clear();
-//    segments_.push_back({d_.startFrame(),
-//                         d_.endFrame() - d_.startFrame(),
-//                         QColor(Qt::black)
-//                        });
-    for (auto& segment : cnos.segments()) {
-        segments_.push_back({
-                                segment.start,
-                                segment.length,
-                                QColor(segment.type == decltype(cnos)::Segment::Type::Chosen ? Qt::green : Qt::black)
-                            });
-    }
 
+    for (auto& segment : cnos.segments(cnos.WantEmpties::DoWantEmpties)) {
+        QColor col;
+        switch (segment.type) {
+        case decltype(cnos)::Segment::Type::Empty:
+            col = Qt::black;
+            break;
+        case decltype(cnos)::Segment::Type::Chosen:
+            col = Qt::green;
+            break;
+        case decltype(cnos)::Segment::Type::Conflict:
+            col = Qt::gray;
+            break;
+        }
+
+        segments_.push_back({segment.start, segment.length, col});
+    }
 
     model_.endResetModel();
 
