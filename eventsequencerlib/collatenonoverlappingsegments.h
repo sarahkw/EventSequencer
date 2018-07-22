@@ -1,10 +1,6 @@
 #ifndef COLLATENONOVERLAPPINGSEGMENTS_H
 #define COLLATENONOVERLAPPINGSEGMENTS_H
 
-#include "mapgenerate.h"
-#include "merge.h"
-#include "groupby.h"
-
 #include <map>
 #include <set>
 #include <vector>
@@ -51,52 +47,11 @@ public:
     using ChosenRangesType = std::map<Range, T, CompareRanges>;
     using OccupiedRangesType = std::set<Range, CompareRanges>;
 
-#if 0
-    class SegmentIterator : public std::iterator<std::input_iterator_tag, Segment> {
-        typename ChosenRangesType::const_iterator crIter_;
-        typename OccupiedRangesType::const_iterator orIter_;
-    public:
-        SegmentIterator(typename ChosenRangesType::const_iterator crIter,
-                        typename OccupiedRangesType::const_iterator orIter)
-            : crIter_(crIter), orIter_(orIter)
-        {
-        }
-        SegmentIterator& operator++()
-        {
-            return *this;
-        }
-        bool operator!=(const SegmentIterator& other)
-        {
-            return !(crIter_ == other.crIter_ && orIter_ == other.orIter_);
-        }
-        const Segment& operator*()
-        {
-            static Segment placeholder;
-            return placeholder;
-        }
-    };
-
-    using value_type = Segment;
-    using const_iterator = SegmentIterator;
-#endif
-
 private:
     ChosenRangesType chosenRanges_;
     OccupiedRangesType occupiedRanges_;
 
 public:
-
-#if 0
-    SegmentIterator begin() const
-    {
-        return SegmentIterator(chosenRanges_.begin(), occupiedRanges_.begin());
-    }
-
-    SegmentIterator end() const
-    {
-        return SegmentIterator(chosenRanges_.end(), occupiedRanges_.end());
-    }
-#endif
 
     std::vector<Segment> segments()
     {
@@ -219,62 +174,6 @@ public:
         }
         occupiedRanges_.erase(intersection.first, intersection.second);
         occupiedRanges_.insert({earliest, latest - earliest});
-
-#if 0
-        Segment me{false, start, length, data};
-        if (segments_.count(me) == 0) {
-            segments_.insert(std::move(me));
-            return;
-        }
-
-        auto intersect = segments_.equal_range(me);
-
-        if (intersect.first != intersect.second) {
-            auto iter = intersect.first;
-            ++iter;
-            for (; iter != intersect.second; ++iter) {
-
-            }
-        }
-#endif
-
-
-#if 0
-        std::cout << "mergeSegment" << std::endl;
-        IntersectsWith iw(segments_, start, length);
-        if (!iw.hasNext()) {
-            std::cout << "noHasNext\n";
-            segments_.insert({start, {false, start, length, data}});
-        } else {
-            // We need to subtract us from all the intersections. And then create
-            // new segments.
-
-            std::cout << "hasNext\n";
-
-            auto iter = iw.next();
-
-            if (iter->first > start) {
-                std::cout << "isInsertFirst\n";
-                segments_.insert({start, {true, start, iter->first - start, T()}});
-            }
-
-            while (iw.hasNext()) {
-                auto theNext = iw.next();
-                auto myStart = iter->first + iter->second.length;
-                auto myEnd = theNext->first;
-                segments_.insert({myStart, {true, myStart, myEnd - myStart, T()}});
-                iter = theNext;
-            }
-
-            {
-                auto myEnd = iter->first + iter->second.length;
-                auto segEnd = start + length;
-                if (myEnd < segEnd) {
-                    segments_.insert({myEnd, {true, myEnd, segEnd - myEnd, T()}});
-                }
-            }
-        }
-#endif
     }
 };
 
