@@ -129,7 +129,7 @@ public:
         };
         
         std::map<int, Time> times;
-        for (auto iter = chosenRanges_.begin(); iter != chosenRanges_.begin(); ++iter) {
+        for (auto iter = chosenRanges_.begin(); iter != chosenRanges_.end(); ++iter) {
             times[iter->first.start].setChosenBegin(iter);
             times[iter->first.start + iter->first.length].setChosenEnd(iter);
         }
