@@ -170,13 +170,13 @@ void CollateChannel::recalculate()
     for (auto& segment : cnos.segments(cnos.WantEmpties::DoWantEmpties)) {
         QColor col;
         switch (segment.type) {
-        case decltype(cnos)::Segment::Type::Empty:
+        case segment.Type::Empty:
             col = Qt::black;
             break;
-        case decltype(cnos)::Segment::Type::Chosen:
+        case segment.Type::Chosen:
             col = Qt::green;
             break;
-        case decltype(cnos)::Segment::Type::Conflict:
+        case segment.Type::Conflict:
             col = Qt::gray;
             break;
         }

@@ -10,13 +10,13 @@ inline void PrintTo(const CollateNonOverlappingSegments<int>::Segment& s,
 {
     std::string typeName;
     switch (s.type) {
-    case decltype(s.type)::Chosen:
+    case s.Type::Chosen:
         typeName = "chosen";
         break;
-    case decltype(s.type)::Conflict:
+    case s.Type::Conflict:
         typeName = "conflict";
         break;
-    case decltype(s.type)::Empty:
+    case s.Type::Empty:
         typeName = "empty";
         break;
     }
@@ -25,17 +25,11 @@ inline void PrintTo(const CollateNonOverlappingSegments<int>::Segment& s,
            typeName << ")";
 }
 
-MATCHER_P2(IsRangeN, start, length, "") {
-    return arg.start == start && arg.length == length && arg.type == CollateNonOverlappingSegments<int>::Segment::Type::Chosen;
+MATCHER_P3(IsRange, start, length, type, "") {
+    return arg.start == start && arg.length == length && arg.type == type;
 }
 
-MATCHER_P2(IsRangeY, start, length, "") {
-    return arg.start == start && arg.length == length && arg.type == CollateNonOverlappingSegments<int>::Segment::Type::Conflict;
-}
-
-MATCHER_P2(IsRangeE, start, length, "") {
-    return arg.start == start && arg.length == length && arg.type == CollateNonOverlappingSegments<int>::Segment::Type::Empty;
-}
+using SegmentType = CollateNonOverlappingSegments<int>::Segment::Type;
 
 TEST(CollateNonOverlappingSegments, NonOverlapping)
 {
@@ -44,8 +38,8 @@ TEST(CollateNonOverlappingSegments, NonOverlapping)
     cnos.mergeSegment(5, 10 - 5);
 
     ASSERT_THAT(cnos.segments(),
-                ElementsAre(IsRangeN(2, 5 - 2),
-                            IsRangeN(5, 10 - 5)));
+                ElementsAre(IsRange(2, 5 - 2, SegmentType::Chosen),
+                            IsRange(5, 10 - 5, SegmentType::Chosen)));
 }
 
 TEST(CollateNonOverlappingSegments, OverlapBefore)
@@ -55,8 +49,8 @@ TEST(CollateNonOverlappingSegments, OverlapBefore)
     cnos.mergeSegment(4, 10 - 4);
 
     ASSERT_THAT(cnos.segments(),
-                ElementsAre(IsRangeN(2, 5 - 2),
-                            IsRangeY(5, 10 - 5)));
+                ElementsAre(IsRange(2, 5 - 2, SegmentType::Chosen),
+                            IsRange(5, 10 - 5, SegmentType::Conflict)));
 }
 
 TEST(CollateNonOverlappingSegments, OverlapAfter)
@@ -66,8 +60,8 @@ TEST(CollateNonOverlappingSegments, OverlapAfter)
     cnos.mergeSegment(2, 5 - 2);
 
     ASSERT_THAT(cnos.segments(),
-                ElementsAre(IsRangeY(2, 4 - 2),
-                            IsRangeN(4, 10 - 4)));
+                ElementsAre(IsRange(2, 4 - 2, SegmentType::Conflict),
+                            IsRange(4, 10 - 4, SegmentType::Chosen)));
 }
 
 TEST(CollateNonOverlappingSegments, OverlapBetween)
@@ -78,9 +72,9 @@ TEST(CollateNonOverlappingSegments, OverlapBetween)
     cnos.mergeSegment(3, 7 - 3);
 
     ASSERT_THAT(cnos.segments(),
-                ElementsAre(IsRangeN(2, 5 - 2),
-                            IsRangeY(5, 6 - 5),
-                            IsRangeN(6, 10 - 6)));
+                ElementsAre(IsRange(2, 5 - 2, SegmentType::Chosen),
+                            IsRange(5, 6 - 5, SegmentType::Conflict),
+                            IsRange(6, 10 - 6, SegmentType::Chosen)));
 }
 
 TEST(CollateNonOverlappingSegments, OverlapWrapped)
@@ -90,9 +84,9 @@ TEST(CollateNonOverlappingSegments, OverlapWrapped)
     cnos.mergeSegment(0, 10 - 0);
 
     ASSERT_THAT(cnos.segments(),
-                ElementsAre(IsRangeY(0, 2 - 0),
-                            IsRangeN(2, 5 - 2),
-                            IsRangeY(5, 10 - 5)));
+                ElementsAre(IsRange(0, 2 - 0, SegmentType::Conflict),
+                            IsRange(2, 5 - 2, SegmentType::Chosen),
+                            IsRange(5, 10 - 5, SegmentType::Conflict)));
 }
 
 TEST(CollateNonOverlappingSegments, Replace)
@@ -104,10 +98,10 @@ TEST(CollateNonOverlappingSegments, Replace)
     cnos.mergeSegment(6, 7 - 6, Cnos::ReplaceMode::IfFitsInEmptySpace);
 
     ASSERT_THAT(cnos.segments(),
-                ElementsAre(IsRangeN(0, 5 - 0),
-                            IsRangeY(5, 6 - 5),
-                            IsRangeN(6, 7 - 6),
-                            IsRangeY(7, 10 - 7)));
+                ElementsAre(IsRange(0, 5 - 0, SegmentType::Chosen),
+                            IsRange(5, 6 - 5, SegmentType::Conflict),
+                            IsRange(6, 7 - 6, SegmentType::Chosen),
+                            IsRange(7, 10 - 7, SegmentType::Conflict)));
 }
 
 TEST(CollateNonOverlappingSegments, NoReplace)
@@ -118,8 +112,8 @@ TEST(CollateNonOverlappingSegments, NoReplace)
     cnos.mergeSegment(6, 7 - 6);
 
     ASSERT_THAT(cnos.segments(),
-                ElementsAre(IsRangeN(0, 5 - 0),
-                            IsRangeY(5, 10 - 5)));
+                ElementsAre(IsRange(0, 5 - 0, SegmentType::Chosen),
+                            IsRange(5, 10 - 5, SegmentType::Conflict)));
 }
 
 TEST(CollateNonOverlappingSegments, ExpandEmptySpace)
@@ -130,8 +124,8 @@ TEST(CollateNonOverlappingSegments, ExpandEmptySpace)
     cnos.mergeSegment(7, 15 - 7);
 
     ASSERT_THAT(cnos.segments(),
-                ElementsAre(IsRangeN(0, 5 - 0),
-                            IsRangeY(5, 15 - 5)));
+                ElementsAre(IsRange(0, 5 - 0, SegmentType::Chosen),
+                            IsRange(5, 15 - 5, SegmentType::Conflict)));
 }
 
 TEST(CollateNonOverlappingSegments, ObservedProblem)
@@ -144,9 +138,9 @@ TEST(CollateNonOverlappingSegments, ObservedProblem)
     
 
     ASSERT_THAT(cnos.segments(),
-                ElementsAre(IsRangeN(17, 22 - 17),
-                            IsRangeY(22, 25 - 22),
-                            IsRangeN(26, 31 - 26)));
+                ElementsAre(IsRange(17, 22 - 17, SegmentType::Chosen),
+                            IsRange(22, 25 - 22, SegmentType::Conflict),
+                            IsRange(26, 31 - 26, SegmentType::Chosen)));
 }
 
 TEST(CollateNonOverlappingSegments, EmptyInBetween)
@@ -157,7 +151,7 @@ TEST(CollateNonOverlappingSegments, EmptyInBetween)
 
 
     ASSERT_THAT(cnos.segments(cnos.WantEmpties::DoWantEmpties),
-                ElementsAre(IsRangeN(0, 10 - 0),
-                            IsRangeE(10, 20 - 10),
-                            IsRangeN(20, 30 - 20)));
+                ElementsAre(IsRange(0, 10 - 0, SegmentType::Chosen),
+                            IsRange(10, 20 - 10, SegmentType::Empty),
+                            IsRange(20, 30 - 20, SegmentType::Chosen)));
 }
