@@ -5,6 +5,7 @@
 #include <strip.h>
 
 #include "collatechannelrefreshevent.h"
+#include "collatenonoverlappingsegments.h"
 
 #include <QDebug>
 #include <QCoreApplication>
@@ -155,47 +156,30 @@ void CollateChannel::channelAffected(int channel)
 
 void CollateChannel::recalculate()
 {
-    model_.beginResetModel();
-    segments_.clear();
-    segments_.push_back({d_.startFrame(),
-                         d_.endFrame() - d_.startFrame(),
-                         QColor(Qt::black)
-                        });
-    model_.endResetModel();
-
-    struct TmpSeg {
-        const Strip* s;
-        int startFrame;
-        int length;
-        TmpSeg(const Strip* s, int startFrame, int length) : s(s), startFrame(startFrame), length(length) { }
-        bool collidesWith(int otherStartFrame, int otherLength) const
-        {
-            return (startFrame < otherStartFrame ?
-                        (startFrame + length > otherStartFrame) :
-                        (otherStartFrame + otherLength > startFrame));
-        }
-    };
-    std::vector<TmpSeg> tmpSeg;
-
+    CollateNonOverlappingSegments<int> cnos;
     for (int i = channelTo() - 1; i >= channelFrom(); --i) {
         for (const Strip* s : d_.strips()) {
             if (s->channel() != i) continue;
-
-            if (std::none_of(tmpSeg.begin(), tmpSeg.end(),
-                        [s](TmpSeg& ts) { return ts.collidesWith(s->startFrame(), s->length()); })) {
-                tmpSeg.emplace_back(s, s->startFrame(), s->length());
-            }
+            cnos.mergeSegment(s->startFrame(), s->length());
         }
     }
 
-    std::sort(tmpSeg.begin(), tmpSeg.end(), [](const TmpSeg& a, const TmpSeg& b) { return a.startFrame < b.startFrame; });
-
-    // TODO
-    qInfo() << __PRETTY_FUNCTION__ << "TODO";
-
-    for (auto& ts : tmpSeg) {
-        qInfo() << ts.startFrame << ts.length;
+    model_.beginResetModel();
+    segments_.clear();
+//    segments_.push_back({d_.startFrame(),
+//                         d_.endFrame() - d_.startFrame(),
+//                         QColor(Qt::black)
+//                        });
+    for (auto& segment : cnos.segments()) {
+        segments_.push_back({
+                                segment.start,
+                                segment.length,
+                                QColor(segment.type == decltype(cnos)::Segment::Type::Chosen ? Qt::green : Qt::black)
+                            });
     }
+
+
+    model_.endResetModel();
 
 }
 
