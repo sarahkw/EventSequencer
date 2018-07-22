@@ -215,7 +215,7 @@ public:
             auto other = intersection.second;
             --other;
             earliest = std::min(earliest, intersection.first->start);
-            latest = std::max(latest, intersection.second->start + intersection.second->length);
+            latest = std::max(latest, other->start + other->length);
         }
         occupiedRanges_.erase(intersection.first, intersection.second);
         occupiedRanges_.insert({earliest, latest - earliest});
