@@ -166,13 +166,13 @@ public:
         int earliest = start;
         int latest = start + length;
         auto intersection = occupiedRanges_.equal_range(me);
-        if (intersection.first != occupiedRanges_.end()) {
+        if (intersection.first != intersection.second) {
             auto other = intersection.second;
             --other;
             earliest = std::min(earliest, intersection.first->start);
             latest = std::max(latest, other->start + other->length);
+            occupiedRanges_.erase(intersection.first, intersection.second);
         }
-        occupiedRanges_.erase(intersection.first, intersection.second);
         occupiedRanges_.insert({earliest, latest - earliest});
     }
 };
