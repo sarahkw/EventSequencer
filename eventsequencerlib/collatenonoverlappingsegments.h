@@ -100,151 +100,62 @@ public:
 
     std::vector<Segment> segments()
     {
-        struct BrokenDown {
-            enum class WhichRange {
-                Chosen,
-                Occupied
-            } whichRange;
-            enum class WhichPoint {
-                Start,
-                End
-            } whichPoint;
-            int thePoint;
-            typename ChosenRangesType::const_iterator chosen;
-            typename OccupiedRangesType::const_iterator occupied;
-        };
-
-        struct BrokenDownCompare {
-            bool operator()(const BrokenDown& a, const BrokenDown& b) const
-            {
-                return a.thePoint < b.thePoint;
-            }
-        };
-
-        class MapGenerateChosenRange {
-            bool start = true;
+        class Time {
         public:
-            struct UseIteratorFlag {};
-            using value_type = BrokenDown;
-
-            bool nextState() {
-                start = !start;
-                return start; // Return true when flipping to true.
-            }
-            BrokenDown mapGenerateIterator(typename ChosenRangesType::const_iterator iter)
-            {
-                BrokenDown ret;
-                ret.whichRange = BrokenDown::WhichRange::Chosen;
-                ret.chosen = iter;
-                if (start) {
-                    ret.whichPoint = BrokenDown::WhichPoint::Start;
-                    ret.thePoint = iter->first.start;
-                } else {
-                    ret.whichPoint = BrokenDown::WhichPoint::End;
-                    ret.thePoint = iter->first.start + iter->first.length;
-                }
-                return ret;
-            }
-            bool operator==(const MapGenerateChosenRange& o) const
-            {
-                return start == o.start;
-            }
-        };
-
-        class MapGenerateOccupiedRange {
-            bool start = true;
+            using CI = typename ChosenRangesType::const_iterator;
+            using OI = typename OccupiedRangesType::const_iterator;
+        private:
+            CI chosenBegin_;
+            CI chosenEnd_;
+            OI occupiedBegin_;
+            OI occupiedEnd_;
+            bool hasChosenBegin_   = false;
+            bool hasChosenEnd_     = false;
+            bool hasOccupiedBegin_ = false;
+            bool hasOccupiedEnd_   = false;
         public:
-            struct UseIteratorFlag {};
-            using value_type = BrokenDown;
-            bool nextState() {
-                start = !start;
-                return start; // Return true when flipping to true.
-            }
-            BrokenDown mapGenerateIterator(typename OccupiedRangesType::const_iterator iter)
-            {
-                BrokenDown ret;
-                ret.whichRange = BrokenDown::WhichRange::Occupied;
-                ret.occupied = iter;
-                if (start) {
-                    ret.whichPoint = BrokenDown::WhichPoint::Start;
-                    ret.thePoint = iter->start;
-                } else {
-                    ret.whichPoint = BrokenDown::WhichPoint::End;
-                    ret.thePoint = iter->start + iter->length;
-                }
-                return ret;
-            }
-            bool operator==(const MapGenerateOccupiedRange& o) const
-            {
-                return start == o.start;
-            }
+            void setChosenBegin  (CI val) { Q_ASSERT(!hasChosenBegin_  ); chosenBegin_   = val; hasChosenBegin_   = true; }
+            void setChosenEnd    (CI val) { Q_ASSERT(!hasChosenEnd_    ); chosenEnd_     = val; hasChosenEnd_     = true; }
+            void setOccupiedBegin(OI val) { Q_ASSERT(!hasOccupiedBegin_); occupiedBegin_ = val; hasOccupiedBegin_ = true; }
+            void setOccupiedEnd  (OI val) { Q_ASSERT(!hasOccupiedEnd_  ); occupiedEnd_   = val; hasOccupiedEnd_   = true; }
+            const CI& chosenBegin  () { Q_ASSERT(hasChosenBegin_  ); return chosenBegin_  ; }
+            const CI& chosenEnd    () { Q_ASSERT(hasChosenEnd_    ); return chosenEnd_    ; }
+            const OI& occupiedBegin() { Q_ASSERT(hasOccupiedBegin_); return occupiedBegin_; }
+            const OI& occupiedEnd  () { Q_ASSERT(hasOccupiedEnd_  ); return occupiedEnd_  ; }
+            bool hasChosenBegin()   const { return hasChosenBegin_  ; }
+            bool hasChosenEnd()     const { return hasChosenEnd_    ; }
+            bool hasOccupiedBegin() const { return hasOccupiedBegin_; }
+            bool hasOccupiedEnd()   const { return hasOccupiedEnd_  ; }
         };
-
-        auto bdChosen = makeMapGenerate<MapGenerateChosenRange>(
-                    chosenRanges_.begin(), chosenRanges_.end());
-        auto bdOccupied = makeMapGenerate<MapGenerateOccupiedRange>(
-                    occupiedRanges_.begin(), occupiedRanges_.end());
-
-        auto merge = makeMergeComp<BrokenDownCompare>(
-                    bdChosen.begin(), bdChosen.end(),
-                    bdOccupied.begin(), bdOccupied.end());
-
-#if 1
-        struct GetKeyFunctor {
-            int operator()(typename decltype(merge)::value_type& e) const
-            {
-                return e.derefHelper().thePoint;
-            }
-        };
-#endif
-
-        auto groupby = makeGroupBy<int, GetKeyFunctor>(merge.begin(), merge.end());
-
-        qInfo() << "bdChosen" << std::distance(bdChosen.begin(), bdChosen.end());
-        qInfo() << "bdOccupied" << std::distance(bdOccupied.begin(), bdOccupied.end());
-        qInfo() << "merge" << std::distance(merge.begin(), merge.end());
-        qInfo() << "groupby" << std::distance(groupby.begin(), groupby.end());
-
+        
+        std::map<int, Time> times;
+        for (auto iter = chosenRanges_.begin(); iter != chosenRanges_.begin(); ++iter) {
+            times[iter->first.start].setChosenBegin(iter);
+            times[iter->first.start + iter->first.length].setChosenEnd(iter);
+        }
+        for (auto iter = occupiedRanges_.begin(); iter != occupiedRanges_.end(); ++iter) {
+            times[iter->start].setOccupiedBegin(iter);
+            times[iter->start + iter->length].setOccupiedEnd(iter);
+        }
 
         std::vector<Segment> segments;
 
-        BrokenDown currentChosen;
+        typename ChosenRangesType::const_iterator currentChosen;
         bool hasCurrentChosen = false;
 
         int occupiedSince = 0;
         bool hasCurrentOccupied = false;
 
-        for (auto& group : groupby) {
-            const BrokenDown* startedChosen = nullptr;
-            const BrokenDown* endedChosen = nullptr;
-            const BrokenDown* startedOccupied = nullptr;
-            const BrokenDown* endedOccupied = nullptr;
-
-            for (auto& itemIter : group.items) {
-                BrokenDown& bd = itemIter->derefHelper();
-                const BrokenDown** target = nullptr;
-                     if (bd.whichPoint == BrokenDown::WhichPoint::Start && bd.whichRange == BrokenDown::WhichRange::Chosen  ) target = &startedChosen;
-                else if (bd.whichPoint == BrokenDown::WhichPoint::End   && bd.whichRange == BrokenDown::WhichRange::Chosen  ) target = &endedChosen;
-                else if (bd.whichPoint == BrokenDown::WhichPoint::Start && bd.whichRange == BrokenDown::WhichRange::Occupied) target = &startedOccupied;
-                else if (bd.whichPoint == BrokenDown::WhichPoint::End   && bd.whichRange == BrokenDown::WhichRange::Occupied) target = &endedOccupied;
-                Q_ASSERT(target != nullptr);
-                Q_ASSERT(*target == nullptr);
-                *target = &bd;
-            }
-            Q_ASSERT(startedChosen != nullptr || endedChosen != nullptr || startedOccupied != nullptr || endedOccupied != nullptr);
-
-            qInfo() << "Position: " << group.key << (startedChosen != nullptr) << (endedChosen != nullptr) << (startedOccupied != nullptr) << (endedOccupied != nullptr);
-
-
+        for (auto& time : times) {
             auto emitOccupied = [&]() {
-                segments.push_back({ occupiedSince, group.key - occupiedSince, Segment::Type::Conflict, T() });
+                segments.push_back({ occupiedSince, time.first - occupiedSince, Segment::Type::Conflict, T() });
             };
 
             auto emitChosen = [&]() {
-                segments.push_back({ currentChosen.chosen->first.start, currentChosen.chosen->first.length, Segment::Type::Chosen, currentChosen.chosen->second });
+                segments.push_back({ currentChosen->first.start, currentChosen->first.length, Segment::Type::Chosen, currentChosen->second });
             };
 
-            if (endedOccupied != nullptr) {
+            if (time.second.hasOccupiedEnd()) {
                 Q_ASSERT(hasCurrentOccupied);
                 if (!hasCurrentChosen) {
                     emitOccupied();
@@ -252,28 +163,28 @@ public:
                 hasCurrentOccupied = false;
             }
 
-            if (endedChosen != nullptr) {
+            if (time.second.hasChosenEnd()) {
                 Q_ASSERT(hasCurrentChosen);
                 emitChosen();
                 hasCurrentChosen = false;
 
                 if (hasCurrentOccupied) {
-                    occupiedSince = group.key;
+                    occupiedSince = time.first;
                 }
             }
 
-            if (startedChosen != nullptr) {
+            if (time.second.hasChosenBegin()) {
                 if (hasCurrentOccupied) {
                     emitOccupied();
                 }
                 
                 Q_ASSERT(!hasCurrentChosen);
-                currentChosen = *startedChosen;
+                currentChosen = time.second.chosenBegin();
                 hasCurrentChosen = true;
             }
 
-            if (startedOccupied != nullptr) {
-                occupiedSince = group.key;
+            if (time.second.hasOccupiedBegin()) {
+                occupiedSince = time.first;
                 hasCurrentOccupied = true;
             }
         }
