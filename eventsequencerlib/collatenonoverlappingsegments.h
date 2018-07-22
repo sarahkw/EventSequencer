@@ -217,12 +217,23 @@ public:
         if (chosenRanges_.count(me) == 0) {
             if (mode == ReplaceMode::IfFitsInEmptySpace ||
                     (mode == ReplaceMode::No && occupiedRanges_.count(me) == 0)) {
-                chosenRanges_.insert(std::make_pair(me, data));
+                if (boundaryMode_ == BoundaryMode::NoBounds ||
+                        (start >= boundaryStart_ && start + length <= boundaryStart_ + boundaryLength_)) {
+                    chosenRanges_.insert(std::make_pair(me, data));
+                }
             }
         }
 
         int earliest = start;
         int latest = start + length;
+        if (boundaryMode_ == BoundaryMode::HasBounds) {
+            if (earliest < boundaryStart_) earliest = boundaryStart_;
+            if (latest > boundaryStart_ + boundaryLength_) latest = boundaryStart_ + boundaryLength_;
+            if (earliest == latest) {
+                return;                                          // EARLY RETURN
+            }
+        }
+
         auto intersection = occupiedRanges_.equal_range(me);
         if (intersection.first != intersection.second) {
             auto other = intersection.second;
