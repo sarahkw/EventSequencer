@@ -126,3 +126,17 @@ TEST(CollateNonOverlappingSegments, ExpandEmptySpace)
                 ElementsAre(IsRangeN(0, 5 - 0),
                             IsRangeY(5, 15 - 5)));
 }
+
+TEST(CollateNonOverlappingSegments, ObservedProblem)
+{
+    CollateNonOverlappingSegments<int> cnos;
+    cnos.mergeSegment(26, 31 - 26);
+    cnos.mergeSegment(17, 22 - 17);
+    cnos.mergeSegment(20, 25 - 20);
+    
+
+    ASSERT_THAT(cnos.segments(),
+                ElementsAre(IsRangeN(17, 22 - 17),
+                            IsRangeY(22, 25 - 22),
+                            IsRangeN(26, 31 - 26)));
+}
