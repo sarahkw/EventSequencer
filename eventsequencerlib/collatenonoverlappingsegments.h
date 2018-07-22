@@ -229,7 +229,7 @@ public:
         if (boundaryMode_ == BoundaryMode::HasBounds) {
             if (earliest < boundaryStart_) earliest = boundaryStart_;
             if (latest > boundaryStart_ + boundaryLength_) latest = boundaryStart_ + boundaryLength_;
-            if (earliest == latest) {
+            if (earliest >= latest) {
                 return;                                          // EARLY RETURN
             }
         }
