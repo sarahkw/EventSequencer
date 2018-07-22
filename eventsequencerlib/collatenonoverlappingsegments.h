@@ -189,24 +189,24 @@ public:
                     bdChosen.begin(), bdChosen.end(),
                     bdOccupied.begin(), bdOccupied.end());
 
+#if 1
         struct GetKeyFunctor {
             int operator()(typename decltype(merge)::value_type& e) const
             {
                 return e.derefHelper().thePoint;
             }
         };
+#endif
 
         auto groupby = makeGroupBy<int, GetKeyFunctor>(merge.begin(), merge.end());
 
         std::vector<Segment> segments;
 
-        enum class CurrentSegment {
-            Null,
-            Empty,
-            Chosen,
-            Conflict
-        } currentSegment = CurrentSegment::Null;
-        BrokenDown chosenSegment;
+        BrokenDown currentChosen;
+        bool hasCurrentChosen = false;
+
+        int occupiedSince = 0;
+        bool hasCurrentOccupied = false;
 
         for (auto& group : groupby) {
             const BrokenDown* startedChosen = nullptr;
@@ -227,8 +227,46 @@ public:
             }
             Q_ASSERT(startedChosen != nullptr || endedChosen != nullptr || startedOccupied != nullptr || endedOccupied != nullptr);
 
-            // TODO
+            auto emitOccupied = [&]() {
+                segments.push_back({ occupiedSince, group.key - occupiedSince, Segment::Type::Conflict, T() });
+            };
 
+            auto emitChosen = [&]() {
+                segments.push_back({ currentChosen.chosen->first.start, currentChosen.chosen->first.length, Segment::Type::Chosen, currentChosen.chosen->second });
+            };
+
+            if (endedOccupied != nullptr) {
+                Q_ASSERT(hasCurrentOccupied);
+                if (!hasCurrentChosen) {
+                    emitOccupied();
+                }
+                hasCurrentOccupied = false;
+            }
+
+            if (endedChosen != nullptr) {
+                Q_ASSERT(hasCurrentChosen);
+                emitChosen();
+                hasCurrentChosen = false;
+
+                if (hasCurrentOccupied) {
+                    occupiedSince = group.key;
+                }
+            }
+
+            if (startedChosen != nullptr) {
+                if (hasCurrentOccupied) {
+                    emitOccupied();
+                }
+                
+                Q_ASSERT(!hasCurrentChosen);
+                currentChosen = *startedChosen;
+                hasCurrentChosen = true;
+            }
+
+            if (startedOccupied != nullptr) {
+                occupiedSince = group.key;
+                hasCurrentOccupied = true;
+            }
         }
 
         return segments;
