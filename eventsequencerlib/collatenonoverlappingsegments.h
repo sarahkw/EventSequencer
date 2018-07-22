@@ -47,21 +47,37 @@ public:
     using ChosenRangesType = std::map<Range, T, CompareRanges>;
     using OccupiedRangesType = std::set<Range, CompareRanges>;
 
+    enum class BoundaryMode {
+        NoBounds,
+        HasBounds
+    };
+
 private:
     ChosenRangesType chosenRanges_;
     OccupiedRangesType occupiedRanges_;
 
-public:
+    BoundaryMode boundaryMode_;
+    int boundaryStart_;
+    int boundaryLength_;
 
-    enum WantEmpties {
+public:
+    CollateNonOverlappingSegments(
+        BoundaryMode boundaryMode = BoundaryMode::NoBounds,
+        int boundaryStart = 0, int boundaryLength = 0)
+        : boundaryMode_(boundaryMode),
+          boundaryStart_(boundaryStart),
+          boundaryLength_(boundaryLength)
+
+    {
+    }
+
+    enum class WantEmpties {
         DontWantEmpties,
-        DoWantEmpties,
-        DoWantBoundaryEmpties
+        DoWantEmpties
     };
 
     std::vector<Segment> segments(
-        WantEmpties wantEmpties = WantEmpties::DontWantEmpties,
-        int boundaryStart = 0, int boundaryLength = 0)
+        WantEmpties wantEmpties = WantEmpties::DontWantEmpties)
     {
         class Time {
         public:
@@ -112,15 +128,15 @@ public:
         int emptySince = 0;
         bool hasCurrentEmpty = false;
 
-        if (wantEmpties == WantEmpties::DoWantBoundaryEmpties) {
-            if (times.empty() || times.begin()->first > boundaryStart) {
-                emptySince = boundaryStart;
+        if (boundaryMode_ == BoundaryMode::HasBounds) {
+            if (times.empty() || times.begin()->first > boundaryStart_) {
+                emptySince = boundaryStart_;
                 hasCurrentEmpty = true;
             }
         }
 
         auto emitEmpty = [&](int atTime) {
-            if (wantEmpties != WantEmpties::DontWantEmpties) {
+            if (wantEmpties == WantEmpties::DoWantEmpties) {
                 if (atTime > emptySince) { // Don't want empty entries.
                     segments.push_back({ emptySince, atTime - emptySince, Segment::Type::Empty, T() });
                 }
@@ -178,9 +194,9 @@ public:
             }
         }
 
-        if (wantEmpties == WantEmpties::DoWantBoundaryEmpties) {
-            if (hasCurrentEmpty && emptySince < (boundaryStart + boundaryLength)) {
-                emitEmpty(boundaryStart + boundaryLength);
+        if (boundaryMode_ == BoundaryMode::HasBounds) {
+            if (hasCurrentEmpty && emptySince < (boundaryStart_ + boundaryLength_)) {
+                emitEmpty(boundaryStart_ + boundaryLength_);
                 hasCurrentEmpty = true;
             }
         }

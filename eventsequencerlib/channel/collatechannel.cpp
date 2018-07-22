@@ -156,7 +156,9 @@ void CollateChannel::channelAffected(int channel)
 
 void CollateChannel::recalculate()
 {
-    CollateNonOverlappingSegments<int> cnos;
+    CollateNonOverlappingSegments<int> cnos(cnos.BoundaryMode::HasBounds,
+                                            d_.startFrame(),
+                                            d_.endFrame() - d_.startFrame());
     for (int i = channelTo() - 1; i >= channelFrom(); --i) {
         for (const Strip* s : d_.strips()) {
             if (s->channel() != i) continue;
@@ -167,7 +169,7 @@ void CollateChannel::recalculate()
     model_.beginResetModel();
     segments_.clear();
 
-    for (auto& segment : cnos.segments(cnos.WantEmpties::DoWantBoundaryEmpties, d_.startFrame(), d_.endFrame() - d_.startFrame())) {
+    for (auto& segment : cnos.segments(cnos.WantEmpties::DoWantEmpties)) {
         QColor col;
         switch (segment.type) {
         case segment.Type::Empty:
