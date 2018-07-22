@@ -9,15 +9,15 @@ inline void PrintTo(const CollateNonOverlappingSegments<int>::Segment& s,
                     ::std::ostream *os)
 {
     *os << "(Segment " << s.start << " " << s.length << " " <<
-           s.representsOverlappedSpace << ")";
+           static_cast<int>(s.type) << ")";
 }
 
 MATCHER_P2(IsRangeN, start, length, "") {
-    return arg.start == start && arg.length == length && !arg.representsOverlappedSpace;
+    return arg.start == start && arg.length == length && arg.type == CollateNonOverlappingSegments<int>::Segment::Type::Chosen;
 }
 
 MATCHER_P2(IsRangeY, start, length, "") {
-    return arg.start == start && arg.length == length && arg.representsOverlappedSpace;
+    return arg.start == start && arg.length == length && arg.type == CollateNonOverlappingSegments<int>::Segment::Type::Conflict;
 }
 
 TEST(CollateNonOverlappingSegments, NonOverlapping)

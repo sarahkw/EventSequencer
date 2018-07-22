@@ -40,7 +40,11 @@ public:
     struct Segment {
         int start;
         int length;
-        bool representsOverlappedSpace;
+        enum class Type {
+            //Empty, // TODO
+            Chosen,
+            Conflict
+        } type;
         T data;
     };
 
@@ -195,6 +199,14 @@ public:
         auto groupby = makeGroupBy<int, GetKeyFunctor>(merge.begin(), merge.end());
 
         std::vector<Segment> segments;
+
+        enum class CurrentSegment {
+            Null,
+            Empty,
+            Chosen,
+            Conflict
+        } currentSegment = CurrentSegment::Null;
+        BrokenDown chosenSegment;
 
         for (auto& group : groupby) {
             const BrokenDown* startedChosen = nullptr;
