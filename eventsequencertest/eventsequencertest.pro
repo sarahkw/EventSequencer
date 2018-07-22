@@ -9,10 +9,7 @@ HEADERS += \
         tst_testcasename.h \
     tst_strip.h \
     tst_framesandseconds.h \
-    tst_collatenonoverlappingsegments.h \
-    tst_mapgenerate.h \
-    tst_merge.h \
-    tst_groupby.h
+    tst_collatenonoverlappingsegments.h
 
 SOURCES += \
         main.cpp

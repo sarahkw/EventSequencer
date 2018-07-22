@@ -46,10 +46,7 @@ SOURCES += \
     showmultiplelinesononeline.cpp \
     channel/collatechannel.cpp \
     channel/collatechannelrefreshevent.cpp \
-    collatenonoverlappingsegments.cpp \
-    mapgenerate.cpp \
-    merge.cpp \
-    groupby.cpp
+    collatenonoverlappingsegments.cpp
 
 
 HEADERS += \
@@ -77,10 +74,7 @@ HEADERS += \
     showmultiplelinesononeline.h \
     channel/collatechannel.h \
     channel/collatechannelrefreshevent.h \
-    collatenonoverlappingsegments.h \
-    mapgenerate.h \
-    merge.h \
-    groupby.h
+    collatenonoverlappingsegments.h
 
 unix {
     target.path = /usr/lib
