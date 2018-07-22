@@ -200,6 +200,12 @@ public:
 
         auto groupby = makeGroupBy<int, GetKeyFunctor>(merge.begin(), merge.end());
 
+        qInfo() << "bdChosen" << std::distance(bdChosen.begin(), bdChosen.end());
+        qInfo() << "bdOccupied" << std::distance(bdOccupied.begin(), bdOccupied.end());
+        qInfo() << "merge" << std::distance(merge.begin(), merge.end());
+        qInfo() << "groupby" << std::distance(groupby.begin(), groupby.end());
+
+
         std::vector<Segment> segments;
 
         BrokenDown currentChosen;
@@ -226,6 +232,9 @@ public:
                 *target = &bd;
             }
             Q_ASSERT(startedChosen != nullptr || endedChosen != nullptr || startedOccupied != nullptr || endedOccupied != nullptr);
+
+            qInfo() << "Position: " << group.key << (startedChosen != nullptr) << (endedChosen != nullptr) << (startedOccupied != nullptr) << (endedOccupied != nullptr);
+
 
             auto emitOccupied = [&]() {
                 segments.push_back({ occupiedSince, group.key - occupiedSince, Segment::Type::Conflict, T() });

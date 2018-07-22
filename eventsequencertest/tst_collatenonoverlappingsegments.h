@@ -8,8 +8,18 @@ using namespace testing;
 inline void PrintTo(const CollateNonOverlappingSegments<int>::Segment& s,
                     ::std::ostream *os)
 {
+    std::string typeName;
+    switch (s.type) {
+    case decltype(s.type)::Chosen:
+        typeName = "chosen";
+        break;
+    case decltype(s.type)::Conflict:
+        typeName = "conflict";
+        break;
+    }
+
     *os << "(Segment " << s.start << " " << s.length << " " <<
-           static_cast<int>(s.type) << ")";
+           typeName << ")";
 }
 
 MATCHER_P2(IsRangeN, start, length, "") {
