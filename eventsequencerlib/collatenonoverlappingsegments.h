@@ -37,7 +37,7 @@ public:
         int start;
         int length;
         enum class Type {
-            //Empty, // TODO
+            Empty,
             Chosen,
             Conflict
         } type;
@@ -53,7 +53,7 @@ private:
 
 public:
 
-    std::vector<Segment> segments()
+    std::vector<Segment> segments(bool wantEmpties=false)
     {
         class Time {
         public:

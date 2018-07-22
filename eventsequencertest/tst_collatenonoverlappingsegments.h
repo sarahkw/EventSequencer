@@ -16,6 +16,9 @@ inline void PrintTo(const CollateNonOverlappingSegments<int>::Segment& s,
     case decltype(s.type)::Conflict:
         typeName = "conflict";
         break;
+    case decltype(s.type)::Empty:
+        typeName = "empty";
+        break;
     }
 
     *os << "(Segment " << s.start << " " << s.length << " " <<
@@ -28,6 +31,10 @@ MATCHER_P2(IsRangeN, start, length, "") {
 
 MATCHER_P2(IsRangeY, start, length, "") {
     return arg.start == start && arg.length == length && arg.type == CollateNonOverlappingSegments<int>::Segment::Type::Conflict;
+}
+
+MATCHER_P2(IsRangeE, start, length, "") {
+    return arg.start == start && arg.length == length && arg.type == CollateNonOverlappingSegments<int>::Segment::Type::Empty;
 }
 
 TEST(CollateNonOverlappingSegments, NonOverlapping)
@@ -129,6 +136,7 @@ TEST(CollateNonOverlappingSegments, ExpandEmptySpace)
 
 TEST(CollateNonOverlappingSegments, ObservedProblem)
 {
+    // It turned out to be a mistake doing iteration. Test isn't significant.
     CollateNonOverlappingSegments<int> cnos;
     cnos.mergeSegment(26, 31 - 26);
     cnos.mergeSegment(17, 22 - 17);
@@ -139,4 +147,17 @@ TEST(CollateNonOverlappingSegments, ObservedProblem)
                 ElementsAre(IsRangeN(17, 22 - 17),
                             IsRangeY(22, 25 - 22),
                             IsRangeN(26, 31 - 26)));
+}
+
+TEST(CollateNonOverlappingSegments, EmptyInBetween)
+{
+    CollateNonOverlappingSegments<int> cnos;
+    cnos.mergeSegment(0, 10 - 0);
+    cnos.mergeSegment(20, 30 - 20);
+
+
+    ASSERT_THAT(cnos.segments(true),
+                ElementsAre(IsRangeN(0, 10 - 0),
+                            IsRangeE(10, 20 - 10),
+                            IsRangeN(20, 30 - 30)));
 }
