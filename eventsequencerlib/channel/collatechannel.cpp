@@ -159,10 +159,18 @@ void CollateChannel::recalculate()
     CollateNonOverlappingSegments<int> cnos(cnos.BoundaryMode::HasBounds,
                                             d_.startFrame(),
                                             d_.endFrame() - d_.startFrame());
-    for (int i = channelTo() - 1; i >= channelFrom(); --i) {
+    {
+        std::map<int, std::vector<const Strip*>> build;
         for (const Strip* s : d_.strips()) {
-            if (s->channel() != i) continue;
-            cnos.mergeSegment(s->startFrame(), s->length());
+            if (s->channel() >= channelFrom() && s->channel() < channelTo()) {
+                build[s->channel()].push_back(s);
+            }
+        }
+        for (auto iter = build.crbegin(); iter != build.crend(); ++iter) {
+            // Higher channels take more precedence.
+            for (const Strip* s : iter->second) {
+                cnos.mergeSegment(s->startFrame(), s->length());
+            }
         }
     }
 
