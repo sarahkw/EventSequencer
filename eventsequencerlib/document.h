@@ -95,8 +95,8 @@ class Document : public QObject
     Q_PROPERTY(QUrl currentUrl READ currentUrl WRITE setCurrentUrl NOTIFY currentUrlChanged)
     Q_PROPERTY(QString currentFileName MEMBER currentFileName_ NOTIFY currentFileNameChanged)
 
-    QString saveGuid_;
-    QString forkSaveGuid_;
+    QString saveUuid_;
+    QString forkSaveUuid_;
 
 public:
 
