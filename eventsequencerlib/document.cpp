@@ -8,7 +8,8 @@
 
 #include <QDebug>
 #include <QFile>
-#include <QUuid>
+#include <QCryptographicHash>
+
 
 /******************************************************************************/
 
@@ -204,9 +205,6 @@ Document::Document(QObject *parent)
 
 void Document::toPb(pb::Document &pb) const
 {
-    pb.set_saveuuid(saveUuid_.toStdString());
-    pb.set_forksaveuuid(forkSaveUuid_.toStdString());
-
     for (const Strip* s : strips_) {
         s->toPb(*pb.add_strips());
     }
@@ -222,9 +220,6 @@ void Document::toPb(pb::Document &pb) const
 
 void Document::fromPb(const pb::Document &pb)
 {
-    saveUuid_ = QString::fromStdString(pb.saveuuid());
-    forkSaveUuid_ = QString::fromStdString(pb.forksaveuuid());
-
     // TODO Delete all current strips first!
     // TODO We do not want to create a single strip each time so don't call createStrip(),
     //      because we don't want to spam the GUI with signals.
@@ -378,17 +373,24 @@ constexpr char FileHeader::MAGIC[];
 
 void Document::saveInternal(const QUrl &url, bool markAsFork)
 {
-    if (markAsFork) {
-        forkSaveUuid_ = saveUuid_;
-    }
-    // TODO Don't know if worth implementing, but perhaps make actually a cksum
-    //      so that it only changes when the contents change.
-    saveUuid_ = QUuid::createUuid().toString();
-
     // TODO Error handling! Need to do more than just write to stdout.
 
     pb::File pbf;
     toPb(*pbf.mutable_document());
+
+    {
+        QByteArray serializedDocument(pbf.document().ByteSize(), Qt::Initialization::Uninitialized);
+        pbf.document().SerializeWithCachedSizesToArray(reinterpret_cast<::google::protobuf::uint8*>(serializedDocument.data()));
+        QCryptographicHash hasher(QCryptographicHash::Sha1);
+        hasher.addData(serializedDocument);
+        pbf.set_checksum(hasher.result().toHex().toStdString());
+    }
+    if (markAsFork) {
+        file_forkedFromChecksum_ = QString::fromStdString(pbf.checksum());
+    }
+    pbf.set_forkedfromchecksum(file_forkedFromChecksum_.toStdString());
+    qInfo() << pbf.DebugString().data(); // XXX
+
 
     QFile file(url.toLocalFile());
     if (!file.open(QIODevice::WriteOnly)) {
@@ -445,6 +447,9 @@ void Document::load(const QUrl &url)
     }
 
     file.close();
+
+    file_forkedFromChecksum_ = QString::fromStdString(pbf.forkedfromchecksum());
+
     fromPb(pbf.document());
 
     setCurrentUrl(url);
