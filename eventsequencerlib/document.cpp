@@ -427,28 +427,16 @@ void Document::load(const QUrl &url)
     pb::File pbf;
     FileHeader fh;
     if (!fh.readFromFile(file)) {
-        // TODO Remove this compatibility mode once we have no more old-format
-        //      files.
-        qWarning() << "Deprecated file format!";
-
-        if (!file.seek(0)) {
-            qWarning() << "Cannot reset";
-            return;
-        }
-
-        if (!pbf.mutable_document()->ParseFromFileDescriptor(file.handle())) {
-            qWarning() << "Cannot parse";
-            return;
-        }
-    } else {
-        if (fh.version_ != 1) {
-            qWarning() << "Unknown version" << fh.version_;
-            return;
-        }
-        if (!pbf.ParseFromFileDescriptor(file.handle())) {
-            qWarning() << "Cannot parse";
-            return;
-        }
+        qWarning() << "Invalid file";
+        return;
+    }
+    if (fh.version_ != 1) {
+        qWarning() << "Unknown version" << fh.version_;
+        return;
+    }
+    if (!pbf.ParseFromFileDescriptor(file.handle())) {
+        qWarning() << "Cannot parse";
+        return;
     }
 
     file.close();
