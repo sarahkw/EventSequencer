@@ -340,7 +340,7 @@ void Document::save(const QUrl& url)
     saveInternal(url, false);
 }
 
-void Document::saveAs(const QUrl &url)
+void Document::forkAs(const QUrl &url)
 {
     saveInternal(url, true);
 }

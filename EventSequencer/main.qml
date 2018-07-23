@@ -45,6 +45,13 @@ ApplicationWindow {
                 onTriggered: saveFileDialog.open()
             }
             Action {
+                text: "Fork As"
+                onTriggered: {
+                    saveFileDialog.isFork = true
+                    saveFileDialog.open()
+                }
+            }
+            Action {
                 text: "Quit"
                 onTriggered: Qt.quit()
             }
@@ -403,7 +410,16 @@ ApplicationWindow {
         fileMode: Qlp.FileDialog.SaveFile
         nameFilters: ["Event sequencer files (*.evseq)", "All files (*)"]
         defaultSuffix: "evseq"
-        onAccepted: document.saveAs(file)
+
+        property bool isFork: false
+        onAccepted: {
+            if (isFork) {
+                document.forkAs(file)
+            } else {
+                document.save(file)
+            }
+            isFork = false
+        }
     }
     Qlp.FileDialog {
         id: openFileDialog

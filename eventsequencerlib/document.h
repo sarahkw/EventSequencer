@@ -113,7 +113,7 @@ public:
 
     Q_INVOKABLE void reset();
     Q_INVOKABLE void save(const QUrl& url);
-    Q_INVOKABLE void saveAs(const QUrl& url);
+    Q_INVOKABLE void forkAs(const QUrl& url);
 private:
     void saveInternal(const QUrl& url, bool markAsFork);
 public:
