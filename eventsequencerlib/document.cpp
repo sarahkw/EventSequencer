@@ -430,6 +430,12 @@ void Document::load(const QUrl &url)
         // TODO Remove this compatibility mode once we have no more old-format
         //      files.
         qWarning() << "Deprecated file format!";
+
+        if (!file.seek(0)) {
+            qWarning() << "Cannot reset";
+            return;
+        }
+
         if (!pbf.mutable_document()->ParseFromFileDescriptor(file.handle())) {
             qWarning() << "Cannot parse";
             return;
