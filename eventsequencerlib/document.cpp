@@ -350,6 +350,32 @@ void Document::saveAs(const QUrl &url)
     saveInternal(url, true);
 }
 
+namespace {
+struct FileHeader {
+    static constexpr char MAGIC[] = "EVSEQ";
+    static constexpr int MAGIC_LEN = 5;
+    static constexpr int VERSION_LEN = 1;
+    static constexpr int HEADER_LEN = MAGIC_LEN + VERSION_LEN;
+
+    unsigned char version_ = 0;
+
+    bool readFromFile(QIODevice& dev)
+    {
+        QByteArray data = dev.read(HEADER_LEN);
+        if (data.size() != HEADER_LEN) return false;
+        if (!data.startsWith(MAGIC)) return false;
+        version_ = data.at(MAGIC_LEN);
+        return true;
+    }
+    bool writeToFile(QIODevice& dev)
+    {
+        return dev.write(MAGIC, MAGIC_LEN) == MAGIC_LEN &&
+               dev.write(reinterpret_cast<const char*>(&version_), VERSION_LEN) == VERSION_LEN;
+    }
+};
+constexpr char FileHeader::MAGIC[];
+}
+
 void Document::saveInternal(const QUrl &url, bool markAsFork)
 {
     if (markAsFork) {
@@ -361,15 +387,22 @@ void Document::saveInternal(const QUrl &url, bool markAsFork)
 
     // TODO Error handling! Need to do more than just write to stdout.
 
-    pb::Document doc;
-    toPb(doc);
+    pb::File pbf;
+    toPb(*pbf.mutable_document());
 
     QFile file(url.toLocalFile());
     if (!file.open(QIODevice::WriteOnly)) {
         qWarning() << "Cannot open" << url;
         return;
     }
-    if (!doc.SerializeToFileDescriptor(file.handle())) {
+    FileHeader fh;
+    fh.version_ = 1;
+    if (!fh.writeToFile(file)) {
+        qWarning() << "Cannot write file header";
+        return;
+    }
+    file.flush(); // XXX Need flush before protobuf writes to handle directly?
+    if (!pbf.SerializeToFileDescriptor(file.handle())) {
         qWarning() << "Cannot serialize";
         return;
     }
@@ -384,17 +417,35 @@ void Document::load(const QUrl &url)
 
     QString tmpFileName = url.toLocalFile();
     QFile file(tmpFileName);
-    if (!file.open(QIODevice::ReadOnly)) {
+    // TODO Apparantly Unbuffered doesn't work for QFile on Windows. This will likely prevent
+    //      file open from working on Win!
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Unbuffered)) {
         qWarning() << "Cannot open";
         return;
     }
-    pb::Document doc;
-    if (!doc.ParseFromFileDescriptor(file.handle())) {
-        qWarning() << "Cannot parse";
-        return;
+    pb::File pbf;
+    FileHeader fh;
+    if (!fh.readFromFile(file)) {
+        // TODO Remove this compatibility mode once we have no more old-format
+        //      files.
+        qWarning() << "Deprecated file format!";
+        if (!pbf.mutable_document()->ParseFromFileDescriptor(file.handle())) {
+            qWarning() << "Cannot parse";
+            return;
+        }
+    } else {
+        if (fh.version_ != 1) {
+            qWarning() << "Unknown version" << fh.version_;
+            return;
+        }
+        if (!pbf.ParseFromFileDescriptor(file.handle())) {
+            qWarning() << "Cannot parse";
+            return;
+        }
     }
+
     file.close();
-    fromPb(doc);
+    fromPb(pbf.document());
 
     setCurrentUrl(url);
 }

@@ -69,6 +69,9 @@ const ::google::protobuf::Descriptor* Document_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Document_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Document_ChannelsEntry_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* File_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  File_reflection_ = NULL;
 
 }  // namespace
 
@@ -293,6 +296,23 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, _is_default_instance_));
   Document_ChannelsEntry_descriptor_ = Document_descriptor_->nested_type(0);
+  File_descriptor_ = file->message_type(3);
+  static const int File_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(File, document_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(File, checksum_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(File, forkedfromchecksum_),
+  };
+  File_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      File_descriptor_,
+      File::default_instance_,
+      File_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(File),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(File, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(File, _is_default_instance_));
 }
 
 namespace {
@@ -341,6 +361,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
             ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
             0>::CreateDefaultInstance(
                 Document_ChannelsEntry_descriptor_));
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      File_descriptor_, &File::default_instance());
 }
 
 }  // namespace
@@ -373,6 +395,8 @@ void protobuf_ShutdownFile_eventsequencer_2eproto() {
   delete ChannelData_Collate_reflection_;
   delete Document::default_instance_;
   delete Document_reflection_;
+  delete File::default_instance_;
+  delete File_reflection_;
 }
 
 void protobuf_AddDesc_eventsequencer_2eproto() GOOGLE_ATTRIBUTE_COLD;
@@ -407,7 +431,10 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
     "hannels\030\003 \003(\0132\032.pb.Document.ChannelsEntr"
     "y\022\020\n\010saveUuid\030\006 \001(\t\022\024\n\014forkSaveUuid\030\007 \001("
     "\t\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022\036\n\005value"
-    "\030\002 \001(\0132\017.pb.ChannelData:\0028\001b\006proto3", 995);
+    "\030\002 \001(\0132\017.pb.ChannelData:\0028\001\"T\n\004File\022\036\n\010d"
+    "ocument\030\001 \001(\0132\014.pb.Document\022\020\n\010checksum\030"
+    "\002 \001(\t\022\032\n\022forkedFromChecksum\030\003 \001(\tb\006proto"
+    "3", 1081);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "eventsequencer.proto", &protobuf_RegisterTypes);
   Strip::default_instance_ = new Strip();
@@ -424,6 +451,7 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
   ChannelData_Label::default_instance_ = new ChannelData_Label();
   ChannelData_Collate::default_instance_ = new ChannelData_Collate();
   Document::default_instance_ = new Document();
+  File::default_instance_ = new File();
   Strip::default_instance_->InitAsDefaultInstance();
   Strip_BadJs::default_instance_->InitAsDefaultInstance();
   Strip_BadAudio::default_instance_->InitAsDefaultInstance();
@@ -437,6 +465,7 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
   ChannelData_Label::default_instance_->InitAsDefaultInstance();
   ChannelData_Collate::default_instance_->InitAsDefaultInstance();
   Document::default_instance_->InitAsDefaultInstance();
+  File::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_eventsequencer_2eproto);
 }
 
@@ -5128,6 +5157,469 @@ void Document::clear_forksaveuuid() {
   }
   forksaveuuid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), forksaveuuid);
   // @@protoc_insertion_point(field_set_allocated:pb.Document.forkSaveUuid)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int File::kDocumentFieldNumber;
+const int File::kChecksumFieldNumber;
+const int File::kForkedFromChecksumFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+File::File()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.File)
+}
+
+void File::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+  document_ = const_cast< ::pb::Document*>(&::pb::Document::default_instance());
+}
+
+File::File(const File& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:pb.File)
+}
+
+void File::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  document_ = NULL;
+  checksum_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  forkedfromchecksum_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+File::~File() {
+  // @@protoc_insertion_point(destructor:pb.File)
+  SharedDtor();
+}
+
+void File::SharedDtor() {
+  checksum_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  forkedfromchecksum_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != default_instance_) {
+    delete document_;
+  }
+}
+
+void File::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* File::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return File_descriptor_;
+}
+
+const File& File::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_eventsequencer_2eproto();
+  return *default_instance_;
+}
+
+File* File::default_instance_ = NULL;
+
+File* File::New(::google::protobuf::Arena* arena) const {
+  File* n = new File;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void File::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.File)
+  if (GetArenaNoVirtual() == NULL && document_ != NULL) delete document_;
+  document_ = NULL;
+  checksum_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  forkedfromchecksum_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool File::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.File)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional .pb.Document document = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_document()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_checksum;
+        break;
+      }
+
+      // optional string checksum = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_checksum:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_checksum()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->checksum().data(), this->checksum().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pb.File.checksum"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_forkedFromChecksum;
+        break;
+      }
+
+      // optional string forkedFromChecksum = 3;
+      case 3: {
+        if (tag == 26) {
+         parse_forkedFromChecksum:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_forkedfromchecksum()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->forkedfromchecksum().data(), this->forkedfromchecksum().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pb.File.forkedFromChecksum"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.File)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.File)
+  return false;
+#undef DO_
+}
+
+void File::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.File)
+  // optional .pb.Document document = 1;
+  if (this->has_document()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->document_, output);
+  }
+
+  // optional string checksum = 2;
+  if (this->checksum().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->checksum().data(), this->checksum().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.File.checksum");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->checksum(), output);
+  }
+
+  // optional string forkedFromChecksum = 3;
+  if (this->forkedfromchecksum().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->forkedfromchecksum().data(), this->forkedfromchecksum().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.File.forkedFromChecksum");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->forkedfromchecksum(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:pb.File)
+}
+
+::google::protobuf::uint8* File::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:pb.File)
+  // optional .pb.Document document = 1;
+  if (this->has_document()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1, *this->document_, false, target);
+  }
+
+  // optional string checksum = 2;
+  if (this->checksum().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->checksum().data(), this->checksum().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.File.checksum");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->checksum(), target);
+  }
+
+  // optional string forkedFromChecksum = 3;
+  if (this->forkedfromchecksum().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->forkedfromchecksum().data(), this->forkedfromchecksum().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.File.forkedFromChecksum");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->forkedfromchecksum(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:pb.File)
+  return target;
+}
+
+int File::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.File)
+  int total_size = 0;
+
+  // optional .pb.Document document = 1;
+  if (this->has_document()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->document_);
+  }
+
+  // optional string checksum = 2;
+  if (this->checksum().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->checksum());
+  }
+
+  // optional string forkedFromChecksum = 3;
+  if (this->forkedfromchecksum().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->forkedfromchecksum());
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void File::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.File)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  const File* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const File>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.File)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.File)
+    MergeFrom(*source);
+  }
+}
+
+void File::MergeFrom(const File& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.File)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  if (from.has_document()) {
+    mutable_document()->::pb::Document::MergeFrom(from.document());
+  }
+  if (from.checksum().size() > 0) {
+
+    checksum_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.checksum_);
+  }
+  if (from.forkedfromchecksum().size() > 0) {
+
+    forkedfromchecksum_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.forkedfromchecksum_);
+  }
+}
+
+void File::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.File)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void File::CopyFrom(const File& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.File)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool File::IsInitialized() const {
+
+  return true;
+}
+
+void File::Swap(File* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void File::InternalSwap(File* other) {
+  std::swap(document_, other->document_);
+  checksum_.Swap(&other->checksum_);
+  forkedfromchecksum_.Swap(&other->forkedfromchecksum_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata File::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = File_descriptor_;
+  metadata.reflection = File_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// File
+
+// optional .pb.Document document = 1;
+bool File::has_document() const {
+  return !_is_default_instance_ && document_ != NULL;
+}
+void File::clear_document() {
+  if (GetArenaNoVirtual() == NULL && document_ != NULL) delete document_;
+  document_ = NULL;
+}
+const ::pb::Document& File::document() const {
+  // @@protoc_insertion_point(field_get:pb.File.document)
+  return document_ != NULL ? *document_ : *default_instance_->document_;
+}
+::pb::Document* File::mutable_document() {
+  
+  if (document_ == NULL) {
+    document_ = new ::pb::Document;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.File.document)
+  return document_;
+}
+::pb::Document* File::release_document() {
+  // @@protoc_insertion_point(field_release:pb.File.document)
+  
+  ::pb::Document* temp = document_;
+  document_ = NULL;
+  return temp;
+}
+void File::set_allocated_document(::pb::Document* document) {
+  delete document_;
+  document_ = document;
+  if (document) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.File.document)
+}
+
+// optional string checksum = 2;
+void File::clear_checksum() {
+  checksum_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& File::checksum() const {
+  // @@protoc_insertion_point(field_get:pb.File.checksum)
+  return checksum_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void File::set_checksum(const ::std::string& value) {
+  
+  checksum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.File.checksum)
+}
+ void File::set_checksum(const char* value) {
+  
+  checksum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.File.checksum)
+}
+ void File::set_checksum(const char* value, size_t size) {
+  
+  checksum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.File.checksum)
+}
+ ::std::string* File::mutable_checksum() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.File.checksum)
+  return checksum_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* File::release_checksum() {
+  // @@protoc_insertion_point(field_release:pb.File.checksum)
+  
+  return checksum_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void File::set_allocated_checksum(::std::string* checksum) {
+  if (checksum != NULL) {
+    
+  } else {
+    
+  }
+  checksum_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), checksum);
+  // @@protoc_insertion_point(field_set_allocated:pb.File.checksum)
+}
+
+// optional string forkedFromChecksum = 3;
+void File::clear_forkedfromchecksum() {
+  forkedfromchecksum_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& File::forkedfromchecksum() const {
+  // @@protoc_insertion_point(field_get:pb.File.forkedFromChecksum)
+  return forkedfromchecksum_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void File::set_forkedfromchecksum(const ::std::string& value) {
+  
+  forkedfromchecksum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.File.forkedFromChecksum)
+}
+ void File::set_forkedfromchecksum(const char* value) {
+  
+  forkedfromchecksum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.File.forkedFromChecksum)
+}
+ void File::set_forkedfromchecksum(const char* value, size_t size) {
+  
+  forkedfromchecksum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.File.forkedFromChecksum)
+}
+ ::std::string* File::mutable_forkedfromchecksum() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.File.forkedFromChecksum)
+  return forkedfromchecksum_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* File::release_forkedfromchecksum() {
+  // @@protoc_insertion_point(field_release:pb.File.forkedFromChecksum)
+  
+  return forkedfromchecksum_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void File::set_allocated_forkedfromchecksum(::std::string* forkedfromchecksum) {
+  if (forkedfromchecksum != NULL) {
+    
+  } else {
+    
+  }
+  forkedfromchecksum_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), forkedfromchecksum);
+  // @@protoc_insertion_point(field_set_allocated:pb.File.forkedFromChecksum)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

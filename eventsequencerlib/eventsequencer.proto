@@ -60,3 +60,9 @@ message Document {
   string saveUuid = 6;
   string forkSaveUuid = 7;
 }
+
+message File {
+  Document document = 1;
+  string checksum = 2;
+  string forkedFromChecksum = 3;
+}

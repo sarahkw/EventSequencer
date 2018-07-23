@@ -46,6 +46,7 @@ class ChannelData_Collate;
 class ChannelData_Label;
 class ChannelData_Text;
 class Document;
+class File;
 class Strip;
 class Strip_BadAudio;
 class Strip_BadJs;
@@ -1339,6 +1340,115 @@ class Document : public ::google::protobuf::Message /* @@protoc_insertion_point(
   void InitAsDefaultInstance();
   static Document* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class File : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.File) */ {
+ public:
+  File();
+  virtual ~File();
+
+  File(const File& from);
+
+  inline File& operator=(const File& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const File& default_instance();
+
+  void Swap(File* other);
+
+  // implements Message ----------------------------------------------
+
+  inline File* New() const { return New(NULL); }
+
+  File* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const File& from);
+  void MergeFrom(const File& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(File* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .pb.Document document = 1;
+  bool has_document() const;
+  void clear_document();
+  static const int kDocumentFieldNumber = 1;
+  const ::pb::Document& document() const;
+  ::pb::Document* mutable_document();
+  ::pb::Document* release_document();
+  void set_allocated_document(::pb::Document* document);
+
+  // optional string checksum = 2;
+  void clear_checksum();
+  static const int kChecksumFieldNumber = 2;
+  const ::std::string& checksum() const;
+  void set_checksum(const ::std::string& value);
+  void set_checksum(const char* value);
+  void set_checksum(const char* value, size_t size);
+  ::std::string* mutable_checksum();
+  ::std::string* release_checksum();
+  void set_allocated_checksum(::std::string* checksum);
+
+  // optional string forkedFromChecksum = 3;
+  void clear_forkedfromchecksum();
+  static const int kForkedFromChecksumFieldNumber = 3;
+  const ::std::string& forkedfromchecksum() const;
+  void set_forkedfromchecksum(const ::std::string& value);
+  void set_forkedfromchecksum(const char* value);
+  void set_forkedfromchecksum(const char* value, size_t size);
+  ::std::string* mutable_forkedfromchecksum();
+  ::std::string* release_forkedfromchecksum();
+  void set_allocated_forkedfromchecksum(::std::string* forkedfromchecksum);
+
+  // @@protoc_insertion_point(class_scope:pb.File)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  ::pb::Document* document_;
+  ::google::protobuf::internal::ArenaStringPtr checksum_;
+  ::google::protobuf::internal::ArenaStringPtr forkedfromchecksum_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static File* default_instance_;
+};
 // ===================================================================
 
 
@@ -2312,7 +2422,139 @@ inline void Document::set_allocated_forksaveuuid(::std::string* forksaveuuid) {
   // @@protoc_insertion_point(field_set_allocated:pb.Document.forkSaveUuid)
 }
 
+// -------------------------------------------------------------------
+
+// File
+
+// optional .pb.Document document = 1;
+inline bool File::has_document() const {
+  return !_is_default_instance_ && document_ != NULL;
+}
+inline void File::clear_document() {
+  if (GetArenaNoVirtual() == NULL && document_ != NULL) delete document_;
+  document_ = NULL;
+}
+inline const ::pb::Document& File::document() const {
+  // @@protoc_insertion_point(field_get:pb.File.document)
+  return document_ != NULL ? *document_ : *default_instance_->document_;
+}
+inline ::pb::Document* File::mutable_document() {
+  
+  if (document_ == NULL) {
+    document_ = new ::pb::Document;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.File.document)
+  return document_;
+}
+inline ::pb::Document* File::release_document() {
+  // @@protoc_insertion_point(field_release:pb.File.document)
+  
+  ::pb::Document* temp = document_;
+  document_ = NULL;
+  return temp;
+}
+inline void File::set_allocated_document(::pb::Document* document) {
+  delete document_;
+  document_ = document;
+  if (document) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.File.document)
+}
+
+// optional string checksum = 2;
+inline void File::clear_checksum() {
+  checksum_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& File::checksum() const {
+  // @@protoc_insertion_point(field_get:pb.File.checksum)
+  return checksum_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_checksum(const ::std::string& value) {
+  
+  checksum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.File.checksum)
+}
+inline void File::set_checksum(const char* value) {
+  
+  checksum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.File.checksum)
+}
+inline void File::set_checksum(const char* value, size_t size) {
+  
+  checksum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.File.checksum)
+}
+inline ::std::string* File::mutable_checksum() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.File.checksum)
+  return checksum_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* File::release_checksum() {
+  // @@protoc_insertion_point(field_release:pb.File.checksum)
+  
+  return checksum_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_allocated_checksum(::std::string* checksum) {
+  if (checksum != NULL) {
+    
+  } else {
+    
+  }
+  checksum_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), checksum);
+  // @@protoc_insertion_point(field_set_allocated:pb.File.checksum)
+}
+
+// optional string forkedFromChecksum = 3;
+inline void File::clear_forkedfromchecksum() {
+  forkedfromchecksum_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& File::forkedfromchecksum() const {
+  // @@protoc_insertion_point(field_get:pb.File.forkedFromChecksum)
+  return forkedfromchecksum_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_forkedfromchecksum(const ::std::string& value) {
+  
+  forkedfromchecksum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.File.forkedFromChecksum)
+}
+inline void File::set_forkedfromchecksum(const char* value) {
+  
+  forkedfromchecksum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.File.forkedFromChecksum)
+}
+inline void File::set_forkedfromchecksum(const char* value, size_t size) {
+  
+  forkedfromchecksum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.File.forkedFromChecksum)
+}
+inline ::std::string* File::mutable_forkedfromchecksum() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.File.forkedFromChecksum)
+  return forkedfromchecksum_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* File::release_forkedfromchecksum() {
+  // @@protoc_insertion_point(field_release:pb.File.forkedFromChecksum)
+  
+  return forkedfromchecksum_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_allocated_forkedfromchecksum(::std::string* forkedfromchecksum) {
+  if (forkedfromchecksum != NULL) {
+    
+  } else {
+    
+  }
+  forkedfromchecksum_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), forkedfromchecksum);
+  // @@protoc_insertion_point(field_set_allocated:pb.File.forkedFromChecksum)
+}
+
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
