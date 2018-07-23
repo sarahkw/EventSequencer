@@ -272,12 +272,14 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Collate, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Collate, _is_default_instance_));
   Document_descriptor_ = file->message_type(2);
-  static const int Document_offsets_[5] = {
+  static const int Document_offsets_[7] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, strips_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, framespersecond_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, startframe_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, endframe_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, channels_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, saveguid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, forksaveguid_),
   };
   Document_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -399,12 +401,13 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
     "\010BadClock\032\007\n\005BadJs\032\035\n\004Text\022\017\n\007content\030\002 "
     "\001(\tJ\004\010\001\020\002\032\n\n\010BadAudio\032\007\n\005Label\0321\n\007Collat"
     "e\022\023\n\013channelFrom\030\n \001(\005\022\021\n\tchannelTo\030\013 \001("
-    "\005B\t\n\007channel\"\324\001\n\010Document\022\031\n\006strips\030\001 \003("
+    "\005B\t\n\007channel\"\374\001\n\010Document\022\031\n\006strips\030\001 \003("
     "\0132\t.pb.Strip\022\027\n\017framesPerSecond\030\002 \001(\005\022\022\n"
     "\nstartFrame\030\004 \001(\005\022\020\n\010endFrame\030\005 \001(\005\022,\n\010c"
     "hannels\030\003 \003(\0132\032.pb.Document.ChannelsEntr"
-    "y\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022\036\n\005value"
-    "\030\002 \001(\0132\017.pb.ChannelData:\0028\001b\006proto3", 955);
+    "y\022\020\n\010saveGuid\030\006 \001(\t\022\024\n\014forkSaveGuid\030\007 \001("
+    "\t\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022\036\n\005value"
+    "\030\002 \001(\0132\017.pb.ChannelData:\0028\001b\006proto3", 995);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "eventsequencer.proto", &protobuf_RegisterTypes);
   Strip::default_instance_ = new Strip();
@@ -4361,6 +4364,8 @@ const int Document::kFramesPerSecondFieldNumber;
 const int Document::kStartFrameFieldNumber;
 const int Document::kEndFrameFieldNumber;
 const int Document::kChannelsFieldNumber;
+const int Document::kSaveGuidFieldNumber;
+const int Document::kForkSaveGuidFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Document::Document()
@@ -4383,6 +4388,7 @@ Document::Document(const Document& from)
 
 void Document::SharedCtor() {
     _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   framespersecond_ = 0;
   startframe_ = 0;
@@ -4391,6 +4397,8 @@ void Document::SharedCtor() {
       protobuf_AssignDescriptorsOnce);
   channels_.SetEntryDescriptor(
       &::pb::Document_ChannelsEntry_descriptor_);
+  saveguid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  forksaveguid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 Document::~Document() {
@@ -4399,6 +4407,8 @@ Document::~Document() {
 }
 
 void Document::SharedDtor() {
+  saveguid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  forksaveguid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
   }
 }
@@ -4448,6 +4458,8 @@ void Document::Clear() {
 
   ZR_(framespersecond_, startframe_);
   endframe_ = 0;
+  saveguid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  forksaveguid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -4546,6 +4558,40 @@ bool Document::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(50)) goto parse_saveGuid;
+        break;
+      }
+
+      // optional string saveGuid = 6;
+      case 6: {
+        if (tag == 50) {
+         parse_saveGuid:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_saveguid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->saveguid().data(), this->saveguid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pb.Document.saveGuid"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(58)) goto parse_forkSaveGuid;
+        break;
+      }
+
+      // optional string forkSaveGuid = 7;
+      case 7: {
+        if (tag == 58) {
+         parse_forkSaveGuid:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_forksaveguid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->forksaveguid().data(), this->forksaveguid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pb.Document.forkSaveGuid"));
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -4634,6 +4680,26 @@ void Document::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->endframe(), output);
   }
 
+  // optional string saveGuid = 6;
+  if (this->saveguid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->saveguid().data(), this->saveguid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.Document.saveGuid");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      6, this->saveguid(), output);
+  }
+
+  // optional string forkSaveGuid = 7;
+  if (this->forksaveguid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->forksaveguid().data(), this->forksaveguid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.Document.forkSaveGuid");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      7, this->forksaveguid(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:pb.Document)
 }
 
@@ -4705,6 +4771,28 @@ void Document::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->endframe(), target);
   }
 
+  // optional string saveGuid = 6;
+  if (this->saveguid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->saveguid().data(), this->saveguid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.Document.saveGuid");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->saveguid(), target);
+  }
+
+  // optional string forkSaveGuid = 7;
+  if (this->forksaveguid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->forksaveguid().data(), this->forksaveguid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.Document.forkSaveGuid");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        7, this->forksaveguid(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:pb.Document)
   return target;
 }
@@ -4732,6 +4820,20 @@ int Document::ByteSize() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->endframe());
+  }
+
+  // optional string saveGuid = 6;
+  if (this->saveguid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->saveguid());
+  }
+
+  // optional string forkSaveGuid = 7;
+  if (this->forksaveguid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->forksaveguid());
   }
 
   // repeated .pb.Strip strips = 1;
@@ -4794,6 +4896,14 @@ void Document::MergeFrom(const Document& from) {
   if (from.endframe() != 0) {
     set_endframe(from.endframe());
   }
+  if (from.saveguid().size() > 0) {
+
+    saveguid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.saveguid_);
+  }
+  if (from.forksaveguid().size() > 0) {
+
+    forksaveguid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.forksaveguid_);
+  }
 }
 
 void Document::CopyFrom(const ::google::protobuf::Message& from) {
@@ -4825,6 +4935,8 @@ void Document::InternalSwap(Document* other) {
   std::swap(startframe_, other->startframe_);
   std::swap(endframe_, other->endframe_);
   channels_.Swap(&other->channels_);
+  saveguid_.Swap(&other->saveguid_);
+  forksaveguid_.Swap(&other->forksaveguid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -4928,6 +5040,94 @@ Document::channels() const {
 Document::mutable_channels() {
   // @@protoc_insertion_point(field_mutable_map:pb.Document.channels)
   return channels_.MutableMap();
+}
+
+// optional string saveGuid = 6;
+void Document::clear_saveguid() {
+  saveguid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& Document::saveguid() const {
+  // @@protoc_insertion_point(field_get:pb.Document.saveGuid)
+  return saveguid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void Document::set_saveguid(const ::std::string& value) {
+  
+  saveguid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.Document.saveGuid)
+}
+ void Document::set_saveguid(const char* value) {
+  
+  saveguid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.Document.saveGuid)
+}
+ void Document::set_saveguid(const char* value, size_t size) {
+  
+  saveguid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.Document.saveGuid)
+}
+ ::std::string* Document::mutable_saveguid() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.Document.saveGuid)
+  return saveguid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* Document::release_saveguid() {
+  // @@protoc_insertion_point(field_release:pb.Document.saveGuid)
+  
+  return saveguid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void Document::set_allocated_saveguid(::std::string* saveguid) {
+  if (saveguid != NULL) {
+    
+  } else {
+    
+  }
+  saveguid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), saveguid);
+  // @@protoc_insertion_point(field_set_allocated:pb.Document.saveGuid)
+}
+
+// optional string forkSaveGuid = 7;
+void Document::clear_forksaveguid() {
+  forksaveguid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& Document::forksaveguid() const {
+  // @@protoc_insertion_point(field_get:pb.Document.forkSaveGuid)
+  return forksaveguid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void Document::set_forksaveguid(const ::std::string& value) {
+  
+  forksaveguid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.Document.forkSaveGuid)
+}
+ void Document::set_forksaveguid(const char* value) {
+  
+  forksaveguid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.Document.forkSaveGuid)
+}
+ void Document::set_forksaveguid(const char* value, size_t size) {
+  
+  forksaveguid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.Document.forkSaveGuid)
+}
+ ::std::string* Document::mutable_forksaveguid() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.Document.forkSaveGuid)
+  return forksaveguid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* Document::release_forksaveguid() {
+  // @@protoc_insertion_point(field_release:pb.Document.forkSaveGuid)
+  
+  return forksaveguid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void Document::set_allocated_forksaveguid(::std::string* forksaveguid) {
+  if (forksaveguid != NULL) {
+    
+  } else {
+    
+  }
+  forksaveguid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), forksaveguid);
+  // @@protoc_insertion_point(field_set_allocated:pb.Document.forkSaveGuid)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

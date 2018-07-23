@@ -95,6 +95,9 @@ class Document : public QObject
     Q_PROPERTY(QUrl currentUrl READ currentUrl WRITE setCurrentUrl NOTIFY currentUrlChanged)
     Q_PROPERTY(QString currentFileName MEMBER currentFileName_ NOTIFY currentFileNameChanged)
 
+    QString saveGuid_;
+    QString forkSaveGuid_;
+
 public:
 
     explicit Document(QObject *parent = nullptr);
@@ -111,6 +114,10 @@ public:
 
     Q_INVOKABLE void reset();
     Q_INVOKABLE void save(const QUrl& url);
+    Q_INVOKABLE void saveAs(const QUrl& url);
+private:
+    void saveInternal(const QUrl& url, bool markAsFork);
+public:
     Q_INVOKABLE void load(const QUrl& url);
     Q_INVOKABLE void dumpProtobuf() const;
 

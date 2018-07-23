@@ -1287,6 +1287,28 @@ class Document : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::Map< ::google::protobuf::int32, ::pb::ChannelData >*
       mutable_channels();
 
+  // optional string saveGuid = 6;
+  void clear_saveguid();
+  static const int kSaveGuidFieldNumber = 6;
+  const ::std::string& saveguid() const;
+  void set_saveguid(const ::std::string& value);
+  void set_saveguid(const char* value);
+  void set_saveguid(const char* value, size_t size);
+  ::std::string* mutable_saveguid();
+  ::std::string* release_saveguid();
+  void set_allocated_saveguid(::std::string* saveguid);
+
+  // optional string forkSaveGuid = 7;
+  void clear_forksaveguid();
+  static const int kForkSaveGuidFieldNumber = 7;
+  const ::std::string& forksaveguid() const;
+  void set_forksaveguid(const ::std::string& value);
+  void set_forksaveguid(const char* value);
+  void set_forksaveguid(const char* value, size_t size);
+  ::std::string* mutable_forksaveguid();
+  ::std::string* release_forksaveguid();
+  void set_allocated_forksaveguid(::std::string* forksaveguid);
+
   // @@protoc_insertion_point(class_scope:pb.Document)
  private:
 
@@ -1306,6 +1328,8 @@ class Document : public ::google::protobuf::Message /* @@protoc_insertion_point(
       ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
       ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
       0 > channels_;
+  ::google::protobuf::internal::ArenaStringPtr saveguid_;
+  ::google::protobuf::internal::ArenaStringPtr forksaveguid_;
   ::google::protobuf::int32 endframe_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_eventsequencer_2eproto();
@@ -2198,6 +2222,94 @@ inline ::google::protobuf::Map< ::google::protobuf::int32, ::pb::ChannelData >*
 Document::mutable_channels() {
   // @@protoc_insertion_point(field_mutable_map:pb.Document.channels)
   return channels_.MutableMap();
+}
+
+// optional string saveGuid = 6;
+inline void Document::clear_saveguid() {
+  saveguid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Document::saveguid() const {
+  // @@protoc_insertion_point(field_get:pb.Document.saveGuid)
+  return saveguid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Document::set_saveguid(const ::std::string& value) {
+  
+  saveguid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.Document.saveGuid)
+}
+inline void Document::set_saveguid(const char* value) {
+  
+  saveguid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.Document.saveGuid)
+}
+inline void Document::set_saveguid(const char* value, size_t size) {
+  
+  saveguid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.Document.saveGuid)
+}
+inline ::std::string* Document::mutable_saveguid() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.Document.saveGuid)
+  return saveguid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Document::release_saveguid() {
+  // @@protoc_insertion_point(field_release:pb.Document.saveGuid)
+  
+  return saveguid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Document::set_allocated_saveguid(::std::string* saveguid) {
+  if (saveguid != NULL) {
+    
+  } else {
+    
+  }
+  saveguid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), saveguid);
+  // @@protoc_insertion_point(field_set_allocated:pb.Document.saveGuid)
+}
+
+// optional string forkSaveGuid = 7;
+inline void Document::clear_forksaveguid() {
+  forksaveguid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Document::forksaveguid() const {
+  // @@protoc_insertion_point(field_get:pb.Document.forkSaveGuid)
+  return forksaveguid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Document::set_forksaveguid(const ::std::string& value) {
+  
+  forksaveguid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.Document.forkSaveGuid)
+}
+inline void Document::set_forksaveguid(const char* value) {
+  
+  forksaveguid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.Document.forkSaveGuid)
+}
+inline void Document::set_forksaveguid(const char* value, size_t size) {
+  
+  forksaveguid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.Document.forkSaveGuid)
+}
+inline ::std::string* Document::mutable_forksaveguid() {
+  
+  // @@protoc_insertion_point(field_mutable:pb.Document.forkSaveGuid)
+  return forksaveguid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Document::release_forksaveguid() {
+  // @@protoc_insertion_point(field_release:pb.Document.forkSaveGuid)
+  
+  return forksaveguid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Document::set_allocated_forksaveguid(::std::string* forksaveguid) {
+  if (forksaveguid != NULL) {
+    
+  } else {
+    
+  }
+  forksaveguid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), forksaveguid);
+  // @@protoc_insertion_point(field_set_allocated:pb.Document.forkSaveGuid)
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS

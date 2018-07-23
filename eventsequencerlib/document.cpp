@@ -8,6 +8,7 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QUuid>
 
 /******************************************************************************/
 
@@ -203,6 +204,9 @@ Document::Document(QObject *parent)
 
 void Document::toPb(pb::Document &pb) const
 {
+    pb.set_saveguid(saveGuid_.toStdString());
+    pb.set_forksaveguid(forkSaveGuid_.toStdString());
+
     for (const Strip* s : strips_) {
         s->toPb(*pb.add_strips());
     }
@@ -218,6 +222,9 @@ void Document::toPb(pb::Document &pb) const
 
 void Document::fromPb(const pb::Document &pb)
 {
+    saveGuid_ = QString::fromStdString(pb.saveguid());
+    forkSaveGuid_ = QString::fromStdString(pb.forksaveguid());
+
     // TODO Delete all current strips first!
     // TODO We do not want to create a single strip each time so don't call createStrip(),
     //      because we don't want to spam the GUI with signals.
@@ -335,6 +342,23 @@ void Document::reset()
 
 void Document::save(const QUrl& url)
 {
+    saveInternal(url, false);
+}
+
+void Document::saveAs(const QUrl &url)
+{
+    saveInternal(url, true);
+}
+
+void Document::saveInternal(const QUrl &url, bool markAsFork)
+{
+    if (markAsFork) {
+        forkSaveGuid_ = saveGuid_;
+    }
+    // TODO Don't know if worth implementing, but perhaps make actually a cksum
+    //      so that it only changes when the contents change.
+    saveGuid_ = QUuid::createUuid().toString();
+
     // TODO Error handling! Need to do more than just write to stdout.
 
     pb::Document doc;
