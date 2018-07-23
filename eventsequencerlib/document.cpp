@@ -389,7 +389,6 @@ void Document::saveInternal(const QUrl &url, bool markAsFork)
         file_forkedFromChecksum_ = QString::fromStdString(pbf.checksum());
     }
     pbf.set_forkedfromchecksum(file_forkedFromChecksum_.toStdString());
-    qInfo() << pbf.DebugString().data(); // XXX
 
 
     QFile file(url.toLocalFile());
