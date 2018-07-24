@@ -642,11 +642,11 @@ ApplicationWindow {
                             Connections {
                                 target: grabMode
                                 onFinalCommit: {
+                                    // Not using diffX and diffY passed in because
+                                    // it doesn't work in debug mode.
+                                    // https://bugreports.qt.io/browse/QTBUG-68522
                                     var myDiffX = grabMode.diffX
                                     var myDiffY = grabMode.diffY
-                                    if (diffX !== myDiffX || diffY !== myDiffY) {
-                                        console.info('qtbug?', diffX, diffY, myDiffX, myDiffY)
-                                    }
 
                                     if (selected) {
                                         switch (stripBase.selectionMode) {
