@@ -642,18 +642,24 @@ ApplicationWindow {
                             Connections {
                                 target: grabMode
                                 onFinalCommit: {
+                                    var myDiffX = grabMode.diffX
+                                    var myDiffY = grabMode.diffY
+                                    if (diffX !== myDiffX || diffY !== myDiffY) {
+                                        console.info('qtbug?', diffX, diffY, myDiffX, myDiffY)
+                                    }
+
                                     if (selected) {
                                         switch (stripBase.selectionMode) {
                                         case SelectionMode.Whole:
-                                            cppStrip.startFrame += zoom.mapDisplayWidthToFullFrames(diffX)
-                                            cppStrip.channel += floorDiv(diffY, channelPixels)
+                                            cppStrip.startFrame += zoom.mapDisplayWidthToFullFrames(myDiffX)
+                                            cppStrip.channel += floorDiv(myDiffY, channelPixels)
                                             break;
                                         case SelectionMode.Right:
-                                            cppStrip.length += zoom.mapDisplayWidthToFullFrames(diffX)
+                                            cppStrip.length += zoom.mapDisplayWidthToFullFrames(myDiffX)
                                             break;
                                         case SelectionMode.Left:
                                             var initialEndFrame = cppStrip.startFrame + cppStrip.length
-                                            cppStrip.length -= zoom.mapDisplayWidthToFullFrames(diffX)
+                                            cppStrip.length -= zoom.mapDisplayWidthToFullFrames(myDiffX)
                                             cppStrip.startFrame = initialEndFrame - cppStrip.length
                                             break;
                                         }
