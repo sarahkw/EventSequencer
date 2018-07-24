@@ -5,6 +5,7 @@
 #include "channel/iclockrole.h"
 #include "channel/channelbase.h"
 #include "channel/channelfactory.h"
+#include "saferfilereplacement.h"
 
 #include <QDebug>
 #include <QFile>
@@ -390,10 +391,13 @@ void Document::saveInternal(const QUrl &url, bool markAsFork)
     }
     pbf.set_forkedfromchecksum(file_forkedFromChecksum_.toStdString());
 
+    SaferFileReplacement sfr(url.toLocalFile());
+    sfr.begin();
 
-    QFile file(url.toLocalFile());
+    QFile& file = sfr.file();
+
     if (!file.open(QIODevice::WriteOnly)) {
-        qWarning() << "Cannot open" << url;
+        qWarning() << "Cannot open" << file.fileName();
         return;
     }
     FileHeader fh;
@@ -408,6 +412,15 @@ void Document::saveInternal(const QUrl &url, bool markAsFork)
         return;
     }
     file.close();
+
+    if (!sfr.commit()) {
+        qWarning() << "Error finalizing file.";
+        return;
+    }
+
+    if (sfr.backupResult() == sfr.BackupResult::Failure) {
+        qWarning() << "Failure making backup (Save was OK)";
+    }
 
     setCurrentUrl(url);
 }

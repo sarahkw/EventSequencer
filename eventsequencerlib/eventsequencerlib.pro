@@ -46,7 +46,8 @@ SOURCES += \
     showmultiplelinesononeline.cpp \
     channel/collatechannel.cpp \
     channel/collatechannelrefreshevent.cpp \
-    collatenonoverlappingsegments.cpp
+    collatenonoverlappingsegments.cpp \
+    saferfilereplacement.cpp
 
 
 HEADERS += \
@@ -74,7 +75,8 @@ HEADERS += \
     showmultiplelinesononeline.h \
     channel/collatechannel.h \
     channel/collatechannelrefreshevent.h \
-    collatenonoverlappingsegments.h
+    collatenonoverlappingsegments.h \
+    saferfilereplacement.h
 
 unix {
     target.path = /usr/lib
