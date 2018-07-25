@@ -3,7 +3,7 @@ import QtQuick.Controls 2.2
 
 import eventsequencer 1.0 as ES
 
-TextField {
+ESTextField {
     property ES.Document document
     property bool shouldShowTime
     property int frame
@@ -21,7 +21,7 @@ TextField {
 
     text: displayFrameNumber(frame)
 
-    onEditingFinished: {
+    onEsEditingFinished: {
         var result = ES.FramesAndSeconds.secondsToFrames(
                     document.framesPerSecond,
                     text,

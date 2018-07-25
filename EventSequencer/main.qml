@@ -257,11 +257,7 @@ ApplicationWindow {
                 document: document
                 shouldShowTime: showSecondsAction.checked
                 frame: document.startFrame
-                onFrameEditingFinished: {
-                    document.startFrame = frame
-                    focus = false
-                }
-                selectByMouse: true
+                onFrameEditingFinished: document.startFrame = frame
                 horizontalAlignment: TextInput.AlignRight
                 ToolTip.text: "Start"
                 ToolTip.visible: hovered
@@ -275,11 +271,7 @@ ApplicationWindow {
                 document: document
                 shouldShowTime: showSecondsAction.checked
                 frame: document.endFrame
-                onFrameEditingFinished: {
-                    document.endFrame = frame
-                    focus = false
-                }
-                selectByMouse: true
+                onFrameEditingFinished: document.endFrame = frame
                 horizontalAlignment: TextInput.AlignRight
                 ToolTip.text: "End"
                 ToolTip.visible: hovered
@@ -294,12 +286,7 @@ ApplicationWindow {
                 document: document
                 shouldShowTime: showSecondsAction.checked
                 frame: cursor.frame
-                onFrameEditingFinished: {
-                    cursor.frame = frame
-                    focus = false
-                }
-
-                selectByMouse: true
+                onFrameEditingFinished: cursor.frame = frame
                 horizontalAlignment: TextInput.AlignRight
                 ToolTip.text: "Current"
                 ToolTip.visible: hovered
@@ -979,15 +966,11 @@ ApplicationWindow {
                                     Label {
                                         text: "Channel"
                                     }
-                                    TextField {
+                                    ESTextField {
                                         Layout.fillWidth: true
                                         text: selectedCppStrip.channel
-                                        selectByMouse: true
                                         validator: IntValidator { }
-                                        onEditingFinished: {
-                                            selectedCppStrip.channel = parseInt(text, 10)
-                                            focus = false
-                                        }
+                                        onEsEditingFinished: selectedCppStrip.channel = parseInt(text, 10)
                                     }
                                     Label {
                                         text: "Start"
@@ -996,13 +979,8 @@ ApplicationWindow {
                                         document: dokument
                                         shouldShowTime: showSecondsAction.checked
                                         frame: selectedCppStrip.startFrame
-                                        onFrameEditingFinished: {
-                                            selectedCppStrip.startFrame = frame
-                                            focus = false
-                                        }
-
+                                        onFrameEditingFinished: selectedCppStrip.startFrame = frame
                                         Layout.fillWidth: true
-                                        selectByMouse: true
                                     }
                                     Label {
                                         text: "Length"
@@ -1011,13 +989,8 @@ ApplicationWindow {
                                         document: dokument
                                         shouldShowTime: showSecondsAction.checked
                                         frame: selectedCppStrip.length
-                                        onFrameEditingFinished: {
-                                            selectedCppStrip.length = frame
-                                            focus = false
-                                        }
-
+                                        onFrameEditingFinished: selectedCppStrip.length = frame
                                         Layout.fillWidth: true
-                                        selectByMouse: true
                                     }
                                     Label {
                                         text: "End"
@@ -1026,13 +999,8 @@ ApplicationWindow {
                                         document: dokument
                                         shouldShowTime: showSecondsAction.checked
                                         frame: selectedCppStrip.startFrame + selectedCppStrip.length
-                                        onFrameEditingFinished: {
-                                            selectedCppStrip.length = frame - selectedCppStrip.startFrame
-                                            focus = false
-                                        }
-
+                                        onFrameEditingFinished: selectedCppStrip.length = frame - selectedCppStrip.startFrame
                                         Layout.fillWidth: true
-                                        selectByMouse: true
                                     }
                                 }
 
@@ -1115,14 +1083,12 @@ ApplicationWindow {
                             Label {
                                 text: "Frames/Sec"
                             }
-                            TextField {
+                            ESTextField {
                                 Layout.fillWidth: true
                                 text: document.framesPerSecond
-                                selectByMouse: true
                                 validator: IntValidator { }
-                                onEditingFinished: {
+                                onEsEditingFinished: {
                                     document.framesPerSecond = parseInt(text, 10)
-                                    focus = false
                                 }
                             }
                         }
@@ -1148,19 +1114,17 @@ ApplicationWindow {
                             Label {
                                 text: "Forked From"
                             }
-                            TextField {
+                            ESTextField {
                                 Layout.fillWidth: true
                                 readOnly: true
-                                selectByMouse: true
                                 text: document.fileForkedFromChecksum
                             }
                             Label {
                                 text: "Resource Directory"
                             }
-                            TextField {
+                            ESTextField {
                                 Layout.fillWidth: true
                                 readOnly: true
-                                selectByMouse: true
                                 text: document.fileResourceDirectory
                             }
                         }

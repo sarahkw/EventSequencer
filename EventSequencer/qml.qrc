@@ -27,5 +27,6 @@
         <file>DebugChannelsModel.qml</file>
         <file>Control/CollateControl.qml</file>
         <file>ResourceCreator.qml</file>
+        <file>ESTextField.qml</file>
     </qresource>
 </RCC>

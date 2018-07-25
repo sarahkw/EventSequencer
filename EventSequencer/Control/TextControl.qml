@@ -39,10 +39,10 @@ Item {
             Label {
                 text: "Content"
             }
-            TextField {
+            Parent.ESTextField {
                 anchors.left: parent.left
                 anchors.right: parent.right
-                onEditingFinished: Util.mutableobjset(cppStrip.mutableText, "content", text)
+                onEsEditingFinished: Util.mutableobjset(cppStrip.mutableText, "content", text)
                 text: Util.nvlobjprop(cppStrip.text, "content", "")
             }
         }
