@@ -148,6 +148,12 @@ ApplicationWindow {
             }
         }
         CustomMenu {
+            title: "Tools"
+            Action {
+                text: "Resource Creator"
+            }
+        }
+        CustomMenu {
             title: "Debug"
             CustomMenuItem {
                 text: "CppModel"
