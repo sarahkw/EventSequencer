@@ -19,6 +19,8 @@ class ResourceCreatorControl : public QObject
 public:
     explicit ResourceCreatorControl(QObject *parent = nullptr);
 
+    Q_INVOKABLE QString audioInputDescription(const QString &name) const;
+
 signals:
 
     void audioInputsChanged();

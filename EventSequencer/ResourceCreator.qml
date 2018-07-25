@@ -34,5 +34,12 @@ Window {
                 onClicked: cmbAudioInput.currentIndex = rcControl.defaultAudioInputIndex
             }
         }
+
+        Label { text: "Description" }
+        Label {
+            Layout.fillWidth: true
+            text: rcControl.audioInputDescription(cmbAudioInput.currentText)
+            wrapMode: Text.Wrap
+        }
     }
 }

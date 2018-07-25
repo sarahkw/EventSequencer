@@ -9,6 +9,11 @@ ResourceCreatorControl::ResourceCreatorControl(QObject *parent) : QObject(parent
                      this, &ResourceCreatorControl::updateAudioInputs);
 }
 
+QString ResourceCreatorControl::audioInputDescription(const QString &name) const
+{
+    return audioRecorder_.audioInputDescription(name);
+}
+
 void ResourceCreatorControl::updateAudioInputs()
 {
     audioInputs_ = audioRecorder_.audioInputs();
