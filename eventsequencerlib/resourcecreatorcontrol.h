@@ -22,7 +22,14 @@ class ResourceCreatorControl : public QObject
 public:
     explicit ResourceCreatorControl(QObject *parent = nullptr);
 
+    // Proxy calls to QAudioRecorder. Need wrapper with Q_INVOKABLE.
     Q_INVOKABLE QString audioInputDescription(const QString &name) const;
+    Q_INVOKABLE QStringList supportedContainers() const;
+    Q_INVOKABLE QString containerDescription(const QString &format) const;
+    Q_INVOKABLE QStringList supportedAudioCodecs() const;
+    Q_INVOKABLE QString audioCodecDescription(const QString &codecName) const;
+//    Q_INVOKABLE QList<int> supportedAudioSampleRates(const QAudioEncoderSettings &settings = QAudioEncoderSettings(),
+//                                                     bool *continuous = nullptr) const;
 
 signals:
 

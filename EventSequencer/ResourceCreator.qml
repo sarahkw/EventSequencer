@@ -42,6 +42,34 @@ Window {
             wrapMode: Text.Wrap
         }
 
+        Label { text: "Container" }
+        ComboBox {
+            id: cmbContainer
+            Layout.fillWidth: true
+            model: rcControl.supportedContainers()
+        }
+
+        Label { text: "Description" }
+        Label {
+            Layout.fillWidth: true
+            text: rcControl.containerDescription(cmbContainer.currentText)
+            wrapMode: Text.Wrap
+        }
+
+        Label { text: "Audio Codec" }
+        ComboBox {
+            id: cmbAudioCodec
+            Layout.fillWidth: true
+            model: rcControl.supportedAudioCodecs()
+        }
+
+        Label { text: "Description" }
+        Label {
+            Layout.fillWidth: true
+            text: rcControl.audioCodecDescription(cmbAudioCodec.currentText)
+            wrapMode: Text.Wrap
+        }
+
         Label { text: "outputLocation" }
         Label {
             id: outputLocationOut

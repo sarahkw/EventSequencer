@@ -19,6 +19,26 @@ QString ResourceCreatorControl::audioInputDescription(const QString &name) const
     return audioRecorder_.audioInputDescription(name);
 }
 
+QStringList ResourceCreatorControl::supportedContainers() const
+{
+    return audioRecorder_.supportedContainers();
+}
+
+QString ResourceCreatorControl::containerDescription(const QString &format) const
+{
+    return audioRecorder_.containerDescription(format);
+}
+
+QStringList ResourceCreatorControl::supportedAudioCodecs() const
+{
+    return audioRecorder_.supportedAudioCodecs();
+}
+
+QString ResourceCreatorControl::audioCodecDescription(const QString &codecName) const
+{
+    return audioRecorder_.audioCodecDescription(codecName);
+}
+
 void ResourceCreatorControl::updateAudioInputs()
 {
     audioInputs_ = audioRecorder_.audioInputs();
