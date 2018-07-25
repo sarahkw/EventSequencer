@@ -90,7 +90,7 @@ Window {
             Layout.fillWidth: true
             text: {
                 rcControl.audioRecorder.state // Dependency
-                return rcControl.audioRecorder.outputLocation
+                return rcControl.audioRecorder.actualLocation
             }
         }
 
