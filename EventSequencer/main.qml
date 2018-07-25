@@ -933,272 +933,241 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.left: propertiesDragger.right
-            anchors.leftMargin: 5
-            anchors.rightMargin: 5
 
-            ColumnLayout {
+            Component {
+                // Blank component so that the Loader resizes itself upon
+                // clearing.
+                id: blankComponent
+                Item {}
+            }
+
+            ScrollView {
                 anchors.fill: parent
+                contentWidth: width // Column will have some width it wants to be. Ignore it.
+                Column {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    spacing: 15
 
-                // strip properties
-                Loader {
-                    Layout.fillWidth: true
-                    sourceComponent: selectedCppStrips.length == 1 ? stripPropertiesComponent : blankComponent
-                    property alias dokument: document
+                    // strip properties
+                    Loader {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        sourceComponent: selectedCppStrips.length == 1 ? stripPropertiesComponent : blankComponent
+                        property alias dokument: document
 
-                    Component {
-                        // Blank component so that the Loader resizes itself upon
-                        // clearing.
-                        id: blankComponent
-                        Item {}
-                    }
-
-                    Component {
-                        id: stripPropertiesComponent
-                        Column {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-
-                            property ES.Strip selectedCppStrip: selectedCppStrips[0]
-
-                            Label {
-                                text: "Strip"
-                                font.pixelSize: 16
-                                font.bold: true
-                            }
-
-                            Item { // Spacer
-                                width: 1
-                                height: 15
-                            }
-
-                            GridLayout {
+                        Component {
+                            id: stripPropertiesComponent
+                            Column {
                                 anchors.left: parent.left
                                 anchors.right: parent.right
+                                spacing: 15
 
-                                columns: 2
+                                property ES.Strip selectedCppStrip: selectedCppStrips[0]
+
+                                Label {
+                                    text: "Strip"
+                                    font.pixelSize: 16
+                                    font.bold: true
+                                }
+
+                                GridLayout {
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+
+                                    columns: 2
+                                    Label {
+                                        text: "Channel"
+                                    }
+                                    TextField {
+                                        Layout.fillWidth: true
+                                        text: selectedCppStrip.channel
+                                        selectByMouse: true
+                                        validator: IntValidator { }
+                                        onEditingFinished: {
+                                            selectedCppStrip.channel = parseInt(text, 10)
+                                            focus = false
+                                        }
+                                    }
+                                    Label {
+                                        text: "Start"
+                                    }
+                                    FrameTextField {
+                                        document: dokument
+                                        shouldShowTime: showSecondsAction.checked
+                                        frame: selectedCppStrip.startFrame
+                                        onFrameEditingFinished: {
+                                            selectedCppStrip.startFrame = frame
+                                            focus = false
+                                        }
+
+                                        Layout.fillWidth: true
+                                        selectByMouse: true
+                                    }
+                                    Label {
+                                        text: "Length"
+                                    }
+                                    FrameTextField {
+                                        document: dokument
+                                        shouldShowTime: showSecondsAction.checked
+                                        frame: selectedCppStrip.length
+                                        onFrameEditingFinished: {
+                                            selectedCppStrip.length = frame
+                                            focus = false
+                                        }
+
+                                        Layout.fillWidth: true
+                                        selectByMouse: true
+                                    }
+                                    Label {
+                                        text: "End"
+                                    }
+                                    FrameTextField {
+                                        document: dokument
+                                        shouldShowTime: showSecondsAction.checked
+                                        frame: selectedCppStrip.startFrame + selectedCppStrip.length
+                                        onFrameEditingFinished: {
+                                            selectedCppStrip.length = frame - selectedCppStrip.startFrame
+                                            focus = false
+                                        }
+
+                                        Layout.fillWidth: true
+                                        selectByMouse: true
+                                    }
+                                }
+
+                                Loader {
+                                    id: stripPropLoader
+
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+
+                                    property ES.WaitFor waitForchannel: document.waitForChannel(selectedCppStrip.channel)
+                                    property var channel: waitForchannel.result
+                                    property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
+                                    property var stripPropComp: control !== null ? control.stripPropertiesComponent : undefined
+
+                                    sourceComponent: stripPropComp
+                                    property ES.Strip cppStrip: selectedCppStrip
+                                }
+                            }
+                        }
+                    } // strip properties
+
+                    // channel properties
+                    Loader {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+
+                        property ES.WaitFor waitForchannel: document.waitForChannel(channelPanel.activeChannel)
+                        property var channel: waitForchannel.result
+                        property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
+                        property var chanPropComp: (
+                                                       (control !== null && control.channelPropertiesComponent !== undefined) ?
+                                                           control.channelPropertiesComponent :
+                                                           null
+                                                       )
+
+                        sourceComponent: ((chanPropComp !== null &&
+                                           selectedCppStrips.every(function (cppStrip) {
+                                               return cppStrip.channel === channelPanel.activeChannel
+                                           })) ? channelPropertiesComponent : blankComponent)
+
+                        Component {
+                            id: channelPropertiesComponent
+                            Column {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                spacing: 15
                                 Label {
                                     text: "Channel"
+                                    font.pixelSize: 16
+                                    font.bold: true
                                 }
-                                TextField {
-                                    Layout.fillWidth: true
-                                    text: selectedCppStrip.channel
-                                    selectByMouse: true
-                                    validator: IntValidator { }
-                                    onEditingFinished: {
-                                        selectedCppStrip.channel = parseInt(text, 10)
-                                        focus = false
-                                    }
-                                }
-                                Label {
-                                    text: "Start"
-                                }
-                                FrameTextField {
-                                    document: dokument
-                                    shouldShowTime: showSecondsAction.checked
-                                    frame: selectedCppStrip.startFrame
-                                    onFrameEditingFinished: {
-                                        selectedCppStrip.startFrame = frame
-                                        focus = false
-                                    }
+                                Loader {
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    sourceComponent: chanPropComp
 
-                                    Layout.fillWidth: true
-                                    selectByMouse: true
-                                }
-                                Label {
-                                    text: "Length"
-                                }
-                                FrameTextField {
-                                    document: dokument
-                                    shouldShowTime: showSecondsAction.checked
-                                    frame: selectedCppStrip.length
-                                    onFrameEditingFinished: {
-                                        selectedCppStrip.length = frame
-                                        focus = false
-                                    }
-
-                                    Layout.fillWidth: true
-                                    selectByMouse: true
-                                }
-                                Label {
-                                    text: "End"
-                                }
-                                FrameTextField {
-                                    document: dokument
-                                    shouldShowTime: showSecondsAction.checked
-                                    frame: selectedCppStrip.startFrame + selectedCppStrip.length
-                                    onFrameEditingFinished: {
-                                        selectedCppStrip.length = frame - selectedCppStrip.startFrame
-                                        focus = false
-                                    }
-
-                                    Layout.fillWidth: true
-                                    selectByMouse: true
+                                    property var cppChannel: channel
                                 }
                             }
-
-                            Item { // Spacer before the strip property.
-                                width: 1
-                                height: stripPropLoader.stripPropComp === undefined ? 0 : 15
-                            }
-
-                            Loader {
-                                id: stripPropLoader
-
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-
-                                property ES.WaitFor waitForchannel: document.waitForChannel(selectedCppStrip.channel)
-                                property var channel: waitForchannel.result
-                                property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
-                                property var stripPropComp: control !== null ? control.stripPropertiesComponent : undefined
-
-                                sourceComponent: stripPropComp
-                                property ES.Strip cppStrip: selectedCppStrip
-                            }
-
-                            Item { // End Spacer
-                                width: 1
-                                height: 15
-                            }
-
                         }
-                    }
-                } // strip properties
+                    } // channel properties
 
-                // channel properties
-                Loader {
-                    Layout.fillWidth: true
+                    // document properties
+                    Column {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        spacing: 15
 
-                    property ES.WaitFor waitForchannel: document.waitForChannel(channelPanel.activeChannel)
-                    property var channel: waitForchannel.result
-                    property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
-                    property var chanPropComp: (
-                        (control !== null && control.channelPropertiesComponent !== undefined) ?
-                            control.channelPropertiesComponent :
-                            null
-                    )
+                        Label {
+                            text: "Document"
+                            font.pixelSize: 16
+                            font.bold: true
+                        }
 
-                    sourceComponent: ((chanPropComp !== null &&
-                                       selectedCppStrips.every(function (cppStrip) {
-                                           return cppStrip.channel === channelPanel.activeChannel
-                                       })) ? channelPropertiesComponent : blankComponent)
-
-                    Component {
-                        id: channelPropertiesComponent
-                        Column {
+                        GridLayout {
                             anchors.left: parent.left
                             anchors.right: parent.right
+
+                            columns: 2
                             Label {
-                                text: "Channel"
-                                font.pixelSize: 16
-                                font.bold: true
+                                text: "Frames/Sec"
                             }
-                            Item { // Spacer
-                                width: 1
-                                height: 15
-                            }
-                            Loader {
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                sourceComponent: chanPropComp
-
-                                property var cppChannel: channel
-                            }
-                            Item { // End Spacer
-                                width: 1
-                                height: 15
+                            TextField {
+                                Layout.fillWidth: true
+                                text: document.framesPerSecond
+                                selectByMouse: true
+                                validator: IntValidator { }
+                                onEditingFinished: {
+                                    document.framesPerSecond = parseInt(text, 10)
+                                    focus = false
+                                }
                             }
                         }
-                    }
-                } // channel properties
+                    } // document properties
 
-                // document properties
-                Column {
-                    Layout.fillWidth: true
-
-                    Label {
-                        text: "Document"
-                        font.pixelSize: 16
-                        font.bold: true
-                    }
-
-                    Item { // Spacer
-                        width: 1
-                        height: 15
-                    }
-
-                    GridLayout {
+                    // file properties
+                    Column {
                         anchors.left: parent.left
                         anchors.right: parent.right
+                        spacing: 15
 
-                        columns: 2
                         Label {
-                            text: "Frames/Sec"
+                            text: "File"
+                            font.pixelSize: 16
+                            font.bold: true
                         }
-                        TextField {
-                            Layout.fillWidth: true
-                            text: document.framesPerSecond
-                            selectByMouse: true
-                            validator: IntValidator { }
-                            onEditingFinished: {
-                                document.framesPerSecond = parseInt(text, 10)
-                                focus = false
+
+                        GridLayout {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+
+                            columns: 2
+                            Label {
+                                text: "Forked From"
+                            }
+                            TextField {
+                                Layout.fillWidth: true
+                                readOnly: true
+                                selectByMouse: true
+                                text: document.fileForkedFromChecksum
+                            }
+                            Label {
+                                text: "Resource Directory"
+                            }
+                            TextField {
+                                Layout.fillWidth: true
+                                readOnly: true
+                                selectByMouse: true
+                                text: document.fileResourceDirectory
                             }
                         }
-                    }
-                } // document properties
+                    } // file properties
 
-                Item { // Spacer
-                    width: 1
-                    height: 15
                 }
-
-                // file properties
-                Column {
-                    Layout.fillWidth: true
-
-                    Label {
-                        text: "File"
-                        font.pixelSize: 16
-                        font.bold: true
-                    }
-
-                    Item { // Spacer
-                        width: 1
-                        height: 15
-                    }
-
-                    GridLayout {
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-
-                        columns: 2
-                        Label {
-                            text: "Forked From"
-                        }
-                        TextField {
-                            Layout.fillWidth: true
-                            readOnly: true
-                            selectByMouse: true
-                            text: document.fileForkedFromChecksum
-                        }
-                        Label {
-                            text: "Resource Directory"
-                        }
-                        TextField {
-                            Layout.fillWidth: true
-                            readOnly: true
-                            selectByMouse: true
-                            text: document.fileResourceDirectory
-                        }
-                    }
-                } // file properties
-
-                Item {
-                    Layout.fillHeight: true
-                }
-
-            }
+            } // ScrollView
 
         }
     }
