@@ -1162,6 +1162,15 @@ ApplicationWindow {
 
                         columns: 2
                         Label {
+                            text: "Forked From"
+                        }
+                        TextField {
+                            Layout.fillWidth: true
+                            readOnly: true
+                            selectByMouse: true
+                            text: document.fileForkedFromChecksum
+                        }
+                        Label {
                             text: "Resource Directory"
                         }
                         TextField {

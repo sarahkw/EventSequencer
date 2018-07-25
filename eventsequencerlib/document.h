@@ -97,7 +97,8 @@ class Document : public QObject
     Q_PROPERTY(QString currentFileName MEMBER currentFileName_ NOTIFY currentFileNameChanged)
     Q_PROPERTY(QString fileResourceDirectory MEMBER fileResourceDirectory_ NOTIFY fileResourceDirectoryChanged)
 
-    QString file_forkedFromChecksum_;
+    QString fileForkedFromChecksum_;
+    Q_PROPERTY(QString fileForkedFromChecksum MEMBER fileForkedFromChecksum_ NOTIFY fileForkedFromChecksumChanged)
 
 public:
 
@@ -143,6 +144,10 @@ public:
     void setCurrentUrl(const QUrl &currentUrl);
 
 private:
+    void setFileForkedFromChecksum(const QString &fileForkedFromChecksum);
+public:
+
+private:
 
     enum class AddOrReplace {
         Add,
@@ -162,6 +167,8 @@ signals:
     void currentUrlChanged();
     void currentFileNameChanged();
     void fileResourceDirectoryChanged();
+
+    void fileForkedFromChecksumChanged();
 
     void stripAfterPlaced(Strip* strip);
     void stripBeforeDelete(Strip* strip);

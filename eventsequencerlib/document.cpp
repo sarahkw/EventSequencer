@@ -202,6 +202,14 @@ void Document::setCurrentUrl(const QUrl &currentUrl)
     }
 }
 
+void Document::setFileForkedFromChecksum(const QString &fileForkedFromChecksum)
+{
+    if (fileForkedFromChecksum_ != fileForkedFromChecksum) {
+        fileForkedFromChecksum_ = fileForkedFromChecksum;
+        emit fileForkedFromChecksumChanged();
+    }
+}
+
 Document::Document(QObject *parent)
     : QObject(parent), stripsModel_(*this), channelsModel_(*this)
 {
@@ -391,9 +399,9 @@ void Document::saveInternal(const QUrl &url, bool markAsFork)
         pbf.set_checksum(hasher.result().toHex().toStdString());
     }
     if (markAsFork) {
-        file_forkedFromChecksum_ = QString::fromStdString(pbf.checksum());
+        setFileForkedFromChecksum(QString::fromStdString(pbf.checksum()));
     }
-    pbf.set_forkedfromchecksum(file_forkedFromChecksum_.toStdString());
+    pbf.set_forkedfromchecksum(fileForkedFromChecksum_.toStdString());
 
     SaferFileReplacement sfr(url.toLocalFile());
     sfr.begin();
@@ -458,7 +466,7 @@ void Document::load(const QUrl &url)
 
     file.close();
 
-    file_forkedFromChecksum_ = QString::fromStdString(pbf.forkedfromchecksum());
+    setFileForkedFromChecksum(QString::fromStdString(pbf.forkedfromchecksum()));
 
     fromPb(pbf.document());
 
