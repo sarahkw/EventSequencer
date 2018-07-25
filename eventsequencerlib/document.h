@@ -91,9 +91,11 @@ class Document : public QObject
 
     QUrl currentUrl_;
     QString currentFileName_;
+    QString fileResourceDirectory_;
 
     Q_PROPERTY(QUrl currentUrl READ currentUrl WRITE setCurrentUrl NOTIFY currentUrlChanged)
     Q_PROPERTY(QString currentFileName MEMBER currentFileName_ NOTIFY currentFileNameChanged)
+    Q_PROPERTY(QString fileResourceDirectory MEMBER fileResourceDirectory_ NOTIFY fileResourceDirectoryChanged)
 
     QString file_forkedFromChecksum_;
 
@@ -159,6 +161,7 @@ signals:
 
     void currentUrlChanged();
     void currentFileNameChanged();
+    void fileResourceDirectoryChanged();
 
     void stripAfterPlaced(Strip* strip);
     void stripBeforeDelete(Strip* strip);

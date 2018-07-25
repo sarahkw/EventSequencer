@@ -195,6 +195,10 @@ void Document::setCurrentUrl(const QUrl &currentUrl)
         emit currentUrlChanged();
         currentFileName_ = currentUrl.toLocalFile();
         emit currentFileNameChanged();
+
+        // TODO Chop off extension
+        fileResourceDirectory_ = currentFileName_ + "_data";
+        emit fileResourceDirectoryChanged();
     }
 }
 

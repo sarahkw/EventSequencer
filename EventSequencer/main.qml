@@ -1136,6 +1136,43 @@ ApplicationWindow {
                     }
                 } // document properties
 
+                Item { // Spacer
+                    width: 1
+                    height: 15
+                }
+
+                // file properties
+                Column {
+                    Layout.fillWidth: true
+
+                    Label {
+                        text: "File"
+                        font.pixelSize: 16
+                        font.bold: true
+                    }
+
+                    Item { // Spacer
+                        width: 1
+                        height: 15
+                    }
+
+                    GridLayout {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+
+                        columns: 2
+                        Label {
+                            text: "Resource Directory"
+                        }
+                        TextField {
+                            Layout.fillWidth: true
+                            readOnly: true
+                            selectByMouse: true
+                            text: document.fileResourceDirectory
+                        }
+                    }
+                } // file properties
+
                 Item {
                     Layout.fillHeight: true
                 }
