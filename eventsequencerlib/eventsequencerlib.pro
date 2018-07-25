@@ -47,7 +47,8 @@ SOURCES += \
     channel/collatechannel.cpp \
     channel/collatechannelrefreshevent.cpp \
     collatenonoverlappingsegments.cpp \
-    saferfilereplacement.cpp
+    saferfilereplacement.cpp \
+    managedresources.cpp
 
 
 HEADERS += \
@@ -76,7 +77,8 @@ HEADERS += \
     channel/collatechannel.h \
     channel/collatechannelrefreshevent.h \
     collatenonoverlappingsegments.h \
-    saferfilereplacement.h
+    saferfilereplacement.h \
+    managedresources.h
 
 unix {
     target.path = /usr/lib
