@@ -12,6 +12,7 @@
 #include "constrainedmetricsfontutil.h"
 #include "wordwrappedtexttrack.h"
 #include "showmultiplelinesononeline.h"
+#include "resourcecreatorcontrol.h"
 
 #include <QQmlEngine>
 
@@ -33,4 +34,5 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<ConstrainedMetricsFontUtil>("eventsequencer", 1, 0, "ConstrainedMetricsFontUtil");
     qmlRegisterType<WordWrappedTextTrack>("eventsequencer", 1, 0, "WordWrappedTextTrack");
     qmlRegisterType<ShowMultipleLinesOnOneLine>("eventsequencer", 1, 0, "ShowMultipleLinesOnOneLine");
+    qmlRegisterType<ResourceCreatorControl>("eventsequencer", 1, 0, "ResourceCreatorControl");
 }
