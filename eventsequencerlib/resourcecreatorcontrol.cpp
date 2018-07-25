@@ -2,6 +2,11 @@
 
 #include <QDebug>
 
+QObject *ResourceCreatorControl::audioRecorder()
+{
+    return &audioRecorder_;
+}
+
 ResourceCreatorControl::ResourceCreatorControl(QObject *parent) : QObject(parent)
 {
     updateAudioInputs();

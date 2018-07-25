@@ -41,5 +41,28 @@ Window {
             text: rcControl.audioInputDescription(cmbAudioInput.currentText)
             wrapMode: Text.Wrap
         }
+
+        Label { text: "outputLocation" }
+        Label {
+            id: outputLocationOut
+            Layout.fillWidth: true
+        }
+
+        Row {
+            Layout.columnSpan: 2
+            Button {
+                text: "Record"
+                onClicked: rcControl.audioRecorder.record()
+            }
+            Button {
+                text: "Stop"
+                onClicked: rcControl.audioRecorder.stop()
+            }
+            Button {
+                text: "Update"
+                onClicked: outputLocationOut.text = rcControl.audioRecorder.outputLocation
+            }
+        }
+
     }
 }
