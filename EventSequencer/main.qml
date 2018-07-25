@@ -151,6 +151,7 @@ ApplicationWindow {
             title: "Tools"
             Action {
                 text: "Resource Creator"
+                onTriggered: resourceCreator.visible = true
             }
         }
         CustomMenu {
@@ -198,6 +199,10 @@ ApplicationWindow {
         text: "Add"
         onTriggered: addMenu.open()
         shortcut: "Shift+A"
+    }
+
+    ResourceCreator {
+        id: resourceCreator
     }
 
     ES.Document {

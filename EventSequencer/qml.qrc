@@ -26,5 +26,6 @@
         <file>DebugWordWrappedTextTrack.qml</file>
         <file>DebugChannelsModel.qml</file>
         <file>Control/CollateControl.qml</file>
+        <file>ResourceCreator.qml</file>
     </qresource>
 </RCC>
