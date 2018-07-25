@@ -801,6 +801,7 @@ ApplicationWindow {
                 }
 
                 onPressed: {
+                    bodyView.focus = true // Otherwise focus will be stuck in edit controls.
                     cursor.frame = xyPositionToFrame(mouse.x, mouse.y)
                 }
                 onPositionChanged: {
