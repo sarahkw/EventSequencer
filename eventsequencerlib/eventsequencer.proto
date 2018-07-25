@@ -64,3 +64,7 @@ message File {
   string checksum = 2;
   string forkedFromChecksum = 3;
 }
+
+message ManagedResource {
+  string suffix = 1;
+}
