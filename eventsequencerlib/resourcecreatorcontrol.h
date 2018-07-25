@@ -39,6 +39,8 @@ public:
 //    Q_INVOKABLE QList<int> supportedAudioSampleRates(const QAudioEncoderSettings &settings = QAudioEncoderSettings(),
 //                                                     bool *continuous = nullptr) const;
 
+    Q_INVOKABLE void configure(const QString& codecName, const QString& container);
+
 signals:
 
     void audioInputsChanged();

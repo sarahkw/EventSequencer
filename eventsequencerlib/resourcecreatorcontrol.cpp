@@ -39,6 +39,13 @@ QString ResourceCreatorControl::audioCodecDescription(const QString &codecName) 
     return audioRecorder_.audioCodecDescription(codecName);
 }
 
+void ResourceCreatorControl::configure(const QString &codecName, const QString& container)
+{
+    QAudioEncoderSettings aes;
+    aes.setCodec(codecName);
+    audioRecorder_.setEncodingSettings(aes, QVideoEncoderSettings(), container);
+}
+
 void ResourceCreatorControl::updateAudioInputs()
 {
     audioInputs_ = audioRecorder_.audioInputs();

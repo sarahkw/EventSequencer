@@ -46,13 +46,14 @@ Window {
         ComboBox {
             id: cmbContainer
             Layout.fillWidth: true
+            editable: true
             model: rcControl.supportedContainers()
         }
 
         Label { text: "Description" }
         Label {
             Layout.fillWidth: true
-            text: rcControl.containerDescription(cmbContainer.currentText)
+            text: rcControl.containerDescription(cmbContainer.editText)
             wrapMode: Text.Wrap
         }
 
@@ -60,13 +61,14 @@ Window {
         ComboBox {
             id: cmbAudioCodec
             Layout.fillWidth: true
+            editable: true
             model: rcControl.supportedAudioCodecs()
         }
 
         Label { text: "Description" }
         Label {
             Layout.fillWidth: true
-            text: rcControl.audioCodecDescription(cmbAudioCodec.currentText)
+            text: rcControl.audioCodecDescription(cmbAudioCodec.editText)
             wrapMode: Text.Wrap
         }
 
@@ -96,7 +98,10 @@ Window {
             Layout.columnSpan: 2
             Button {
                 text: "Record"
-                onClicked: rcControl.audioRecorder.record()
+                onClicked: {
+                    rcControl.configure(cmbAudioCodec.editText, cmbContainer.editText)
+                    rcControl.audioRecorder.record()
+                }
             }
             Button {
                 text: "Stop"
