@@ -21,10 +21,18 @@ Window {
         anchors.top: parent.top
         columns: 2
 
-        Label { text: "Audio Input" }
-        ComboBox {
-            Layout.fillWidth: true
-            model: rcControl.audioInputs
+        Label { text: "Input" }
+        RowLayout {
+            ComboBox {
+                id: cmbAudioInput
+                Layout.fillWidth: true
+                model: rcControl.audioInputs
+                Component.onCompleted: currentIndex = rcControl.defaultAudioInputIndex
+            }
+            Button {
+                text: "Reset"
+                onClicked: cmbAudioInput.currentIndex = rcControl.defaultAudioInputIndex
+            }
         }
     }
 }

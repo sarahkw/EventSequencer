@@ -10,18 +10,24 @@ class ResourceCreatorControl : public QObject
 
     QAudioRecorder audioRecorder_;
 
-    Q_PROPERTY(QStringList audioInputs READ audioInputs NOTIFY availableAudioInputsChanged)
+    QStringList audioInputs_;
+    int defaultAudioInputIndex_ = -1;
+
+    Q_PROPERTY(QStringList audioInputs MEMBER audioInputs_ NOTIFY audioInputsChanged)
+    Q_PROPERTY(int defaultAudioInputIndex MEMBER defaultAudioInputIndex_ NOTIFY defaultAudioInputIndexChanged)
 
 public:
     explicit ResourceCreatorControl(QObject *parent = nullptr);
 
-    QStringList audioInputs() const;
-
 signals:
 
-    void availableAudioInputsChanged();
+    void audioInputsChanged();
+    void defaultAudioInputIndexChanged();
 
 public slots:
+
+private slots:
+    void updateAudioInputs();
 };
 
 #endif // RESOURCECREATORCONTROL_H
