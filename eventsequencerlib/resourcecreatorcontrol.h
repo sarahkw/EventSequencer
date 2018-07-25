@@ -20,6 +20,14 @@ class ResourceCreatorControl : public QObject
     QObject* audioRecorder();
 
 public:
+
+    enum AudioRecorderState {
+        StoppedState = QAudioRecorder::StoppedState,
+        RecordingState = QAudioRecorder::RecordingState,
+        PausedState = QAudioRecorder::PausedState
+    };
+    Q_ENUMS(AudioRecorderState)
+
     explicit ResourceCreatorControl(QObject *parent = nullptr);
 
     // Proxy calls to QAudioRecorder. Need wrapper with Q_INVOKABLE.
@@ -41,5 +49,7 @@ public slots:
 private slots:
     void updateAudioInputs();
 };
+
+Q_DECLARE_METATYPE(ResourceCreatorControl::AudioRecorderState)
 
 #endif // RESOURCECREATORCONTROL_H

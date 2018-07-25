@@ -70,10 +70,26 @@ Window {
             wrapMode: Text.Wrap
         }
 
-        Label { text: "outputLocation" }
+        Label { text: "State" }
+        Label {
+            Layout.fillWidth: true
+            text: {
+                switch (rcControl.audioRecorder.state) {
+                case ES.ResourceCreatorControl.StoppedState: return "StoppedState"
+                case ES.ResourceCreatorControl.RecordingState: return "RecordingState"
+                case ES.ResourceCreatorControl.PausedState: return "PausedState"
+                }
+            }
+        }
+
+        Label { text: "Output Location" }
         Label {
             id: outputLocationOut
             Layout.fillWidth: true
+            text: {
+                rcControl.audioRecorder.state // Dependency
+                return rcControl.audioRecorder.outputLocation
+            }
         }
 
         Row {
@@ -87,8 +103,11 @@ Window {
                 onClicked: rcControl.audioRecorder.stop()
             }
             Button {
-                text: "Update"
-                onClicked: outputLocationOut.text = rcControl.audioRecorder.outputLocation
+                text: "Debug"
+                onClicked: {
+                    console.info(ES.ResourceCreatorControl.StoppedState)
+                    console.info(rcControl.audioRecorder.state)
+                }
             }
         }
 
