@@ -10,7 +10,8 @@
 #include <QDebug>
 #include <QFile>
 #include <QCryptographicHash>
-
+#include <QFileInfo>
+#include <QDir>
 
 /******************************************************************************/
 
@@ -196,8 +197,12 @@ void Document::setCurrentUrl(const QUrl &currentUrl)
         currentFileName_ = currentUrl.toLocalFile();
         emit currentFileNameChanged();
 
-        // TODO Chop off extension
-        fileResourceDirectory_ = currentFileName_ + "_data";
+        if (!currentFileName_.isEmpty()) {
+            QFileInfo fi(currentFileName_);
+            fileResourceDirectory_ = fi.dir().path() + "/" + fi.completeBaseName() + "_data";
+        } else {
+            fileResourceDirectory_.clear();
+        }
         emit fileResourceDirectoryChanged();
     }
 }
