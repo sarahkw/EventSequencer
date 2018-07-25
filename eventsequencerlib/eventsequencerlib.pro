@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 #QT       -= gui
+QT += multimedia
 
 TARGET = eventsequencerlib
 TEMPLATE = lib

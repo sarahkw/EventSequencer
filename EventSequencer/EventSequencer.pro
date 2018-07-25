@@ -1,6 +1,7 @@
 QT += quick
 QT += widgets  # For FileDialog on Linux
 QT += quickcontrols2 # For QQuickStyle
+QT += multimedia
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
