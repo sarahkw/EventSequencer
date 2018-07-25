@@ -467,7 +467,15 @@ ApplicationWindow {
             MouseArea {
                 anchors.fill: bodyView
                 acceptedButtons: Qt.RightButton
-                onClicked: selectedCppStrips = []
+                function xyPositionToChannel(x, y) {
+                    var whereWas = body.mapFromItem(bodyView, x, y).y
+                    var channelAtMouse = Math.floor(whereWas / channelPixels)
+                    return channelAtMouse
+                }
+                onClicked: {
+                    selectedCppStrips = []
+                    channelPanel.activeChannel = xyPositionToChannel(mouse.x, mouse.y)
+                }
             }
 
             Rectangle {
@@ -791,13 +799,11 @@ ApplicationWindow {
             MouseArea {
                 id: cursorMouseArea
                 anchors.fill: bodyView
-
                 function xyPositionToFrame(x, y) {
-                    var whereWasTheFrame = body.mapFromItem(bodyView, x, y).x
-                    var frameNoAtMouse = zoom.mapDisplayWidthToFrames(whereWasTheFrame)
+                    var whereWas = body.mapFromItem(bodyView, x, y).x
+                    var frameNoAtMouse = zoom.mapDisplayWidthToFrames(whereWas)
                     return frameNoAtMouse
                 }
-
                 onPressed: {
                     bodyView.focus = true // Otherwise focus will be stuck in edit controls.
                     cursor.frame = xyPositionToFrame(mouse.x, mouse.y)
