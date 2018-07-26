@@ -6,14 +6,12 @@ import QtQuick.Controls 2.2
 import eventsequencer 1.0 as ES
 
 Window {
-    title: "DebugCppModel"
+    title: "Strips List"
     flags: Qt.Dialog
     width: 640
     height: 480
 
-    ES.Document {
-        id: document
-    }
+    property ES.Document document
 
     ColumnLayout {
         anchors.fill: parent

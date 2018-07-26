@@ -150,19 +150,22 @@ ApplicationWindow {
         CustomMenu {
             title: "Tools"
             Action {
+                text: "Strips List"
+                onTriggered: {
+                    var component = Qt.createComponent("StripsList.qml")
+                    component.createObject(appwin, {
+                                               visible: true,
+                                               document: document
+                                           })
+                }
+            }
+            Action {
                 text: "Resource Creator"
                 onTriggered: resourceCreator.visible = true
             }
         }
         CustomMenu {
             title: "Debug"
-            CustomMenuItem {
-                text: "CppModel"
-                onTriggered: {
-                    var component = Qt.createComponent("DebugCppModel.qml")
-                    var obj = component.createObject(appwin, {visible: true})
-                }
-            }
             CustomMenuItem {
                 text: "ConstrainedMetricsFontUtil"
                 onTriggered: {

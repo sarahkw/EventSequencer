@@ -8,7 +8,7 @@
         <file>ZoomOld.qml</file>
         <file>ZoomLogic.qml</file>
         <file>tst_ZoomLogic.qml</file>
-        <file>DebugCppModel.qml</file>
+        <file>StripsList.qml</file>
         <file>FrameTextField.qml</file>
         <file>CustomMenu.qml</file>
         <file>CustomMenuItem.qml</file>
