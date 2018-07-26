@@ -636,8 +636,10 @@ ApplicationWindow {
                                 cppStrip.qmlStrip = stripBase
                             }
 
+                            readonly property int stripMinimumWidth: 3 // Always want to be visible.
+
                             x: zoom.mapFrameToDisplayX(cppStrip.startFrame)
-                            width: Math.max(zoom.mapLengthToDisplayWidth(cppStrip.length), minimumWidth)
+                            width: Math.max(zoom.mapLengthToDisplayWidth(cppStrip.length), stripMinimumWidth)
                             y: cppStrip.channel * channelPixels
                             height: channelPixels
 

@@ -17,7 +17,6 @@ Rectangle {
 
     readonly property int handleWidth: 20
     readonly property int smallModeWidth: handleWidth + handleWidth + 3
-    readonly property int minimumWidth: 3 // Always want to be visible.
 
     states: [
         State {
