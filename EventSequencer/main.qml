@@ -52,6 +52,11 @@ ApplicationWindow {
                 }
             }
             Action {
+                text: "Revert"
+                onTriggered: document.load(document.currentUrl)
+                enabled: document.currentUrl !== ""
+            }
+            Action {
                 text: "Quit"
                 onTriggered: Qt.quit()
             }
