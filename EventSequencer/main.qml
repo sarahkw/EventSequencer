@@ -193,6 +193,10 @@ ApplicationWindow {
                 }
             }
             CustomMenuItem {
+                text: "JS Garbage Collect"
+                onTriggered: gc()
+            }
+            CustomMenuItem {
                 text: "Dump Protobuf"
                 onTriggered: {
                     document.dumpProtobuf()
