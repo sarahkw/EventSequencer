@@ -38,6 +38,7 @@ Window {
                     r.channel = chan.text
                     r.startFrame = sf.text
                     r.length = leng.text
+                    r.markAsPlaced()
                 }
             }
         }
@@ -46,7 +47,7 @@ Window {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            model: document
+            model: document.stripsModel
             delegate: Row {
                 Button {
                     text: "X"
