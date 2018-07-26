@@ -6,10 +6,17 @@ import QtQuick.Controls 2.2
 import eventsequencer 1.0 as ES
 
 Window {
-    title: "Strips List"
-    flags: Qt.Dialog
     width: 640
     height: 480
+    title: "Strips List"
+    flags: Qt.Dialog
+
+    property bool destroyOnHide: false
+    onVisibleChanged: {
+        if (destroyOnHide && visible === false) {
+            destroy()
+        }
+    }
 
     property ES.Document document
 

@@ -155,7 +155,8 @@ ApplicationWindow {
                     var component = Qt.createComponent("StripsList.qml")
                     component.createObject(appwin, {
                                                visible: true,
-                                               document: document
+                                               document: document,
+                                               destroyOnHide: true
                                            })
                 }
             }
@@ -164,7 +165,8 @@ ApplicationWindow {
                 onTriggered: {
                     var component = Qt.createComponent("ResourceCreator.qml")
                     component.createObject(appwin, {
-                                               visible: true
+                                               visible: true,
+                                               destroyOnHide: true
                                            })
                 }
             }

@@ -11,6 +11,13 @@ Window {
     title: "Resource Creator"
     flags: Qt.Dialog
 
+    property bool destroyOnHide: false
+    onVisibleChanged: {
+        if (destroyOnHide && visible === false) {
+            destroy()
+        }
+    }
+
     ES.ResourceCreatorControl {
         id: rcControl
     }
