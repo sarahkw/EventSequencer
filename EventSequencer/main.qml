@@ -161,7 +161,12 @@ ApplicationWindow {
             }
             Action {
                 text: "Resource Creator"
-                onTriggered: resourceCreator.visible = true
+                onTriggered: {
+                    var component = Qt.createComponent("ResourceCreator.qml")
+                    component.createObject(appwin, {
+                                               visible: true
+                                           })
+                }
             }
         }
         CustomMenu {
@@ -202,10 +207,6 @@ ApplicationWindow {
         text: "Add"
         onTriggered: addMenu.open()
         shortcut: "Shift+A"
-    }
-
-    ResourceCreator {
-        id: resourceCreator
     }
 
     ES.Document {
