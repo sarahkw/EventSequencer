@@ -98,7 +98,19 @@ class Document : public QObject
     Q_PROPERTY(QString fileResourceDirectory MEMBER fileResourceDirectory_ NOTIFY fileResourceDirectoryChanged)
 
     QString fileForkedFromChecksum_;
-    Q_PROPERTY(QString fileForkedFromChecksum MEMBER fileForkedFromChecksum_ NOTIFY fileForkedFromChecksumChanged)
+public:
+    enum class ForkEditFlag {
+        None,
+        Set,
+        Clear,
+        Custom
+    };
+    Q_ENUMS(ForkEditFlag)
+private:
+    ForkEditFlag fileForkEditFlag_ = ForkEditFlag::None;
+
+    Q_PROPERTY(QString fileForkedFromChecksum READ fileForkedFromChecksum WRITE setFileForkedFromChecksum NOTIFY fileForkedFromChecksumChanged)
+    Q_PROPERTY(ForkEditFlag fileForkEditFlag READ fileForkEditFlag WRITE setFileForkEditFlag NOTIFY fileForkEditFlagChanged)
 
 public:
 
@@ -116,10 +128,6 @@ public:
 
     Q_INVOKABLE void reset();
     Q_INVOKABLE void save(const QUrl& url);
-    Q_INVOKABLE void forkAs(const QUrl& url);
-private:
-    void saveInternal(const QUrl& url, bool markAsFork);
-public:
     Q_INVOKABLE void load(const QUrl& url);
     Q_INVOKABLE void dumpProtobuf() const;
 
@@ -143,9 +151,11 @@ public:
     QUrl currentUrl() const;
     void setCurrentUrl(const QUrl &currentUrl);
 
-private:
+    QString fileForkedFromChecksum() const;
     void setFileForkedFromChecksum(const QString &fileForkedFromChecksum);
-public:
+
+    ForkEditFlag fileForkEditFlag() const;
+    void setFileForkEditFlag(const ForkEditFlag &fileForkEditFlag);
 
 private:
 
@@ -169,6 +179,7 @@ signals:
     void fileResourceDirectoryChanged();
 
     void fileForkedFromChecksumChanged();
+    void fileForkEditFlagChanged();
 
     void stripAfterPlaced(Strip* strip);
     void stripBeforeDelete(Strip* strip);

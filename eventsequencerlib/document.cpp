@@ -207,11 +207,29 @@ void Document::setCurrentUrl(const QUrl &currentUrl)
     }
 }
 
+QString Document::fileForkedFromChecksum() const
+{
+    return fileForkedFromChecksum_;
+}
+
 void Document::setFileForkedFromChecksum(const QString &fileForkedFromChecksum)
 {
     if (fileForkedFromChecksum_ != fileForkedFromChecksum) {
         fileForkedFromChecksum_ = fileForkedFromChecksum;
         emit fileForkedFromChecksumChanged();
+    }
+}
+
+Document::ForkEditFlag Document::fileForkEditFlag() const
+{
+    return fileForkEditFlag_;
+}
+
+void Document::setFileForkEditFlag(const ForkEditFlag &fileForkEditFlag)
+{
+    if (fileForkEditFlag_ != fileForkEditFlag) {
+        fileForkEditFlag_ = fileForkEditFlag;
+        emit fileForkEditFlagChanged();
     }
 }
 
@@ -351,16 +369,8 @@ void Document::reset()
     }
 
     setCurrentUrl(QUrl());
-}
-
-void Document::save(const QUrl& url)
-{
-    saveInternal(url, false);
-}
-
-void Document::forkAs(const QUrl &url)
-{
-    saveInternal(url, true);
+    setFileForkedFromChecksum(QString());
+    setFileForkEditFlag(ForkEditFlag::None);
 }
 
 namespace {
@@ -389,7 +399,7 @@ struct FileHeader {
 constexpr char FileHeader::MAGIC[];
 }
 
-void Document::saveInternal(const QUrl &url, bool markAsFork)
+void Document::save(const QUrl& url)
 {
     // TODO Error handling! Need to do more than just write to stdout.
 
@@ -403,8 +413,16 @@ void Document::saveInternal(const QUrl &url, bool markAsFork)
         hasher.addData(serializedDocument);
         pbf.set_checksum(hasher.result().toHex().toStdString());
     }
-    if (markAsFork) {
+    switch (fileForkEditFlag()) {
+    case ForkEditFlag::None:
+    case ForkEditFlag::Custom:
+        break;
+    case ForkEditFlag::Set:
         setFileForkedFromChecksum(QString::fromStdString(pbf.checksum()));
+        break;
+    case ForkEditFlag::Clear:
+        setFileForkedFromChecksum(QString());
+        break;
     }
     pbf.set_forkedfromchecksum(fileForkedFromChecksum_.toStdString());
 
@@ -439,6 +457,7 @@ void Document::saveInternal(const QUrl &url, bool markAsFork)
         qWarning() << "Failure making backup (Save was OK)";
     }
 
+    setFileForkEditFlag(ForkEditFlag::None);
     setCurrentUrl(url);
 }
 
