@@ -1001,9 +1001,17 @@ ApplicationWindow {
                                     }
                                     FrameTextField {
                                         document: dokument
-                                        shouldShowTime: showSecondsAction.checked
                                         frame: selectedCppStrip.length
-                                        onFrameEditingFinished: selectedCppStrip.length = frame
+                                        shouldShowTime: showSecondsAction.checked
+                                        onFrameEditingFinished: {
+                                            selectedCppStrip.length = frame
+                                            // Need to refresh because:
+                                            // (1) Length is 1
+                                            // (2) User puts in length -10, but it's rejected and length is set back to 1
+                                            // (3) UI still shows -10. Frame didn't actually change, so text
+                                            //     doesn't get redrawn.
+                                            refreshText()
+                                        }
                                         Layout.fillWidth: true
                                     }
                                     Label {

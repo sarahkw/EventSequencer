@@ -19,6 +19,10 @@ ESTextField {
         }
     }
 
+    function refreshText()
+    {
+        text = Qt.binding(function () { return displayFrameNumber(frame); });
+    }
     text: displayFrameNumber(frame)
 
     onEsEditingFinished: {
@@ -30,7 +34,7 @@ ESTextField {
         if (success) {
             frameEditingFinished(result[1])
         } else {
-            text = Qt.binding(function () { return displayFrameNumber(frame); });
+            refreshText()
         }
     }
 }

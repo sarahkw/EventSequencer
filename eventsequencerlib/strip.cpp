@@ -50,10 +50,9 @@ int Strip::length() const
 
 void Strip::setLength(int length)
 {
-    if (length < 0) {
-       length = 0;
+    if (length < 1) {
+        length = 1;
     }
-
     if (length_ != length) {
         auto oldLength = length_;
         length_ = length;
