@@ -1,5 +1,5 @@
-#ifndef BADAUDIOCHANNEL_H
-#define BADAUDIOCHANNEL_H
+#ifndef PLAYLISTCHANNEL_H
+#define PLAYLISTCHANNEL_H
 
 #include "channelbase.h"
 
@@ -7,12 +7,12 @@
 
 namespace channel {
 
-class BadAudioChannel : public ChannelBase
+class PlaylistChannel : public ChannelBase
 {
     Q_OBJECT
 
 public:
-    explicit BadAudioChannel(QObject *parent = nullptr);
+    explicit PlaylistChannel(QObject *parent = nullptr);
 
     virtual void toPb(pb::ChannelData& pb) const override;
     virtual void fromPb(const pb::ChannelData& pb) override;
@@ -26,4 +26,4 @@ public slots:
 
 } // namespace channel
 
-#endif // BADAUDIOCHANNEL_H
+#endif // PLAYLISTCHANNEL_H

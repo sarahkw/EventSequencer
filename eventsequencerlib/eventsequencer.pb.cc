@@ -34,15 +34,18 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* Strip_BadJs_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Strip_BadJs_reflection_ = NULL;
-const ::google::protobuf::Descriptor* Strip_BadAudio_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* Strip_Audio_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  Strip_BadAudio_reflection_ = NULL;
+  Strip_Audio_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Strip_Text_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Strip_Text_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Strip_Label_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Strip_Label_reflection_ = NULL;
+const ::google::protobuf::Descriptor* Strip_Playlist_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Strip_Playlist_reflection_ = NULL;
 const ::google::protobuf::Descriptor* ChannelData_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ChannelData_reflection_ = NULL;
@@ -50,9 +53,10 @@ struct ChannelDataOneofInstance {
   const ::pb::ChannelData_BadClock* badclock_;
   const ::pb::ChannelData_BadJs* badjs_;
   const ::pb::ChannelData_Text* text_;
-  const ::pb::ChannelData_BadAudio* badaudio_;
+  const ::pb::ChannelData_Audio* audio_;
   const ::pb::ChannelData_Label* label_;
   const ::pb::ChannelData_Collate* collate_;
+  const ::pb::ChannelData_Playlist* playlist_;
 }* ChannelData_default_oneof_instance_ = NULL;
 const ::google::protobuf::Descriptor* ChannelData_BadClock_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
@@ -63,15 +67,18 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* ChannelData_Text_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ChannelData_Text_reflection_ = NULL;
-const ::google::protobuf::Descriptor* ChannelData_BadAudio_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* ChannelData_Audio_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  ChannelData_BadAudio_reflection_ = NULL;
+  ChannelData_Audio_reflection_ = NULL;
 const ::google::protobuf::Descriptor* ChannelData_Label_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ChannelData_Label_reflection_ = NULL;
 const ::google::protobuf::Descriptor* ChannelData_Collate_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ChannelData_Collate_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ChannelData_Playlist_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ChannelData_Playlist_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Document_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Document_reflection_ = NULL;
@@ -113,15 +120,16 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Resource, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Resource, _is_default_instance_));
   Strip_descriptor_ = file->message_type(1);
-  static const int Strip_offsets_[8] = {
+  static const int Strip_offsets_[9] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, channel_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, startframe_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, length_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, resource_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, badjs_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, badaudio_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, audio_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, text_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, label_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, playlist_),
   };
   Strip_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -149,20 +157,20 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       sizeof(Strip_BadJs),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_BadJs, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_BadJs, _is_default_instance_));
-  Strip_BadAudio_descriptor_ = Strip_descriptor_->nested_type(1);
-  static const int Strip_BadAudio_offsets_[1] = {
+  Strip_Audio_descriptor_ = Strip_descriptor_->nested_type(1);
+  static const int Strip_Audio_offsets_[1] = {
   };
-  Strip_BadAudio_reflection_ =
+  Strip_Audio_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
-      Strip_BadAudio_descriptor_,
-      Strip_BadAudio::default_instance_,
-      Strip_BadAudio_offsets_,
+      Strip_Audio_descriptor_,
+      Strip_Audio::default_instance_,
+      Strip_Audio_offsets_,
       -1,
       -1,
       -1,
-      sizeof(Strip_BadAudio),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_BadAudio, _internal_metadata_),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_BadAudio, _is_default_instance_));
+      sizeof(Strip_Audio),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_Audio, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_Audio, _is_default_instance_));
   Strip_Text_descriptor_ = Strip_descriptor_->nested_type(2);
   static const int Strip_Text_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_Text, content_),
@@ -193,14 +201,29 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       sizeof(Strip_Label),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_Label, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_Label, _is_default_instance_));
+  Strip_Playlist_descriptor_ = Strip_descriptor_->nested_type(4);
+  static const int Strip_Playlist_offsets_[1] = {
+  };
+  Strip_Playlist_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      Strip_Playlist_descriptor_,
+      Strip_Playlist::default_instance_,
+      Strip_Playlist_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(Strip_Playlist),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_Playlist, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_Playlist, _is_default_instance_));
   ChannelData_descriptor_ = file->message_type(2);
-  static const int ChannelData_offsets_[7] = {
+  static const int ChannelData_offsets_[8] = {
     PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, badclock_),
     PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, badjs_),
     PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, text_),
-    PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, badaudio_),
+    PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, audio_),
     PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, label_),
     PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, collate_),
+    PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, playlist_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData, channel_),
   };
   ChannelData_reflection_ =
@@ -259,20 +282,20 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       sizeof(ChannelData_Text),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Text, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Text, _is_default_instance_));
-  ChannelData_BadAudio_descriptor_ = ChannelData_descriptor_->nested_type(3);
-  static const int ChannelData_BadAudio_offsets_[1] = {
+  ChannelData_Audio_descriptor_ = ChannelData_descriptor_->nested_type(3);
+  static const int ChannelData_Audio_offsets_[1] = {
   };
-  ChannelData_BadAudio_reflection_ =
+  ChannelData_Audio_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
-      ChannelData_BadAudio_descriptor_,
-      ChannelData_BadAudio::default_instance_,
-      ChannelData_BadAudio_offsets_,
+      ChannelData_Audio_descriptor_,
+      ChannelData_Audio::default_instance_,
+      ChannelData_Audio_offsets_,
       -1,
       -1,
       -1,
-      sizeof(ChannelData_BadAudio),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_BadAudio, _internal_metadata_),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_BadAudio, _is_default_instance_));
+      sizeof(ChannelData_Audio),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Audio, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Audio, _is_default_instance_));
   ChannelData_Label_descriptor_ = ChannelData_descriptor_->nested_type(4);
   static const int ChannelData_Label_offsets_[1] = {
   };
@@ -303,6 +326,20 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       sizeof(ChannelData_Collate),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Collate, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Collate, _is_default_instance_));
+  ChannelData_Playlist_descriptor_ = ChannelData_descriptor_->nested_type(6);
+  static const int ChannelData_Playlist_offsets_[1] = {
+  };
+  ChannelData_Playlist_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      ChannelData_Playlist_descriptor_,
+      ChannelData_Playlist::default_instance_,
+      ChannelData_Playlist_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(ChannelData_Playlist),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Playlist, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Playlist, _is_default_instance_));
   Document_descriptor_ = file->message_type(3);
   static const int Document_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, strips_),
@@ -375,11 +412,13 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       Strip_BadJs_descriptor_, &Strip_BadJs::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-      Strip_BadAudio_descriptor_, &Strip_BadAudio::default_instance());
+      Strip_Audio_descriptor_, &Strip_Audio::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       Strip_Text_descriptor_, &Strip_Text::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       Strip_Label_descriptor_, &Strip_Label::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      Strip_Playlist_descriptor_, &Strip_Playlist::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       ChannelData_descriptor_, &ChannelData::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -389,11 +428,13 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       ChannelData_Text_descriptor_, &ChannelData_Text::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-      ChannelData_BadAudio_descriptor_, &ChannelData_BadAudio::default_instance());
+      ChannelData_Audio_descriptor_, &ChannelData_Audio::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       ChannelData_Label_descriptor_, &ChannelData_Label::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       ChannelData_Collate_descriptor_, &ChannelData_Collate::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      ChannelData_Playlist_descriptor_, &ChannelData_Playlist::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       Document_descriptor_, &Document::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -421,12 +462,14 @@ void protobuf_ShutdownFile_eventsequencer_2eproto() {
   delete Strip_reflection_;
   delete Strip_BadJs::default_instance_;
   delete Strip_BadJs_reflection_;
-  delete Strip_BadAudio::default_instance_;
-  delete Strip_BadAudio_reflection_;
+  delete Strip_Audio::default_instance_;
+  delete Strip_Audio_reflection_;
   delete Strip_Text::default_instance_;
   delete Strip_Text_reflection_;
   delete Strip_Label::default_instance_;
   delete Strip_Label_reflection_;
+  delete Strip_Playlist::default_instance_;
+  delete Strip_Playlist_reflection_;
   delete ChannelData::default_instance_;
   delete ChannelData_default_oneof_instance_;
   delete ChannelData_reflection_;
@@ -436,12 +479,14 @@ void protobuf_ShutdownFile_eventsequencer_2eproto() {
   delete ChannelData_BadJs_reflection_;
   delete ChannelData_Text::default_instance_;
   delete ChannelData_Text_reflection_;
-  delete ChannelData_BadAudio::default_instance_;
-  delete ChannelData_BadAudio_reflection_;
+  delete ChannelData_Audio::default_instance_;
+  delete ChannelData_Audio_reflection_;
   delete ChannelData_Label::default_instance_;
   delete ChannelData_Label_reflection_;
   delete ChannelData_Collate::default_instance_;
   delete ChannelData_Collate_reflection_;
+  delete ChannelData_Playlist::default_instance_;
+  delete ChannelData_Playlist_reflection_;
   delete Document::default_instance_;
   delete Document_reflection_;
   delete File::default_instance_;
@@ -460,66 +505,73 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\024eventsequencer.proto\022\002pb\"@\n\010Resource\022\022"
     "\n\010filePath\030\001 \001(\tH\000\022\023\n\tmanagedId\030\002 \001(\tH\000B"
-    "\013\n\treference\"\270\002\n\005Strip\022\017\n\007channel\030\001 \001(\005\022"
+    "\013\n\treference\"\341\002\n\005Strip\022\017\n\007channel\030\001 \001(\005\022"
     "\022\n\nstartFrame\030\002 \001(\005\022\016\n\006length\030\003 \001(\005\022\036\n\010r"
     "esource\030\005 \001(\0132\014.pb.Resource\022\036\n\005badJs\030\n \001"
-    "(\0132\017.pb.Strip.BadJs\022$\n\010badAudio\030\013 \001(\0132\022."
-    "pb.Strip.BadAudio\022\034\n\004text\030\014 \001(\0132\016.pb.Str"
-    "ip.Text\022\036\n\005label\030\r \001(\0132\017.pb.Strip.Label\032"
-    "\027\n\005BadJs\022\016\n\006script\030\001 \001(\t\032\n\n\010BadAudio\032\027\n\004"
-    "Text\022\017\n\007content\030\001 \001(\t\032\030\n\005Label\022\017\n\007conten"
-    "t\030\001 \001(\t\"\222\003\n\013ChannelData\022,\n\010badClock\030\n \001("
-    "\0132\030.pb.ChannelData.BadClockH\000\022&\n\005badJs\030\013"
-    " \001(\0132\025.pb.ChannelData.BadJsH\000\022$\n\004text\030\014 "
-    "\001(\0132\024.pb.ChannelData.TextH\000\022,\n\010badAudio\030"
-    "\r \001(\0132\030.pb.ChannelData.BadAudioH\000\022&\n\005lab"
-    "el\030\016 \001(\0132\025.pb.ChannelData.LabelH\000\022*\n\007col"
-    "late\030\017 \001(\0132\027.pb.ChannelData.CollateH\000\032\n\n"
-    "\010BadClock\032\007\n\005BadJs\032\035\n\004Text\022\017\n\007content\030\002 "
-    "\001(\tJ\004\010\001\020\002\032\n\n\010BadAudio\032\007\n\005Label\0321\n\007Collat"
-    "e\022\023\n\013channelFrom\030\n \001(\005\022\021\n\tchannelTo\030\013 \001("
-    "\005B\t\n\007channel\"\324\001\n\010Document\022\031\n\006strips\030\001 \003("
-    "\0132\t.pb.Strip\022\027\n\017framesPerSecond\030\002 \001(\005\022\022\n"
-    "\nstartFrame\030\004 \001(\005\022\020\n\010endFrame\030\005 \001(\005\022,\n\010c"
-    "hannels\030\003 \003(\0132\032.pb.Document.ChannelsEntr"
-    "y\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022\036\n\005value"
-    "\030\002 \001(\0132\017.pb.ChannelData:\0028\001\"T\n\004File\022\036\n\010d"
-    "ocument\030\001 \001(\0132\014.pb.Document\022\020\n\010checksum\030"
-    "\002 \001(\t\022\032\n\022forkedFromChecksum\030\003 \001(\t\"%\n\023Man"
-    "agedResourceFile\022\016\n\006suffix\030\001 \001(\tb\006proto3", 1160);
+    "(\0132\017.pb.Strip.BadJs\022\036\n\005audio\030\013 \001(\0132\017.pb."
+    "Strip.Audio\022\034\n\004text\030\014 \001(\0132\016.pb.Strip.Tex"
+    "t\022\036\n\005label\030\r \001(\0132\017.pb.Strip.Label\022$\n\010pla"
+    "ylist\030\016 \001(\0132\022.pb.Strip.Playlist\032\027\n\005BadJs"
+    "\022\016\n\006script\030\001 \001(\t\032\007\n\005Audio\032\027\n\004Text\022\017\n\007con"
+    "tent\030\001 \001(\t\032\030\n\005Label\022\017\n\007content\030\001 \001(\t\032\n\n\010"
+    "Playlist\"\303\003\n\013ChannelData\022,\n\010badClock\030\n \001"
+    "(\0132\030.pb.ChannelData.BadClockH\000\022&\n\005badJs\030"
+    "\013 \001(\0132\025.pb.ChannelData.BadJsH\000\022$\n\004text\030\014"
+    " \001(\0132\024.pb.ChannelData.TextH\000\022&\n\005audio\030\r "
+    "\001(\0132\025.pb.ChannelData.AudioH\000\022&\n\005label\030\016 "
+    "\001(\0132\025.pb.ChannelData.LabelH\000\022*\n\007collate\030"
+    "\017 \001(\0132\027.pb.ChannelData.CollateH\000\022,\n\010play"
+    "list\030\020 \001(\0132\030.pb.ChannelData.PlaylistH\000\032\n"
+    "\n\010BadClock\032\007\n\005BadJs\032\035\n\004Text\022\017\n\007content\030\002"
+    " \001(\tJ\004\010\001\020\002\032\007\n\005Audio\032\007\n\005Label\0321\n\007Collate\022"
+    "\023\n\013channelFrom\030\n \001(\005\022\021\n\tchannelTo\030\013 \001(\005\032"
+    "\n\n\010PlaylistB\t\n\007channel\"\324\001\n\010Document\022\031\n\006s"
+    "trips\030\001 \003(\0132\t.pb.Strip\022\027\n\017framesPerSecon"
+    "d\030\002 \001(\005\022\022\n\nstartFrame\030\004 \001(\005\022\020\n\010endFrame\030"
+    "\005 \001(\005\022,\n\010channels\030\003 \003(\0132\032.pb.Document.Ch"
+    "annelsEntry\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001("
+    "\005\022\036\n\005value\030\002 \001(\0132\017.pb.ChannelData:\0028\001\"T\n"
+    "\004File\022\036\n\010document\030\001 \001(\0132\014.pb.Document\022\020\n"
+    "\010checksum\030\002 \001(\t\022\032\n\022forkedFromChecksum\030\003 "
+    "\001(\t\"%\n\023ManagedResourceFile\022\016\n\006suffix\030\001 \001"
+    "(\tb\006proto3", 1250);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "eventsequencer.proto", &protobuf_RegisterTypes);
   Resource::default_instance_ = new Resource();
   Resource_default_oneof_instance_ = new ResourceOneofInstance();
   Strip::default_instance_ = new Strip();
   Strip_BadJs::default_instance_ = new Strip_BadJs();
-  Strip_BadAudio::default_instance_ = new Strip_BadAudio();
+  Strip_Audio::default_instance_ = new Strip_Audio();
   Strip_Text::default_instance_ = new Strip_Text();
   Strip_Label::default_instance_ = new Strip_Label();
+  Strip_Playlist::default_instance_ = new Strip_Playlist();
   ChannelData::default_instance_ = new ChannelData();
   ChannelData_default_oneof_instance_ = new ChannelDataOneofInstance();
   ChannelData_BadClock::default_instance_ = new ChannelData_BadClock();
   ChannelData_BadJs::default_instance_ = new ChannelData_BadJs();
   ChannelData_Text::default_instance_ = new ChannelData_Text();
-  ChannelData_BadAudio::default_instance_ = new ChannelData_BadAudio();
+  ChannelData_Audio::default_instance_ = new ChannelData_Audio();
   ChannelData_Label::default_instance_ = new ChannelData_Label();
   ChannelData_Collate::default_instance_ = new ChannelData_Collate();
+  ChannelData_Playlist::default_instance_ = new ChannelData_Playlist();
   Document::default_instance_ = new Document();
   File::default_instance_ = new File();
   ManagedResourceFile::default_instance_ = new ManagedResourceFile();
   Resource::default_instance_->InitAsDefaultInstance();
   Strip::default_instance_->InitAsDefaultInstance();
   Strip_BadJs::default_instance_->InitAsDefaultInstance();
-  Strip_BadAudio::default_instance_->InitAsDefaultInstance();
+  Strip_Audio::default_instance_->InitAsDefaultInstance();
   Strip_Text::default_instance_->InitAsDefaultInstance();
   Strip_Label::default_instance_->InitAsDefaultInstance();
+  Strip_Playlist::default_instance_->InitAsDefaultInstance();
   ChannelData::default_instance_->InitAsDefaultInstance();
   ChannelData_BadClock::default_instance_->InitAsDefaultInstance();
   ChannelData_BadJs::default_instance_->InitAsDefaultInstance();
   ChannelData_Text::default_instance_->InitAsDefaultInstance();
-  ChannelData_BadAudio::default_instance_->InitAsDefaultInstance();
+  ChannelData_Audio::default_instance_->InitAsDefaultInstance();
   ChannelData_Label::default_instance_->InitAsDefaultInstance();
   ChannelData_Collate::default_instance_->InitAsDefaultInstance();
+  ChannelData_Playlist::default_instance_->InitAsDefaultInstance();
   Document::default_instance_->InitAsDefaultInstance();
   File::default_instance_->InitAsDefaultInstance();
   ManagedResourceFile::default_instance_->InitAsDefaultInstance();
@@ -1269,73 +1321,73 @@ void Strip_BadJs::InternalSwap(Strip_BadJs* other) {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-Strip_BadAudio::Strip_BadAudio()
+Strip_Audio::Strip_Audio()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:pb.Strip.BadAudio)
+  // @@protoc_insertion_point(constructor:pb.Strip.Audio)
 }
 
-void Strip_BadAudio::InitAsDefaultInstance() {
+void Strip_Audio::InitAsDefaultInstance() {
   _is_default_instance_ = true;
 }
 
-Strip_BadAudio::Strip_BadAudio(const Strip_BadAudio& from)
+Strip_Audio::Strip_Audio(const Strip_Audio& from)
   : ::google::protobuf::Message(),
     _internal_metadata_(NULL) {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:pb.Strip.BadAudio)
+  // @@protoc_insertion_point(copy_constructor:pb.Strip.Audio)
 }
 
-void Strip_BadAudio::SharedCtor() {
+void Strip_Audio::SharedCtor() {
     _is_default_instance_ = false;
   _cached_size_ = 0;
 }
 
-Strip_BadAudio::~Strip_BadAudio() {
-  // @@protoc_insertion_point(destructor:pb.Strip.BadAudio)
+Strip_Audio::~Strip_Audio() {
+  // @@protoc_insertion_point(destructor:pb.Strip.Audio)
   SharedDtor();
 }
 
-void Strip_BadAudio::SharedDtor() {
+void Strip_Audio::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void Strip_BadAudio::SetCachedSize(int size) const {
+void Strip_Audio::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Strip_BadAudio::descriptor() {
+const ::google::protobuf::Descriptor* Strip_Audio::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return Strip_BadAudio_descriptor_;
+  return Strip_Audio_descriptor_;
 }
 
-const Strip_BadAudio& Strip_BadAudio::default_instance() {
+const Strip_Audio& Strip_Audio::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_eventsequencer_2eproto();
   return *default_instance_;
 }
 
-Strip_BadAudio* Strip_BadAudio::default_instance_ = NULL;
+Strip_Audio* Strip_Audio::default_instance_ = NULL;
 
-Strip_BadAudio* Strip_BadAudio::New(::google::protobuf::Arena* arena) const {
-  Strip_BadAudio* n = new Strip_BadAudio;
+Strip_Audio* Strip_Audio::New(::google::protobuf::Arena* arena) const {
+  Strip_Audio* n = new Strip_Audio;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void Strip_BadAudio::Clear() {
-// @@protoc_insertion_point(message_clear_start:pb.Strip.BadAudio)
+void Strip_Audio::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.Strip.Audio)
 }
 
-bool Strip_BadAudio::MergePartialFromCodedStream(
+bool Strip_Audio::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:pb.Strip.BadAudio)
+  // @@protoc_insertion_point(parse_start:pb.Strip.Audio)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
@@ -1349,29 +1401,29 @@ bool Strip_BadAudio::MergePartialFromCodedStream(
     DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
   }
 success:
-  // @@protoc_insertion_point(parse_success:pb.Strip.BadAudio)
+  // @@protoc_insertion_point(parse_success:pb.Strip.Audio)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:pb.Strip.BadAudio)
+  // @@protoc_insertion_point(parse_failure:pb.Strip.Audio)
   return false;
 #undef DO_
 }
 
-void Strip_BadAudio::SerializeWithCachedSizes(
+void Strip_Audio::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:pb.Strip.BadAudio)
-  // @@protoc_insertion_point(serialize_end:pb.Strip.BadAudio)
+  // @@protoc_insertion_point(serialize_start:pb.Strip.Audio)
+  // @@protoc_insertion_point(serialize_end:pb.Strip.Audio)
 }
 
-::google::protobuf::uint8* Strip_BadAudio::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* Strip_Audio::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:pb.Strip.BadAudio)
-  // @@protoc_insertion_point(serialize_to_array_end:pb.Strip.BadAudio)
+  // @@protoc_insertion_point(serialize_to_array_start:pb.Strip.Audio)
+  // @@protoc_insertion_point(serialize_to_array_end:pb.Strip.Audio)
   return target;
 }
 
-int Strip_BadAudio::ByteSize() const {
-// @@protoc_insertion_point(message_byte_size_start:pb.Strip.BadAudio)
+int Strip_Audio::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.Strip.Audio)
   int total_size = 0;
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -1380,63 +1432,63 @@ int Strip_BadAudio::ByteSize() const {
   return total_size;
 }
 
-void Strip_BadAudio::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:pb.Strip.BadAudio)
+void Strip_Audio::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.Strip.Audio)
   if (GOOGLE_PREDICT_FALSE(&from == this)) {
     ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
   }
-  const Strip_BadAudio* source = 
-      ::google::protobuf::internal::DynamicCastToGenerated<const Strip_BadAudio>(
+  const Strip_Audio* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const Strip_Audio>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.Strip.BadAudio)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.Strip.Audio)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.Strip.BadAudio)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.Strip.Audio)
     MergeFrom(*source);
   }
 }
 
-void Strip_BadAudio::MergeFrom(const Strip_BadAudio& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:pb.Strip.BadAudio)
+void Strip_Audio::MergeFrom(const Strip_Audio& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.Strip.Audio)
   if (GOOGLE_PREDICT_FALSE(&from == this)) {
     ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
   }
 }
 
-void Strip_BadAudio::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:pb.Strip.BadAudio)
+void Strip_Audio::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.Strip.Audio)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Strip_BadAudio::CopyFrom(const Strip_BadAudio& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pb.Strip.BadAudio)
+void Strip_Audio::CopyFrom(const Strip_Audio& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.Strip.Audio)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Strip_BadAudio::IsInitialized() const {
+bool Strip_Audio::IsInitialized() const {
 
   return true;
 }
 
-void Strip_BadAudio::Swap(Strip_BadAudio* other) {
+void Strip_Audio::Swap(Strip_Audio* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void Strip_BadAudio::InternalSwap(Strip_BadAudio* other) {
+void Strip_Audio::InternalSwap(Strip_Audio* other) {
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata Strip_BadAudio::GetMetadata() const {
+::google::protobuf::Metadata Strip_Audio::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = Strip_BadAudio_descriptor_;
-  metadata.reflection = Strip_BadAudio_reflection_;
+  metadata.descriptor = Strip_Audio_descriptor_;
+  metadata.reflection = Strip_Audio_reflection_;
   return metadata;
 }
 
@@ -1916,14 +1968,192 @@ void Strip_Label::InternalSwap(Strip_Label* other) {
 // -------------------------------------------------------------------
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+Strip_Playlist::Strip_Playlist()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.Strip.Playlist)
+}
+
+void Strip_Playlist::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+}
+
+Strip_Playlist::Strip_Playlist(const Strip_Playlist& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:pb.Strip.Playlist)
+}
+
+void Strip_Playlist::SharedCtor() {
+    _is_default_instance_ = false;
+  _cached_size_ = 0;
+}
+
+Strip_Playlist::~Strip_Playlist() {
+  // @@protoc_insertion_point(destructor:pb.Strip.Playlist)
+  SharedDtor();
+}
+
+void Strip_Playlist::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void Strip_Playlist::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Strip_Playlist::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Strip_Playlist_descriptor_;
+}
+
+const Strip_Playlist& Strip_Playlist::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_eventsequencer_2eproto();
+  return *default_instance_;
+}
+
+Strip_Playlist* Strip_Playlist::default_instance_ = NULL;
+
+Strip_Playlist* Strip_Playlist::New(::google::protobuf::Arena* arena) const {
+  Strip_Playlist* n = new Strip_Playlist;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void Strip_Playlist::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.Strip.Playlist)
+}
+
+bool Strip_Playlist::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.Strip.Playlist)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+  handle_unusual:
+    if (tag == 0 ||
+        ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      goto success;
+    }
+    DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.Strip.Playlist)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.Strip.Playlist)
+  return false;
+#undef DO_
+}
+
+void Strip_Playlist::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.Strip.Playlist)
+  // @@protoc_insertion_point(serialize_end:pb.Strip.Playlist)
+}
+
+::google::protobuf::uint8* Strip_Playlist::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:pb.Strip.Playlist)
+  // @@protoc_insertion_point(serialize_to_array_end:pb.Strip.Playlist)
+  return target;
+}
+
+int Strip_Playlist::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.Strip.Playlist)
+  int total_size = 0;
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Strip_Playlist::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.Strip.Playlist)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  const Strip_Playlist* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const Strip_Playlist>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.Strip.Playlist)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.Strip.Playlist)
+    MergeFrom(*source);
+  }
+}
+
+void Strip_Playlist::MergeFrom(const Strip_Playlist& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.Strip.Playlist)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+}
+
+void Strip_Playlist::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.Strip.Playlist)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Strip_Playlist::CopyFrom(const Strip_Playlist& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.Strip.Playlist)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Strip_Playlist::IsInitialized() const {
+
+  return true;
+}
+
+void Strip_Playlist::Swap(Strip_Playlist* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void Strip_Playlist::InternalSwap(Strip_Playlist* other) {
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata Strip_Playlist::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = Strip_Playlist_descriptor_;
+  metadata.reflection = Strip_Playlist_reflection_;
+  return metadata;
+}
+
+
+// -------------------------------------------------------------------
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Strip::kChannelFieldNumber;
 const int Strip::kStartFrameFieldNumber;
 const int Strip::kLengthFieldNumber;
 const int Strip::kResourceFieldNumber;
 const int Strip::kBadJsFieldNumber;
-const int Strip::kBadAudioFieldNumber;
+const int Strip::kAudioFieldNumber;
 const int Strip::kTextFieldNumber;
 const int Strip::kLabelFieldNumber;
+const int Strip::kPlaylistFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Strip::Strip()
@@ -1936,9 +2166,10 @@ void Strip::InitAsDefaultInstance() {
   _is_default_instance_ = true;
   resource_ = const_cast< ::pb::Resource*>(&::pb::Resource::default_instance());
   badjs_ = const_cast< ::pb::Strip_BadJs*>(&::pb::Strip_BadJs::default_instance());
-  badaudio_ = const_cast< ::pb::Strip_BadAudio*>(&::pb::Strip_BadAudio::default_instance());
+  audio_ = const_cast< ::pb::Strip_Audio*>(&::pb::Strip_Audio::default_instance());
   text_ = const_cast< ::pb::Strip_Text*>(&::pb::Strip_Text::default_instance());
   label_ = const_cast< ::pb::Strip_Label*>(&::pb::Strip_Label::default_instance());
+  playlist_ = const_cast< ::pb::Strip_Playlist*>(&::pb::Strip_Playlist::default_instance());
 }
 
 Strip::Strip(const Strip& from)
@@ -1957,9 +2188,10 @@ void Strip::SharedCtor() {
   length_ = 0;
   resource_ = NULL;
   badjs_ = NULL;
-  badaudio_ = NULL;
+  audio_ = NULL;
   text_ = NULL;
   label_ = NULL;
+  playlist_ = NULL;
 }
 
 Strip::~Strip() {
@@ -1971,9 +2203,10 @@ void Strip::SharedDtor() {
   if (this != default_instance_) {
     delete resource_;
     delete badjs_;
-    delete badaudio_;
+    delete audio_;
     delete text_;
     delete label_;
+    delete playlist_;
   }
 }
 
@@ -2026,12 +2259,14 @@ void Strip::Clear() {
   resource_ = NULL;
   if (GetArenaNoVirtual() == NULL && badjs_ != NULL) delete badjs_;
   badjs_ = NULL;
-  if (GetArenaNoVirtual() == NULL && badaudio_ != NULL) delete badaudio_;
-  badaudio_ = NULL;
+  if (GetArenaNoVirtual() == NULL && audio_ != NULL) delete audio_;
+  audio_ = NULL;
   if (GetArenaNoVirtual() == NULL && text_ != NULL) delete text_;
   text_ = NULL;
   if (GetArenaNoVirtual() == NULL && label_ != NULL) delete label_;
   label_ = NULL;
+  if (GetArenaNoVirtual() == NULL && playlist_ != NULL) delete playlist_;
+  playlist_ = NULL;
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -2114,16 +2349,16 @@ bool Strip::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(90)) goto parse_badAudio;
+        if (input->ExpectTag(90)) goto parse_audio;
         break;
       }
 
-      // optional .pb.Strip.BadAudio badAudio = 11;
+      // optional .pb.Strip.Audio audio = 11;
       case 11: {
         if (tag == 90) {
-         parse_badAudio:
+         parse_audio:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_badaudio()));
+               input, mutable_audio()));
         } else {
           goto handle_unusual;
         }
@@ -2150,6 +2385,19 @@ bool Strip::MergePartialFromCodedStream(
          parse_label:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_label()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(114)) goto parse_playlist;
+        break;
+      }
+
+      // optional .pb.Strip.Playlist playlist = 14;
+      case 14: {
+        if (tag == 114) {
+         parse_playlist:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_playlist()));
         } else {
           goto handle_unusual;
         }
@@ -2208,10 +2456,10 @@ void Strip::SerializeWithCachedSizes(
       10, *this->badjs_, output);
   }
 
-  // optional .pb.Strip.BadAudio badAudio = 11;
-  if (this->has_badaudio()) {
+  // optional .pb.Strip.Audio audio = 11;
+  if (this->has_audio()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      11, *this->badaudio_, output);
+      11, *this->audio_, output);
   }
 
   // optional .pb.Strip.Text text = 12;
@@ -2224,6 +2472,12 @@ void Strip::SerializeWithCachedSizes(
   if (this->has_label()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       13, *this->label_, output);
+  }
+
+  // optional .pb.Strip.Playlist playlist = 14;
+  if (this->has_playlist()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      14, *this->playlist_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:pb.Strip)
@@ -2261,11 +2515,11 @@ void Strip::SerializeWithCachedSizes(
         10, *this->badjs_, false, target);
   }
 
-  // optional .pb.Strip.BadAudio badAudio = 11;
-  if (this->has_badaudio()) {
+  // optional .pb.Strip.Audio audio = 11;
+  if (this->has_audio()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        11, *this->badaudio_, false, target);
+        11, *this->audio_, false, target);
   }
 
   // optional .pb.Strip.Text text = 12;
@@ -2280,6 +2534,13 @@ void Strip::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         13, *this->label_, false, target);
+  }
+
+  // optional .pb.Strip.Playlist playlist = 14;
+  if (this->has_playlist()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        14, *this->playlist_, false, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:pb.Strip)
@@ -2325,11 +2586,11 @@ int Strip::ByteSize() const {
         *this->badjs_);
   }
 
-  // optional .pb.Strip.BadAudio badAudio = 11;
-  if (this->has_badaudio()) {
+  // optional .pb.Strip.Audio audio = 11;
+  if (this->has_audio()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        *this->badaudio_);
+        *this->audio_);
   }
 
   // optional .pb.Strip.Text text = 12;
@@ -2344,6 +2605,13 @@ int Strip::ByteSize() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->label_);
+  }
+
+  // optional .pb.Strip.Playlist playlist = 14;
+  if (this->has_playlist()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->playlist_);
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -2389,14 +2657,17 @@ void Strip::MergeFrom(const Strip& from) {
   if (from.has_badjs()) {
     mutable_badjs()->::pb::Strip_BadJs::MergeFrom(from.badjs());
   }
-  if (from.has_badaudio()) {
-    mutable_badaudio()->::pb::Strip_BadAudio::MergeFrom(from.badaudio());
+  if (from.has_audio()) {
+    mutable_audio()->::pb::Strip_Audio::MergeFrom(from.audio());
   }
   if (from.has_text()) {
     mutable_text()->::pb::Strip_Text::MergeFrom(from.text());
   }
   if (from.has_label()) {
     mutable_label()->::pb::Strip_Label::MergeFrom(from.label());
+  }
+  if (from.has_playlist()) {
+    mutable_playlist()->::pb::Strip_Playlist::MergeFrom(from.playlist());
   }
 }
 
@@ -2429,9 +2700,10 @@ void Strip::InternalSwap(Strip* other) {
   std::swap(length_, other->length_);
   std::swap(resource_, other->resource_);
   std::swap(badjs_, other->badjs_);
-  std::swap(badaudio_, other->badaudio_);
+  std::swap(audio_, other->audio_);
   std::swap(text_, other->text_);
   std::swap(label_, other->label_);
+  std::swap(playlist_, other->playlist_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -2493,7 +2765,7 @@ void Strip_BadJs::clear_script() {
 
 // -------------------------------------------------------------------
 
-// Strip_BadAudio
+// Strip_Audio
 
 // -------------------------------------------------------------------
 
@@ -2590,6 +2862,10 @@ void Strip_Label::clear_content() {
   content_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), content);
   // @@protoc_insertion_point(field_set_allocated:pb.Strip.Label.content)
 }
+
+// -------------------------------------------------------------------
+
+// Strip_Playlist
 
 // -------------------------------------------------------------------
 
@@ -2713,42 +2989,42 @@ void Strip::set_allocated_badjs(::pb::Strip_BadJs* badjs) {
   // @@protoc_insertion_point(field_set_allocated:pb.Strip.badJs)
 }
 
-// optional .pb.Strip.BadAudio badAudio = 11;
-bool Strip::has_badaudio() const {
-  return !_is_default_instance_ && badaudio_ != NULL;
+// optional .pb.Strip.Audio audio = 11;
+bool Strip::has_audio() const {
+  return !_is_default_instance_ && audio_ != NULL;
 }
-void Strip::clear_badaudio() {
-  if (GetArenaNoVirtual() == NULL && badaudio_ != NULL) delete badaudio_;
-  badaudio_ = NULL;
+void Strip::clear_audio() {
+  if (GetArenaNoVirtual() == NULL && audio_ != NULL) delete audio_;
+  audio_ = NULL;
 }
-const ::pb::Strip_BadAudio& Strip::badaudio() const {
-  // @@protoc_insertion_point(field_get:pb.Strip.badAudio)
-  return badaudio_ != NULL ? *badaudio_ : *default_instance_->badaudio_;
+const ::pb::Strip_Audio& Strip::audio() const {
+  // @@protoc_insertion_point(field_get:pb.Strip.audio)
+  return audio_ != NULL ? *audio_ : *default_instance_->audio_;
 }
-::pb::Strip_BadAudio* Strip::mutable_badaudio() {
+::pb::Strip_Audio* Strip::mutable_audio() {
   
-  if (badaudio_ == NULL) {
-    badaudio_ = new ::pb::Strip_BadAudio;
+  if (audio_ == NULL) {
+    audio_ = new ::pb::Strip_Audio;
   }
-  // @@protoc_insertion_point(field_mutable:pb.Strip.badAudio)
-  return badaudio_;
+  // @@protoc_insertion_point(field_mutable:pb.Strip.audio)
+  return audio_;
 }
-::pb::Strip_BadAudio* Strip::release_badaudio() {
-  // @@protoc_insertion_point(field_release:pb.Strip.badAudio)
+::pb::Strip_Audio* Strip::release_audio() {
+  // @@protoc_insertion_point(field_release:pb.Strip.audio)
   
-  ::pb::Strip_BadAudio* temp = badaudio_;
-  badaudio_ = NULL;
+  ::pb::Strip_Audio* temp = audio_;
+  audio_ = NULL;
   return temp;
 }
-void Strip::set_allocated_badaudio(::pb::Strip_BadAudio* badaudio) {
-  delete badaudio_;
-  badaudio_ = badaudio;
-  if (badaudio) {
+void Strip::set_allocated_audio(::pb::Strip_Audio* audio) {
+  delete audio_;
+  audio_ = audio;
+  if (audio) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:pb.Strip.badAudio)
+  // @@protoc_insertion_point(field_set_allocated:pb.Strip.audio)
 }
 
 // optional .pb.Strip.Text text = 12;
@@ -2825,6 +3101,44 @@ void Strip::set_allocated_label(::pb::Strip_Label* label) {
     
   }
   // @@protoc_insertion_point(field_set_allocated:pb.Strip.label)
+}
+
+// optional .pb.Strip.Playlist playlist = 14;
+bool Strip::has_playlist() const {
+  return !_is_default_instance_ && playlist_ != NULL;
+}
+void Strip::clear_playlist() {
+  if (GetArenaNoVirtual() == NULL && playlist_ != NULL) delete playlist_;
+  playlist_ = NULL;
+}
+const ::pb::Strip_Playlist& Strip::playlist() const {
+  // @@protoc_insertion_point(field_get:pb.Strip.playlist)
+  return playlist_ != NULL ? *playlist_ : *default_instance_->playlist_;
+}
+::pb::Strip_Playlist* Strip::mutable_playlist() {
+  
+  if (playlist_ == NULL) {
+    playlist_ = new ::pb::Strip_Playlist;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.Strip.playlist)
+  return playlist_;
+}
+::pb::Strip_Playlist* Strip::release_playlist() {
+  // @@protoc_insertion_point(field_release:pb.Strip.playlist)
+  
+  ::pb::Strip_Playlist* temp = playlist_;
+  playlist_ = NULL;
+  return temp;
+}
+void Strip::set_allocated_playlist(::pb::Strip_Playlist* playlist) {
+  delete playlist_;
+  playlist_ = playlist;
+  if (playlist) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.Strip.playlist)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -3424,73 +3738,73 @@ void ChannelData_Text::InternalSwap(ChannelData_Text* other) {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-ChannelData_BadAudio::ChannelData_BadAudio()
+ChannelData_Audio::ChannelData_Audio()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:pb.ChannelData.BadAudio)
+  // @@protoc_insertion_point(constructor:pb.ChannelData.Audio)
 }
 
-void ChannelData_BadAudio::InitAsDefaultInstance() {
+void ChannelData_Audio::InitAsDefaultInstance() {
   _is_default_instance_ = true;
 }
 
-ChannelData_BadAudio::ChannelData_BadAudio(const ChannelData_BadAudio& from)
+ChannelData_Audio::ChannelData_Audio(const ChannelData_Audio& from)
   : ::google::protobuf::Message(),
     _internal_metadata_(NULL) {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:pb.ChannelData.BadAudio)
+  // @@protoc_insertion_point(copy_constructor:pb.ChannelData.Audio)
 }
 
-void ChannelData_BadAudio::SharedCtor() {
+void ChannelData_Audio::SharedCtor() {
     _is_default_instance_ = false;
   _cached_size_ = 0;
 }
 
-ChannelData_BadAudio::~ChannelData_BadAudio() {
-  // @@protoc_insertion_point(destructor:pb.ChannelData.BadAudio)
+ChannelData_Audio::~ChannelData_Audio() {
+  // @@protoc_insertion_point(destructor:pb.ChannelData.Audio)
   SharedDtor();
 }
 
-void ChannelData_BadAudio::SharedDtor() {
+void ChannelData_Audio::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void ChannelData_BadAudio::SetCachedSize(int size) const {
+void ChannelData_Audio::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* ChannelData_BadAudio::descriptor() {
+const ::google::protobuf::Descriptor* ChannelData_Audio::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return ChannelData_BadAudio_descriptor_;
+  return ChannelData_Audio_descriptor_;
 }
 
-const ChannelData_BadAudio& ChannelData_BadAudio::default_instance() {
+const ChannelData_Audio& ChannelData_Audio::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_eventsequencer_2eproto();
   return *default_instance_;
 }
 
-ChannelData_BadAudio* ChannelData_BadAudio::default_instance_ = NULL;
+ChannelData_Audio* ChannelData_Audio::default_instance_ = NULL;
 
-ChannelData_BadAudio* ChannelData_BadAudio::New(::google::protobuf::Arena* arena) const {
-  ChannelData_BadAudio* n = new ChannelData_BadAudio;
+ChannelData_Audio* ChannelData_Audio::New(::google::protobuf::Arena* arena) const {
+  ChannelData_Audio* n = new ChannelData_Audio;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void ChannelData_BadAudio::Clear() {
-// @@protoc_insertion_point(message_clear_start:pb.ChannelData.BadAudio)
+void ChannelData_Audio::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.ChannelData.Audio)
 }
 
-bool ChannelData_BadAudio::MergePartialFromCodedStream(
+bool ChannelData_Audio::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:pb.ChannelData.BadAudio)
+  // @@protoc_insertion_point(parse_start:pb.ChannelData.Audio)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
@@ -3504,29 +3818,29 @@ bool ChannelData_BadAudio::MergePartialFromCodedStream(
     DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
   }
 success:
-  // @@protoc_insertion_point(parse_success:pb.ChannelData.BadAudio)
+  // @@protoc_insertion_point(parse_success:pb.ChannelData.Audio)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:pb.ChannelData.BadAudio)
+  // @@protoc_insertion_point(parse_failure:pb.ChannelData.Audio)
   return false;
 #undef DO_
 }
 
-void ChannelData_BadAudio::SerializeWithCachedSizes(
+void ChannelData_Audio::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:pb.ChannelData.BadAudio)
-  // @@protoc_insertion_point(serialize_end:pb.ChannelData.BadAudio)
+  // @@protoc_insertion_point(serialize_start:pb.ChannelData.Audio)
+  // @@protoc_insertion_point(serialize_end:pb.ChannelData.Audio)
 }
 
-::google::protobuf::uint8* ChannelData_BadAudio::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* ChannelData_Audio::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:pb.ChannelData.BadAudio)
-  // @@protoc_insertion_point(serialize_to_array_end:pb.ChannelData.BadAudio)
+  // @@protoc_insertion_point(serialize_to_array_start:pb.ChannelData.Audio)
+  // @@protoc_insertion_point(serialize_to_array_end:pb.ChannelData.Audio)
   return target;
 }
 
-int ChannelData_BadAudio::ByteSize() const {
-// @@protoc_insertion_point(message_byte_size_start:pb.ChannelData.BadAudio)
+int ChannelData_Audio::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.ChannelData.Audio)
   int total_size = 0;
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -3535,63 +3849,63 @@ int ChannelData_BadAudio::ByteSize() const {
   return total_size;
 }
 
-void ChannelData_BadAudio::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:pb.ChannelData.BadAudio)
+void ChannelData_Audio::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.ChannelData.Audio)
   if (GOOGLE_PREDICT_FALSE(&from == this)) {
     ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
   }
-  const ChannelData_BadAudio* source = 
-      ::google::protobuf::internal::DynamicCastToGenerated<const ChannelData_BadAudio>(
+  const ChannelData_Audio* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const ChannelData_Audio>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.ChannelData.BadAudio)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.ChannelData.Audio)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.ChannelData.BadAudio)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.ChannelData.Audio)
     MergeFrom(*source);
   }
 }
 
-void ChannelData_BadAudio::MergeFrom(const ChannelData_BadAudio& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:pb.ChannelData.BadAudio)
+void ChannelData_Audio::MergeFrom(const ChannelData_Audio& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.ChannelData.Audio)
   if (GOOGLE_PREDICT_FALSE(&from == this)) {
     ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
   }
 }
 
-void ChannelData_BadAudio::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:pb.ChannelData.BadAudio)
+void ChannelData_Audio::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.ChannelData.Audio)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void ChannelData_BadAudio::CopyFrom(const ChannelData_BadAudio& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pb.ChannelData.BadAudio)
+void ChannelData_Audio::CopyFrom(const ChannelData_Audio& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.ChannelData.Audio)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool ChannelData_BadAudio::IsInitialized() const {
+bool ChannelData_Audio::IsInitialized() const {
 
   return true;
 }
 
-void ChannelData_BadAudio::Swap(ChannelData_BadAudio* other) {
+void ChannelData_Audio::Swap(ChannelData_Audio* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void ChannelData_BadAudio::InternalSwap(ChannelData_BadAudio* other) {
+void ChannelData_Audio::InternalSwap(ChannelData_Audio* other) {
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata ChannelData_BadAudio::GetMetadata() const {
+::google::protobuf::Metadata ChannelData_Audio::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = ChannelData_BadAudio_descriptor_;
-  metadata.reflection = ChannelData_BadAudio_reflection_;
+  metadata.descriptor = ChannelData_Audio_descriptor_;
+  metadata.reflection = ChannelData_Audio_reflection_;
   return metadata;
 }
 
@@ -4054,12 +4368,190 @@ void ChannelData_Collate::InternalSwap(ChannelData_Collate* other) {
 // -------------------------------------------------------------------
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ChannelData_Playlist::ChannelData_Playlist()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.ChannelData.Playlist)
+}
+
+void ChannelData_Playlist::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+}
+
+ChannelData_Playlist::ChannelData_Playlist(const ChannelData_Playlist& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:pb.ChannelData.Playlist)
+}
+
+void ChannelData_Playlist::SharedCtor() {
+    _is_default_instance_ = false;
+  _cached_size_ = 0;
+}
+
+ChannelData_Playlist::~ChannelData_Playlist() {
+  // @@protoc_insertion_point(destructor:pb.ChannelData.Playlist)
+  SharedDtor();
+}
+
+void ChannelData_Playlist::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void ChannelData_Playlist::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ChannelData_Playlist::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ChannelData_Playlist_descriptor_;
+}
+
+const ChannelData_Playlist& ChannelData_Playlist::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_eventsequencer_2eproto();
+  return *default_instance_;
+}
+
+ChannelData_Playlist* ChannelData_Playlist::default_instance_ = NULL;
+
+ChannelData_Playlist* ChannelData_Playlist::New(::google::protobuf::Arena* arena) const {
+  ChannelData_Playlist* n = new ChannelData_Playlist;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ChannelData_Playlist::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.ChannelData.Playlist)
+}
+
+bool ChannelData_Playlist::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.ChannelData.Playlist)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+  handle_unusual:
+    if (tag == 0 ||
+        ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      goto success;
+    }
+    DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.ChannelData.Playlist)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.ChannelData.Playlist)
+  return false;
+#undef DO_
+}
+
+void ChannelData_Playlist::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.ChannelData.Playlist)
+  // @@protoc_insertion_point(serialize_end:pb.ChannelData.Playlist)
+}
+
+::google::protobuf::uint8* ChannelData_Playlist::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:pb.ChannelData.Playlist)
+  // @@protoc_insertion_point(serialize_to_array_end:pb.ChannelData.Playlist)
+  return target;
+}
+
+int ChannelData_Playlist::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.ChannelData.Playlist)
+  int total_size = 0;
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ChannelData_Playlist::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.ChannelData.Playlist)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  const ChannelData_Playlist* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const ChannelData_Playlist>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.ChannelData.Playlist)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.ChannelData.Playlist)
+    MergeFrom(*source);
+  }
+}
+
+void ChannelData_Playlist::MergeFrom(const ChannelData_Playlist& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.ChannelData.Playlist)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+}
+
+void ChannelData_Playlist::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.ChannelData.Playlist)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ChannelData_Playlist::CopyFrom(const ChannelData_Playlist& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.ChannelData.Playlist)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ChannelData_Playlist::IsInitialized() const {
+
+  return true;
+}
+
+void ChannelData_Playlist::Swap(ChannelData_Playlist* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ChannelData_Playlist::InternalSwap(ChannelData_Playlist* other) {
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ChannelData_Playlist::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ChannelData_Playlist_descriptor_;
+  metadata.reflection = ChannelData_Playlist_reflection_;
+  return metadata;
+}
+
+
+// -------------------------------------------------------------------
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int ChannelData::kBadClockFieldNumber;
 const int ChannelData::kBadJsFieldNumber;
 const int ChannelData::kTextFieldNumber;
-const int ChannelData::kBadAudioFieldNumber;
+const int ChannelData::kAudioFieldNumber;
 const int ChannelData::kLabelFieldNumber;
 const int ChannelData::kCollateFieldNumber;
+const int ChannelData::kPlaylistFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ChannelData::ChannelData()
@@ -4073,9 +4565,10 @@ void ChannelData::InitAsDefaultInstance() {
   ChannelData_default_oneof_instance_->badclock_ = const_cast< ::pb::ChannelData_BadClock*>(&::pb::ChannelData_BadClock::default_instance());
   ChannelData_default_oneof_instance_->badjs_ = const_cast< ::pb::ChannelData_BadJs*>(&::pb::ChannelData_BadJs::default_instance());
   ChannelData_default_oneof_instance_->text_ = const_cast< ::pb::ChannelData_Text*>(&::pb::ChannelData_Text::default_instance());
-  ChannelData_default_oneof_instance_->badaudio_ = const_cast< ::pb::ChannelData_BadAudio*>(&::pb::ChannelData_BadAudio::default_instance());
+  ChannelData_default_oneof_instance_->audio_ = const_cast< ::pb::ChannelData_Audio*>(&::pb::ChannelData_Audio::default_instance());
   ChannelData_default_oneof_instance_->label_ = const_cast< ::pb::ChannelData_Label*>(&::pb::ChannelData_Label::default_instance());
   ChannelData_default_oneof_instance_->collate_ = const_cast< ::pb::ChannelData_Collate*>(&::pb::ChannelData_Collate::default_instance());
+  ChannelData_default_oneof_instance_->playlist_ = const_cast< ::pb::ChannelData_Playlist*>(&::pb::ChannelData_Playlist::default_instance());
 }
 
 ChannelData::ChannelData(const ChannelData& from)
@@ -4145,8 +4638,8 @@ void ChannelData::clear_channel() {
       delete channel_.text_;
       break;
     }
-    case kBadAudio: {
-      delete channel_.badaudio_;
+    case kAudio: {
+      delete channel_.audio_;
       break;
     }
     case kLabel: {
@@ -4155,6 +4648,10 @@ void ChannelData::clear_channel() {
     }
     case kCollate: {
       delete channel_.collate_;
+      break;
+    }
+    case kPlaylist: {
+      delete channel_.playlist_;
       break;
     }
     case CHANNEL_NOT_SET: {
@@ -4176,7 +4673,7 @@ bool ChannelData::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:pb.ChannelData)
   for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(16383);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
@@ -4214,16 +4711,16 @@ bool ChannelData::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(106)) goto parse_badAudio;
+        if (input->ExpectTag(106)) goto parse_audio;
         break;
       }
 
-      // optional .pb.ChannelData.BadAudio badAudio = 13;
+      // optional .pb.ChannelData.Audio audio = 13;
       case 13: {
         if (tag == 106) {
-         parse_badAudio:
+         parse_audio:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_badaudio()));
+               input, mutable_audio()));
         } else {
           goto handle_unusual;
         }
@@ -4250,6 +4747,19 @@ bool ChannelData::MergePartialFromCodedStream(
          parse_collate:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_collate()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(130)) goto parse_playlist;
+        break;
+      }
+
+      // optional .pb.ChannelData.Playlist playlist = 16;
+      case 16: {
+        if (tag == 130) {
+         parse_playlist:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_playlist()));
         } else {
           goto handle_unusual;
         }
@@ -4299,10 +4809,10 @@ void ChannelData::SerializeWithCachedSizes(
       12, *channel_.text_, output);
   }
 
-  // optional .pb.ChannelData.BadAudio badAudio = 13;
-  if (has_badaudio()) {
+  // optional .pb.ChannelData.Audio audio = 13;
+  if (has_audio()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      13, *channel_.badaudio_, output);
+      13, *channel_.audio_, output);
   }
 
   // optional .pb.ChannelData.Label label = 14;
@@ -4315,6 +4825,12 @@ void ChannelData::SerializeWithCachedSizes(
   if (has_collate()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       15, *channel_.collate_, output);
+  }
+
+  // optional .pb.ChannelData.Playlist playlist = 16;
+  if (has_playlist()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      16, *channel_.playlist_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:pb.ChannelData)
@@ -4344,11 +4860,11 @@ void ChannelData::SerializeWithCachedSizes(
         12, *channel_.text_, false, target);
   }
 
-  // optional .pb.ChannelData.BadAudio badAudio = 13;
-  if (has_badaudio()) {
+  // optional .pb.ChannelData.Audio audio = 13;
+  if (has_audio()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        13, *channel_.badaudio_, false, target);
+        13, *channel_.audio_, false, target);
   }
 
   // optional .pb.ChannelData.Label label = 14;
@@ -4363,6 +4879,13 @@ void ChannelData::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         15, *channel_.collate_, false, target);
+  }
+
+  // optional .pb.ChannelData.Playlist playlist = 16;
+  if (has_playlist()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        16, *channel_.playlist_, false, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:pb.ChannelData)
@@ -4395,11 +4918,11 @@ int ChannelData::ByteSize() const {
           *channel_.text_);
       break;
     }
-    // optional .pb.ChannelData.BadAudio badAudio = 13;
-    case kBadAudio: {
+    // optional .pb.ChannelData.Audio audio = 13;
+    case kAudio: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          *channel_.badaudio_);
+          *channel_.audio_);
       break;
     }
     // optional .pb.ChannelData.Label label = 14;
@@ -4414,6 +4937,13 @@ int ChannelData::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *channel_.collate_);
+      break;
+    }
+    // optional .pb.ChannelData.Playlist playlist = 16;
+    case kPlaylist: {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *channel_.playlist_);
       break;
     }
     case CHANNEL_NOT_SET: {
@@ -4461,8 +4991,8 @@ void ChannelData::MergeFrom(const ChannelData& from) {
       mutable_text()->::pb::ChannelData_Text::MergeFrom(from.text());
       break;
     }
-    case kBadAudio: {
-      mutable_badaudio()->::pb::ChannelData_BadAudio::MergeFrom(from.badaudio());
+    case kAudio: {
+      mutable_audio()->::pb::ChannelData_Audio::MergeFrom(from.audio());
       break;
     }
     case kLabel: {
@@ -4471,6 +5001,10 @@ void ChannelData::MergeFrom(const ChannelData& from) {
     }
     case kCollate: {
       mutable_collate()->::pb::ChannelData_Collate::MergeFrom(from.collate());
+      break;
+    }
+    case kPlaylist: {
+      mutable_playlist()->::pb::ChannelData_Playlist::MergeFrom(from.playlist());
       break;
     }
     case CHANNEL_NOT_SET: {
@@ -4574,7 +5108,7 @@ void ChannelData_Text::clear_content() {
 
 // -------------------------------------------------------------------
 
-// ChannelData_BadAudio
+// ChannelData_Audio
 
 // -------------------------------------------------------------------
 
@@ -4611,6 +5145,10 @@ void ChannelData_Collate::clear_channelto() {
   channelto_ = value;
   // @@protoc_insertion_point(field_set:pb.ChannelData.Collate.channelTo)
 }
+
+// -------------------------------------------------------------------
+
+// ChannelData_Playlist
 
 // -------------------------------------------------------------------
 
@@ -4760,52 +5298,52 @@ void ChannelData::set_allocated_text(::pb::ChannelData_Text* text) {
   // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.text)
 }
 
-// optional .pb.ChannelData.BadAudio badAudio = 13;
-bool ChannelData::has_badaudio() const {
-  return channel_case() == kBadAudio;
+// optional .pb.ChannelData.Audio audio = 13;
+bool ChannelData::has_audio() const {
+  return channel_case() == kAudio;
 }
-void ChannelData::set_has_badaudio() {
-  _oneof_case_[0] = kBadAudio;
+void ChannelData::set_has_audio() {
+  _oneof_case_[0] = kAudio;
 }
-void ChannelData::clear_badaudio() {
-  if (has_badaudio()) {
-    delete channel_.badaudio_;
+void ChannelData::clear_audio() {
+  if (has_audio()) {
+    delete channel_.audio_;
     clear_has_channel();
   }
 }
- const ::pb::ChannelData_BadAudio& ChannelData::badaudio() const {
-  // @@protoc_insertion_point(field_get:pb.ChannelData.badAudio)
-  return has_badaudio()
-      ? *channel_.badaudio_
-      : ::pb::ChannelData_BadAudio::default_instance();
+ const ::pb::ChannelData_Audio& ChannelData::audio() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.audio)
+  return has_audio()
+      ? *channel_.audio_
+      : ::pb::ChannelData_Audio::default_instance();
 }
-::pb::ChannelData_BadAudio* ChannelData::mutable_badaudio() {
-  if (!has_badaudio()) {
+::pb::ChannelData_Audio* ChannelData::mutable_audio() {
+  if (!has_audio()) {
     clear_channel();
-    set_has_badaudio();
-    channel_.badaudio_ = new ::pb::ChannelData_BadAudio;
+    set_has_audio();
+    channel_.audio_ = new ::pb::ChannelData_Audio;
   }
-  // @@protoc_insertion_point(field_mutable:pb.ChannelData.badAudio)
-  return channel_.badaudio_;
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.audio)
+  return channel_.audio_;
 }
-::pb::ChannelData_BadAudio* ChannelData::release_badaudio() {
-  // @@protoc_insertion_point(field_release:pb.ChannelData.badAudio)
-  if (has_badaudio()) {
+::pb::ChannelData_Audio* ChannelData::release_audio() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.audio)
+  if (has_audio()) {
     clear_has_channel();
-    ::pb::ChannelData_BadAudio* temp = channel_.badaudio_;
-    channel_.badaudio_ = NULL;
+    ::pb::ChannelData_Audio* temp = channel_.audio_;
+    channel_.audio_ = NULL;
     return temp;
   } else {
     return NULL;
   }
 }
-void ChannelData::set_allocated_badaudio(::pb::ChannelData_BadAudio* badaudio) {
+void ChannelData::set_allocated_audio(::pb::ChannelData_Audio* audio) {
   clear_channel();
-  if (badaudio) {
-    set_has_badaudio();
-    channel_.badaudio_ = badaudio;
+  if (audio) {
+    set_has_audio();
+    channel_.audio_ = audio;
   }
-  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.badAudio)
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.audio)
 }
 
 // optional .pb.ChannelData.Label label = 14;
@@ -4902,6 +5440,54 @@ void ChannelData::set_allocated_collate(::pb::ChannelData_Collate* collate) {
     channel_.collate_ = collate;
   }
   // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.collate)
+}
+
+// optional .pb.ChannelData.Playlist playlist = 16;
+bool ChannelData::has_playlist() const {
+  return channel_case() == kPlaylist;
+}
+void ChannelData::set_has_playlist() {
+  _oneof_case_[0] = kPlaylist;
+}
+void ChannelData::clear_playlist() {
+  if (has_playlist()) {
+    delete channel_.playlist_;
+    clear_has_channel();
+  }
+}
+ const ::pb::ChannelData_Playlist& ChannelData::playlist() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.playlist)
+  return has_playlist()
+      ? *channel_.playlist_
+      : ::pb::ChannelData_Playlist::default_instance();
+}
+::pb::ChannelData_Playlist* ChannelData::mutable_playlist() {
+  if (!has_playlist()) {
+    clear_channel();
+    set_has_playlist();
+    channel_.playlist_ = new ::pb::ChannelData_Playlist;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.playlist)
+  return channel_.playlist_;
+}
+::pb::ChannelData_Playlist* ChannelData::release_playlist() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.playlist)
+  if (has_playlist()) {
+    clear_has_channel();
+    ::pb::ChannelData_Playlist* temp = channel_.playlist_;
+    channel_.playlist_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void ChannelData::set_allocated_playlist(::pb::ChannelData_Playlist* playlist) {
+  clear_channel();
+  if (playlist) {
+    set_has_playlist();
+    channel_.playlist_ = playlist;
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.playlist)
 }
 
 bool ChannelData::has_channel() const {

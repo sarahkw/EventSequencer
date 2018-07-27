@@ -16,9 +16,10 @@ public:
         BadClock,
         BadJs,
         Text,
-        BadAudio,
+        Audio,
         Label,
-        Collate
+        Collate,
+        Playlist
     };
     Q_ENUM(Enum)
 };

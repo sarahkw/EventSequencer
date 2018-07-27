@@ -39,8 +39,6 @@ SOURCES += \
     stripext/badjsstripext.cpp \
     stripext/textstripext.cpp \
     constrainedmetricsfontutil.cpp \
-    channel/badaudiochannel.cpp \
-    stripext/badaudiostripext.cpp \
     channel/labelchannel.cpp \
     stripext/labelstripext.cpp \
     wordwrappedtexttrack.cpp \
@@ -51,7 +49,11 @@ SOURCES += \
     saferfilereplacement.cpp \
     managedresources.cpp \
     resourcecreatorcontrol.cpp \
-    resource.cpp
+    resource.cpp \
+    stripext/audiostripext.cpp \
+    stripext/playliststripext.cpp \
+    channel/audiochannel.cpp \
+    channel/playlistchannel.cpp
 
 
 HEADERS += \
@@ -71,8 +73,6 @@ HEADERS += \
     stripext/badjsstripext.h \
     stripext/textstripext.h \
     constrainedmetricsfontutil.h \
-    channel/badaudiochannel.h \
-    stripext/badaudiostripext.h \
     channel/labelchannel.h \
     stripext/labelstripext.h \
     wordwrappedtexttrack.h \
@@ -83,7 +83,11 @@ HEADERS += \
     saferfilereplacement.h \
     managedresources.h \
     resourcecreatorcontrol.h \
-    resource.h
+    resource.h \
+    stripext/audiostripext.h \
+    stripext/playliststripext.h \
+    channel/audiochannel.h \
+    channel/playlistchannel.h
 
 unix {
     target.path = /usr/lib

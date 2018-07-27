@@ -11,9 +11,10 @@ class Strip;
 
 namespace stripext {
 class BadJsStripExt;
-class BadAudioStripExt;
+class AudioStripExt;
 class TextStripExt;
 class LabelStripExt;
+class PlaylistStripExt;
 }
 
 class Document;
@@ -35,19 +36,20 @@ class Strip : public QObject
     Resource resource_;
 
     stripext::BadJsStripExt* badJs_ = nullptr;
-    stripext::BadAudioStripExt* badAudio_ = nullptr;
+    stripext::AudioStripExt* audio_ = nullptr;
     stripext::TextStripExt* text_ = nullptr;
     stripext::LabelStripExt* label_ = nullptr;
+    stripext::PlaylistStripExt* playlist_ = nullptr;
 
     Q_PROPERTY(int channel READ channel WRITE setChannel NOTIFY channelChanged)
     Q_PROPERTY(int startFrame READ startFrame WRITE setStartFrame NOTIFY startFrameChanged)
     Q_PROPERTY(int length READ length WRITE setLength NOTIFY lengthChanged)
     Q_PROPERTY(Resource* resource READ resource CONSTANT)
     Q_PROPERTY(stripext::BadJsStripExt* badJs READ badJs WRITE setBadJs NOTIFY badJsChanged)
-    Q_PROPERTY(stripext::BadAudioStripExt* badAudio READ badAudio WRITE setBadAudio NOTIFY badAudioChanged)
+    Q_PROPERTY(stripext::AudioStripExt* audio READ audio WRITE setAudio NOTIFY audioChanged)
     Q_PROPERTY(stripext::TextStripExt* text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY(stripext::LabelStripExt* label READ label WRITE setLabel NOTIFY labelChanged)
-
+    Q_PROPERTY(stripext::PlaylistStripExt* playlist READ playlist WRITE setPlaylist NOTIFY playlistChanged)
 public:
     explicit Strip(Document& d, QObject *parent = nullptr);
 
@@ -71,9 +73,9 @@ public:
     void setBadJs(stripext::BadJsStripExt *badJs);
     Q_INVOKABLE stripext::BadJsStripExt* mutableBadJs();
 
-    stripext::BadAudioStripExt *badAudio() const;
-    void setBadAudio(stripext::BadAudioStripExt *badAudio);
-    Q_INVOKABLE stripext::BadAudioStripExt *mutableBadAudio();
+    stripext::AudioStripExt *audio() const;
+    void setAudio(stripext::AudioStripExt *audio);
+    Q_INVOKABLE stripext::AudioStripExt *mutableAudio();
 
     stripext::TextStripExt *text() const;
     void setText(stripext::TextStripExt *text);
@@ -83,15 +85,20 @@ public:
     void setLabel(stripext::LabelStripExt *label);
     Q_INVOKABLE stripext::LabelStripExt* mutableLabel();
 
+    stripext::PlaylistStripExt *playlist() const;
+    void setPlaylist(stripext::PlaylistStripExt *playlist);
+    Q_INVOKABLE stripext::PlaylistStripExt *mutablePlaylist();
+
 signals:
 
     void channelChanged();
     void startFrameChanged();
     void lengthChanged();
     void badJsChanged();
-    void badAudioChanged();
+    void audioChanged();
     void textChanged();
     void labelChanged();
+    void playlistChanged();
 
 public slots:
 };

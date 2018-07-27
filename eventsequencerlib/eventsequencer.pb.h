@@ -39,20 +39,22 @@ void protobuf_AssignDesc_eventsequencer_2eproto();
 void protobuf_ShutdownFile_eventsequencer_2eproto();
 
 class ChannelData;
-class ChannelData_BadAudio;
+class ChannelData_Audio;
 class ChannelData_BadClock;
 class ChannelData_BadJs;
 class ChannelData_Collate;
 class ChannelData_Label;
+class ChannelData_Playlist;
 class ChannelData_Text;
 class Document;
 class File;
 class ManagedResourceFile;
 class Resource;
 class Strip;
-class Strip_BadAudio;
+class Strip_Audio;
 class Strip_BadJs;
 class Strip_Label;
+class Strip_Playlist;
 class Strip_Text;
 
 // ===================================================================
@@ -267,32 +269,32 @@ class Strip_BadJs : public ::google::protobuf::Message /* @@protoc_insertion_poi
 };
 // -------------------------------------------------------------------
 
-class Strip_BadAudio : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.Strip.BadAudio) */ {
+class Strip_Audio : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.Strip.Audio) */ {
  public:
-  Strip_BadAudio();
-  virtual ~Strip_BadAudio();
+  Strip_Audio();
+  virtual ~Strip_Audio();
 
-  Strip_BadAudio(const Strip_BadAudio& from);
+  Strip_Audio(const Strip_Audio& from);
 
-  inline Strip_BadAudio& operator=(const Strip_BadAudio& from) {
+  inline Strip_Audio& operator=(const Strip_Audio& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const Strip_BadAudio& default_instance();
+  static const Strip_Audio& default_instance();
 
-  void Swap(Strip_BadAudio* other);
+  void Swap(Strip_Audio* other);
 
   // implements Message ----------------------------------------------
 
-  inline Strip_BadAudio* New() const { return New(NULL); }
+  inline Strip_Audio* New() const { return New(NULL); }
 
-  Strip_BadAudio* New(::google::protobuf::Arena* arena) const;
+  Strip_Audio* New(::google::protobuf::Arena* arena) const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const Strip_BadAudio& from);
-  void MergeFrom(const Strip_BadAudio& from);
+  void CopyFrom(const Strip_Audio& from);
+  void MergeFrom(const Strip_Audio& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -311,7 +313,7 @@ class Strip_BadAudio : public ::google::protobuf::Message /* @@protoc_insertion_
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const;
-  void InternalSwap(Strip_BadAudio* other);
+  void InternalSwap(Strip_Audio* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return _internal_metadata_.arena();
@@ -327,7 +329,7 @@ class Strip_BadAudio : public ::google::protobuf::Message /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:pb.Strip.BadAudio)
+  // @@protoc_insertion_point(class_scope:pb.Strip.Audio)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -338,7 +340,7 @@ class Strip_BadAudio : public ::google::protobuf::Message /* @@protoc_insertion_
   friend void protobuf_ShutdownFile_eventsequencer_2eproto();
 
   void InitAsDefaultInstance();
-  static Strip_BadAudio* default_instance_;
+  static Strip_Audio* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -516,6 +518,81 @@ class Strip_Label : public ::google::protobuf::Message /* @@protoc_insertion_poi
 };
 // -------------------------------------------------------------------
 
+class Strip_Playlist : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.Strip.Playlist) */ {
+ public:
+  Strip_Playlist();
+  virtual ~Strip_Playlist();
+
+  Strip_Playlist(const Strip_Playlist& from);
+
+  inline Strip_Playlist& operator=(const Strip_Playlist& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Strip_Playlist& default_instance();
+
+  void Swap(Strip_Playlist* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Strip_Playlist* New() const { return New(NULL); }
+
+  Strip_Playlist* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Strip_Playlist& from);
+  void MergeFrom(const Strip_Playlist& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(Strip_Playlist* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:pb.Strip.Playlist)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static Strip_Playlist* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.Strip) */ {
  public:
   Strip();
@@ -575,9 +652,10 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   // nested types ----------------------------------------------------
 
   typedef Strip_BadJs BadJs;
-  typedef Strip_BadAudio BadAudio;
+  typedef Strip_Audio Audio;
   typedef Strip_Text Text;
   typedef Strip_Label Label;
+  typedef Strip_Playlist Playlist;
 
   // accessors -------------------------------------------------------
 
@@ -617,14 +695,14 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::pb::Strip_BadJs* release_badjs();
   void set_allocated_badjs(::pb::Strip_BadJs* badjs);
 
-  // optional .pb.Strip.BadAudio badAudio = 11;
-  bool has_badaudio() const;
-  void clear_badaudio();
-  static const int kBadAudioFieldNumber = 11;
-  const ::pb::Strip_BadAudio& badaudio() const;
-  ::pb::Strip_BadAudio* mutable_badaudio();
-  ::pb::Strip_BadAudio* release_badaudio();
-  void set_allocated_badaudio(::pb::Strip_BadAudio* badaudio);
+  // optional .pb.Strip.Audio audio = 11;
+  bool has_audio() const;
+  void clear_audio();
+  static const int kAudioFieldNumber = 11;
+  const ::pb::Strip_Audio& audio() const;
+  ::pb::Strip_Audio* mutable_audio();
+  ::pb::Strip_Audio* release_audio();
+  void set_allocated_audio(::pb::Strip_Audio* audio);
 
   // optional .pb.Strip.Text text = 12;
   bool has_text() const;
@@ -644,6 +722,15 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::pb::Strip_Label* release_label();
   void set_allocated_label(::pb::Strip_Label* label);
 
+  // optional .pb.Strip.Playlist playlist = 14;
+  bool has_playlist() const;
+  void clear_playlist();
+  static const int kPlaylistFieldNumber = 14;
+  const ::pb::Strip_Playlist& playlist() const;
+  ::pb::Strip_Playlist* mutable_playlist();
+  ::pb::Strip_Playlist* release_playlist();
+  void set_allocated_playlist(::pb::Strip_Playlist* playlist);
+
   // @@protoc_insertion_point(class_scope:pb.Strip)
  private:
 
@@ -653,9 +740,10 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::google::protobuf::int32 startframe_;
   ::pb::Resource* resource_;
   ::pb::Strip_BadJs* badjs_;
-  ::pb::Strip_BadAudio* badaudio_;
+  ::pb::Strip_Audio* audio_;
   ::pb::Strip_Text* text_;
   ::pb::Strip_Label* label_;
+  ::pb::Strip_Playlist* playlist_;
   ::google::protobuf::int32 length_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_eventsequencer_2eproto();
@@ -904,32 +992,32 @@ class ChannelData_Text : public ::google::protobuf::Message /* @@protoc_insertio
 };
 // -------------------------------------------------------------------
 
-class ChannelData_BadAudio : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelData.BadAudio) */ {
+class ChannelData_Audio : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelData.Audio) */ {
  public:
-  ChannelData_BadAudio();
-  virtual ~ChannelData_BadAudio();
+  ChannelData_Audio();
+  virtual ~ChannelData_Audio();
 
-  ChannelData_BadAudio(const ChannelData_BadAudio& from);
+  ChannelData_Audio(const ChannelData_Audio& from);
 
-  inline ChannelData_BadAudio& operator=(const ChannelData_BadAudio& from) {
+  inline ChannelData_Audio& operator=(const ChannelData_Audio& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ChannelData_BadAudio& default_instance();
+  static const ChannelData_Audio& default_instance();
 
-  void Swap(ChannelData_BadAudio* other);
+  void Swap(ChannelData_Audio* other);
 
   // implements Message ----------------------------------------------
 
-  inline ChannelData_BadAudio* New() const { return New(NULL); }
+  inline ChannelData_Audio* New() const { return New(NULL); }
 
-  ChannelData_BadAudio* New(::google::protobuf::Arena* arena) const;
+  ChannelData_Audio* New(::google::protobuf::Arena* arena) const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const ChannelData_BadAudio& from);
-  void MergeFrom(const ChannelData_BadAudio& from);
+  void CopyFrom(const ChannelData_Audio& from);
+  void MergeFrom(const ChannelData_Audio& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -948,7 +1036,7 @@ class ChannelData_BadAudio : public ::google::protobuf::Message /* @@protoc_inse
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const;
-  void InternalSwap(ChannelData_BadAudio* other);
+  void InternalSwap(ChannelData_Audio* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return _internal_metadata_.arena();
@@ -964,7 +1052,7 @@ class ChannelData_BadAudio : public ::google::protobuf::Message /* @@protoc_inse
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:pb.ChannelData.BadAudio)
+  // @@protoc_insertion_point(class_scope:pb.ChannelData.Audio)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -975,7 +1063,7 @@ class ChannelData_BadAudio : public ::google::protobuf::Message /* @@protoc_inse
   friend void protobuf_ShutdownFile_eventsequencer_2eproto();
 
   void InitAsDefaultInstance();
-  static ChannelData_BadAudio* default_instance_;
+  static ChannelData_Audio* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -1143,6 +1231,81 @@ class ChannelData_Collate : public ::google::protobuf::Message /* @@protoc_inser
 };
 // -------------------------------------------------------------------
 
+class ChannelData_Playlist : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelData.Playlist) */ {
+ public:
+  ChannelData_Playlist();
+  virtual ~ChannelData_Playlist();
+
+  ChannelData_Playlist(const ChannelData_Playlist& from);
+
+  inline ChannelData_Playlist& operator=(const ChannelData_Playlist& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChannelData_Playlist& default_instance();
+
+  void Swap(ChannelData_Playlist* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ChannelData_Playlist* New() const { return New(NULL); }
+
+  ChannelData_Playlist* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ChannelData_Playlist& from);
+  void MergeFrom(const ChannelData_Playlist& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(ChannelData_Playlist* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:pb.ChannelData.Playlist)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static ChannelData_Playlist* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelData) */ {
  public:
   ChannelData();
@@ -1162,9 +1325,10 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
     kBadClock = 10,
     kBadJs = 11,
     kText = 12,
-    kBadAudio = 13,
+    kAudio = 13,
     kLabel = 14,
     kCollate = 15,
+    kPlaylist = 16,
     CHANNEL_NOT_SET = 0,
   };
 
@@ -1214,9 +1378,10 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
   typedef ChannelData_BadClock BadClock;
   typedef ChannelData_BadJs BadJs;
   typedef ChannelData_Text Text;
-  typedef ChannelData_BadAudio BadAudio;
+  typedef ChannelData_Audio Audio;
   typedef ChannelData_Label Label;
   typedef ChannelData_Collate Collate;
+  typedef ChannelData_Playlist Playlist;
 
   // accessors -------------------------------------------------------
 
@@ -1247,14 +1412,14 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::pb::ChannelData_Text* release_text();
   void set_allocated_text(::pb::ChannelData_Text* text);
 
-  // optional .pb.ChannelData.BadAudio badAudio = 13;
-  bool has_badaudio() const;
-  void clear_badaudio();
-  static const int kBadAudioFieldNumber = 13;
-  const ::pb::ChannelData_BadAudio& badaudio() const;
-  ::pb::ChannelData_BadAudio* mutable_badaudio();
-  ::pb::ChannelData_BadAudio* release_badaudio();
-  void set_allocated_badaudio(::pb::ChannelData_BadAudio* badaudio);
+  // optional .pb.ChannelData.Audio audio = 13;
+  bool has_audio() const;
+  void clear_audio();
+  static const int kAudioFieldNumber = 13;
+  const ::pb::ChannelData_Audio& audio() const;
+  ::pb::ChannelData_Audio* mutable_audio();
+  ::pb::ChannelData_Audio* release_audio();
+  void set_allocated_audio(::pb::ChannelData_Audio* audio);
 
   // optional .pb.ChannelData.Label label = 14;
   bool has_label() const;
@@ -1274,15 +1439,25 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::pb::ChannelData_Collate* release_collate();
   void set_allocated_collate(::pb::ChannelData_Collate* collate);
 
+  // optional .pb.ChannelData.Playlist playlist = 16;
+  bool has_playlist() const;
+  void clear_playlist();
+  static const int kPlaylistFieldNumber = 16;
+  const ::pb::ChannelData_Playlist& playlist() const;
+  ::pb::ChannelData_Playlist* mutable_playlist();
+  ::pb::ChannelData_Playlist* release_playlist();
+  void set_allocated_playlist(::pb::ChannelData_Playlist* playlist);
+
   ChannelCase channel_case() const;
   // @@protoc_insertion_point(class_scope:pb.ChannelData)
  private:
   inline void set_has_badclock();
   inline void set_has_badjs();
   inline void set_has_text();
-  inline void set_has_badaudio();
+  inline void set_has_audio();
   inline void set_has_label();
   inline void set_has_collate();
+  inline void set_has_playlist();
 
   inline bool has_channel() const;
   void clear_channel();
@@ -1295,9 +1470,10 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
     ::pb::ChannelData_BadClock* badclock_;
     ::pb::ChannelData_BadJs* badjs_;
     ::pb::ChannelData_Text* text_;
-    ::pb::ChannelData_BadAudio* badaudio_;
+    ::pb::ChannelData_Audio* audio_;
     ::pb::ChannelData_Label* label_;
     ::pb::ChannelData_Collate* collate_;
+    ::pb::ChannelData_Playlist* playlist_;
   } channel_;
   mutable int _cached_size_;
   ::google::protobuf::uint32 _oneof_case_[1];
@@ -1864,7 +2040,7 @@ inline void Strip_BadJs::set_allocated_script(::std::string* script) {
 
 // -------------------------------------------------------------------
 
-// Strip_BadAudio
+// Strip_Audio
 
 // -------------------------------------------------------------------
 
@@ -1961,6 +2137,10 @@ inline void Strip_Label::set_allocated_content(::std::string* content) {
   content_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), content);
   // @@protoc_insertion_point(field_set_allocated:pb.Strip.Label.content)
 }
+
+// -------------------------------------------------------------------
+
+// Strip_Playlist
 
 // -------------------------------------------------------------------
 
@@ -2084,42 +2264,42 @@ inline void Strip::set_allocated_badjs(::pb::Strip_BadJs* badjs) {
   // @@protoc_insertion_point(field_set_allocated:pb.Strip.badJs)
 }
 
-// optional .pb.Strip.BadAudio badAudio = 11;
-inline bool Strip::has_badaudio() const {
-  return !_is_default_instance_ && badaudio_ != NULL;
+// optional .pb.Strip.Audio audio = 11;
+inline bool Strip::has_audio() const {
+  return !_is_default_instance_ && audio_ != NULL;
 }
-inline void Strip::clear_badaudio() {
-  if (GetArenaNoVirtual() == NULL && badaudio_ != NULL) delete badaudio_;
-  badaudio_ = NULL;
+inline void Strip::clear_audio() {
+  if (GetArenaNoVirtual() == NULL && audio_ != NULL) delete audio_;
+  audio_ = NULL;
 }
-inline const ::pb::Strip_BadAudio& Strip::badaudio() const {
-  // @@protoc_insertion_point(field_get:pb.Strip.badAudio)
-  return badaudio_ != NULL ? *badaudio_ : *default_instance_->badaudio_;
+inline const ::pb::Strip_Audio& Strip::audio() const {
+  // @@protoc_insertion_point(field_get:pb.Strip.audio)
+  return audio_ != NULL ? *audio_ : *default_instance_->audio_;
 }
-inline ::pb::Strip_BadAudio* Strip::mutable_badaudio() {
+inline ::pb::Strip_Audio* Strip::mutable_audio() {
   
-  if (badaudio_ == NULL) {
-    badaudio_ = new ::pb::Strip_BadAudio;
+  if (audio_ == NULL) {
+    audio_ = new ::pb::Strip_Audio;
   }
-  // @@protoc_insertion_point(field_mutable:pb.Strip.badAudio)
-  return badaudio_;
+  // @@protoc_insertion_point(field_mutable:pb.Strip.audio)
+  return audio_;
 }
-inline ::pb::Strip_BadAudio* Strip::release_badaudio() {
-  // @@protoc_insertion_point(field_release:pb.Strip.badAudio)
+inline ::pb::Strip_Audio* Strip::release_audio() {
+  // @@protoc_insertion_point(field_release:pb.Strip.audio)
   
-  ::pb::Strip_BadAudio* temp = badaudio_;
-  badaudio_ = NULL;
+  ::pb::Strip_Audio* temp = audio_;
+  audio_ = NULL;
   return temp;
 }
-inline void Strip::set_allocated_badaudio(::pb::Strip_BadAudio* badaudio) {
-  delete badaudio_;
-  badaudio_ = badaudio;
-  if (badaudio) {
+inline void Strip::set_allocated_audio(::pb::Strip_Audio* audio) {
+  delete audio_;
+  audio_ = audio;
+  if (audio) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:pb.Strip.badAudio)
+  // @@protoc_insertion_point(field_set_allocated:pb.Strip.audio)
 }
 
 // optional .pb.Strip.Text text = 12;
@@ -2198,6 +2378,44 @@ inline void Strip::set_allocated_label(::pb::Strip_Label* label) {
   // @@protoc_insertion_point(field_set_allocated:pb.Strip.label)
 }
 
+// optional .pb.Strip.Playlist playlist = 14;
+inline bool Strip::has_playlist() const {
+  return !_is_default_instance_ && playlist_ != NULL;
+}
+inline void Strip::clear_playlist() {
+  if (GetArenaNoVirtual() == NULL && playlist_ != NULL) delete playlist_;
+  playlist_ = NULL;
+}
+inline const ::pb::Strip_Playlist& Strip::playlist() const {
+  // @@protoc_insertion_point(field_get:pb.Strip.playlist)
+  return playlist_ != NULL ? *playlist_ : *default_instance_->playlist_;
+}
+inline ::pb::Strip_Playlist* Strip::mutable_playlist() {
+  
+  if (playlist_ == NULL) {
+    playlist_ = new ::pb::Strip_Playlist;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.Strip.playlist)
+  return playlist_;
+}
+inline ::pb::Strip_Playlist* Strip::release_playlist() {
+  // @@protoc_insertion_point(field_release:pb.Strip.playlist)
+  
+  ::pb::Strip_Playlist* temp = playlist_;
+  playlist_ = NULL;
+  return temp;
+}
+inline void Strip::set_allocated_playlist(::pb::Strip_Playlist* playlist) {
+  delete playlist_;
+  playlist_ = playlist;
+  if (playlist) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.Strip.playlist)
+}
+
 // -------------------------------------------------------------------
 
 // ChannelData_BadClock
@@ -2256,7 +2474,7 @@ inline void ChannelData_Text::set_allocated_content(::std::string* content) {
 
 // -------------------------------------------------------------------
 
-// ChannelData_BadAudio
+// ChannelData_Audio
 
 // -------------------------------------------------------------------
 
@@ -2293,6 +2511,10 @@ inline void ChannelData_Collate::set_channelto(::google::protobuf::int32 value) 
   channelto_ = value;
   // @@protoc_insertion_point(field_set:pb.ChannelData.Collate.channelTo)
 }
+
+// -------------------------------------------------------------------
+
+// ChannelData_Playlist
 
 // -------------------------------------------------------------------
 
@@ -2442,52 +2664,52 @@ inline void ChannelData::set_allocated_text(::pb::ChannelData_Text* text) {
   // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.text)
 }
 
-// optional .pb.ChannelData.BadAudio badAudio = 13;
-inline bool ChannelData::has_badaudio() const {
-  return channel_case() == kBadAudio;
+// optional .pb.ChannelData.Audio audio = 13;
+inline bool ChannelData::has_audio() const {
+  return channel_case() == kAudio;
 }
-inline void ChannelData::set_has_badaudio() {
-  _oneof_case_[0] = kBadAudio;
+inline void ChannelData::set_has_audio() {
+  _oneof_case_[0] = kAudio;
 }
-inline void ChannelData::clear_badaudio() {
-  if (has_badaudio()) {
-    delete channel_.badaudio_;
+inline void ChannelData::clear_audio() {
+  if (has_audio()) {
+    delete channel_.audio_;
     clear_has_channel();
   }
 }
-inline  const ::pb::ChannelData_BadAudio& ChannelData::badaudio() const {
-  // @@protoc_insertion_point(field_get:pb.ChannelData.badAudio)
-  return has_badaudio()
-      ? *channel_.badaudio_
-      : ::pb::ChannelData_BadAudio::default_instance();
+inline  const ::pb::ChannelData_Audio& ChannelData::audio() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.audio)
+  return has_audio()
+      ? *channel_.audio_
+      : ::pb::ChannelData_Audio::default_instance();
 }
-inline ::pb::ChannelData_BadAudio* ChannelData::mutable_badaudio() {
-  if (!has_badaudio()) {
+inline ::pb::ChannelData_Audio* ChannelData::mutable_audio() {
+  if (!has_audio()) {
     clear_channel();
-    set_has_badaudio();
-    channel_.badaudio_ = new ::pb::ChannelData_BadAudio;
+    set_has_audio();
+    channel_.audio_ = new ::pb::ChannelData_Audio;
   }
-  // @@protoc_insertion_point(field_mutable:pb.ChannelData.badAudio)
-  return channel_.badaudio_;
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.audio)
+  return channel_.audio_;
 }
-inline ::pb::ChannelData_BadAudio* ChannelData::release_badaudio() {
-  // @@protoc_insertion_point(field_release:pb.ChannelData.badAudio)
-  if (has_badaudio()) {
+inline ::pb::ChannelData_Audio* ChannelData::release_audio() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.audio)
+  if (has_audio()) {
     clear_has_channel();
-    ::pb::ChannelData_BadAudio* temp = channel_.badaudio_;
-    channel_.badaudio_ = NULL;
+    ::pb::ChannelData_Audio* temp = channel_.audio_;
+    channel_.audio_ = NULL;
     return temp;
   } else {
     return NULL;
   }
 }
-inline void ChannelData::set_allocated_badaudio(::pb::ChannelData_BadAudio* badaudio) {
+inline void ChannelData::set_allocated_audio(::pb::ChannelData_Audio* audio) {
   clear_channel();
-  if (badaudio) {
-    set_has_badaudio();
-    channel_.badaudio_ = badaudio;
+  if (audio) {
+    set_has_audio();
+    channel_.audio_ = audio;
   }
-  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.badAudio)
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.audio)
 }
 
 // optional .pb.ChannelData.Label label = 14;
@@ -2584,6 +2806,54 @@ inline void ChannelData::set_allocated_collate(::pb::ChannelData_Collate* collat
     channel_.collate_ = collate;
   }
   // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.collate)
+}
+
+// optional .pb.ChannelData.Playlist playlist = 16;
+inline bool ChannelData::has_playlist() const {
+  return channel_case() == kPlaylist;
+}
+inline void ChannelData::set_has_playlist() {
+  _oneof_case_[0] = kPlaylist;
+}
+inline void ChannelData::clear_playlist() {
+  if (has_playlist()) {
+    delete channel_.playlist_;
+    clear_has_channel();
+  }
+}
+inline  const ::pb::ChannelData_Playlist& ChannelData::playlist() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.playlist)
+  return has_playlist()
+      ? *channel_.playlist_
+      : ::pb::ChannelData_Playlist::default_instance();
+}
+inline ::pb::ChannelData_Playlist* ChannelData::mutable_playlist() {
+  if (!has_playlist()) {
+    clear_channel();
+    set_has_playlist();
+    channel_.playlist_ = new ::pb::ChannelData_Playlist;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.playlist)
+  return channel_.playlist_;
+}
+inline ::pb::ChannelData_Playlist* ChannelData::release_playlist() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.playlist)
+  if (has_playlist()) {
+    clear_has_channel();
+    ::pb::ChannelData_Playlist* temp = channel_.playlist_;
+    channel_.playlist_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void ChannelData::set_allocated_playlist(::pb::ChannelData_Playlist* playlist) {
+  clear_channel();
+  if (playlist) {
+    set_has_playlist();
+    channel_.playlist_ = playlist;
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.playlist)
 }
 
 inline bool ChannelData::has_channel() const {
@@ -2868,6 +3138,10 @@ inline void ManagedResourceFile::set_allocated_suffix(::std::string* suffix) {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

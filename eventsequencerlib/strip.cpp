@@ -3,9 +3,10 @@
 #include "document.h"
 
 #include "stripext/badjsstripext.h"
-#include "stripext/badaudiostripext.h"
+#include "stripext/audiostripext.h"
 #include "stripext/textstripext.h"
 #include "stripext/labelstripext.h"
+#include "stripext/playliststripext.h"
 
 #include "eventsequencer.pb.h"
 
@@ -90,25 +91,25 @@ stripext::BadJsStripExt* Strip::mutableBadJs()
     return badJs();
 }
 
-stripext::BadAudioStripExt *Strip::badAudio() const
+stripext::AudioStripExt *Strip::audio() const
 {
-    return badAudio_;
+    return audio_;
 }
 
-void Strip::setBadAudio(stripext::BadAudioStripExt *badAudio)
+void Strip::setAudio(stripext::AudioStripExt *audio)
 {
-    if (badAudio_ != badAudio) {
-        badAudio_ = badAudio;
-        emit badAudioChanged();
+    if (audio_ != audio) {
+        audio_ = audio;
+        emit audioChanged();
     }
 }
 
-stripext::BadAudioStripExt *Strip::mutableBadAudio()
+stripext::AudioStripExt *Strip::mutableAudio()
 {
-    if (badAudio() == nullptr) {
-        setBadAudio(new stripext::BadAudioStripExt(this));
+    if (audio() == nullptr) {
+        setAudio(new stripext::AudioStripExt(this));
     }
-    return badAudio();
+    return audio();
 }
 
 stripext::TextStripExt *Strip::text() const
@@ -153,6 +154,28 @@ stripext::LabelStripExt *Strip::mutableLabel()
     return label();
 }
 
+stripext::PlaylistStripExt *Strip::playlist() const
+{
+    return playlist_;
+}
+
+void Strip::setPlaylist(stripext::PlaylistStripExt *playlist)
+{
+    if (playlist_ != playlist) {
+        playlist_ = playlist;
+        emit playlistChanged();
+    }
+}
+
+stripext::PlaylistStripExt *Strip::mutablePlaylist()
+{
+    if (playlist() == nullptr) {
+        setPlaylist(new stripext::PlaylistStripExt(this));
+    }
+    return playlist();
+}
+
+
 Strip::Strip(Document& d, QObject *parent) : QObject(parent), d_(d)
 {
     
@@ -173,14 +196,17 @@ void Strip::toPb(pb::Strip &pb) const
     if (badJs() != nullptr) {
         badJs()->toPb(*pb.mutable_badjs());
     }
-    if (badAudio() != nullptr) {
-        badAudio()->toPb(*pb.mutable_badaudio());
+    if (audio() != nullptr) {
+        audio()->toPb(*pb.mutable_audio());
     }
     if (text() != nullptr) {
         text()->toPb(*pb.mutable_text());
     }
     if (label() != nullptr) {
         label()->toPb(*pb.mutable_label());
+    }
+    if (playlist() != nullptr) {
+        playlist()->toPb(*pb.mutable_playlist());
     }
 }
 
@@ -198,10 +224,10 @@ void Strip::fromPb(const pb::Strip &pb)
         tmp->fromPb(pb.badjs());
         setBadJs(tmp);
     }
-    if (pb.has_badaudio()) {
-        auto tmp = new stripext::BadAudioStripExt(this);
-        tmp->fromPb(pb.badaudio());
-        setBadAudio(tmp);
+    if (pb.has_audio()) {
+        auto tmp = new stripext::AudioStripExt(this);
+        tmp->fromPb(pb.audio());
+        setAudio(tmp);
     }
     if (pb.has_text()) {
         auto tmp = new stripext::TextStripExt(this);
@@ -212,5 +238,10 @@ void Strip::fromPb(const pb::Strip &pb)
         auto tmp = new stripext::LabelStripExt(this);
         tmp->fromPb(pb.label());
         setLabel(tmp);
+    }
+    if (pb.has_playlist()) {
+        auto tmp = new stripext::PlaylistStripExt(this);
+        tmp->fromPb(pb.playlist());
+        setPlaylist(tmp);
     }
 }

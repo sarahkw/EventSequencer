@@ -17,15 +17,16 @@ message Strip {
   Resource resource = 5;
 
   BadJs badJs = 10;
-  BadAudio badAudio = 11;
+  Audio audio = 11;
   Text text = 12;
   Label label = 13;
+  Playlist playlist = 14;
 
 
   message BadJs {
     string script = 1;
   }
-  message BadAudio {
+  message Audio {
     //string fileName = 1;
   }
   message Text {
@@ -33,6 +34,9 @@ message Strip {
   }
   message Label {
     string content = 1;
+  }
+  message Playlist {
+
   }
 }
 
@@ -43,20 +47,22 @@ message ChannelData {
     reserved 1;
     string content = 2;
   }
-  message BadAudio {}
+  message Audio {}
   message Label {}
   message Collate {
     int32 channelFrom = 10;
     int32 channelTo = 11;
   }
+  message Playlist {}
 
   oneof channel {
     BadClock badClock = 10;
     BadJs badJs = 11;
     Text text = 12;
-    BadAudio badAudio = 13;
+    Audio audio = 13;
     Label label = 14;
     Collate collate = 15;
+    Playlist playlist = 16;
   };
 }
 

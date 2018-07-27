@@ -12,8 +12,8 @@ Item {
     TextControl {
         id: text
     }
-    BadAudioControl {
-        id: badAudio
+    AudioControl {
+        id: audio
     }
     LabelControl {
         id: label
@@ -21,15 +21,19 @@ Item {
     CollateControl {
         id: collate
     }
+    PlaylistControl {
+        id: playlist
+    }
 
     function resolve(type) {
         switch (type) {
         case ES.ChannelType.BadClock: return badClock
         case ES.ChannelType.BadJs: return badJs
         case ES.ChannelType.Text: return text
-        case ES.ChannelType.BadAudio: return badAudio
+        case ES.ChannelType.Audio: return audio
         case ES.ChannelType.Label: return label
         case ES.ChannelType.Collate: return collate
+        case ES.ChannelType.Playlist: return playlist
         }
         console.assert(false, "Unable to resolve type")
     }

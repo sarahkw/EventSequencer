@@ -19,7 +19,7 @@
         <file>Control/BadJsControl.qml</file>
         <file>Control/TextControl.qml</file>
         <file>Control/Resolver.qml</file>
-        <file>Control/BadAudioControl.qml</file>
+        <file>Control/AudioControl.qml</file>
         <file>SelectionMode.qml</file>
         <file>DebugConstrainedMetricsFontUtil.qml</file>
         <file>Control/LabelControl.qml</file>
@@ -28,5 +28,6 @@
         <file>Control/CollateControl.qml</file>
         <file>ResourceCreator.qml</file>
         <file>ESTextField.qml</file>
+        <file>Control/PlaylistControl.qml</file>
     </qresource>
 </RCC>
