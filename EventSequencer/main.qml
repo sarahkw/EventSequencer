@@ -1104,6 +1104,13 @@ ApplicationWindow {
                                     document.framesPerSecond = parseInt(text, 10)
                                 }
                             }
+                            Label {
+                                text: "Audio Format"
+                            }
+                            CheckBox {
+                                text: "Set"
+                            }
+
                         }
                     } // document properties
 
