@@ -1,6 +1,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
+import QtQml.Models 2.3
 import Qt.labs.platform 1.0 as Qlp
 import "util.js" as Util
 import "Control" as Ctrl
@@ -1108,7 +1109,38 @@ ApplicationWindow {
                                 text: "Audio Format"
                             }
                             CheckBox {
+                                id: propertiesAudioFormatSet
                                 text: "Set"
+                                ObjectModel {
+                                    id: propertiesAudioFormatObjectModel
+                                    Label { text: "\u2514 Sample Rate" }
+                                    ESTextField { Layout.fillWidth: true }
+                                    Label { text: "\u2514 Sample Size" }
+                                    ComboBox {
+                                        Layout.fillWidth: true
+                                        model: [8, 16, 24, 32]
+                                    }
+                                    Label { text: "\u2514 Channels" }
+                                    ComboBox {
+                                        Layout.fillWidth: true
+                                        model: [1, 2]
+                                    }
+                                    Label { text: "\u2514 Actions" }
+                                    RowLayout {
+                                        Layout.fillWidth: true
+                                        Button {
+                                            Layout.fillWidth: true
+                                            text: "Set Default"
+                                        }
+                                        Button {
+                                            Layout.fillWidth: true
+                                            text: "Test"
+                                        }
+                                    }
+                                }
+                            }
+                            Repeater {
+                                model: propertiesAudioFormatSet.checked ? propertiesAudioFormatObjectModel : null
                             }
 
                         }
