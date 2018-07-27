@@ -1109,10 +1109,10 @@ ApplicationWindow {
                                 text: "Audio Format"
                             }
                             CheckBox {
-                                id: propertiesAudioFormatSet
+                                id: propertiesDocumentAudioFormatSet
                                 text: "Set"
                                 ObjectModel {
-                                    id: propertiesAudioFormatObjectModel
+                                    id: propertiesDocumentAudioFormatObjectModel
                                     Label { text: "\u2514 Sample Rate" }
                                     ESTextField { Layout.fillWidth: true }
                                     Label { text: "\u2514 Sample Size" }
@@ -1140,7 +1140,8 @@ ApplicationWindow {
                                 }
                             }
                             Repeater {
-                                model: propertiesAudioFormatSet.checked ? propertiesAudioFormatObjectModel : null
+                                model: (propertiesDocumentAudioFormatSet.checked ?
+                                            propertiesDocumentAudioFormatObjectModel : null)
                             }
 
                         }
@@ -1204,6 +1205,46 @@ ApplicationWindow {
                             }
                         }
                     } // file properties
+
+                    // session properties
+                    Column {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        spacing: 15
+
+                        Label {
+                            text: "Session"
+                            font.pixelSize: 16
+                            font.bold: true
+                        }
+
+                        GridLayout {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+
+                            columns: 2
+
+                            Label {
+                                text: "Audio"
+                            }
+                            CheckBox {
+                                id: propertiesSessionAudioSet
+                                Layout.fillWidth: true
+                                text: "Set"
+                                ObjectModel {
+                                    id: propertiesSessionAudioObjectModel
+                                    Label { text: "\u2514 Input" }
+                                    ESTextField { Layout.fillWidth: true }
+                                    Label { text: "\u2514 Output" }
+                                    ESTextField { Layout.fillWidth: true }
+                                }
+                            }
+                            Repeater {
+                                model: propertiesSessionAudioSet.checked ? propertiesSessionAudioObjectModel : null
+                            }
+
+                        }
+                    } // session properties
 
                 }
             } // ScrollView
