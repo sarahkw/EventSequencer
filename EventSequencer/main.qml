@@ -1146,6 +1146,7 @@ ApplicationWindow {
                                     case 2: document.fileForkEditFlag = ES.Document.ForkEditFlag.Clear; break
                                     case 3: document.fileForkEditFlag = ES.Document.ForkEditFlag.Custom; break
                                     }
+                                    focus = false
                                 }
                                 currentIndex: {
                                     switch (document.fileForkEditFlag) {
