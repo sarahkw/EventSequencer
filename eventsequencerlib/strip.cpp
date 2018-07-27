@@ -63,6 +63,12 @@ void Strip::setLength(int length)
     }
 }
 
+
+Resource* Strip::resource()
+{
+    return &resource_;
+}
+
 stripext::BadJsStripExt *Strip::badJs() const
 {
     return badJs_;
@@ -163,6 +169,7 @@ void Strip::toPb(pb::Strip &pb) const
     pb.set_channel(channel_);
     pb.set_startframe(startFrame_);
     pb.set_length(length_);
+    resource_.toPb(*pb.mutable_resource());
     if (badJs() != nullptr) {
         badJs()->toPb(*pb.mutable_badjs());
     }
@@ -184,6 +191,7 @@ void Strip::fromPb(const pb::Strip &pb)
     setStartFrame(pb.startframe());
     setLength(pb.length());
     markAsPlaced();
+    resource_.fromPb(pb.resource());
 
     if (pb.has_badjs()) {
         auto tmp = new stripext::BadJsStripExt(this);

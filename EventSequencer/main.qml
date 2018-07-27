@@ -913,7 +913,7 @@ ApplicationWindow {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
 
-            position: 200
+            position: 300
             flip: true
 
             states: [

@@ -21,6 +21,13 @@ namespace pb {
 
 namespace {
 
+const ::google::protobuf::Descriptor* Resource_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Resource_reflection_ = NULL;
+struct ResourceOneofInstance {
+  ::google::protobuf::internal::ArenaStringPtr filepath_;
+  ::google::protobuf::internal::ArenaStringPtr managedid_;
+}* Resource_default_oneof_instance_ = NULL;
 const ::google::protobuf::Descriptor* Strip_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Strip_reflection_ = NULL;
@@ -72,9 +79,9 @@ const ::google::protobuf::Descriptor* Document_ChannelsEntry_descriptor_ = NULL;
 const ::google::protobuf::Descriptor* File_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   File_reflection_ = NULL;
-const ::google::protobuf::Descriptor* ManagedResource_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* ManagedResourceFile_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  ManagedResource_reflection_ = NULL;
+  ManagedResourceFile_reflection_ = NULL;
 
 }  // namespace
 
@@ -86,11 +93,31 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
     ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "eventsequencer.proto");
   GOOGLE_CHECK(file != NULL);
-  Strip_descriptor_ = file->message_type(0);
-  static const int Strip_offsets_[7] = {
+  Resource_descriptor_ = file->message_type(0);
+  static const int Resource_offsets_[3] = {
+    PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(Resource_default_oneof_instance_, filepath_),
+    PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(Resource_default_oneof_instance_, managedid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Resource, reference_),
+  };
+  Resource_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      Resource_descriptor_,
+      Resource::default_instance_,
+      Resource_offsets_,
+      -1,
+      -1,
+      -1,
+      Resource_default_oneof_instance_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Resource, _oneof_case_[0]),
+      sizeof(Resource),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Resource, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Resource, _is_default_instance_));
+  Strip_descriptor_ = file->message_type(1);
+  static const int Strip_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, channel_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, startframe_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, length_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, resource_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, badjs_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, badaudio_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip, text_),
@@ -124,7 +151,6 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_BadJs, _is_default_instance_));
   Strip_BadAudio_descriptor_ = Strip_descriptor_->nested_type(1);
   static const int Strip_BadAudio_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_BadAudio, filename_),
   };
   Strip_BadAudio_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -167,7 +193,7 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       sizeof(Strip_Label),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_Label, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Strip_Label, _is_default_instance_));
-  ChannelData_descriptor_ = file->message_type(1);
+  ChannelData_descriptor_ = file->message_type(2);
   static const int ChannelData_offsets_[7] = {
     PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, badclock_),
     PROTO2_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET(ChannelData_default_oneof_instance_, badjs_),
@@ -277,7 +303,7 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       sizeof(ChannelData_Collate),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Collate, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChannelData_Collate, _is_default_instance_));
-  Document_descriptor_ = file->message_type(2);
+  Document_descriptor_ = file->message_type(3);
   static const int Document_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, strips_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, framespersecond_),
@@ -297,7 +323,7 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Document, _is_default_instance_));
   Document_ChannelsEntry_descriptor_ = Document_descriptor_->nested_type(0);
-  File_descriptor_ = file->message_type(3);
+  File_descriptor_ = file->message_type(4);
   static const int File_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(File, document_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(File, checksum_),
@@ -314,21 +340,21 @@ void protobuf_AssignDesc_eventsequencer_2eproto() {
       sizeof(File),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(File, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(File, _is_default_instance_));
-  ManagedResource_descriptor_ = file->message_type(4);
-  static const int ManagedResource_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManagedResource, suffix_),
+  ManagedResourceFile_descriptor_ = file->message_type(5);
+  static const int ManagedResourceFile_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManagedResourceFile, suffix_),
   };
-  ManagedResource_reflection_ =
+  ManagedResourceFile_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
-      ManagedResource_descriptor_,
-      ManagedResource::default_instance_,
-      ManagedResource_offsets_,
+      ManagedResourceFile_descriptor_,
+      ManagedResourceFile::default_instance_,
+      ManagedResourceFile_offsets_,
       -1,
       -1,
       -1,
-      sizeof(ManagedResource),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManagedResource, _internal_metadata_),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManagedResource, _is_default_instance_));
+      sizeof(ManagedResourceFile),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManagedResourceFile, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManagedResourceFile, _is_default_instance_));
 }
 
 namespace {
@@ -342,6 +368,8 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      Resource_descriptor_, &Resource::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       Strip_descriptor_, &Strip::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -380,12 +408,15 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       File_descriptor_, &File::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-      ManagedResource_descriptor_, &ManagedResource::default_instance());
+      ManagedResourceFile_descriptor_, &ManagedResourceFile::default_instance());
 }
 
 }  // namespace
 
 void protobuf_ShutdownFile_eventsequencer_2eproto() {
+  delete Resource::default_instance_;
+  delete Resource_default_oneof_instance_;
+  delete Resource_reflection_;
   delete Strip::default_instance_;
   delete Strip_reflection_;
   delete Strip_BadJs::default_instance_;
@@ -415,8 +446,8 @@ void protobuf_ShutdownFile_eventsequencer_2eproto() {
   delete Document_reflection_;
   delete File::default_instance_;
   delete File_reflection_;
-  delete ManagedResource::default_instance_;
-  delete ManagedResource_reflection_;
+  delete ManagedResourceFile::default_instance_;
+  delete ManagedResourceFile_reflection_;
 }
 
 void protobuf_AddDesc_eventsequencer_2eproto() GOOGLE_ATTRIBUTE_COLD;
@@ -427,13 +458,15 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\024eventsequencer.proto\022\002pb\"\252\002\n\005Strip\022\017\n\007"
-    "channel\030\001 \001(\005\022\022\n\nstartFrame\030\002 \001(\005\022\016\n\006len"
-    "gth\030\003 \001(\005\022\036\n\005badJs\030\n \001(\0132\017.pb.Strip.BadJ"
-    "s\022$\n\010badAudio\030\013 \001(\0132\022.pb.Strip.BadAudio\022"
-    "\034\n\004text\030\014 \001(\0132\016.pb.Strip.Text\022\036\n\005label\030\r"
-    " \001(\0132\017.pb.Strip.Label\032\027\n\005BadJs\022\016\n\006script"
-    "\030\001 \001(\t\032\034\n\010BadAudio\022\020\n\010fileName\030\001 \001(\t\032\027\n\004"
+    "\n\024eventsequencer.proto\022\002pb\"@\n\010Resource\022\022"
+    "\n\010filePath\030\001 \001(\tH\000\022\023\n\tmanagedId\030\002 \001(\tH\000B"
+    "\013\n\treference\"\270\002\n\005Strip\022\017\n\007channel\030\001 \001(\005\022"
+    "\022\n\nstartFrame\030\002 \001(\005\022\016\n\006length\030\003 \001(\005\022\036\n\010r"
+    "esource\030\005 \001(\0132\014.pb.Resource\022\036\n\005badJs\030\n \001"
+    "(\0132\017.pb.Strip.BadJs\022$\n\010badAudio\030\013 \001(\0132\022."
+    "pb.Strip.BadAudio\022\034\n\004text\030\014 \001(\0132\016.pb.Str"
+    "ip.Text\022\036\n\005label\030\r \001(\0132\017.pb.Strip.Label\032"
+    "\027\n\005BadJs\022\016\n\006script\030\001 \001(\t\032\n\n\010BadAudio\032\027\n\004"
     "Text\022\017\n\007content\030\001 \001(\t\032\030\n\005Label\022\017\n\007conten"
     "t\030\001 \001(\t\"\222\003\n\013ChannelData\022,\n\010badClock\030\n \001("
     "\0132\030.pb.ChannelData.BadClockH\000\022&\n\005badJs\030\013"
@@ -452,10 +485,12 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
     "y\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022\036\n\005value"
     "\030\002 \001(\0132\017.pb.ChannelData:\0028\001\"T\n\004File\022\036\n\010d"
     "ocument\030\001 \001(\0132\014.pb.Document\022\020\n\010checksum\030"
-    "\002 \001(\t\022\032\n\022forkedFromChecksum\030\003 \001(\t\"!\n\017Man"
-    "agedResource\022\016\n\006suffix\030\001 \001(\tb\006proto3", 1076);
+    "\002 \001(\t\022\032\n\022forkedFromChecksum\030\003 \001(\t\"%\n\023Man"
+    "agedResourceFile\022\016\n\006suffix\030\001 \001(\tb\006proto3", 1160);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "eventsequencer.proto", &protobuf_RegisterTypes);
+  Resource::default_instance_ = new Resource();
+  Resource_default_oneof_instance_ = new ResourceOneofInstance();
   Strip::default_instance_ = new Strip();
   Strip_BadJs::default_instance_ = new Strip_BadJs();
   Strip_BadAudio::default_instance_ = new Strip_BadAudio();
@@ -471,7 +506,8 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
   ChannelData_Collate::default_instance_ = new ChannelData_Collate();
   Document::default_instance_ = new Document();
   File::default_instance_ = new File();
-  ManagedResource::default_instance_ = new ManagedResource();
+  ManagedResourceFile::default_instance_ = new ManagedResourceFile();
+  Resource::default_instance_->InitAsDefaultInstance();
   Strip::default_instance_->InitAsDefaultInstance();
   Strip_BadJs::default_instance_->InitAsDefaultInstance();
   Strip_BadAudio::default_instance_->InitAsDefaultInstance();
@@ -486,7 +522,7 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
   ChannelData_Collate::default_instance_->InitAsDefaultInstance();
   Document::default_instance_->InitAsDefaultInstance();
   File::default_instance_->InitAsDefaultInstance();
-  ManagedResource::default_instance_->InitAsDefaultInstance();
+  ManagedResourceFile::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_eventsequencer_2eproto);
 }
 
@@ -496,6 +532,501 @@ struct StaticDescriptorInitializer_eventsequencer_2eproto {
     protobuf_AddDesc_eventsequencer_2eproto();
   }
 } static_descriptor_initializer_eventsequencer_2eproto_;
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int Resource::kFilePathFieldNumber;
+const int Resource::kManagedIdFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+Resource::Resource()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.Resource)
+}
+
+void Resource::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+  Resource_default_oneof_instance_->filepath_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  Resource_default_oneof_instance_->managedid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+Resource::Resource(const Resource& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:pb.Resource)
+}
+
+void Resource::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  clear_has_reference();
+}
+
+Resource::~Resource() {
+  // @@protoc_insertion_point(destructor:pb.Resource)
+  SharedDtor();
+}
+
+void Resource::SharedDtor() {
+  if (has_reference()) {
+    clear_reference();
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void Resource::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Resource::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Resource_descriptor_;
+}
+
+const Resource& Resource::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_eventsequencer_2eproto();
+  return *default_instance_;
+}
+
+Resource* Resource::default_instance_ = NULL;
+
+Resource* Resource::New(::google::protobuf::Arena* arena) const {
+  Resource* n = new Resource;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void Resource::clear_reference() {
+// @@protoc_insertion_point(one_of_clear_start:pb.Resource)
+  switch(reference_case()) {
+    case kFilePath: {
+      reference_.filepath_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+      break;
+    }
+    case kManagedId: {
+      reference_.managedid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+      break;
+    }
+    case REFERENCE_NOT_SET: {
+      break;
+    }
+  }
+  _oneof_case_[0] = REFERENCE_NOT_SET;
+}
+
+
+void Resource::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.Resource)
+  clear_reference();
+}
+
+bool Resource::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.Resource)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string filePath = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_filepath()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->filepath().data(), this->filepath().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pb.Resource.filePath"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_managedId;
+        break;
+      }
+
+      // optional string managedId = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_managedId:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_managedid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->managedid().data(), this->managedid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pb.Resource.managedId"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.Resource)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.Resource)
+  return false;
+#undef DO_
+}
+
+void Resource::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.Resource)
+  // optional string filePath = 1;
+  if (has_filepath()) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->filepath().data(), this->filepath().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.Resource.filePath");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->filepath(), output);
+  }
+
+  // optional string managedId = 2;
+  if (has_managedid()) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->managedid().data(), this->managedid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.Resource.managedId");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->managedid(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:pb.Resource)
+}
+
+::google::protobuf::uint8* Resource::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:pb.Resource)
+  // optional string filePath = 1;
+  if (has_filepath()) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->filepath().data(), this->filepath().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.Resource.filePath");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->filepath(), target);
+  }
+
+  // optional string managedId = 2;
+  if (has_managedid()) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->managedid().data(), this->managedid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pb.Resource.managedId");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->managedid(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:pb.Resource)
+  return target;
+}
+
+int Resource::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.Resource)
+  int total_size = 0;
+
+  switch (reference_case()) {
+    // optional string filePath = 1;
+    case kFilePath: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->filepath());
+      break;
+    }
+    // optional string managedId = 2;
+    case kManagedId: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->managedid());
+      break;
+    }
+    case REFERENCE_NOT_SET: {
+      break;
+    }
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Resource::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.Resource)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  const Resource* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const Resource>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.Resource)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.Resource)
+    MergeFrom(*source);
+  }
+}
+
+void Resource::MergeFrom(const Resource& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.Resource)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  switch (from.reference_case()) {
+    case kFilePath: {
+      set_filepath(from.filepath());
+      break;
+    }
+    case kManagedId: {
+      set_managedid(from.managedid());
+      break;
+    }
+    case REFERENCE_NOT_SET: {
+      break;
+    }
+  }
+}
+
+void Resource::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.Resource)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Resource::CopyFrom(const Resource& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.Resource)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Resource::IsInitialized() const {
+
+  return true;
+}
+
+void Resource::Swap(Resource* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void Resource::InternalSwap(Resource* other) {
+  std::swap(reference_, other->reference_);
+  std::swap(_oneof_case_[0], other->_oneof_case_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata Resource::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = Resource_descriptor_;
+  metadata.reflection = Resource_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// Resource
+
+// optional string filePath = 1;
+bool Resource::has_filepath() const {
+  return reference_case() == kFilePath;
+}
+void Resource::set_has_filepath() {
+  _oneof_case_[0] = kFilePath;
+}
+void Resource::clear_filepath() {
+  if (has_filepath()) {
+    reference_.filepath_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    clear_has_reference();
+  }
+}
+ const ::std::string& Resource::filepath() const {
+  // @@protoc_insertion_point(field_get:pb.Resource.filePath)
+  if (has_filepath()) {
+    return reference_.filepath_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  return *&::google::protobuf::internal::GetEmptyStringAlreadyInited();
+}
+ void Resource::set_filepath(const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:pb.Resource.filePath)
+  if (!has_filepath()) {
+    clear_reference();
+    set_has_filepath();
+    reference_.filepath_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  reference_.filepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.Resource.filePath)
+}
+ void Resource::set_filepath(const char* value) {
+  if (!has_filepath()) {
+    clear_reference();
+    set_has_filepath();
+    reference_.filepath_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  reference_.filepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.Resource.filePath)
+}
+ void Resource::set_filepath(const char* value, size_t size) {
+  if (!has_filepath()) {
+    clear_reference();
+    set_has_filepath();
+    reference_.filepath_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  reference_.filepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.Resource.filePath)
+}
+ ::std::string* Resource::mutable_filepath() {
+  if (!has_filepath()) {
+    clear_reference();
+    set_has_filepath();
+    reference_.filepath_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_mutable:pb.Resource.filePath)
+  return reference_.filepath_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* Resource::release_filepath() {
+  // @@protoc_insertion_point(field_release:pb.Resource.filePath)
+  if (has_filepath()) {
+    clear_has_reference();
+    return reference_.filepath_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  } else {
+    return NULL;
+  }
+}
+ void Resource::set_allocated_filepath(::std::string* filepath) {
+  if (!has_filepath()) {
+    reference_.filepath_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  clear_reference();
+  if (filepath != NULL) {
+    set_has_filepath();
+    reference_.filepath_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+        filepath);
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.Resource.filePath)
+}
+
+// optional string managedId = 2;
+bool Resource::has_managedid() const {
+  return reference_case() == kManagedId;
+}
+void Resource::set_has_managedid() {
+  _oneof_case_[0] = kManagedId;
+}
+void Resource::clear_managedid() {
+  if (has_managedid()) {
+    reference_.managedid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    clear_has_reference();
+  }
+}
+ const ::std::string& Resource::managedid() const {
+  // @@protoc_insertion_point(field_get:pb.Resource.managedId)
+  if (has_managedid()) {
+    return reference_.managedid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  return *&::google::protobuf::internal::GetEmptyStringAlreadyInited();
+}
+ void Resource::set_managedid(const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:pb.Resource.managedId)
+  if (!has_managedid()) {
+    clear_reference();
+    set_has_managedid();
+    reference_.managedid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  reference_.managedid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pb.Resource.managedId)
+}
+ void Resource::set_managedid(const char* value) {
+  if (!has_managedid()) {
+    clear_reference();
+    set_has_managedid();
+    reference_.managedid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  reference_.managedid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pb.Resource.managedId)
+}
+ void Resource::set_managedid(const char* value, size_t size) {
+  if (!has_managedid()) {
+    clear_reference();
+    set_has_managedid();
+    reference_.managedid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  reference_.managedid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pb.Resource.managedId)
+}
+ ::std::string* Resource::mutable_managedid() {
+  if (!has_managedid()) {
+    clear_reference();
+    set_has_managedid();
+    reference_.managedid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_mutable:pb.Resource.managedId)
+  return reference_.managedid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* Resource::release_managedid() {
+  // @@protoc_insertion_point(field_release:pb.Resource.managedId)
+  if (has_managedid()) {
+    clear_has_reference();
+    return reference_.managedid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  } else {
+    return NULL;
+  }
+}
+ void Resource::set_allocated_managedid(::std::string* managedid) {
+  if (!has_managedid()) {
+    reference_.managedid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  clear_reference();
+  if (managedid != NULL) {
+    set_has_managedid();
+    reference_.managedid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+        managedid);
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.Resource.managedId)
+}
+
+bool Resource::has_reference() const {
+  return reference_case() != REFERENCE_NOT_SET;
+}
+void Resource::clear_has_reference() {
+  _oneof_case_[0] = REFERENCE_NOT_SET;
+}
+Resource::ReferenceCase Resource::reference_case() const {
+  return Resource::ReferenceCase(_oneof_case_[0]);
+}
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
 
@@ -736,7 +1267,6 @@ void Strip_BadJs::InternalSwap(Strip_BadJs* other) {
 // -------------------------------------------------------------------
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Strip_BadAudio::kFileNameFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Strip_BadAudio::Strip_BadAudio()
@@ -759,9 +1289,7 @@ Strip_BadAudio::Strip_BadAudio(const Strip_BadAudio& from)
 
 void Strip_BadAudio::SharedCtor() {
     _is_default_instance_ = false;
-  ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
-  filename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 Strip_BadAudio::~Strip_BadAudio() {
@@ -770,7 +1298,6 @@ Strip_BadAudio::~Strip_BadAudio() {
 }
 
 void Strip_BadAudio::SharedDtor() {
-  filename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
   }
 }
@@ -802,7 +1329,6 @@ Strip_BadAudio* Strip_BadAudio::New(::google::protobuf::Arena* arena) const {
 
 void Strip_BadAudio::Clear() {
 // @@protoc_insertion_point(message_clear_start:pb.Strip.BadAudio)
-  filename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 bool Strip_BadAudio::MergePartialFromCodedStream(
@@ -814,34 +1340,13 @@ bool Strip_BadAudio::MergePartialFromCodedStream(
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string fileName = 1;
-      case 1: {
-        if (tag == 10) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_filename()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->filename().data(), this->filename().length(),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.Strip.BadAudio.fileName"));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectAtEnd()) goto success;
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
-        break;
-      }
+  handle_unusual:
+    if (tag == 0 ||
+        ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      goto success;
     }
+    DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
   }
 success:
   // @@protoc_insertion_point(parse_success:pb.Strip.BadAudio)
@@ -855,33 +1360,12 @@ failure:
 void Strip_BadAudio::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:pb.Strip.BadAudio)
-  // optional string fileName = 1;
-  if (this->filename().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->filename().data(), this->filename().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.Strip.BadAudio.fileName");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->filename(), output);
-  }
-
   // @@protoc_insertion_point(serialize_end:pb.Strip.BadAudio)
 }
 
 ::google::protobuf::uint8* Strip_BadAudio::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:pb.Strip.BadAudio)
-  // optional string fileName = 1;
-  if (this->filename().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->filename().data(), this->filename().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.Strip.BadAudio.fileName");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->filename(), target);
-  }
-
   // @@protoc_insertion_point(serialize_to_array_end:pb.Strip.BadAudio)
   return target;
 }
@@ -889,13 +1373,6 @@ void Strip_BadAudio::SerializeWithCachedSizes(
 int Strip_BadAudio::ByteSize() const {
 // @@protoc_insertion_point(message_byte_size_start:pb.Strip.BadAudio)
   int total_size = 0;
-
-  // optional string fileName = 1;
-  if (this->filename().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->filename());
-  }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -925,10 +1402,6 @@ void Strip_BadAudio::MergeFrom(const Strip_BadAudio& from) {
   if (GOOGLE_PREDICT_FALSE(&from == this)) {
     ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
   }
-  if (from.filename().size() > 0) {
-
-    filename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.filename_);
-  }
 }
 
 void Strip_BadAudio::CopyFrom(const ::google::protobuf::Message& from) {
@@ -955,7 +1428,6 @@ void Strip_BadAudio::Swap(Strip_BadAudio* other) {
   InternalSwap(other);
 }
 void Strip_BadAudio::InternalSwap(Strip_BadAudio* other) {
-  filename_.Swap(&other->filename_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -1447,6 +1919,7 @@ void Strip_Label::InternalSwap(Strip_Label* other) {
 const int Strip::kChannelFieldNumber;
 const int Strip::kStartFrameFieldNumber;
 const int Strip::kLengthFieldNumber;
+const int Strip::kResourceFieldNumber;
 const int Strip::kBadJsFieldNumber;
 const int Strip::kBadAudioFieldNumber;
 const int Strip::kTextFieldNumber;
@@ -1461,6 +1934,7 @@ Strip::Strip()
 
 void Strip::InitAsDefaultInstance() {
   _is_default_instance_ = true;
+  resource_ = const_cast< ::pb::Resource*>(&::pb::Resource::default_instance());
   badjs_ = const_cast< ::pb::Strip_BadJs*>(&::pb::Strip_BadJs::default_instance());
   badaudio_ = const_cast< ::pb::Strip_BadAudio*>(&::pb::Strip_BadAudio::default_instance());
   text_ = const_cast< ::pb::Strip_Text*>(&::pb::Strip_Text::default_instance());
@@ -1481,6 +1955,7 @@ void Strip::SharedCtor() {
   channel_ = 0;
   startframe_ = 0;
   length_ = 0;
+  resource_ = NULL;
   badjs_ = NULL;
   badaudio_ = NULL;
   text_ = NULL;
@@ -1494,6 +1969,7 @@ Strip::~Strip() {
 
 void Strip::SharedDtor() {
   if (this != default_instance_) {
+    delete resource_;
     delete badjs_;
     delete badaudio_;
     delete text_;
@@ -1546,6 +2022,8 @@ void Strip::Clear() {
 
   ZR_(channel_, startframe_);
   length_ = 0;
+  if (GetArenaNoVirtual() == NULL && resource_ != NULL) delete resource_;
+  resource_ = NULL;
   if (GetArenaNoVirtual() == NULL && badjs_ != NULL) delete badjs_;
   badjs_ = NULL;
   if (GetArenaNoVirtual() == NULL && badaudio_ != NULL) delete badaudio_;
@@ -1607,6 +2085,19 @@ bool Strip::MergePartialFromCodedStream(
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &length_)));
 
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(42)) goto parse_resource;
+        break;
+      }
+
+      // optional .pb.Resource resource = 5;
+      case 5: {
+        if (tag == 42) {
+         parse_resource:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_resource()));
         } else {
           goto handle_unusual;
         }
@@ -1705,6 +2196,12 @@ void Strip::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->length(), output);
   }
 
+  // optional .pb.Resource resource = 5;
+  if (this->has_resource()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      5, *this->resource_, output);
+  }
+
   // optional .pb.Strip.BadJs badJs = 10;
   if (this->has_badjs()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -1748,6 +2245,13 @@ void Strip::SerializeWithCachedSizes(
   // optional int32 length = 3;
   if (this->length() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->length(), target);
+  }
+
+  // optional .pb.Resource resource = 5;
+  if (this->has_resource()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        5, *this->resource_, false, target);
   }
 
   // optional .pb.Strip.BadJs badJs = 10;
@@ -1805,6 +2309,13 @@ int Strip::ByteSize() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->length());
+  }
+
+  // optional .pb.Resource resource = 5;
+  if (this->has_resource()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->resource_);
   }
 
   // optional .pb.Strip.BadJs badJs = 10;
@@ -1872,6 +2383,9 @@ void Strip::MergeFrom(const Strip& from) {
   if (from.length() != 0) {
     set_length(from.length());
   }
+  if (from.has_resource()) {
+    mutable_resource()->::pb::Resource::MergeFrom(from.resource());
+  }
   if (from.has_badjs()) {
     mutable_badjs()->::pb::Strip_BadJs::MergeFrom(from.badjs());
   }
@@ -1913,6 +2427,7 @@ void Strip::InternalSwap(Strip* other) {
   std::swap(channel_, other->channel_);
   std::swap(startframe_, other->startframe_);
   std::swap(length_, other->length_);
+  std::swap(resource_, other->resource_);
   std::swap(badjs_, other->badjs_);
   std::swap(badaudio_, other->badaudio_);
   std::swap(text_, other->text_);
@@ -1979,50 +2494,6 @@ void Strip_BadJs::clear_script() {
 // -------------------------------------------------------------------
 
 // Strip_BadAudio
-
-// optional string fileName = 1;
-void Strip_BadAudio::clear_filename() {
-  filename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
- const ::std::string& Strip_BadAudio::filename() const {
-  // @@protoc_insertion_point(field_get:pb.Strip.BadAudio.fileName)
-  return filename_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
- void Strip_BadAudio::set_filename(const ::std::string& value) {
-  
-  filename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.Strip.BadAudio.fileName)
-}
- void Strip_BadAudio::set_filename(const char* value) {
-  
-  filename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.Strip.BadAudio.fileName)
-}
- void Strip_BadAudio::set_filename(const char* value, size_t size) {
-  
-  filename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.Strip.BadAudio.fileName)
-}
- ::std::string* Strip_BadAudio::mutable_filename() {
-  
-  // @@protoc_insertion_point(field_mutable:pb.Strip.BadAudio.fileName)
-  return filename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
- ::std::string* Strip_BadAudio::release_filename() {
-  // @@protoc_insertion_point(field_release:pb.Strip.BadAudio.fileName)
-  
-  return filename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
- void Strip_BadAudio::set_allocated_filename(::std::string* filename) {
-  if (filename != NULL) {
-    
-  } else {
-    
-  }
-  filename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), filename);
-  // @@protoc_insertion_point(field_set_allocated:pb.Strip.BadAudio.fileName)
-}
 
 // -------------------------------------------------------------------
 
@@ -2164,6 +2635,44 @@ void Strip::clear_length() {
   
   length_ = value;
   // @@protoc_insertion_point(field_set:pb.Strip.length)
+}
+
+// optional .pb.Resource resource = 5;
+bool Strip::has_resource() const {
+  return !_is_default_instance_ && resource_ != NULL;
+}
+void Strip::clear_resource() {
+  if (GetArenaNoVirtual() == NULL && resource_ != NULL) delete resource_;
+  resource_ = NULL;
+}
+const ::pb::Resource& Strip::resource() const {
+  // @@protoc_insertion_point(field_get:pb.Strip.resource)
+  return resource_ != NULL ? *resource_ : *default_instance_->resource_;
+}
+::pb::Resource* Strip::mutable_resource() {
+  
+  if (resource_ == NULL) {
+    resource_ = new ::pb::Resource;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.Strip.resource)
+  return resource_;
+}
+::pb::Resource* Strip::release_resource() {
+  // @@protoc_insertion_point(field_release:pb.Strip.resource)
+  
+  ::pb::Resource* temp = resource_;
+  resource_ = NULL;
+  return temp;
+}
+void Strip::set_allocated_resource(::pb::Resource* resource) {
+  delete resource_;
+  resource_ = resource;
+  if (resource) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.Strip.resource)
 }
 
 // optional .pb.Strip.BadJs badJs = 10;
@@ -5451,80 +5960,80 @@ void File::clear_forkedfromchecksum() {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ManagedResource::kSuffixFieldNumber;
+const int ManagedResourceFile::kSuffixFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-ManagedResource::ManagedResource()
+ManagedResourceFile::ManagedResourceFile()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:pb.ManagedResource)
+  // @@protoc_insertion_point(constructor:pb.ManagedResourceFile)
 }
 
-void ManagedResource::InitAsDefaultInstance() {
+void ManagedResourceFile::InitAsDefaultInstance() {
   _is_default_instance_ = true;
 }
 
-ManagedResource::ManagedResource(const ManagedResource& from)
+ManagedResourceFile::ManagedResourceFile(const ManagedResourceFile& from)
   : ::google::protobuf::Message(),
     _internal_metadata_(NULL) {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:pb.ManagedResource)
+  // @@protoc_insertion_point(copy_constructor:pb.ManagedResourceFile)
 }
 
-void ManagedResource::SharedCtor() {
+void ManagedResourceFile::SharedCtor() {
     _is_default_instance_ = false;
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   suffix_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
-ManagedResource::~ManagedResource() {
-  // @@protoc_insertion_point(destructor:pb.ManagedResource)
+ManagedResourceFile::~ManagedResourceFile() {
+  // @@protoc_insertion_point(destructor:pb.ManagedResourceFile)
   SharedDtor();
 }
 
-void ManagedResource::SharedDtor() {
+void ManagedResourceFile::SharedDtor() {
   suffix_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
   }
 }
 
-void ManagedResource::SetCachedSize(int size) const {
+void ManagedResourceFile::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* ManagedResource::descriptor() {
+const ::google::protobuf::Descriptor* ManagedResourceFile::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return ManagedResource_descriptor_;
+  return ManagedResourceFile_descriptor_;
 }
 
-const ManagedResource& ManagedResource::default_instance() {
+const ManagedResourceFile& ManagedResourceFile::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_eventsequencer_2eproto();
   return *default_instance_;
 }
 
-ManagedResource* ManagedResource::default_instance_ = NULL;
+ManagedResourceFile* ManagedResourceFile::default_instance_ = NULL;
 
-ManagedResource* ManagedResource::New(::google::protobuf::Arena* arena) const {
-  ManagedResource* n = new ManagedResource;
+ManagedResourceFile* ManagedResourceFile::New(::google::protobuf::Arena* arena) const {
+  ManagedResourceFile* n = new ManagedResourceFile;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void ManagedResource::Clear() {
-// @@protoc_insertion_point(message_clear_start:pb.ManagedResource)
+void ManagedResourceFile::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.ManagedResourceFile)
   suffix_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
-bool ManagedResource::MergePartialFromCodedStream(
+bool ManagedResourceFile::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:pb.ManagedResource)
+  // @@protoc_insertion_point(parse_start:pb.ManagedResourceFile)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
@@ -5538,7 +6047,7 @@ bool ManagedResource::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->suffix().data(), this->suffix().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pb.ManagedResource.suffix"));
+            "pb.ManagedResourceFile.suffix"));
         } else {
           goto handle_unusual;
         }
@@ -5559,50 +6068,50 @@ bool ManagedResource::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:pb.ManagedResource)
+  // @@protoc_insertion_point(parse_success:pb.ManagedResourceFile)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:pb.ManagedResource)
+  // @@protoc_insertion_point(parse_failure:pb.ManagedResourceFile)
   return false;
 #undef DO_
 }
 
-void ManagedResource::SerializeWithCachedSizes(
+void ManagedResourceFile::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:pb.ManagedResource)
+  // @@protoc_insertion_point(serialize_start:pb.ManagedResourceFile)
   // optional string suffix = 1;
   if (this->suffix().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->suffix().data(), this->suffix().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.ManagedResource.suffix");
+      "pb.ManagedResourceFile.suffix");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       1, this->suffix(), output);
   }
 
-  // @@protoc_insertion_point(serialize_end:pb.ManagedResource)
+  // @@protoc_insertion_point(serialize_end:pb.ManagedResourceFile)
 }
 
-::google::protobuf::uint8* ManagedResource::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* ManagedResourceFile::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:pb.ManagedResource)
+  // @@protoc_insertion_point(serialize_to_array_start:pb.ManagedResourceFile)
   // optional string suffix = 1;
   if (this->suffix().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->suffix().data(), this->suffix().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pb.ManagedResource.suffix");
+      "pb.ManagedResourceFile.suffix");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         1, this->suffix(), target);
   }
 
-  // @@protoc_insertion_point(serialize_to_array_end:pb.ManagedResource)
+  // @@protoc_insertion_point(serialize_to_array_end:pb.ManagedResourceFile)
   return target;
 }
 
-int ManagedResource::ByteSize() const {
-// @@protoc_insertion_point(message_byte_size_start:pb.ManagedResource)
+int ManagedResourceFile::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.ManagedResourceFile)
   int total_size = 0;
 
   // optional string suffix = 1;
@@ -5618,25 +6127,25 @@ int ManagedResource::ByteSize() const {
   return total_size;
 }
 
-void ManagedResource::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:pb.ManagedResource)
+void ManagedResourceFile::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.ManagedResourceFile)
   if (GOOGLE_PREDICT_FALSE(&from == this)) {
     ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
   }
-  const ManagedResource* source = 
-      ::google::protobuf::internal::DynamicCastToGenerated<const ManagedResource>(
+  const ManagedResourceFile* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const ManagedResourceFile>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.ManagedResource)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.ManagedResourceFile)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.ManagedResource)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.ManagedResourceFile)
     MergeFrom(*source);
   }
 }
 
-void ManagedResource::MergeFrom(const ManagedResource& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:pb.ManagedResource)
+void ManagedResourceFile::MergeFrom(const ManagedResourceFile& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.ManagedResourceFile)
   if (GOOGLE_PREDICT_FALSE(&from == this)) {
     ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
   }
@@ -5646,88 +6155,88 @@ void ManagedResource::MergeFrom(const ManagedResource& from) {
   }
 }
 
-void ManagedResource::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:pb.ManagedResource)
+void ManagedResourceFile::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.ManagedResourceFile)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void ManagedResource::CopyFrom(const ManagedResource& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pb.ManagedResource)
+void ManagedResourceFile::CopyFrom(const ManagedResourceFile& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.ManagedResourceFile)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool ManagedResource::IsInitialized() const {
+bool ManagedResourceFile::IsInitialized() const {
 
   return true;
 }
 
-void ManagedResource::Swap(ManagedResource* other) {
+void ManagedResourceFile::Swap(ManagedResourceFile* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void ManagedResource::InternalSwap(ManagedResource* other) {
+void ManagedResourceFile::InternalSwap(ManagedResourceFile* other) {
   suffix_.Swap(&other->suffix_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata ManagedResource::GetMetadata() const {
+::google::protobuf::Metadata ManagedResourceFile::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = ManagedResource_descriptor_;
-  metadata.reflection = ManagedResource_reflection_;
+  metadata.descriptor = ManagedResourceFile_descriptor_;
+  metadata.reflection = ManagedResourceFile_reflection_;
   return metadata;
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
-// ManagedResource
+// ManagedResourceFile
 
 // optional string suffix = 1;
-void ManagedResource::clear_suffix() {
+void ManagedResourceFile::clear_suffix() {
   suffix_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- const ::std::string& ManagedResource::suffix() const {
-  // @@protoc_insertion_point(field_get:pb.ManagedResource.suffix)
+ const ::std::string& ManagedResourceFile::suffix() const {
+  // @@protoc_insertion_point(field_get:pb.ManagedResourceFile.suffix)
   return suffix_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- void ManagedResource::set_suffix(const ::std::string& value) {
+ void ManagedResourceFile::set_suffix(const ::std::string& value) {
   
   suffix_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:pb.ManagedResource.suffix)
+  // @@protoc_insertion_point(field_set:pb.ManagedResourceFile.suffix)
 }
- void ManagedResource::set_suffix(const char* value) {
+ void ManagedResourceFile::set_suffix(const char* value) {
   
   suffix_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pb.ManagedResource.suffix)
+  // @@protoc_insertion_point(field_set_char:pb.ManagedResourceFile.suffix)
 }
- void ManagedResource::set_suffix(const char* value, size_t size) {
+ void ManagedResourceFile::set_suffix(const char* value, size_t size) {
   
   suffix_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pb.ManagedResource.suffix)
+  // @@protoc_insertion_point(field_set_pointer:pb.ManagedResourceFile.suffix)
 }
- ::std::string* ManagedResource::mutable_suffix() {
+ ::std::string* ManagedResourceFile::mutable_suffix() {
   
-  // @@protoc_insertion_point(field_mutable:pb.ManagedResource.suffix)
+  // @@protoc_insertion_point(field_mutable:pb.ManagedResourceFile.suffix)
   return suffix_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- ::std::string* ManagedResource::release_suffix() {
-  // @@protoc_insertion_point(field_release:pb.ManagedResource.suffix)
+ ::std::string* ManagedResourceFile::release_suffix() {
+  // @@protoc_insertion_point(field_release:pb.ManagedResourceFile.suffix)
   
   return suffix_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- void ManagedResource::set_allocated_suffix(::std::string* suffix) {
+ void ManagedResourceFile::set_allocated_suffix(::std::string* suffix) {
   if (suffix != NULL) {
     
   } else {
     
   }
   suffix_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), suffix);
-  // @@protoc_insertion_point(field_set_allocated:pb.ManagedResource.suffix)
+  // @@protoc_insertion_point(field_set_allocated:pb.ManagedResourceFile.suffix)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

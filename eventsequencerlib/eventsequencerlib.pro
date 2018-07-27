@@ -50,7 +50,8 @@ SOURCES += \
     collatenonoverlappingsegments.cpp \
     saferfilereplacement.cpp \
     managedresources.cpp \
-    resourcecreatorcontrol.cpp
+    resourcecreatorcontrol.cpp \
+    resource.cpp
 
 
 HEADERS += \
@@ -81,7 +82,8 @@ HEADERS += \
     collatenonoverlappingsegments.h \
     saferfilereplacement.h \
     managedresources.h \
-    resourcecreatorcontrol.h
+    resourcecreatorcontrol.h \
+    resource.h
 
 unix {
     target.path = /usr/lib

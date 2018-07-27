@@ -2,21 +2,31 @@ syntax = "proto3";
 
 package pb;
 
+message Resource {
+  oneof reference {
+    string filePath = 1;
+    string managedId = 2;
+  };
+}
+
 message Strip {
   int32 channel = 1;
   int32 startFrame = 2;
   int32 length = 3;
+
+  Resource resource = 5;
 
   BadJs badJs = 10;
   BadAudio badAudio = 11;
   Text text = 12;
   Label label = 13;
 
+
   message BadJs {
     string script = 1;
   }
   message BadAudio {
-    string fileName = 1;
+    //string fileName = 1;
   }
   message Text {
     string content = 1;
@@ -51,7 +61,6 @@ message ChannelData {
 }
 
 message Document {
-  // TODO Should probably have a version number.
   repeated Strip strips = 1;
   int32 framesPerSecond = 2;
   int32 startFrame = 4;
@@ -65,6 +74,6 @@ message File {
   string forkedFromChecksum = 3;
 }
 
-message ManagedResource {
+message ManagedResourceFile {
   string suffix = 1;
 }
