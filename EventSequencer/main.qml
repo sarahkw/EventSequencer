@@ -1122,53 +1122,70 @@ ApplicationWindow {
                                 text: "Audio Format"
                             }
                             CheckBox {
-                                id: propertiesDocumentAudioFormatSet
                                 text: "Set"
-                                ObjectModel {
-                                    id: propertiesDocumentAudioFormatObjectModel
-                                    Label { text: "\u2514 Sample Rate" }
-                                    ESTextField { Layout.fillWidth: true }
-                                    Label { text: "\u2514 Sample Size" }
-                                    ESTextField {
-                                        Layout.fillWidth: true
-                                    }
-                                    Label { text: "\u2514 Channels" }
-                                    ESTextField {
-                                        Layout.fillWidth: true
-                                    }
-                                    Label { text: "\u2514 Sample Type" }
-                                    ComboBox {
-                                        Layout.fillWidth: true
-                                        model: ["", "Signed", "Unsigned", "Float"]
-                                    }
-                                    Label { text: "\u2514 Byte Order" }
-                                    ComboBox {
-                                        Layout.fillWidth: true
-                                        model: ["", "Big Endian", "Little Endian"]
-                                    }
-                                    Label { text: "\u2514 Actions" }
-                                    RowLayout {
-                                        Layout.fillWidth: true
-                                        Button {
-                                            Layout.fillWidth: true
-                                            text: "Set Default..."
-                                            onClicked: menu.popup()
-
-                                            property Menu menu: Menu {
-                                                MenuItem { text: "From Input" }
-                                                MenuItem { text: "From Output" }
+                                checked: document.audioFormatSet
+                                onCheckedChanged: document.audioFormatSet = checked
+                                Loader {
+                                    id: propertiesDocumentAudioFormatObjectModelLoader
+                                    sourceComponent: document.audioFormat != null ? comp : null
+                                    property Component comp: Component {
+                                        ObjectModel {
+                                            Label { text: "\u2514 Sample Rate" }
+                                            ESTextField {
+                                                Layout.fillWidth: true
+                                                text: document.audioFormat.sampleRate
+                                                onEsEditingFinished: document.audioFormat.sampleRate = parseInt(text, 10)
                                             }
-                                        }
-                                        Button {
-                                            Layout.fillWidth: true
-                                            text: "Test"
+                                            Label { text: "\u2514 Sample Size" }
+                                            ESTextField {
+                                                Layout.fillWidth: true
+                                                text: document.audioFormat.sampleSize
+                                                onEsEditingFinished: document.audioFormat.sampleSize = parseInt(text, 10)
+                                            }
+                                            Label { text: "\u2514 Channels" }
+                                            ESTextField {
+                                                Layout.fillWidth: true
+                                                text: document.audioFormat.channelCount
+                                                onEsEditingFinished: document.audioFormat.channelCount = parseInt(text, 10)
+                                            }
+                                            Label { text: "\u2514 Sample Type" }
+                                            ComboBox {
+                                                Layout.fillWidth: true
+                                                model: document.audioFormat.sampleTypeModel
+                                                currentIndex: document.audioFormat.sampleTypeIndex
+                                                onActivated: document.audioFormat.sampleTypeIndex = index
+                                            }
+                                            Label { text: "\u2514 Byte Order" }
+                                            ComboBox {
+                                                Layout.fillWidth: true
+                                                model: document.audioFormat.endianModel
+                                                currentIndex: document.audioFormat.endianIndex
+                                                onActivated: document.audioFormat.endianIndex = index
+                                            }
+                                            Label { text: "\u2514 Actions" }
+                                            RowLayout {
+                                                Layout.fillWidth: true
+                                                Button {
+                                                    Layout.fillWidth: true
+                                                    text: "Set Default..."
+                                                    onClicked: menu.popup()
+
+                                                    property Menu menu: Menu {
+                                                        MenuItem { text: "From Input" }
+                                                        MenuItem { text: "From Output" }
+                                                    }
+                                                }
+                                                Button {
+                                                    Layout.fillWidth: true
+                                                    text: "Test"
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
                             Repeater {
-                                model: (propertiesDocumentAudioFormatSet.checked ?
-                                            propertiesDocumentAudioFormatObjectModel : null)
+                                model: propertiesDocumentAudioFormatObjectModelLoader.item
                             }
 
                         }

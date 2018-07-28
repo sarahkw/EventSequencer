@@ -39,6 +39,12 @@ private:
     Q_PROPERTY(SampleType sampleType   READ sampleType   WRITE setSampleType   NOTIFY sampleTypeChanged)
     Q_PROPERTY(Endian     endian       READ endian       WRITE setEndian       NOTIFY endianChanged)
 
+    // Enum helpers
+    Q_PROPERTY(QStringList sampleTypeModel READ sampleTypeModel CONSTANT)
+    Q_PROPERTY(QStringList endianModel READ endianModel CONSTANT)
+    Q_PROPERTY(int sampleTypeIndex READ sampleTypeIndex WRITE setSampleTypeIndex NOTIFY sampleTypeIndexChanged)
+    Q_PROPERTY(int endianIndex READ endianIndex WRITE setEndianIndex NOTIFY endianIndexChanged)
+
 public:
     explicit AudioFormat(QObject *parent = nullptr);
 
@@ -60,6 +66,14 @@ public:
     Endian endian() const;
     void setEndian(const Endian &endian);
 
+    // Enum helpers
+    QStringList sampleTypeModel();
+    QStringList endianModel();
+    int sampleTypeIndex() const;
+    void setSampleTypeIndex(int sampleTypeIndex);
+    int endianIndex() const;
+    void setEndianIndex(int endianIndex);
+    
 signals:
 
     void sampleRateChanged();
@@ -67,6 +81,10 @@ signals:
     void channelCountChanged();
     void sampleTypeChanged();
     void endianChanged();
+
+    // Enum helpers
+    void sampleTypeIndexChanged();
+    void endianIndexChanged();
 
 public slots:
 };

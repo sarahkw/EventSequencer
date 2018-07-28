@@ -51,6 +51,7 @@ void AudioFormat::setSampleType(const SampleType &sampleType)
     if (sampleType_ != sampleType) {
         sampleType_ = sampleType;
         emit sampleTypeChanged();
+        emit sampleTypeIndexChanged();
     }
 }
 
@@ -64,6 +65,59 @@ void AudioFormat::setEndian(const Endian &endian)
     if (endian_ != endian) {
         endian_ = endian;
         emit endianChanged();
+        emit endianIndexChanged();
+    }
+}
+
+QStringList AudioFormat::sampleTypeModel() /*enum helper*/
+{
+    const static QStringList sl{"", "Signed", "Unsigned", "Float"};
+    return sl;
+}
+
+QStringList AudioFormat::endianModel() /*enum helper*/
+{
+    const static QStringList sl{"", "Big", "Little"};
+    return sl;
+}
+
+int AudioFormat::sampleTypeIndex() const /*enum helper*/
+{
+    switch (sampleType_) {
+    case SampleType::None:        return 0;
+    case SampleType::SignedInt:   return 1;
+    case SampleType::UnSignedInt: return 2;
+    case SampleType::Float:       return 3;
+    }
+    return 0; // Compiler
+}
+
+void AudioFormat::setSampleTypeIndex(int sampleTypeIndex) /*enum helper*/
+{
+    switch (sampleTypeIndex) {
+    case 0: setSampleType(SampleType::None       ); break;
+    case 1: setSampleType(SampleType::SignedInt  ); break;
+    case 2: setSampleType(SampleType::UnSignedInt); break;
+    case 3: setSampleType(SampleType::Float      ); break;
+    }
+}
+
+int AudioFormat::endianIndex() const /*enum helper*/
+{
+    switch (endian_) {
+    case Endian::None:         return 0;
+    case Endian::BigEndian:    return 1;
+    case Endian::LittleEndian: return 2;
+    }
+    return 0; // Compiler
+}
+
+void AudioFormat::setEndianIndex(int endianIndex) /*enum helper*/
+{
+    switch (endianIndex) {
+    case 0: setEndian(Endian::None        ); break;
+    case 1: setEndian(Endian::BigEndian   ); break;
+    case 2: setEndian(Endian::LittleEndian); break;
     }
 }
 
