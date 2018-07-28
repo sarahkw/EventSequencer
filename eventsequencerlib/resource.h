@@ -21,7 +21,7 @@ public:
     };
     Q_ENUMS(Type)
 private:
-    Type type_;
+    Type type_ = Type::None;
     QString identifier_;
 
     Q_PROPERTY(Type type READ type WRITE setType NOTIFY typeChanged)
