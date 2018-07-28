@@ -1138,6 +1138,16 @@ ApplicationWindow {
                                         Layout.fillWidth: true
                                         model: [1, 2]
                                     }
+                                    Label { text: "\u2514 Sample Type" }
+                                    ComboBox {
+                                        Layout.fillWidth: true
+                                        model: ["Signed", "Unsigned", "Float"]
+                                    }
+                                    Label { text: "\u2514 Byte Order" }
+                                    ComboBox {
+                                        Layout.fillWidth: true
+                                        model: ["Big Endian", "Little Endian"]
+                                    }
                                     Label { text: "\u2514 Actions" }
                                     RowLayout {
                                         Layout.fillWidth: true
