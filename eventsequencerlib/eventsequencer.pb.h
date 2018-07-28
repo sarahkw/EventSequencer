@@ -28,6 +28,7 @@
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/map.h>
 #include <google/protobuf/map_field_inl.h>
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
@@ -38,6 +39,7 @@ void protobuf_AddDesc_eventsequencer_2eproto();
 void protobuf_AssignDesc_eventsequencer_2eproto();
 void protobuf_ShutdownFile_eventsequencer_2eproto();
 
+class AudioFormat;
 class ChannelData;
 class ChannelData_Audio;
 class ChannelData_BadClock;
@@ -57,6 +59,49 @@ class Strip_Label;
 class Strip_Playlist;
 class Strip_Text;
 
+enum AudioFormat_SampleType {
+  AudioFormat_SampleType_SignedInt = 0,
+  AudioFormat_SampleType_UnSignedInt = 1,
+  AudioFormat_SampleType_Float = 2,
+  AudioFormat_SampleType_AudioFormat_SampleType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  AudioFormat_SampleType_AudioFormat_SampleType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool AudioFormat_SampleType_IsValid(int value);
+const AudioFormat_SampleType AudioFormat_SampleType_SampleType_MIN = AudioFormat_SampleType_SignedInt;
+const AudioFormat_SampleType AudioFormat_SampleType_SampleType_MAX = AudioFormat_SampleType_Float;
+const int AudioFormat_SampleType_SampleType_ARRAYSIZE = AudioFormat_SampleType_SampleType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* AudioFormat_SampleType_descriptor();
+inline const ::std::string& AudioFormat_SampleType_Name(AudioFormat_SampleType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    AudioFormat_SampleType_descriptor(), value);
+}
+inline bool AudioFormat_SampleType_Parse(
+    const ::std::string& name, AudioFormat_SampleType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<AudioFormat_SampleType>(
+    AudioFormat_SampleType_descriptor(), name, value);
+}
+enum AudioFormat_Endian {
+  AudioFormat_Endian_BigEndian = 0,
+  AudioFormat_Endian_LittleEndian = 1,
+  AudioFormat_Endian_AudioFormat_Endian_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  AudioFormat_Endian_AudioFormat_Endian_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool AudioFormat_Endian_IsValid(int value);
+const AudioFormat_Endian AudioFormat_Endian_Endian_MIN = AudioFormat_Endian_BigEndian;
+const AudioFormat_Endian AudioFormat_Endian_Endian_MAX = AudioFormat_Endian_LittleEndian;
+const int AudioFormat_Endian_Endian_ARRAYSIZE = AudioFormat_Endian_Endian_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* AudioFormat_Endian_descriptor();
+inline const ::std::string& AudioFormat_Endian_Name(AudioFormat_Endian value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    AudioFormat_Endian_descriptor(), value);
+}
+inline bool AudioFormat_Endian_Parse(
+    const ::std::string& name, AudioFormat_Endian* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<AudioFormat_Endian>(
+    AudioFormat_Endian_descriptor(), name, value);
+}
 // ===================================================================
 
 class Resource : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.Resource) */ {
@@ -773,6 +818,170 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 
   void InitAsDefaultInstance();
   static Strip* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class AudioFormat : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.AudioFormat) */ {
+ public:
+  AudioFormat();
+  virtual ~AudioFormat();
+
+  AudioFormat(const AudioFormat& from);
+
+  inline AudioFormat& operator=(const AudioFormat& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AudioFormat& default_instance();
+
+  void Swap(AudioFormat* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AudioFormat* New() const { return New(NULL); }
+
+  AudioFormat* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const AudioFormat& from);
+  void MergeFrom(const AudioFormat& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(AudioFormat* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  typedef AudioFormat_SampleType SampleType;
+  static const SampleType SignedInt =
+    AudioFormat_SampleType_SignedInt;
+  static const SampleType UnSignedInt =
+    AudioFormat_SampleType_UnSignedInt;
+  static const SampleType Float =
+    AudioFormat_SampleType_Float;
+  static inline bool SampleType_IsValid(int value) {
+    return AudioFormat_SampleType_IsValid(value);
+  }
+  static const SampleType SampleType_MIN =
+    AudioFormat_SampleType_SampleType_MIN;
+  static const SampleType SampleType_MAX =
+    AudioFormat_SampleType_SampleType_MAX;
+  static const int SampleType_ARRAYSIZE =
+    AudioFormat_SampleType_SampleType_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  SampleType_descriptor() {
+    return AudioFormat_SampleType_descriptor();
+  }
+  static inline const ::std::string& SampleType_Name(SampleType value) {
+    return AudioFormat_SampleType_Name(value);
+  }
+  static inline bool SampleType_Parse(const ::std::string& name,
+      SampleType* value) {
+    return AudioFormat_SampleType_Parse(name, value);
+  }
+
+  typedef AudioFormat_Endian Endian;
+  static const Endian BigEndian =
+    AudioFormat_Endian_BigEndian;
+  static const Endian LittleEndian =
+    AudioFormat_Endian_LittleEndian;
+  static inline bool Endian_IsValid(int value) {
+    return AudioFormat_Endian_IsValid(value);
+  }
+  static const Endian Endian_MIN =
+    AudioFormat_Endian_Endian_MIN;
+  static const Endian Endian_MAX =
+    AudioFormat_Endian_Endian_MAX;
+  static const int Endian_ARRAYSIZE =
+    AudioFormat_Endian_Endian_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  Endian_descriptor() {
+    return AudioFormat_Endian_descriptor();
+  }
+  static inline const ::std::string& Endian_Name(Endian value) {
+    return AudioFormat_Endian_Name(value);
+  }
+  static inline bool Endian_Parse(const ::std::string& name,
+      Endian* value) {
+    return AudioFormat_Endian_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // optional int32 sampleRate = 1;
+  void clear_samplerate();
+  static const int kSampleRateFieldNumber = 1;
+  ::google::protobuf::int32 samplerate() const;
+  void set_samplerate(::google::protobuf::int32 value);
+
+  // optional int32 sampleSize = 2;
+  void clear_samplesize();
+  static const int kSampleSizeFieldNumber = 2;
+  ::google::protobuf::int32 samplesize() const;
+  void set_samplesize(::google::protobuf::int32 value);
+
+  // optional int32 channelCount = 3;
+  void clear_channelcount();
+  static const int kChannelCountFieldNumber = 3;
+  ::google::protobuf::int32 channelcount() const;
+  void set_channelcount(::google::protobuf::int32 value);
+
+  // optional .pb.AudioFormat.SampleType sampleType = 4;
+  void clear_sampletype();
+  static const int kSampleTypeFieldNumber = 4;
+  ::pb::AudioFormat_SampleType sampletype() const;
+  void set_sampletype(::pb::AudioFormat_SampleType value);
+
+  // optional .pb.AudioFormat.Endian endian = 5;
+  void clear_endian();
+  static const int kEndianFieldNumber = 5;
+  ::pb::AudioFormat_Endian endian() const;
+  void set_endian(::pb::AudioFormat_Endian value);
+
+  // @@protoc_insertion_point(class_scope:pb.AudioFormat)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  ::google::protobuf::int32 samplerate_;
+  ::google::protobuf::int32 samplesize_;
+  ::google::protobuf::int32 channelcount_;
+  int sampletype_;
+  int endian_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static AudioFormat* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -1608,6 +1817,15 @@ class Document : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::Map< ::google::protobuf::int32, ::pb::ChannelData >*
       mutable_channels();
 
+  // optional .pb.AudioFormat audioFormat = 6;
+  bool has_audioformat() const;
+  void clear_audioformat();
+  static const int kAudioFormatFieldNumber = 6;
+  const ::pb::AudioFormat& audioformat() const;
+  ::pb::AudioFormat* mutable_audioformat();
+  ::pb::AudioFormat* release_audioformat();
+  void set_allocated_audioformat(::pb::AudioFormat* audioformat);
+
   // @@protoc_insertion_point(class_scope:pb.Document)
  private:
 
@@ -1627,6 +1845,7 @@ class Document : public ::google::protobuf::Message /* @@protoc_insertion_point(
       ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
       ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
       0 > channels_;
+  ::pb::AudioFormat* audioformat_;
   ::google::protobuf::int32 endframe_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_eventsequencer_2eproto();
@@ -2481,6 +2700,80 @@ inline void Strip::set_allocated_playlist(::pb::Strip_Playlist* playlist) {
 
 // -------------------------------------------------------------------
 
+// AudioFormat
+
+// optional int32 sampleRate = 1;
+inline void AudioFormat::clear_samplerate() {
+  samplerate_ = 0;
+}
+inline ::google::protobuf::int32 AudioFormat::samplerate() const {
+  // @@protoc_insertion_point(field_get:pb.AudioFormat.sampleRate)
+  return samplerate_;
+}
+inline void AudioFormat::set_samplerate(::google::protobuf::int32 value) {
+  
+  samplerate_ = value;
+  // @@protoc_insertion_point(field_set:pb.AudioFormat.sampleRate)
+}
+
+// optional int32 sampleSize = 2;
+inline void AudioFormat::clear_samplesize() {
+  samplesize_ = 0;
+}
+inline ::google::protobuf::int32 AudioFormat::samplesize() const {
+  // @@protoc_insertion_point(field_get:pb.AudioFormat.sampleSize)
+  return samplesize_;
+}
+inline void AudioFormat::set_samplesize(::google::protobuf::int32 value) {
+  
+  samplesize_ = value;
+  // @@protoc_insertion_point(field_set:pb.AudioFormat.sampleSize)
+}
+
+// optional int32 channelCount = 3;
+inline void AudioFormat::clear_channelcount() {
+  channelcount_ = 0;
+}
+inline ::google::protobuf::int32 AudioFormat::channelcount() const {
+  // @@protoc_insertion_point(field_get:pb.AudioFormat.channelCount)
+  return channelcount_;
+}
+inline void AudioFormat::set_channelcount(::google::protobuf::int32 value) {
+  
+  channelcount_ = value;
+  // @@protoc_insertion_point(field_set:pb.AudioFormat.channelCount)
+}
+
+// optional .pb.AudioFormat.SampleType sampleType = 4;
+inline void AudioFormat::clear_sampletype() {
+  sampletype_ = 0;
+}
+inline ::pb::AudioFormat_SampleType AudioFormat::sampletype() const {
+  // @@protoc_insertion_point(field_get:pb.AudioFormat.sampleType)
+  return static_cast< ::pb::AudioFormat_SampleType >(sampletype_);
+}
+inline void AudioFormat::set_sampletype(::pb::AudioFormat_SampleType value) {
+  
+  sampletype_ = value;
+  // @@protoc_insertion_point(field_set:pb.AudioFormat.sampleType)
+}
+
+// optional .pb.AudioFormat.Endian endian = 5;
+inline void AudioFormat::clear_endian() {
+  endian_ = 0;
+}
+inline ::pb::AudioFormat_Endian AudioFormat::endian() const {
+  // @@protoc_insertion_point(field_get:pb.AudioFormat.endian)
+  return static_cast< ::pb::AudioFormat_Endian >(endian_);
+}
+inline void AudioFormat::set_endian(::pb::AudioFormat_Endian value) {
+  
+  endian_ = value;
+  // @@protoc_insertion_point(field_set:pb.AudioFormat.endian)
+}
+
+// -------------------------------------------------------------------
+
 // ChannelData_BadClock
 
 // -------------------------------------------------------------------
@@ -3022,6 +3315,44 @@ Document::mutable_channels() {
   return channels_.MutableMap();
 }
 
+// optional .pb.AudioFormat audioFormat = 6;
+inline bool Document::has_audioformat() const {
+  return !_is_default_instance_ && audioformat_ != NULL;
+}
+inline void Document::clear_audioformat() {
+  if (GetArenaNoVirtual() == NULL && audioformat_ != NULL) delete audioformat_;
+  audioformat_ = NULL;
+}
+inline const ::pb::AudioFormat& Document::audioformat() const {
+  // @@protoc_insertion_point(field_get:pb.Document.audioFormat)
+  return audioformat_ != NULL ? *audioformat_ : *default_instance_->audioformat_;
+}
+inline ::pb::AudioFormat* Document::mutable_audioformat() {
+  
+  if (audioformat_ == NULL) {
+    audioformat_ = new ::pb::AudioFormat;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.Document.audioFormat)
+  return audioformat_;
+}
+inline ::pb::AudioFormat* Document::release_audioformat() {
+  // @@protoc_insertion_point(field_release:pb.Document.audioFormat)
+  
+  ::pb::AudioFormat* temp = audioformat_;
+  audioformat_ = NULL;
+  return temp;
+}
+inline void Document::set_allocated_audioformat(::pb::AudioFormat* audioformat) {
+  delete audioformat_;
+  audioformat_ = audioformat;
+  if (audioformat) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.Document.audioFormat)
+}
+
 // -------------------------------------------------------------------
 
 // File
@@ -3235,10 +3566,31 @@ inline void ManagedResourceFile::set_allocated_suffix(::std::string* suffix) {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace pb
+
+#ifndef SWIG
+namespace google {
+namespace protobuf {
+
+template <> struct is_proto_enum< ::pb::AudioFormat_SampleType> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::pb::AudioFormat_SampleType>() {
+  return ::pb::AudioFormat_SampleType_descriptor();
+}
+template <> struct is_proto_enum< ::pb::AudioFormat_Endian> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::pb::AudioFormat_Endian>() {
+  return ::pb::AudioFormat_Endian_descriptor();
+}
+
+}  // namespace protobuf
+}  // namespace google
+#endif  // SWIG
 
 // @@protoc_insertion_point(global_scope)
 

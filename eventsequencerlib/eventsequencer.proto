@@ -42,6 +42,24 @@ message Strip {
   }
 }
 
+message AudioFormat {
+  enum SampleType {
+    SignedInt = 0;
+    UnSignedInt = 1;
+    Float = 2;
+  }
+  enum Endian {
+    BigEndian = 0;
+    LittleEndian = 1;
+  }
+
+  int32 sampleRate = 1;
+  int32 sampleSize = 2;
+  int32 channelCount = 3;
+  SampleType sampleType = 4;
+  Endian endian = 5;
+}
+
 message ChannelData {
   message BadClock { }
   message BadJs { }
@@ -74,6 +92,7 @@ message Document {
   int32 startFrame = 4;
   int32 endFrame = 5;
   map<int32, ChannelData> channels = 3;
+  AudioFormat audioFormat = 6;
 }
 
 message File {
