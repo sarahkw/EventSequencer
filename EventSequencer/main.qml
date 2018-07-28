@@ -1154,6 +1154,12 @@ ApplicationWindow {
                                         Button {
                                             Layout.fillWidth: true
                                             text: "Set Default"
+                                            onClicked: menu.popup()
+
+                                            property Menu menu: Menu {
+                                                MenuItem { text: "From Input" }
+                                                MenuItem { text: "From Output" }
+                                            }
                                         }
                                         Button {
                                             Layout.fillWidth: true
