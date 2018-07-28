@@ -1035,7 +1035,7 @@ ApplicationWindow {
                                     property ES.WaitFor waitForchannel: document.waitForChannel(selectedCppStrip.channel)
                                     property var channel: waitForchannel.result
                                     property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
-                                    property var stripPropComp: control !== null ? control.stripPropertiesComponent : undefined
+                                    property var stripPropComp: control !== null ? control.stripPropertiesComponent : blankComponent
 
                                     sourceComponent: stripPropComp
                                     property ES.Strip cppStrip: selectedCppStrip
