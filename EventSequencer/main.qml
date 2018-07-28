@@ -85,6 +85,7 @@ ApplicationWindow {
                 text: "Properties"
                 checkable: true
                 shortcut: "N"
+                checked: true
             }
         }
         CustomMenu {
