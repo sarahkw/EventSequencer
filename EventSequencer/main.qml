@@ -1153,7 +1153,7 @@ ApplicationWindow {
                                         Layout.fillWidth: true
                                         Button {
                                             Layout.fillWidth: true
-                                            text: "Set Default"
+                                            text: "Set Default..."
                                             onClicked: menu.popup()
 
                                             property Menu menu: Menu {
