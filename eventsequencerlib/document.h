@@ -19,6 +19,7 @@ class ChannelBase;
 
 class Strip;
 class Document;
+class AudioFormat;
 
 class DocumentStripsModel : public QAbstractListModel
 {
@@ -89,6 +90,10 @@ class Document : public QObject
                READ channelsProvidingClock
                NOTIFY channelsProvidingClockChanged)
 
+    AudioFormat* audioFormat_ = nullptr;
+    Q_PROPERTY(bool audioFormatSet READ audioFormatSet WRITE setAudioFormatSet NOTIFY audioFormatSetChanged)
+    Q_PROPERTY(QObject* audioFormat READ audioFormatQObject NOTIFY audioFormatChanged)
+
     QUrl currentUrl_;
     QString currentFileName_;
     QString fileResourceDirectory_;
@@ -148,6 +153,10 @@ public:
     // QVariantList for use as QML model.
     QVariantList channelsProvidingClock() const;
 
+    bool audioFormatSet() const;
+    void setAudioFormatSet(bool audioFormatSet); 
+    QObject* audioFormatQObject();
+
     QUrl currentUrl() const;
     void setCurrentUrl(const QUrl &currentUrl);
 
@@ -173,6 +182,9 @@ signals:
     void endFrameChanged();
 
     void channelsProvidingClockChanged();
+
+    void audioFormatSetChanged();
+    void audioFormatChanged();
 
     void currentUrlChanged();
     void currentFileNameChanged();

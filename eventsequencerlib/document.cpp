@@ -6,6 +6,7 @@
 #include "channel/channelbase.h"
 #include "channel/channelfactory.h"
 #include "saferfilereplacement.h"
+#include "audioformat.h"
 
 #include <QDebug>
 #include <QFile>
@@ -141,6 +142,34 @@ QVariantList Document::channelsProvidingClock() const
     return ret;
 }
 
+bool Document::audioFormatSet() const
+{
+    return audioFormat_ != nullptr;
+}
+
+void Document::setAudioFormatSet(bool audioFormatSet)
+{
+    if ((audioFormat_ != nullptr) != audioFormatSet) {
+        if (audioFormatSet) {
+            Q_ASSERT(audioFormat_ == nullptr);
+            audioFormat_ = new AudioFormat(this);
+            emit audioFormatChanged();
+            emit audioFormatSetChanged();
+        } else {
+            Q_ASSERT(audioFormat_ != nullptr);
+            delete audioFormat_;
+            audioFormat_ = nullptr;
+            emit audioFormatSetChanged();
+            emit audioFormatChanged();
+        }
+    }
+}
+
+QObject *Document::audioFormatQObject()
+{
+    return audioFormat_;
+}
+
 void Document::channelAfterAddOrReplace(int id, QObject *channel, AddOrReplace mode)
 {
     channelWaitFor_.afterAdd(id, channel);
@@ -248,6 +277,12 @@ void Document::toPb(pb::Document &pb) const
     pb.set_startframe(startFrame_);
     pb.set_endframe(endFrame_);
 
+    if (audioFormat_ != nullptr) {
+        audioFormat_->toPb(*pb.mutable_audioformat());
+    } else {
+        pb.clear_audioformat();
+    }
+
     auto* pb_channels = pb.mutable_channels();
     for (auto& mappair : channels_) {
         mappair.second->toPb((*pb_channels)[mappair.first]);
@@ -267,6 +302,14 @@ void Document::fromPb(const pb::Document &pb)
     setFramesPerSecond(pb.framespersecond());
     setStartFrame(pb.startframe());
     setEndFrame(pb.endframe());
+
+    if (pb.has_audioformat()) {
+        setAudioFormatSet(true);
+        Q_ASSERT(audioFormat_ != nullptr);
+        audioFormat_->fromPb(pb.audioformat());
+    } else {
+        setAudioFormatSet(false);
+    }
 
     Q_ASSERT(channels_.empty()); // Because channelAfterAddOrReplace will always say Add. Replace not implemented.
 
@@ -359,6 +402,8 @@ void Document::reset()
     setFramesPerSecond(30);
     setStartFrame(0);
     setEndFrame(250);
+
+    setAudioFormatSet(false);
 
     while (!channels_.empty()) {
         auto it = channels_.begin();
