@@ -1129,24 +1129,22 @@ ApplicationWindow {
                                     Label { text: "\u2514 Sample Rate" }
                                     ESTextField { Layout.fillWidth: true }
                                     Label { text: "\u2514 Sample Size" }
-                                    ComboBox {
+                                    ESTextField {
                                         Layout.fillWidth: true
-                                        model: [8, 16, 24, 32]
                                     }
                                     Label { text: "\u2514 Channels" }
-                                    ComboBox {
+                                    ESTextField {
                                         Layout.fillWidth: true
-                                        model: [1, 2]
                                     }
                                     Label { text: "\u2514 Sample Type" }
                                     ComboBox {
                                         Layout.fillWidth: true
-                                        model: ["Signed", "Unsigned", "Float"]
+                                        model: ["", "Signed", "Unsigned", "Float"]
                                     }
                                     Label { text: "\u2514 Byte Order" }
                                     ComboBox {
                                         Layout.fillWidth: true
-                                        model: ["Big Endian", "Little Endian"]
+                                        model: ["", "Big Endian", "Little Endian"]
                                     }
                                     Label { text: "\u2514 Actions" }
                                     RowLayout {
