@@ -60,14 +60,15 @@ class Strip_Playlist;
 class Strip_Text;
 
 enum AudioFormat_SampleType {
-  AudioFormat_SampleType_SignedInt = 0,
-  AudioFormat_SampleType_UnSignedInt = 1,
-  AudioFormat_SampleType_Float = 2,
+  AudioFormat_SampleType_UnsetSampleType = 0,
+  AudioFormat_SampleType_SignedInt = 1,
+  AudioFormat_SampleType_UnSignedInt = 2,
+  AudioFormat_SampleType_Float = 3,
   AudioFormat_SampleType_AudioFormat_SampleType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   AudioFormat_SampleType_AudioFormat_SampleType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool AudioFormat_SampleType_IsValid(int value);
-const AudioFormat_SampleType AudioFormat_SampleType_SampleType_MIN = AudioFormat_SampleType_SignedInt;
+const AudioFormat_SampleType AudioFormat_SampleType_SampleType_MIN = AudioFormat_SampleType_UnsetSampleType;
 const AudioFormat_SampleType AudioFormat_SampleType_SampleType_MAX = AudioFormat_SampleType_Float;
 const int AudioFormat_SampleType_SampleType_ARRAYSIZE = AudioFormat_SampleType_SampleType_MAX + 1;
 
@@ -82,13 +83,14 @@ inline bool AudioFormat_SampleType_Parse(
     AudioFormat_SampleType_descriptor(), name, value);
 }
 enum AudioFormat_Endian {
-  AudioFormat_Endian_BigEndian = 0,
-  AudioFormat_Endian_LittleEndian = 1,
+  AudioFormat_Endian_UnsetEndian = 0,
+  AudioFormat_Endian_BigEndian = 1,
+  AudioFormat_Endian_LittleEndian = 2,
   AudioFormat_Endian_AudioFormat_Endian_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   AudioFormat_Endian_AudioFormat_Endian_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool AudioFormat_Endian_IsValid(int value);
-const AudioFormat_Endian AudioFormat_Endian_Endian_MIN = AudioFormat_Endian_BigEndian;
+const AudioFormat_Endian AudioFormat_Endian_Endian_MIN = AudioFormat_Endian_UnsetEndian;
 const AudioFormat_Endian AudioFormat_Endian_Endian_MAX = AudioFormat_Endian_LittleEndian;
 const int AudioFormat_Endian_Endian_ARRAYSIZE = AudioFormat_Endian_Endian_MAX + 1;
 
@@ -880,6 +882,8 @@ class AudioFormat : public ::google::protobuf::Message /* @@protoc_insertion_poi
   // nested types ----------------------------------------------------
 
   typedef AudioFormat_SampleType SampleType;
+  static const SampleType UnsetSampleType =
+    AudioFormat_SampleType_UnsetSampleType;
   static const SampleType SignedInt =
     AudioFormat_SampleType_SignedInt;
   static const SampleType UnSignedInt =
@@ -908,6 +912,8 @@ class AudioFormat : public ::google::protobuf::Message /* @@protoc_insertion_poi
   }
 
   typedef AudioFormat_Endian Endian;
+  static const Endian UnsetEndian =
+    AudioFormat_Endian_UnsetEndian;
   static const Endian BigEndian =
     AudioFormat_Endian_BigEndian;
   static const Endian LittleEndian =

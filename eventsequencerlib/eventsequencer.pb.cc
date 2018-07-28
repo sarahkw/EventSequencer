@@ -550,35 +550,36 @@ void protobuf_AddDesc_eventsequencer_2eproto() {
     "kipBegin\030\002 \001(\rJ\004\010\001\020\002\032\027\n\004Text\022\017\n\007content\030"
     "\001 \001(\t\032\030\n\005Label\022\017\n\007content\030\001 \001(\t\032B\n\010Playl"
     "ist\022\033\n\023mediaFrameSkipBegin\030\002 \001(\r\022\031\n\021medi"
-    "aFrameSkipEnd\030\003 \001(\r\"\207\002\n\013AudioFormat\022\022\n\ns"
+    "aFrameSkipEnd\030\003 \001(\r\"\255\002\n\013AudioFormat\022\022\n\ns"
     "ampleRate\030\001 \001(\005\022\022\n\nsampleSize\030\002 \001(\005\022\024\n\014c"
     "hannelCount\030\003 \001(\005\022.\n\nsampleType\030\004 \001(\0162\032."
     "pb.AudioFormat.SampleType\022&\n\006endian\030\005 \001("
-    "\0162\026.pb.AudioFormat.Endian\"7\n\nSampleType\022"
-    "\r\n\tSignedInt\020\000\022\017\n\013UnSignedInt\020\001\022\t\n\005Float"
-    "\020\002\")\n\006Endian\022\r\n\tBigEndian\020\000\022\020\n\014LittleEnd"
-    "ian\020\001\"\303\003\n\013ChannelData\022,\n\010badClock\030\n \001(\0132"
-    "\030.pb.ChannelData.BadClockH\000\022&\n\005badJs\030\013 \001"
-    "(\0132\025.pb.ChannelData.BadJsH\000\022$\n\004text\030\014 \001("
-    "\0132\024.pb.ChannelData.TextH\000\022&\n\005audio\030\r \001(\013"
-    "2\025.pb.ChannelData.AudioH\000\022&\n\005label\030\016 \001(\013"
-    "2\025.pb.ChannelData.LabelH\000\022*\n\007collate\030\017 \001"
-    "(\0132\027.pb.ChannelData.CollateH\000\022,\n\010playlis"
-    "t\030\020 \001(\0132\030.pb.ChannelData.PlaylistH\000\032\n\n\010B"
-    "adClock\032\007\n\005BadJs\032\035\n\004Text\022\017\n\007content\030\002 \001("
-    "\tJ\004\010\001\020\002\032\007\n\005Audio\032\007\n\005Label\0321\n\007Collate\022\023\n\013"
-    "channelFrom\030\n \001(\005\022\021\n\tchannelTo\030\013 \001(\005\032\n\n\010"
-    "PlaylistB\t\n\007channel\"\372\001\n\010Document\022\031\n\006stri"
-    "ps\030\001 \003(\0132\t.pb.Strip\022\027\n\017framesPerSecond\030\002"
-    " \001(\005\022\022\n\nstartFrame\030\004 \001(\005\022\020\n\010endFrame\030\005 \001"
-    "(\005\022,\n\010channels\030\003 \003(\0132\032.pb.Document.Chann"
-    "elsEntry\022$\n\013audioFormat\030\006 \001(\0132\017.pb.Audio"
-    "Format\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022\036\n\005"
-    "value\030\002 \001(\0132\017.pb.ChannelData:\0028\001\"T\n\004File"
-    "\022\036\n\010document\030\001 \001(\0132\014.pb.Document\022\020\n\010chec"
-    "ksum\030\002 \001(\t\022\032\n\022forkedFromChecksum\030\003 \001(\t\"%"
-    "\n\023ManagedResourceFile\022\016\n\006suffix\030\001 \001(\tb\006p"
-    "roto3", 1645);
+    "\0162\026.pb.AudioFormat.Endian\"L\n\nSampleType\022"
+    "\023\n\017UnsetSampleType\020\000\022\r\n\tSignedInt\020\001\022\017\n\013U"
+    "nSignedInt\020\002\022\t\n\005Float\020\003\":\n\006Endian\022\017\n\013Uns"
+    "etEndian\020\000\022\r\n\tBigEndian\020\001\022\020\n\014LittleEndia"
+    "n\020\002\"\303\003\n\013ChannelData\022,\n\010badClock\030\n \001(\0132\030."
+    "pb.ChannelData.BadClockH\000\022&\n\005badJs\030\013 \001(\013"
+    "2\025.pb.ChannelData.BadJsH\000\022$\n\004text\030\014 \001(\0132"
+    "\024.pb.ChannelData.TextH\000\022&\n\005audio\030\r \001(\0132\025"
+    ".pb.ChannelData.AudioH\000\022&\n\005label\030\016 \001(\0132\025"
+    ".pb.ChannelData.LabelH\000\022*\n\007collate\030\017 \001(\013"
+    "2\027.pb.ChannelData.CollateH\000\022,\n\010playlist\030"
+    "\020 \001(\0132\030.pb.ChannelData.PlaylistH\000\032\n\n\010Bad"
+    "Clock\032\007\n\005BadJs\032\035\n\004Text\022\017\n\007content\030\002 \001(\tJ"
+    "\004\010\001\020\002\032\007\n\005Audio\032\007\n\005Label\0321\n\007Collate\022\023\n\013ch"
+    "annelFrom\030\n \001(\005\022\021\n\tchannelTo\030\013 \001(\005\032\n\n\010Pl"
+    "aylistB\t\n\007channel\"\372\001\n\010Document\022\031\n\006strips"
+    "\030\001 \003(\0132\t.pb.Strip\022\027\n\017framesPerSecond\030\002 \001"
+    "(\005\022\022\n\nstartFrame\030\004 \001(\005\022\020\n\010endFrame\030\005 \001(\005"
+    "\022,\n\010channels\030\003 \003(\0132\032.pb.Document.Channel"
+    "sEntry\022$\n\013audioFormat\030\006 \001(\0132\017.pb.AudioFo"
+    "rmat\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022\036\n\005va"
+    "lue\030\002 \001(\0132\017.pb.ChannelData:\0028\001\"T\n\004File\022\036"
+    "\n\010document\030\001 \001(\0132\014.pb.Document\022\020\n\010checks"
+    "um\030\002 \001(\t\022\032\n\022forkedFromChecksum\030\003 \001(\t\"%\n\023"
+    "ManagedResourceFile\022\016\n\006suffix\030\001 \001(\tb\006pro"
+    "to3", 1683);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "eventsequencer.proto", &protobuf_RegisterTypes);
   Resource::default_instance_ = new Resource();
@@ -3386,6 +3387,7 @@ bool AudioFormat_SampleType_IsValid(int value) {
     case 0:
     case 1:
     case 2:
+    case 3:
       return true;
     default:
       return false;
@@ -3393,6 +3395,7 @@ bool AudioFormat_SampleType_IsValid(int value) {
 }
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const AudioFormat_SampleType AudioFormat::UnsetSampleType;
 const AudioFormat_SampleType AudioFormat::SignedInt;
 const AudioFormat_SampleType AudioFormat::UnSignedInt;
 const AudioFormat_SampleType AudioFormat::Float;
@@ -3408,6 +3411,7 @@ bool AudioFormat_Endian_IsValid(int value) {
   switch(value) {
     case 0:
     case 1:
+    case 2:
       return true;
     default:
       return false;
@@ -3415,6 +3419,7 @@ bool AudioFormat_Endian_IsValid(int value) {
 }
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const AudioFormat_Endian AudioFormat::UnsetEndian;
 const AudioFormat_Endian AudioFormat::BigEndian;
 const AudioFormat_Endian AudioFormat::LittleEndian;
 const AudioFormat_Endian AudioFormat::Endian_MIN;

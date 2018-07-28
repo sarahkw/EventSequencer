@@ -44,13 +44,15 @@ message Strip {
 
 message AudioFormat {
   enum SampleType {
-    SignedInt = 0;
-    UnSignedInt = 1;
-    Float = 2;
+    UnsetSampleType = 0;
+    SignedInt = 1;
+    UnSignedInt = 2;
+    Float = 3;
   }
   enum Endian {
-    BigEndian = 0;
-    LittleEndian = 1;
+    UnsetEndian = 0;
+    BigEndian = 1;
+    LittleEndian = 2;
   }
 
   int32 sampleRate = 1;

@@ -55,7 +55,8 @@ SOURCES += \
     channel/audiochannel.cpp \
     channel/playlistchannel.cpp \
     session.cpp \
-    sessionaudio.cpp
+    sessionaudio.cpp \
+    audioformat.cpp
 
 
 HEADERS += \
@@ -91,7 +92,8 @@ HEADERS += \
     channel/audiochannel.h \
     channel/playlistchannel.h \
     session.h \
-    sessionaudio.h
+    sessionaudio.h \
+    audioformat.h
 
 unix {
     target.path = /usr/lib
