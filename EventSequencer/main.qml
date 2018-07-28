@@ -1241,19 +1241,40 @@ ApplicationWindow {
                                 text: "Audio"
                             }
                             CheckBox {
-                                id: propertiesSessionAudioSet
                                 Layout.fillWidth: true
                                 text: "Set"
-                                ObjectModel {
-                                    id: propertiesSessionAudioObjectModel
-                                    Label { text: "\u2514 Input" }
-                                    ESTextField { Layout.fillWidth: true }
-                                    Label { text: "\u2514 Output" }
-                                    ESTextField { Layout.fillWidth: true }
+
+                                checked: session.wantAudio
+                                onCheckedChanged: session.wantAudio = checked
+
+                                Loader {
+                                    id: sessionAudioControlsLoader
+                                    sourceComponent: session.audio != null ? sessionAudioControls : null
+                                    property var audio: session.audio
+                                    Component {
+                                        id: sessionAudioControls
+                                        ObjectModel {
+                                            Label { text: "\u2514 Input" }
+                                            ComboBox {
+                                                Layout.fillWidth: true
+                                                model: audio && audio.inputDevicesModel
+                                                currentIndex: audio ? audio.selectedInputIndex : -1
+                                                onActivated: audio.selectedInputIndex = index
+                                            }
+                                            Label { text: "\u2514 Output" }
+                                            ComboBox {
+                                                Layout.fillWidth: true
+                                                model: audio && audio.outputDevicesModel
+                                                currentIndex: audio ? audio.selectedOutputIndex : -1
+                                                onActivated: audio.selectedOutputIndex = index
+                                            }
+                                        }
+                                    }
                                 }
                             }
+
                             Repeater {
-                                model: propertiesSessionAudioSet.checked ? propertiesSessionAudioObjectModel : null
+                                model: sessionAudioControlsLoader.item
                             }
 
                         }
