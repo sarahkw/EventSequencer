@@ -2,6 +2,8 @@
 
 #include <eventsequencer.pb.h>
 
+#include <QAudioFormat>
+
 int AudioFormat::sampleRate() const
 {
     return sampleRate_;
@@ -165,5 +167,22 @@ void AudioFormat::fromPb(const pb::AudioFormat &pb)
     case pb::AudioFormat_Endian_AudioFormat_Endian_INT_MIN_SENTINEL_DO_NOT_USE_:
     case pb::AudioFormat_Endian_AudioFormat_Endian_INT_MAX_SENTINEL_DO_NOT_USE_:
         break;
+    }
+}
+
+void AudioFormat::fromQAudioFormat(const QAudioFormat &qaf)
+{
+    setSampleRate(qaf.sampleRate());
+    setSampleSize(qaf.sampleSize());
+    setChannelCount(qaf.channelCount());
+    switch (qaf.sampleType()) {
+    case QAudioFormat::Unknown     : setSampleType(SampleType::None)        ; break;
+    case QAudioFormat::SignedInt   : setSampleType(SampleType::SignedInt)   ; break;
+    case QAudioFormat::UnSignedInt : setSampleType(SampleType::UnSignedInt) ; break;
+    case QAudioFormat::Float       : setSampleType(SampleType::Float)       ; break;
+    }
+    switch (qaf.byteOrder()) {
+    case QAudioFormat::BigEndian   : setEndian(Endian::BigEndian)    ; break;
+    case QAudioFormat::LittleEndian: setEndian(Endian::LittleEndian) ; break;
     }
 }

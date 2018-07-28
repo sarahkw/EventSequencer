@@ -4,6 +4,8 @@
 #include <QAudioDeviceInfo>
 #include <QObject>
 
+class AudioFormat;
+
 class SessionAudio : public QObject
 {
     Q_OBJECT
@@ -31,6 +33,11 @@ private:
 public:
 
     SessionAudio();
+
+    void inputPreferredFormat(AudioFormat& af);
+    Q_INVOKABLE void inputPreferredFormat(QObject* af);
+    void outputPreferredFormat(AudioFormat& af);
+    Q_INVOKABLE void outputPreferredFormat(QObject* af);
 
     int selectedInputIndex() const;
     void setSelectedInputIndex(int selectedInputIndex);

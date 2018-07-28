@@ -7,6 +7,8 @@ namespace pb {
 class AudioFormat;
 }
 
+class QAudioFormat;
+
 class AudioFormat : public QObject
 {
     Q_OBJECT
@@ -50,6 +52,8 @@ public:
 
     void toPb(pb::AudioFormat& pb) const;
     void fromPb(const pb::AudioFormat& pb);
+
+    void fromQAudioFormat(const QAudioFormat& qAudioFormat);
 
     int sampleRate() const;
     void setSampleRate(int sampleRate);

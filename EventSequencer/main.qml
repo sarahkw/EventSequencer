@@ -1171,8 +1171,28 @@ ApplicationWindow {
                                                     onClicked: menu.popup()
 
                                                     property Menu menu: Menu {
-                                                        MenuItem { text: "From Input" }
-                                                        MenuItem { text: "From Output" }
+                                                        MenuItem {
+                                                            text: "From Input"
+                                                            onTriggered: {
+                                                                if (session.audio) {
+                                                                    session.audio.inputPreferredFormat(document.audioFormat)
+                                                                } else {
+                                                                    // TODO Show error
+                                                                    console.warn("Session audio not enabled")
+                                                                }
+                                                            }
+                                                        }
+                                                        MenuItem {
+                                                            text: "From Output"
+                                                            onTriggered: {
+                                                                if (session.audio) {
+                                                                    session.audio.outputPreferredFormat(document.audioFormat)
+                                                                } else {
+                                                                    // TODO Show error
+                                                                    console.warn("Session audio not enabled")
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                                 Button {

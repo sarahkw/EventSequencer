@@ -1,6 +1,7 @@
 include(gtest_dependency.pri)
 
 TEMPLATE = app
+QT += multimedia
 CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG += thread

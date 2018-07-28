@@ -1,5 +1,7 @@
 #include "sessionaudio.h"
 
+#include "audioformat.h"
+
 int SessionAudio::selectedOutputIndex() const
 {
     return selectedOutputIndex_;
@@ -77,6 +79,30 @@ SessionAudio::SessionAudio()
         outputDevicesModel_.push_back(adi.deviceName());
     }
 
-    setSelectedInputIndex(0);
-    setSelectedOutputIndex(0);
+    selectedInputDevice_ = QAudioDeviceInfo::defaultInputDevice();
+    selectedOutputDevice_ = QAudioDeviceInfo::defaultOutputDevice();
+}
+
+void SessionAudio::inputPreferredFormat(AudioFormat &af)
+{
+    af.fromQAudioFormat(selectedInputDevice_.preferredFormat());
+}
+
+void SessionAudio::inputPreferredFormat(QObject *af)
+{
+    auto x = qobject_cast<AudioFormat*>(af);
+    Q_ASSERT(x);
+    inputPreferredFormat(*x);
+}
+
+void SessionAudio::outputPreferredFormat(AudioFormat &af)
+{
+    af.fromQAudioFormat(selectedOutputDevice_.preferredFormat());
+}
+
+void SessionAudio::outputPreferredFormat(QObject *af)
+{
+    auto x = qobject_cast<AudioFormat*>(af);
+    Q_ASSERT(x);
+    outputPreferredFormat(*x);
 }
