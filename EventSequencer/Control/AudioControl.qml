@@ -18,7 +18,7 @@ Item {
                 ComboBox {
                     id: cmbResourceType
                     Layout.fillWidth: true
-                    model: ["None", "Filesystem", "Managed"]
+                    model: ["", "Filesystem", "Managed"]
                     currentIndex: {
                         switch (cppStrip.resource.type) {
                         case ES.Resource.Type.None: return 0
