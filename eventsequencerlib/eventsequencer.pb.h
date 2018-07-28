@@ -686,6 +686,18 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::pb::Resource* release_resource();
   void set_allocated_resource(::pb::Resource* resource);
 
+  // optional uint32 mediaFrameSkipBegin = 20;
+  void clear_mediaframeskipbegin();
+  static const int kMediaFrameSkipBeginFieldNumber = 20;
+  ::google::protobuf::uint32 mediaframeskipbegin() const;
+  void set_mediaframeskipbegin(::google::protobuf::uint32 value);
+
+  // optional uint32 mediaFrameSkipEnd = 21;
+  void clear_mediaframeskipend();
+  static const int kMediaFrameSkipEndFieldNumber = 21;
+  ::google::protobuf::uint32 mediaframeskipend() const;
+  void set_mediaframeskipend(::google::protobuf::uint32 value);
+
   // optional .pb.Strip.BadJs badJs = 10;
   bool has_badjs() const;
   void clear_badjs();
@@ -739,12 +751,14 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::google::protobuf::int32 channel_;
   ::google::protobuf::int32 startframe_;
   ::pb::Resource* resource_;
+  ::google::protobuf::int32 length_;
+  ::google::protobuf::uint32 mediaframeskipbegin_;
   ::pb::Strip_BadJs* badjs_;
   ::pb::Strip_Audio* audio_;
   ::pb::Strip_Text* text_;
   ::pb::Strip_Label* label_;
   ::pb::Strip_Playlist* playlist_;
-  ::google::protobuf::int32 length_;
+  ::google::protobuf::uint32 mediaframeskipend_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_eventsequencer_2eproto();
   friend void protobuf_AssignDesc_eventsequencer_2eproto();
@@ -2224,6 +2238,34 @@ inline void Strip::set_allocated_resource(::pb::Resource* resource) {
     
   }
   // @@protoc_insertion_point(field_set_allocated:pb.Strip.resource)
+}
+
+// optional uint32 mediaFrameSkipBegin = 20;
+inline void Strip::clear_mediaframeskipbegin() {
+  mediaframeskipbegin_ = 0u;
+}
+inline ::google::protobuf::uint32 Strip::mediaframeskipbegin() const {
+  // @@protoc_insertion_point(field_get:pb.Strip.mediaFrameSkipBegin)
+  return mediaframeskipbegin_;
+}
+inline void Strip::set_mediaframeskipbegin(::google::protobuf::uint32 value) {
+  
+  mediaframeskipbegin_ = value;
+  // @@protoc_insertion_point(field_set:pb.Strip.mediaFrameSkipBegin)
+}
+
+// optional uint32 mediaFrameSkipEnd = 21;
+inline void Strip::clear_mediaframeskipend() {
+  mediaframeskipend_ = 0u;
+}
+inline ::google::protobuf::uint32 Strip::mediaframeskipend() const {
+  // @@protoc_insertion_point(field_get:pb.Strip.mediaFrameSkipEnd)
+  return mediaframeskipend_;
+}
+inline void Strip::set_mediaframeskipend(::google::protobuf::uint32 value) {
+  
+  mediaframeskipend_ = value;
+  // @@protoc_insertion_point(field_set:pb.Strip.mediaFrameSkipEnd)
 }
 
 // optional .pb.Strip.BadJs badJs = 10;

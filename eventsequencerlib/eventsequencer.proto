@@ -16,6 +16,9 @@ message Strip {
 
   Resource resource = 5;
 
+  uint32 mediaFrameSkipBegin = 20;
+  uint32 mediaFrameSkipEnd = 21;
+
   BadJs badJs = 10;
   Audio audio = 11;
   Text text = 12;

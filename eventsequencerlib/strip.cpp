@@ -70,6 +70,32 @@ Resource* Strip::resource()
     return &resource_;
 }
 
+unsigned int Strip::mediaFrameSkipBegin() const
+{
+    return mediaFrameSkipBegin_;
+}
+
+void Strip::setMediaFrameSkipBegin(unsigned int mediaFrameSkipBegin)
+{
+    if (mediaFrameSkipBegin_ != mediaFrameSkipBegin) {
+        mediaFrameSkipBegin_ = mediaFrameSkipBegin;
+        emit mediaFrameSkipBeginChanged();
+    }
+}
+
+unsigned int Strip::mediaFrameSkipEnd() const
+{
+    return mediaFrameSkipEnd_;
+}
+
+void Strip::setMediaFrameSkipEnd(unsigned int mediaFrameSkipEnd)
+{
+    if (mediaFrameSkipEnd_ != mediaFrameSkipEnd) {
+        mediaFrameSkipEnd_ = mediaFrameSkipEnd;
+        emit mediaFrameSkipEndChanged();
+    }
+}
+
 stripext::BadJsStripExt *Strip::badJs() const
 {
     return badJs_;
@@ -175,7 +201,6 @@ stripext::PlaylistStripExt *Strip::mutablePlaylist()
     return playlist();
 }
 
-
 Strip::Strip(Document& d, QObject *parent) : QObject(parent), d_(d)
 {
     
@@ -193,6 +218,8 @@ void Strip::toPb(pb::Strip &pb) const
     pb.set_startframe(startFrame_);
     pb.set_length(length_);
     resource_.toPb(*pb.mutable_resource());
+    pb.set_mediaframeskipbegin(mediaFrameSkipBegin_);
+    pb.set_mediaframeskipend(mediaFrameSkipEnd_);
     if (badJs() != nullptr) {
         badJs()->toPb(*pb.mutable_badjs());
     }
@@ -218,6 +245,8 @@ void Strip::fromPb(const pb::Strip &pb)
     setLength(pb.length());
     markAsPlaced();
     resource_.fromPb(pb.resource());
+    setMediaFrameSkipBegin(pb.mediaframeskipbegin());
+    setMediaFrameSkipEnd(pb.mediaframeskipend());
 
     if (pb.has_badjs()) {
         auto tmp = new stripext::BadJsStripExt(this);
