@@ -35,9 +35,6 @@ class Strip : public QObject
 
     Resource resource_;
 
-    unsigned int mediaFrameSkipBegin_;
-    unsigned int mediaFrameSkipEnd_;
-
     stripext::BadJsStripExt* badJs_ = nullptr;
     stripext::AudioStripExt* audio_ = nullptr;
     stripext::TextStripExt* text_ = nullptr;
@@ -48,8 +45,6 @@ class Strip : public QObject
     Q_PROPERTY(int startFrame READ startFrame WRITE setStartFrame NOTIFY startFrameChanged)
     Q_PROPERTY(int length READ length WRITE setLength NOTIFY lengthChanged)
     Q_PROPERTY(Resource* resource READ resource CONSTANT)
-    Q_PROPERTY(unsigned int mediaFrameSkipBegin READ mediaFrameSkipBegin WRITE setMediaFrameSkipBegin NOTIFY mediaFrameSkipBeginChanged)
-    Q_PROPERTY(unsigned int mediaFrameSkipEnd READ mediaFrameSkipEnd WRITE setMediaFrameSkipEnd NOTIFY mediaFrameSkipEndChanged)
     Q_PROPERTY(stripext::BadJsStripExt* badJs READ badJs WRITE setBadJs NOTIFY badJsChanged)
     Q_PROPERTY(stripext::AudioStripExt* audio READ audio WRITE setAudio NOTIFY audioChanged)
     Q_PROPERTY(stripext::TextStripExt* text READ text WRITE setText NOTIFY textChanged)
@@ -73,12 +68,6 @@ public:
     void setLength(int length);
 
     Resource* resource();
-
-    unsigned int mediaFrameSkipBegin() const;
-    void setMediaFrameSkipBegin(unsigned int mediaFrameSkipBegin);
-
-    unsigned int mediaFrameSkipEnd() const;
-    void setMediaFrameSkipEnd(unsigned int mediaFrameSkipEnd);
 
     stripext::BadJsStripExt *badJs() const;
     void setBadJs(stripext::BadJsStripExt *badJs);
@@ -105,8 +94,6 @@ signals:
     void channelChanged();
     void startFrameChanged();
     void lengthChanged();
-    void mediaFrameSkipBeginChanged();
-    void mediaFrameSkipEndChanged();
     void badJsChanged();
     void audioChanged();
     void textChanged();

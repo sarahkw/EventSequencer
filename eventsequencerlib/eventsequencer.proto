@@ -16,9 +16,6 @@ message Strip {
 
   Resource resource = 5;
 
-  uint32 mediaFrameSkipBegin = 20;
-  uint32 mediaFrameSkipEnd = 21;
-
   BadJs badJs = 10;
   Audio audio = 11;
   Text text = 12;
@@ -30,7 +27,8 @@ message Strip {
     string script = 1;
   }
   message Audio {
-    //string fileName = 1;
+    reserved 1;
+    uint32 mediaFrameSkipBegin = 2;
   }
   message Text {
     string content = 1;
@@ -39,7 +37,8 @@ message Strip {
     string content = 1;
   }
   message Playlist {
-
+    uint32 mediaFrameSkipBegin = 2;
+    uint32 mediaFrameSkipEnd = 3;
   }
 }
 
