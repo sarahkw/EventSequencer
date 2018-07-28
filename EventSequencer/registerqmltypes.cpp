@@ -15,6 +15,7 @@
 #include "showmultiplelinesononeline.h"
 #include "resourcecreatorcontrol.h"
 #include "resource.h"
+#include "session.h"
 
 #include <QQmlEngine>
 
@@ -39,4 +40,5 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<ShowMultipleLinesOnOneLine>("eventsequencer", 1, 0, "ShowMultipleLinesOnOneLine");
     qmlRegisterType<ResourceCreatorControl>("eventsequencer", 1, 0, "ResourceCreatorControl");
     qmlRegisterUncreatableType<Resource>("eventsequencer", 1, 0, "Resource", "For enum");
+    qmlRegisterType<Session>("eventsequencer", 1, 0, "Session");
 }

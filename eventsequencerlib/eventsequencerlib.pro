@@ -53,7 +53,8 @@ SOURCES += \
     stripext/audiostripext.cpp \
     stripext/playliststripext.cpp \
     channel/audiochannel.cpp \
-    channel/playlistchannel.cpp
+    channel/playlistchannel.cpp \
+    session.cpp
 
 
 HEADERS += \
@@ -87,7 +88,8 @@ HEADERS += \
     stripext/audiostripext.h \
     stripext/playliststripext.h \
     channel/audiochannel.h \
-    channel/playlistchannel.h
+    channel/playlistchannel.h \
+    session.h
 
 unix {
     target.path = /usr/lib

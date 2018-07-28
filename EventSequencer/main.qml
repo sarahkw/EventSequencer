@@ -215,6 +215,10 @@ ApplicationWindow {
         shortcut: "Shift+A"
     }
 
+    ES.Session {
+        id: session
+    }
+
     ES.Document {
         id: document
     }
