@@ -482,15 +482,15 @@ void Document::save(const QUrl& url)
     }
     FileHeader fh;
     fh.version_ = 1;
-    if (!fh.writeToFile(file)) {
+    if (!(fh.writeToFile(file) && file.flush())) {
         qWarning() << "Cannot write file header";
         return;
     }
-    file.flush(); // XXX Need flush before protobuf writes to handle directly?
     if (!pbf.SerializeToFileDescriptor(file.handle())) {
         qWarning() << "Cannot serialize";
         return;
     }
+    // flush not needed again because SerializeToFileDescriptor writes directly to fd.
     file.close();
 
     if (!sfr.commit()) {
