@@ -54,6 +54,7 @@ public:
     void fromPb(const pb::AudioFormat& pb);
 
     void fromQAudioFormat(const QAudioFormat& qAudioFormat);
+    QAudioFormat toQAudioFormat() const;
 
     int sampleRate() const;
     void setSampleRate(int sampleRate);

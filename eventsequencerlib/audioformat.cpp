@@ -186,3 +186,26 @@ void AudioFormat::fromQAudioFormat(const QAudioFormat &qaf)
     case QAudioFormat::LittleEndian: setEndian(Endian::LittleEndian) ; break;
     }
 }
+
+QAudioFormat AudioFormat::toQAudioFormat() const
+{
+    QAudioFormat qaf;
+
+    qaf.setSampleRate(sampleRate());
+    qaf.setSampleSize(sampleSize());
+    qaf.setChannelCount(channelCount());
+    switch (sampleType()) {
+    case SampleType::None        : qaf.setSampleType(QAudioFormat::Unknown     ) ; break;
+    case SampleType::SignedInt   : qaf.setSampleType(QAudioFormat::SignedInt   ) ; break;
+    case SampleType::UnSignedInt : qaf.setSampleType(QAudioFormat::UnSignedInt ) ; break;
+    case SampleType::Float       : qaf.setSampleType(QAudioFormat::Float       ) ; break;
+    }
+    switch (endian()) {
+    case Endian::BigEndian   : qaf.setByteOrder(QAudioFormat::BigEndian    ) ; break;
+    case Endian::LittleEndian: qaf.setByteOrder(QAudioFormat::LittleEndian ) ; break;
+    case Endian::None: // Leave the default, I guess.
+        break;
+    }
+
+    return qaf;
+}

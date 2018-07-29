@@ -106,3 +106,19 @@ void SessionAudio::outputPreferredFormat(QObject *af)
     Q_ASSERT(x);
     outputPreferredFormat(*x);
 }
+
+QString SessionAudio::testFormatSupport(AudioFormat &af)
+{
+    QAudioFormat qaf = af.toQAudioFormat();
+    QString ret;
+    ret += QString("Input supports format: %1\n").arg(selectedInputDevice_.isFormatSupported(qaf) ? "YES" : "NO");
+    ret += QString("Output supports format: %1\n").arg(selectedOutputDevice_.isFormatSupported(qaf) ? "YES" : "NO");
+    return ret;
+}
+
+QString SessionAudio::testFormatSupport(QObject *af)
+{
+    auto x = qobject_cast<AudioFormat*>(af);
+    Q_ASSERT(x);
+    return testFormatSupport(*x);
+}

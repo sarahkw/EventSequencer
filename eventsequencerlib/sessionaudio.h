@@ -39,6 +39,9 @@ public:
     void outputPreferredFormat(AudioFormat& af);
     Q_INVOKABLE void outputPreferredFormat(QObject* af);
 
+    QString testFormatSupport(AudioFormat& af);
+    Q_INVOKABLE QString testFormatSupport(QObject* af);
+
     int selectedInputIndex() const;
     void setSelectedInputIndex(int selectedInputIndex);
 

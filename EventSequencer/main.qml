@@ -1,6 +1,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
+import QtQuick.Dialogs 1.2
 import QtQml.Models 2.3
 import Qt.labs.platform 1.0 as Qlp
 import "util.js" as Util
@@ -1198,6 +1199,20 @@ ApplicationWindow {
                                                 Button {
                                                     Layout.fillWidth: true
                                                     text: "Test"
+
+                                                    property MessageDialog md: MessageDialog {
+
+                                                    }
+
+                                                    onClicked: {
+                                                        if (session.audio != null && document.audioFormat != null) {
+                                                            md.text = session.audio.testFormatSupport(document.audioFormat)
+                                                            md.open()
+                                                        } else {
+                                                            // TODO Show error
+                                                            console.warn("Session audio not enabled")
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
