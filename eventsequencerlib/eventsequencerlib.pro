@@ -56,7 +56,8 @@ SOURCES += \
     channel/playlistchannel.cpp \
     session.cpp \
     sessionaudio.cpp \
-    audioformat.cpp
+    audioformat.cpp \
+    aufileheader.cpp
 
 
 HEADERS += \
@@ -93,7 +94,8 @@ HEADERS += \
     channel/playlistchannel.h \
     session.h \
     sessionaudio.h \
-    audioformat.h
+    audioformat.h \
+    aufileheader.h
 
 unix {
     target.path = /usr/lib
