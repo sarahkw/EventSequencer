@@ -167,7 +167,9 @@ ApplicationWindow {
                     var component = Qt.createComponent("Recorder.qml")
                     component.createObject(appwin, {
                                                visible: true,
-                                               destroyOnHide: true
+                                               destroyOnHide: true,
+                                               audioFormat: Qt.binding(function () { return document.audioFormat } ),
+                                               sessionAudio: Qt.binding(function () { return session.audio } )
                                            })
                 }
             }

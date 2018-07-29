@@ -6,10 +6,14 @@ import QtQuick.Controls 2.2
 import eventsequencer 1.0 as ES
 
 Window {
+    id: recorderWin
     width: 400
     height: 600
     title: "Recorder"
     flags: Qt.Dialog
+
+    property QtObject audioFormat
+    property QtObject sessionAudio
 
     property bool destroyOnHide: false
     onVisibleChanged: {
@@ -20,6 +24,8 @@ Window {
 
     ES.RecorderControl {
         id: recorderControl
+        audioFormat: recorderWin.audioFormat
+        sessionAudio: recorderWin.sessionAudio
     }
 
     GridLayout {
@@ -64,6 +70,10 @@ Window {
             }
             Button {
                 text: "Stop"
+            }
+            Button {
+                text: "Debug"
+                onClicked: recorderControl.debug()
             }
         }
     }
