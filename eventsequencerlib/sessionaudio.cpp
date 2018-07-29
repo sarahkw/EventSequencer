@@ -1,6 +1,7 @@
 #include "sessionaudio.h"
 
 #include "audioformat.h"
+#include "aufileheader.h"
 
 int SessionAudio::selectedOutputIndex() const
 {
@@ -113,6 +114,22 @@ QString SessionAudio::testFormatSupport(AudioFormat &af)
     QString ret;
     ret += QString("Input supports format: %1\n").arg(selectedInputDevice_.isFormatSupported(qaf) ? "YES" : "NO");
     ret += QString("Output supports format: %1\n").arg(selectedOutputDevice_.isFormatSupported(qaf) ? "YES" : "NO");
+    const char* auSupports;
+    {
+        AuFileHeader afh;
+        if (afh.loadFormat(qaf)) {
+            auSupports = "YES";
+        } else {
+            QAudioFormat qafCopy(qaf);
+            qafCopy.setByteOrder(QAudioFormat::BigEndian);
+            if (afh.loadFormat(qafCopy)) {
+                auSupports = "NOT YET (byte order)";
+            } else {
+                auSupports = "NO";
+            }
+        }
+    }
+    ret += QString("AU supports format: %1\n").arg(auSupports);
     return ret;
 }
 

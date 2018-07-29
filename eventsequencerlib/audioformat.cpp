@@ -207,5 +207,7 @@ QAudioFormat AudioFormat::toQAudioFormat() const
         break;
     }
 
+    qaf.setCodec("audio/pcm");
+
     return qaf;
 }
