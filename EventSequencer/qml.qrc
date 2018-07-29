@@ -26,7 +26,7 @@
         <file>DebugWordWrappedTextTrack.qml</file>
         <file>DebugChannelsModel.qml</file>
         <file>Control/CollateControl.qml</file>
-        <file>ResourceCreator.qml</file>
+        <file>Recorder.qml</file>
         <file>ESTextField.qml</file>
         <file>Control/PlaylistControl.qml</file>
     </qresource>

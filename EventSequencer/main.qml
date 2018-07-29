@@ -162,9 +162,9 @@ ApplicationWindow {
                 }
             }
             Action {
-                text: "Resource Creator"
+                text: "Recorder"
                 onTriggered: {
-                    var component = Qt.createComponent("ResourceCreator.qml")
+                    var component = Qt.createComponent("Recorder.qml")
                     component.createObject(appwin, {
                                                visible: true,
                                                destroyOnHide: true

@@ -13,7 +13,7 @@
 #include "constrainedmetricsfontutil.h"
 #include "wordwrappedtexttrack.h"
 #include "showmultiplelinesononeline.h"
-#include "resourcecreatorcontrol.h"
+#include "recordercontrol.h"
 #include "resource.h"
 #include "session.h"
 
@@ -38,7 +38,7 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<ConstrainedMetricsFontUtil>("eventsequencer", 1, 0, "ConstrainedMetricsFontUtil");
     qmlRegisterType<WordWrappedTextTrack>("eventsequencer", 1, 0, "WordWrappedTextTrack");
     qmlRegisterType<ShowMultipleLinesOnOneLine>("eventsequencer", 1, 0, "ShowMultipleLinesOnOneLine");
-    qmlRegisterType<ResourceCreatorControl>("eventsequencer", 1, 0, "ResourceCreatorControl");
+    qmlRegisterType<RecorderControl>("eventsequencer", 1, 0, "RecorderControl");
     qmlRegisterUncreatableType<Resource>("eventsequencer", 1, 0, "Resource", "For enum");
     qmlRegisterType<Session>("eventsequencer", 1, 0, "Session");
 }

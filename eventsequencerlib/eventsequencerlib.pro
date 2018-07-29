@@ -48,7 +48,6 @@ SOURCES += \
     collatenonoverlappingsegments.cpp \
     saferfilereplacement.cpp \
     managedresources.cpp \
-    resourcecreatorcontrol.cpp \
     resource.cpp \
     stripext/audiostripext.cpp \
     stripext/playliststripext.cpp \
@@ -57,7 +56,8 @@ SOURCES += \
     session.cpp \
     sessionaudio.cpp \
     audioformat.cpp \
-    aufileheader.cpp
+    aufileheader.cpp \
+    recordercontrol.cpp
 
 
 HEADERS += \
@@ -86,7 +86,6 @@ HEADERS += \
     collatenonoverlappingsegments.h \
     saferfilereplacement.h \
     managedresources.h \
-    resourcecreatorcontrol.h \
     resource.h \
     stripext/audiostripext.h \
     stripext/playliststripext.h \
@@ -95,7 +94,8 @@ HEADERS += \
     session.h \
     sessionaudio.h \
     audioformat.h \
-    aufileheader.h
+    aufileheader.h \
+    recordercontrol.h
 
 unix {
     target.path = /usr/lib
