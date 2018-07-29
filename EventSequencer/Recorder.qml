@@ -28,6 +28,23 @@ Window {
         anchors.top: parent.top
         columns: 2
 
+        Label { text: "Output Type" }
+        RowLayout {
+            Layout.fillWidth: true
+            ComboBox {
+                Layout.fillWidth: true
+                model: ["Managed random", "Managed", "Filesystem"]
+            }
+            Button {
+                text: "Browse"
+            }
+        }
+
+        Label { text: "\u2514 Path" }
+        ESTextField {
+            Layout.fillWidth: true
+        }
+
         Label { text: "State" }
         Label {
             Layout.fillWidth: true
