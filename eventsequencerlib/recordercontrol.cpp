@@ -85,6 +85,16 @@ void RecorderControl::clearSessionAudio()
     }
 }
 
+void RecorderControl::record()
+{
+
+}
+
+void RecorderControl::stop()
+{
+
+}
+
 void RecorderControl::debug()
 {
     qInfo() << audioFormatHolder_ << sessionAudio_;
