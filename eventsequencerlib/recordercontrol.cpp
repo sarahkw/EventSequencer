@@ -26,15 +26,25 @@ void RecorderControl::setAudioFormatHolder(QObject *audioFormatHolder)
             audioFormatHolder_->disconnect(this);
         }
 
-        audioFormatHolder_ = tmp;
-        emit audioFormatHolderChanged();
-
-        if (audioFormatHolder_ != nullptr) {
-            QObject::connect(audioFormatHolder_, &AudioFormatHolder::audioFormatChanged,
+        if (tmp != nullptr) {
+            QObject::connect(tmp, &QObject::destroyed,
+                             this, &RecorderControl::clearAudioFormatHolder);
+            QObject::connect(tmp, &AudioFormatHolder::audioFormatChanged,
                              this, &RecorderControl::updateAudioInput);
         }
+
+        audioFormatHolder_ = tmp;
+        emit audioFormatHolderChanged();
     }
-    updateAudioInput();
+}
+
+void RecorderControl::clearAudioFormatHolder()
+{
+    if (audioFormatHolder_ != nullptr) {
+        audioFormatHolder_->disconnect(this);
+        audioFormatHolder_ = nullptr;
+        emit audioFormatHolderChanged();
+    }
 }
 
 QObject *RecorderControl::sessionAudio() const
@@ -51,10 +61,28 @@ void RecorderControl::setSessionAudio(QObject *sessionAudio)
     }
     
     if (sessionAudio_ != tmp) {
+
+        if (sessionAudio_ != nullptr) {
+            sessionAudio_->disconnect(this);
+        }
+
+        if (tmp != nullptr) {
+            QObject::connect(tmp, &QObject::destroyed,
+                             this, &RecorderControl::clearSessionAudio);
+        }
+
         sessionAudio_ = tmp;
         emit sessionAudioChanged();
     }
-    updateAudioInput();
+}
+
+void RecorderControl::clearSessionAudio()
+{
+    if (sessionAudio_ != nullptr) {
+        sessionAudio_->disconnect(this);
+        sessionAudio_ = nullptr;
+        emit sessionAudioChanged();
+    }
 }
 
 void RecorderControl::debug()
@@ -99,7 +127,10 @@ void RecorderControl::updateAudioInput()
 
 RecorderControl::RecorderControl(QObject *parent) : QObject(parent)
 {
-
+    QObject::connect(this, &RecorderControl::audioFormatHolderChanged,
+                     this, &RecorderControl::updateAudioInput);
+    QObject::connect(this, &RecorderControl::sessionAudioChanged,
+                     this, &RecorderControl::updateAudioInput);
 }
 
 RecorderControl::~RecorderControl()

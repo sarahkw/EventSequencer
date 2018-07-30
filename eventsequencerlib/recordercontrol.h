@@ -32,9 +32,11 @@ public:
 
     QObject *audioFormatHolder() const;
     void setAudioFormatHolder(QObject *audioFormatHolder);
+    void clearAudioFormatHolder();
 
     QObject *sessionAudio() const;
     void setSessionAudio(QObject *sessionAudio);
+    void clearSessionAudio();
 
     Q_INVOKABLE void debug();
 
