@@ -85,7 +85,12 @@ void RecorderControl::updateAudioInput()
 
     if (errors.empty()) {
         Q_ASSERT(audioInput_ == nullptr);
-        audioInput_ = new QAudioInput(sessionAudio_->selectedInputDevice(), audioFormatHolder_->toQAudioFormat());
+        QAudioFormat qaf = audioFormatHolder_->toQAudioFormat();
+        audioInput_ = new QAudioInput(sessionAudio_->selectedInputDevice(), qaf);
+
+        if (!sessionAudio_->selectedInputDevice().isFormatSupported(qaf)) {
+            errors.push_back("WARN: Device does not support format");
+        }
     }
 
     audioInputReadyStatus_ = errors.join(", ");
