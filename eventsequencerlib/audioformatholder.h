@@ -1,5 +1,5 @@
-#ifndef AUDIOFORMAT_H
-#define AUDIOFORMAT_H
+#ifndef AUDIOFORMATHOLDER_H
+#define AUDIOFORMATHOLDER_H
 
 #include <QObject>
 
@@ -9,7 +9,7 @@ class AudioFormat;
 
 class QAudioFormat;
 
-class AudioFormat : public QObject
+class AudioFormatHolder : public QObject
 {
     Q_OBJECT
 
@@ -48,7 +48,7 @@ private:
     Q_PROPERTY(int endianIndex READ endianIndex WRITE setEndianIndex NOTIFY endianIndexChanged)
 
 public:
-    explicit AudioFormat(QObject *parent = nullptr);
+    explicit AudioFormatHolder(QObject *parent = nullptr);
 
     void toPb(pb::AudioFormat& pb) const;
     void fromPb(const pb::AudioFormat& pb);
@@ -94,4 +94,4 @@ signals:
 public slots:
 };
 
-#endif // AUDIOFORMAT_H
+#endif // AUDIOFORMATHOLDER_H

@@ -1,6 +1,6 @@
 #include "recordercontrol.h"
 
-#include "audioformat.h"
+#include "audioformatholder.h"
 #include "sessionaudio.h"
 
 #include <QDebug>
@@ -12,9 +12,9 @@ QObject *RecorderControl::audioFormat() const
 
 void RecorderControl::setAudioFormat(QObject *audioFormat)
 {
-    AudioFormat* tmp = nullptr;
+    AudioFormatHolder* tmp = nullptr;
     if (audioFormat != nullptr) {
-        tmp = qobject_cast<AudioFormat*>(audioFormat);
+        tmp = qobject_cast<AudioFormatHolder*>(audioFormat);
         Q_ASSERT(tmp != nullptr);
     }
 

@@ -6,7 +6,7 @@
 #include "channel/channelbase.h"
 #include "channel/channelfactory.h"
 #include "saferfilereplacement.h"
-#include "audioformat.h"
+#include "audioformatholder.h"
 
 #include <QDebug>
 #include <QFile>
@@ -152,7 +152,7 @@ void Document::setAudioFormatSet(bool audioFormatSet)
     if ((audioFormat_ != nullptr) != audioFormatSet) {
         if (audioFormatSet) {
             Q_ASSERT(audioFormat_ == nullptr);
-            audioFormat_ = new AudioFormat(this);
+            audioFormat_ = new AudioFormatHolder(this);
             emit audioFormatChanged();
             emit audioFormatSetChanged();
         } else {

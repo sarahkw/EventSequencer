@@ -19,7 +19,7 @@ class ChannelBase;
 
 class Strip;
 class Document;
-class AudioFormat;
+class AudioFormatHolder;
 
 class DocumentStripsModel : public QAbstractListModel
 {
@@ -90,7 +90,7 @@ class Document : public QObject
                READ channelsProvidingClock
                NOTIFY channelsProvidingClockChanged)
 
-    AudioFormat* audioFormat_ = nullptr;
+    AudioFormatHolder* audioFormat_ = nullptr;
     Q_PROPERTY(bool audioFormatSet READ audioFormatSet WRITE setAudioFormatSet NOTIFY audioFormatSetChanged)
     Q_PROPERTY(QObject* audioFormat READ audioFormatQObject NOTIFY audioFormatChanged)
 

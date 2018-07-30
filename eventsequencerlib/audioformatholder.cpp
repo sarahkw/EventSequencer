@@ -1,15 +1,15 @@
-#include "audioformat.h"
+#include "audioformatholder.h"
 
 #include <eventsequencer.pb.h>
 
 #include <QAudioFormat>
 
-int AudioFormat::sampleRate() const
+int AudioFormatHolder::sampleRate() const
 {
     return sampleRate_;
 }
 
-void AudioFormat::setSampleRate(int sampleRate)
+void AudioFormatHolder::setSampleRate(int sampleRate)
 {
     if (sampleRate_ != sampleRate) {
         sampleRate_ = sampleRate;
@@ -17,12 +17,12 @@ void AudioFormat::setSampleRate(int sampleRate)
     }
 }
 
-int AudioFormat::sampleSize() const
+int AudioFormatHolder::sampleSize() const
 {
     return sampleSize_;
 }
 
-void AudioFormat::setSampleSize(int sampleSize)
+void AudioFormatHolder::setSampleSize(int sampleSize)
 {
     if (sampleSize_ != sampleSize) {
         sampleSize_ = sampleSize;
@@ -30,12 +30,12 @@ void AudioFormat::setSampleSize(int sampleSize)
     }
 }
 
-int AudioFormat::channelCount() const
+int AudioFormatHolder::channelCount() const
 {
     return channelCount_;
 }
 
-void AudioFormat::setChannelCount(int channelCount)
+void AudioFormatHolder::setChannelCount(int channelCount)
 {
     if (channelCount_ != channelCount) {
         channelCount_ = channelCount;
@@ -43,12 +43,12 @@ void AudioFormat::setChannelCount(int channelCount)
     }
 }
 
-AudioFormat::SampleType AudioFormat::sampleType() const
+AudioFormatHolder::SampleType AudioFormatHolder::sampleType() const
 {
     return sampleType_;
 }
 
-void AudioFormat::setSampleType(const SampleType &sampleType)
+void AudioFormatHolder::setSampleType(const SampleType &sampleType)
 {
     if (sampleType_ != sampleType) {
         sampleType_ = sampleType;
@@ -57,12 +57,12 @@ void AudioFormat::setSampleType(const SampleType &sampleType)
     }
 }
 
-AudioFormat::Endian AudioFormat::endian() const
+AudioFormatHolder::Endian AudioFormatHolder::endian() const
 {
     return endian_;
 }
 
-void AudioFormat::setEndian(const Endian &endian)
+void AudioFormatHolder::setEndian(const Endian &endian)
 {
     if (endian_ != endian) {
         endian_ = endian;
@@ -71,19 +71,19 @@ void AudioFormat::setEndian(const Endian &endian)
     }
 }
 
-QStringList AudioFormat::sampleTypeModel() /*enum helper*/
+QStringList AudioFormatHolder::sampleTypeModel() /*enum helper*/
 {
     const static QStringList sl{"", "Signed", "Unsigned", "Float"};
     return sl;
 }
 
-QStringList AudioFormat::endianModel() /*enum helper*/
+QStringList AudioFormatHolder::endianModel() /*enum helper*/
 {
     const static QStringList sl{"", "Big", "Little"};
     return sl;
 }
 
-int AudioFormat::sampleTypeIndex() const /*enum helper*/
+int AudioFormatHolder::sampleTypeIndex() const /*enum helper*/
 {
     switch (sampleType_) {
     case SampleType::None:        return 0;
@@ -94,7 +94,7 @@ int AudioFormat::sampleTypeIndex() const /*enum helper*/
     return 0; // Compiler
 }
 
-void AudioFormat::setSampleTypeIndex(int sampleTypeIndex) /*enum helper*/
+void AudioFormatHolder::setSampleTypeIndex(int sampleTypeIndex) /*enum helper*/
 {
     switch (sampleTypeIndex) {
     case 0: setSampleType(SampleType::None       ); break;
@@ -104,7 +104,7 @@ void AudioFormat::setSampleTypeIndex(int sampleTypeIndex) /*enum helper*/
     }
 }
 
-int AudioFormat::endianIndex() const /*enum helper*/
+int AudioFormatHolder::endianIndex() const /*enum helper*/
 {
     switch (endian_) {
     case Endian::None:         return 0;
@@ -114,7 +114,7 @@ int AudioFormat::endianIndex() const /*enum helper*/
     return 0; // Compiler
 }
 
-void AudioFormat::setEndianIndex(int endianIndex) /*enum helper*/
+void AudioFormatHolder::setEndianIndex(int endianIndex) /*enum helper*/
 {
     switch (endianIndex) {
     case 0: setEndian(Endian::None        ); break;
@@ -123,12 +123,12 @@ void AudioFormat::setEndianIndex(int endianIndex) /*enum helper*/
     }
 }
 
-AudioFormat::AudioFormat(QObject *parent) : QObject(parent)
+AudioFormatHolder::AudioFormatHolder(QObject *parent) : QObject(parent)
 {
 
 }
 
-void AudioFormat::toPb(pb::AudioFormat &pb) const
+void AudioFormatHolder::toPb(pb::AudioFormat &pb) const
 {
     pb.set_samplerate(sampleRate_);
     pb.set_samplesize(sampleSize_);
@@ -146,7 +146,7 @@ void AudioFormat::toPb(pb::AudioFormat &pb) const
     }
 }
 
-void AudioFormat::fromPb(const pb::AudioFormat &pb)
+void AudioFormatHolder::fromPb(const pb::AudioFormat &pb)
 {
     setSampleRate(pb.samplerate());
     setSampleSize(pb.samplesize());
@@ -170,7 +170,7 @@ void AudioFormat::fromPb(const pb::AudioFormat &pb)
     }
 }
 
-void AudioFormat::fromQAudioFormat(const QAudioFormat &qaf)
+void AudioFormatHolder::fromQAudioFormat(const QAudioFormat &qaf)
 {
     setSampleRate(qaf.sampleRate());
     setSampleSize(qaf.sampleSize());
@@ -187,7 +187,7 @@ void AudioFormat::fromQAudioFormat(const QAudioFormat &qaf)
     }
 }
 
-QAudioFormat AudioFormat::toQAudioFormat() const
+QAudioFormat AudioFormatHolder::toQAudioFormat() const
 {
     QAudioFormat qaf;
 

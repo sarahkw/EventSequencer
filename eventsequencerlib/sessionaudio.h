@@ -4,7 +4,7 @@
 #include <QAudioDeviceInfo>
 #include <QObject>
 
-class AudioFormat;
+class AudioFormatHolder;
 
 class SessionAudio : public QObject
 {
@@ -34,12 +34,12 @@ public:
 
     SessionAudio();
 
-    void inputPreferredFormat(AudioFormat& af);
+    void inputPreferredFormat(AudioFormatHolder& af);
     Q_INVOKABLE void inputPreferredFormat(QObject* af);
-    void outputPreferredFormat(AudioFormat& af);
+    void outputPreferredFormat(AudioFormatHolder& af);
     Q_INVOKABLE void outputPreferredFormat(QObject* af);
 
-    QString testFormatSupport(AudioFormat& af);
+    QString testFormatSupport(AudioFormatHolder& af);
     Q_INVOKABLE QString testFormatSupport(QObject* af);
 
     int selectedInputIndex() const;

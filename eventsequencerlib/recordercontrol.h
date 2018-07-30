@@ -3,14 +3,14 @@
 
 #include <QObject>
 
-class AudioFormat;
+class AudioFormatHolder;
 class SessionAudio;
 
 class RecorderControl : public QObject
 {
     Q_OBJECT
 
-    AudioFormat* audioFormat_ = nullptr;
+    AudioFormatHolder* audioFormat_ = nullptr;
     SessionAudio* sessionAudio_ = nullptr;
 
     Q_PROPERTY(QObject* audioFormat READ audioFormat WRITE setAudioFormat NOTIFY audioFormatChanged)

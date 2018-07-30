@@ -1,6 +1,6 @@
 #include "sessionaudio.h"
 
-#include "audioformat.h"
+#include "audioformatholder.h"
 #include "aufileheader.h"
 
 int SessionAudio::selectedOutputIndex() const
@@ -84,31 +84,31 @@ SessionAudio::SessionAudio()
     selectedOutputDevice_ = QAudioDeviceInfo::defaultOutputDevice();
 }
 
-void SessionAudio::inputPreferredFormat(AudioFormat &af)
+void SessionAudio::inputPreferredFormat(AudioFormatHolder &af)
 {
     af.fromQAudioFormat(selectedInputDevice_.preferredFormat());
 }
 
 void SessionAudio::inputPreferredFormat(QObject *af)
 {
-    auto x = qobject_cast<AudioFormat*>(af);
+    auto x = qobject_cast<AudioFormatHolder*>(af);
     Q_ASSERT(x);
     inputPreferredFormat(*x);
 }
 
-void SessionAudio::outputPreferredFormat(AudioFormat &af)
+void SessionAudio::outputPreferredFormat(AudioFormatHolder &af)
 {
     af.fromQAudioFormat(selectedOutputDevice_.preferredFormat());
 }
 
 void SessionAudio::outputPreferredFormat(QObject *af)
 {
-    auto x = qobject_cast<AudioFormat*>(af);
+    auto x = qobject_cast<AudioFormatHolder*>(af);
     Q_ASSERT(x);
     outputPreferredFormat(*x);
 }
 
-QString SessionAudio::testFormatSupport(AudioFormat &af)
+QString SessionAudio::testFormatSupport(AudioFormatHolder &af)
 {
     QAudioFormat qaf = af.toQAudioFormat();
     QString ret;
@@ -135,7 +135,7 @@ QString SessionAudio::testFormatSupport(AudioFormat &af)
 
 QString SessionAudio::testFormatSupport(QObject *af)
 {
-    auto x = qobject_cast<AudioFormat*>(af);
+    auto x = qobject_cast<AudioFormatHolder*>(af);
     Q_ASSERT(x);
     return testFormatSupport(*x);
 }
