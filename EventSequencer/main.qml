@@ -168,7 +168,7 @@ ApplicationWindow {
                     component.createObject(appwin, {
                                                visible: true,
                                                destroyOnHide: true,
-                                               audioFormat: Qt.binding(function () { return document.audioFormat } ),
+                                               audioFormatHolder: Qt.binding(function () { return document.audioFormatHolder } ),
                                                sessionAudio: Qt.binding(function () { return session.audio } )
                                            })
                 }
@@ -1126,44 +1126,44 @@ ApplicationWindow {
                             }
                             CheckBox {
                                 text: "Set"
-                                checked: document.audioFormatSet
-                                onCheckedChanged: document.audioFormatSet = checked
+                                checked: document.audioFormatHolderSet
+                                onCheckedChanged: document.audioFormatHolderSet = checked
                                 Loader {
                                     id: propertiesDocumentAudioFormatObjectModelLoader
-                                    sourceComponent: document.audioFormat != null ? comp : null
+                                    sourceComponent: document.audioFormatHolder != null ? comp : null
                                     property Component comp: Component {
                                         ObjectModel {
                                             Label { text: "\u2514 Sample Rate" }
                                             ESTextField {
                                                 Layout.fillWidth: true
-                                                text: document.audioFormat.audioFormat.sampleRate
-                                                onEsEditingFinished: document.audioFormat.audioFormat.sampleRate = parseInt(text, 10)
+                                                text: document.audioFormatHolder.audioFormat.sampleRate
+                                                onEsEditingFinished: document.audioFormatHolder.audioFormat.sampleRate = parseInt(text, 10)
                                             }
                                             Label { text: "\u2514 Sample Size" }
                                             ESTextField {
                                                 Layout.fillWidth: true
-                                                text: document.audioFormat.audioFormat.sampleSize
-                                                onEsEditingFinished: document.audioFormat.audioFormat.sampleSize = parseInt(text, 10)
+                                                text: document.audioFormatHolder.audioFormat.sampleSize
+                                                onEsEditingFinished: document.audioFormatHolder.audioFormat.sampleSize = parseInt(text, 10)
                                             }
                                             Label { text: "\u2514 Channels" }
                                             ESTextField {
                                                 Layout.fillWidth: true
-                                                text: document.audioFormat.audioFormat.channelCount
-                                                onEsEditingFinished: document.audioFormat.audioFormat.channelCount = parseInt(text, 10)
+                                                text: document.audioFormatHolder.audioFormat.channelCount
+                                                onEsEditingFinished: document.audioFormatHolder.audioFormat.channelCount = parseInt(text, 10)
                                             }
                                             Label { text: "\u2514 Sample Type" }
                                             ComboBox {
                                                 Layout.fillWidth: true
-                                                model: document.audioFormat.sampleTypeModel
-                                                currentIndex: document.audioFormat.sampleTypeIndex
-                                                onActivated: document.audioFormat.sampleTypeIndex = index
+                                                model: document.audioFormatHolder.sampleTypeModel
+                                                currentIndex: document.audioFormatHolder.sampleTypeIndex
+                                                onActivated: document.audioFormatHolder.sampleTypeIndex = index
                                             }
                                             Label { text: "\u2514 Byte Order" }
                                             ComboBox {
                                                 Layout.fillWidth: true
-                                                model: document.audioFormat.endianModel
-                                                currentIndex: document.audioFormat.endianIndex
-                                                onActivated: document.audioFormat.endianIndex = index
+                                                model: document.audioFormatHolder.endianModel
+                                                currentIndex: document.audioFormatHolder.endianIndex
+                                                onActivated: document.audioFormatHolder.endianIndex = index
                                             }
                                             Label { text: "\u2514 Actions" }
                                             RowLayout {
@@ -1178,7 +1178,7 @@ ApplicationWindow {
                                                             text: "From Input"
                                                             onTriggered: {
                                                                 if (session.audio) {
-                                                                    session.audio.inputPreferredFormat(document.audioFormat)
+                                                                    session.audio.inputPreferredFormat(document.audioFormatHolder)
                                                                 } else {
                                                                     // TODO Show error
                                                                     console.warn("Session audio not enabled")
@@ -1189,7 +1189,7 @@ ApplicationWindow {
                                                             text: "From Output"
                                                             onTriggered: {
                                                                 if (session.audio) {
-                                                                    session.audio.outputPreferredFormat(document.audioFormat)
+                                                                    session.audio.outputPreferredFormat(document.audioFormatHolder)
                                                                 } else {
                                                                     // TODO Show error
                                                                     console.warn("Session audio not enabled")
@@ -1207,8 +1207,8 @@ ApplicationWindow {
                                                     }
 
                                                     onClicked: {
-                                                        if (session.audio != null && document.audioFormat != null) {
-                                                            md.text = session.audio.testFormatSupport(document.audioFormat)
+                                                        if (session.audio != null && document.audioFormatHolder != null) {
+                                                            md.text = session.audio.testFormatSupport(document.audioFormatHolder)
                                                             md.open()
                                                         } else {
                                                             // TODO Show error

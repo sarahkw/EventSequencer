@@ -5,22 +5,22 @@
 
 #include <QDebug>
 
-QObject *RecorderControl::audioFormat() const
+QObject *RecorderControl::audioFormatHolder() const
 {
-    return audioFormat_;
+    return audioFormatHolder_;
 }
 
-void RecorderControl::setAudioFormat(QObject *audioFormat)
+void RecorderControl::setAudioFormatHolder(QObject *audioFormatHolder)
 {
     AudioFormatHolder* tmp = nullptr;
-    if (audioFormat != nullptr) {
-        tmp = qobject_cast<AudioFormatHolder*>(audioFormat);
+    if (audioFormatHolder != nullptr) {
+        tmp = qobject_cast<AudioFormatHolder*>(audioFormatHolder);
         Q_ASSERT(tmp != nullptr);
     }
 
-    if (audioFormat_ != tmp) {
-        audioFormat_ = tmp;
-        emit audioFormatChanged();
+    if (audioFormatHolder_ != tmp) {
+        audioFormatHolder_ = tmp;
+        emit audioFormatHolderChanged();
     }
 }
 
@@ -45,7 +45,7 @@ void RecorderControl::setSessionAudio(QObject *sessionAudio)
 
 void RecorderControl::debug()
 {
-    qInfo() << audioFormat_ << sessionAudio_;
+    qInfo() << audioFormatHolder_ << sessionAudio_;
 }
 
 RecorderControl::RecorderControl(QObject *parent) : QObject(parent)

@@ -142,32 +142,30 @@ QVariantList Document::channelsProvidingClock() const
     return ret;
 }
 
-bool Document::audioFormatSet() const
+bool Document::audioFormatHolderSet() const
 {
-    return audioFormat_ != nullptr;
+    return audioFormatHolder_ != nullptr;
 }
 
-void Document::setAudioFormatSet(bool audioFormatSet)
+void Document::setAudioFormatHolderSet(bool audioFormatHolderSet)
 {
-    if ((audioFormat_ != nullptr) != audioFormatSet) {
-        if (audioFormatSet) {
-            Q_ASSERT(audioFormat_ == nullptr);
-            audioFormat_ = new AudioFormatHolder(this);
-            emit audioFormatChanged();
-            emit audioFormatSetChanged();
+    if ((audioFormatHolder_ != nullptr) != audioFormatHolderSet) {
+        if (audioFormatHolderSet) {
+            Q_ASSERT(audioFormatHolder_ == nullptr);
+            audioFormatHolder_ = new AudioFormatHolder(this);
+            emit audioFormatHolderChanged();
         } else {
-            Q_ASSERT(audioFormat_ != nullptr);
-            delete audioFormat_;
-            audioFormat_ = nullptr;
-            emit audioFormatSetChanged();
-            emit audioFormatChanged();
+            Q_ASSERT(audioFormatHolder_ != nullptr);
+            delete audioFormatHolder_;
+            audioFormatHolder_ = nullptr;
+            emit audioFormatHolderChanged();
         }
     }
 }
 
-QObject *Document::audioFormatQObject()
+QObject *Document::audioFormatHolderQObject()
 {
-    return audioFormat_;
+    return audioFormatHolder_;
 }
 
 void Document::channelAfterAddOrReplace(int id, QObject *channel, AddOrReplace mode)
@@ -277,8 +275,8 @@ void Document::toPb(pb::Document &pb) const
     pb.set_startframe(startFrame_);
     pb.set_endframe(endFrame_);
 
-    if (audioFormat_ != nullptr) {
-        audioFormat_->toPb(*pb.mutable_audioformat());
+    if (audioFormatHolder_ != nullptr) {
+        audioFormatHolder_->toPb(*pb.mutable_audioformat());
     } else {
         pb.clear_audioformat();
     }
@@ -304,11 +302,11 @@ void Document::fromPb(const pb::Document &pb)
     setEndFrame(pb.endframe());
 
     if (pb.has_audioformat()) {
-        setAudioFormatSet(true);
-        Q_ASSERT(audioFormat_ != nullptr);
-        audioFormat_->fromPb(pb.audioformat());
+        setAudioFormatHolderSet(true);
+        Q_ASSERT(audioFormatHolder_ != nullptr);
+        audioFormatHolder_->fromPb(pb.audioformat());
     } else {
-        setAudioFormatSet(false);
+        setAudioFormatHolderSet(false);
     }
 
     Q_ASSERT(channels_.empty()); // Because channelAfterAddOrReplace will always say Add. Replace not implemented.
@@ -403,7 +401,7 @@ void Document::reset()
     setStartFrame(0);
     setEndFrame(250);
 
-    setAudioFormatSet(false);
+    setAudioFormatHolderSet(false);
 
     while (!channels_.empty()) {
         auto it = channels_.begin();

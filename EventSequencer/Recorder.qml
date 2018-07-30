@@ -12,7 +12,7 @@ Window {
     title: "Recorder"
     flags: Qt.Dialog
 
-    property QtObject audioFormat
+    property QtObject audioFormatHolder
     property QtObject sessionAudio
 
     property bool destroyOnHide: false
@@ -24,7 +24,7 @@ Window {
 
     ES.RecorderControl {
         id: recorderControl
-        audioFormat: recorderWin.audioFormat
+        audioFormatHolder: recorderWin.audioFormatHolder
         sessionAudio: recorderWin.sessionAudio
     }
 

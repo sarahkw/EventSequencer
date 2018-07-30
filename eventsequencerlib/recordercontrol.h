@@ -10,17 +10,17 @@ class RecorderControl : public QObject
 {
     Q_OBJECT
 
-    AudioFormatHolder* audioFormat_ = nullptr;
+    AudioFormatHolder* audioFormatHolder_ = nullptr;
     SessionAudio* sessionAudio_ = nullptr;
 
-    Q_PROPERTY(QObject* audioFormat READ audioFormat WRITE setAudioFormat NOTIFY audioFormatChanged)
+    Q_PROPERTY(QObject* audioFormatHolder READ audioFormatHolder WRITE setAudioFormatHolder NOTIFY audioFormatHolderChanged)
     Q_PROPERTY(QObject* sessionAudio READ sessionAudio WRITE setSessionAudio NOTIFY sessionAudioChanged)
 
 public:
     explicit RecorderControl(QObject *parent = nullptr);
 
-    QObject *audioFormat() const;
-    void setAudioFormat(QObject *audioFormat);
+    QObject *audioFormatHolder() const;
+    void setAudioFormatHolder(QObject *audioFormatHolder);
 
     QObject *sessionAudio() const;
     void setSessionAudio(QObject *sessionAudio);
@@ -29,7 +29,7 @@ public:
 
 signals:
 
-    void audioFormatChanged();
+    void audioFormatHolderChanged();
     void sessionAudioChanged();
 
 public slots:

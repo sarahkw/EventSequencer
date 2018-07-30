@@ -90,9 +90,9 @@ class Document : public QObject
                READ channelsProvidingClock
                NOTIFY channelsProvidingClockChanged)
 
-    AudioFormatHolder* audioFormat_ = nullptr;
-    Q_PROPERTY(bool audioFormatSet READ audioFormatSet WRITE setAudioFormatSet NOTIFY audioFormatSetChanged)
-    Q_PROPERTY(QObject* audioFormat READ audioFormatQObject NOTIFY audioFormatChanged)
+    AudioFormatHolder* audioFormatHolder_ = nullptr;
+    Q_PROPERTY(bool audioFormatHolderSet READ audioFormatHolderSet WRITE setAudioFormatHolderSet NOTIFY audioFormatHolderChanged)
+    Q_PROPERTY(QObject* audioFormatHolder READ audioFormatHolderQObject                          NOTIFY audioFormatHolderChanged)
 
     QUrl currentUrl_;
     QString currentFileName_;
@@ -153,9 +153,9 @@ public:
     // QVariantList for use as QML model.
     QVariantList channelsProvidingClock() const;
 
-    bool audioFormatSet() const;
-    void setAudioFormatSet(bool audioFormatSet); 
-    QObject* audioFormatQObject();
+    bool audioFormatHolderSet() const;
+    void setAudioFormatHolderSet(bool audioFormatHolderSet);
+    QObject* audioFormatHolderQObject();
 
     QUrl currentUrl() const;
     void setCurrentUrl(const QUrl &currentUrl);
@@ -183,8 +183,7 @@ signals:
 
     void channelsProvidingClockChanged();
 
-    void audioFormatSetChanged();
-    void audioFormatChanged();
+    void audioFormatHolderChanged();
 
     void currentUrlChanged();
     void currentFileNameChanged();
