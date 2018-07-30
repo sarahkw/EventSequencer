@@ -2,8 +2,10 @@
 
 #include "audioformatholder.h"
 #include "sessionaudio.h"
+#include "aufileheader.h"
 
 #include <QDebug>
+#include <QAudioInput>
 
 QObject *RecorderControl::audioFormatHolder() const
 {
@@ -19,9 +21,20 @@ void RecorderControl::setAudioFormatHolder(QObject *audioFormatHolder)
     }
 
     if (audioFormatHolder_ != tmp) {
+
+        if (audioFormatHolder_ != nullptr) {
+            audioFormatHolder_->disconnect(this);
+        }
+
         audioFormatHolder_ = tmp;
         emit audioFormatHolderChanged();
+
+        if (audioFormatHolder_ != nullptr) {
+            QObject::connect(audioFormatHolder_, &AudioFormatHolder::audioFormatChanged,
+                             this, &RecorderControl::updateAudioInput);
+        }
     }
+    updateAudioInput();
 }
 
 QObject *RecorderControl::sessionAudio() const
@@ -41,6 +54,7 @@ void RecorderControl::setSessionAudio(QObject *sessionAudio)
         sessionAudio_ = tmp;
         emit sessionAudioChanged();
     }
+    updateAudioInput();
 }
 
 void RecorderControl::debug()
@@ -48,7 +62,54 @@ void RecorderControl::debug()
     qInfo() << audioFormatHolder_ << sessionAudio_;
 }
 
+void RecorderControl::updateAudioInput()
+{
+    QStringList errors;
+    if (audioFormatHolder_ == nullptr) {
+        errors.push_back("Audio format missing");
+    }
+    if (sessionAudio_ == nullptr) {
+        errors.push_back("Session audio missing");
+    }
+    if (audioFormatHolder_ != nullptr) {
+        AuFileHeader afh;
+        if (!afh.loadFormat(audioFormatHolder_->toQAudioFormat())) {
+            errors.push_back("Format not supported by .au");
+        }
+    }
+
+    if (audioInput_ != nullptr) {
+        delete audioInput_;
+        audioInput_ = nullptr;
+    }
+
+    if (errors.empty()) {
+        Q_ASSERT(audioInput_ == nullptr);
+        audioInput_ = new QAudioInput(sessionAudio_->selectedInputDevice(), audioFormatHolder_->toQAudioFormat());
+    }
+
+    audioInputReadyStatus_ = errors.join(", ");
+    emit audioInputReadyStatusChanged();
+}
+
 RecorderControl::RecorderControl(QObject *parent) : QObject(parent)
 {
 
+}
+
+RecorderControl::~RecorderControl()
+{
+    if (audioInput_ != nullptr) {
+        delete audioInput_;
+    }
+}
+
+bool RecorderControl::audioInputReady() const
+{
+    return audioInput_ != nullptr;
+}
+
+QString RecorderControl::audioInputReadyStatus() const
+{
+    return audioInputReadyStatus_;
 }

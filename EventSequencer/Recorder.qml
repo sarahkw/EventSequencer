@@ -34,6 +34,12 @@ Window {
         anchors.top: parent.top
         columns: 2
 
+        Label { text: "Audio Input Ready" }
+        Label { text: recorderControl.audioInputReady }
+
+        Label { text: "\u2514 Reason" }
+        Label { text: recorderControl.audioInputReadyStatus }
+
         Label { text: "Output Type" }
         RowLayout {
             Layout.fillWidth: true

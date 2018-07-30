@@ -5,10 +5,17 @@
 
 class AudioFormatHolder;
 class SessionAudio;
+class QAudioInput;
 
 class RecorderControl : public QObject
 {
     Q_OBJECT
+
+    QAudioInput* audioInput_ = nullptr;
+    QString audioInputReadyStatus_;
+    void updateAudioInput();
+    Q_PROPERTY(bool audioInputReady          READ audioInputReady       NOTIFY audioInputReadyStatusChanged)
+    Q_PROPERTY(QString audioInputReadyStatus READ audioInputReadyStatus NOTIFY audioInputReadyStatusChanged)
 
     AudioFormatHolder* audioFormatHolder_ = nullptr;
     SessionAudio* sessionAudio_ = nullptr;
@@ -18,6 +25,10 @@ class RecorderControl : public QObject
 
 public:
     explicit RecorderControl(QObject *parent = nullptr);
+    ~RecorderControl();
+
+    bool audioInputReady() const;
+    QString audioInputReadyStatus() const;
 
     QObject *audioFormatHolder() const;
     void setAudioFormatHolder(QObject *audioFormatHolder);
@@ -28,6 +39,8 @@ public:
     Q_INVOKABLE void debug();
 
 signals:
+
+    void audioInputReadyStatusChanged();
 
     void audioFormatHolderChanged();
     void sessionAudioChanged();
