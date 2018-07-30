@@ -156,9 +156,10 @@ void Document::setAudioFormatHolderSet(bool audioFormatHolderSet)
             emit audioFormatHolderChanged();
         } else {
             Q_ASSERT(audioFormatHolder_ != nullptr);
-            delete audioFormatHolder_;
+            auto waitForPropertyClear = audioFormatHolder_;
             audioFormatHolder_ = nullptr;
-            emit audioFormatHolderChanged();
+            emit audioFormatHolderChanged(); // Give property users a chance to clean up before deleting.
+            delete waitForPropertyClear;
         }
     }
 }
