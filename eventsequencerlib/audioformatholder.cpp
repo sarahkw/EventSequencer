@@ -4,71 +4,54 @@
 
 #include <QAudioFormat>
 
-int AudioFormatHolder::sampleRate() const
+int AudioFormat::sampleRate() const
 {
     return sampleRate_;
 }
 
-void AudioFormatHolder::setSampleRate(int sampleRate)
+void AudioFormat::setSampleRate(int sampleRate)
 {
-    if (sampleRate_ != sampleRate) {
-        sampleRate_ = sampleRate;
-        emit sampleRateChanged();
-    }
+    sampleRate_ = sampleRate;
 }
 
-int AudioFormatHolder::sampleSize() const
+int AudioFormat::sampleSize() const
 {
     return sampleSize_;
 }
 
-void AudioFormatHolder::setSampleSize(int sampleSize)
+void AudioFormat::setSampleSize(int sampleSize)
 {
-    if (sampleSize_ != sampleSize) {
-        sampleSize_ = sampleSize;
-        emit sampleSizeChanged();
-    }
+    sampleSize_ = sampleSize;
 }
 
-int AudioFormatHolder::channelCount() const
+int AudioFormat::channelCount() const
 {
     return channelCount_;
 }
 
-void AudioFormatHolder::setChannelCount(int channelCount)
+void AudioFormat::setChannelCount(int channelCount)
 {
-    if (channelCount_ != channelCount) {
-        channelCount_ = channelCount;
-        emit channelCountChanged();
-    }
+    channelCount_ = channelCount;
 }
 
-AudioFormatHolder::SampleType AudioFormatHolder::sampleType() const
+AudioFormat::SampleType AudioFormat::sampleType() const
 {
     return sampleType_;
 }
 
-void AudioFormatHolder::setSampleType(const SampleType &sampleType)
+void AudioFormat::setSampleType(const SampleType &sampleType)
 {
-    if (sampleType_ != sampleType) {
-        sampleType_ = sampleType;
-        emit sampleTypeChanged();
-        emit sampleTypeIndexChanged();
-    }
+    sampleType_ = sampleType;
 }
 
-AudioFormatHolder::Endian AudioFormatHolder::endian() const
+AudioFormat::Endian AudioFormat::endian() const
 {
     return endian_;
 }
 
-void AudioFormatHolder::setEndian(const Endian &endian)
+void AudioFormat::setEndian(const Endian &endian)
 {
-    if (endian_ != endian) {
-        endian_ = endian;
-        emit endianChanged();
-        emit endianIndexChanged();
-    }
+    endian_ = endian;
 }
 
 QStringList AudioFormatHolder::sampleTypeModel() /*enum helper*/
@@ -85,11 +68,11 @@ QStringList AudioFormatHolder::endianModel() /*enum helper*/
 
 int AudioFormatHolder::sampleTypeIndex() const /*enum helper*/
 {
-    switch (sampleType_) {
-    case SampleType::None:        return 0;
-    case SampleType::SignedInt:   return 1;
-    case SampleType::UnSignedInt: return 2;
-    case SampleType::Float:       return 3;
+    switch (audioFormat_.sampleType()) {
+    case AudioFormat::SampleType::None:        return 0;
+    case AudioFormat::SampleType::SignedInt:   return 1;
+    case AudioFormat::SampleType::UnSignedInt: return 2;
+    case AudioFormat::SampleType::Float:       return 3;
     }
     return 0; // Compiler
 }
@@ -97,19 +80,20 @@ int AudioFormatHolder::sampleTypeIndex() const /*enum helper*/
 void AudioFormatHolder::setSampleTypeIndex(int sampleTypeIndex) /*enum helper*/
 {
     switch (sampleTypeIndex) {
-    case 0: setSampleType(SampleType::None       ); break;
-    case 1: setSampleType(SampleType::SignedInt  ); break;
-    case 2: setSampleType(SampleType::UnSignedInt); break;
-    case 3: setSampleType(SampleType::Float      ); break;
+    case 0: audioFormat_.setSampleType(AudioFormat::SampleType::None       ); break;
+    case 1: audioFormat_.setSampleType(AudioFormat::SampleType::SignedInt  ); break;
+    case 2: audioFormat_.setSampleType(AudioFormat::SampleType::UnSignedInt); break;
+    case 3: audioFormat_.setSampleType(AudioFormat::SampleType::Float      ); break;
     }
+    emit audioFormatChanged();
 }
 
 int AudioFormatHolder::endianIndex() const /*enum helper*/
 {
-    switch (endian_) {
-    case Endian::None:         return 0;
-    case Endian::BigEndian:    return 1;
-    case Endian::LittleEndian: return 2;
+    switch (audioFormat_.endian()) {
+    case AudioFormat::Endian::None:         return 0;
+    case AudioFormat::Endian::BigEndian:    return 1;
+    case AudioFormat::Endian::LittleEndian: return 2;
     }
     return 0; // Compiler
 }
@@ -117,10 +101,11 @@ int AudioFormatHolder::endianIndex() const /*enum helper*/
 void AudioFormatHolder::setEndianIndex(int endianIndex) /*enum helper*/
 {
     switch (endianIndex) {
-    case 0: setEndian(Endian::None        ); break;
-    case 1: setEndian(Endian::BigEndian   ); break;
-    case 2: setEndian(Endian::LittleEndian); break;
+    case 0: audioFormat_.setEndian(AudioFormat::Endian::None        ); break;
+    case 1: audioFormat_.setEndian(AudioFormat::Endian::BigEndian   ); break;
+    case 2: audioFormat_.setEndian(AudioFormat::Endian::LittleEndian); break;
     }
+    emit audioFormatChanged();
 }
 
 AudioFormatHolder::AudioFormatHolder(QObject *parent) : QObject(parent)
@@ -130,84 +115,99 @@ AudioFormatHolder::AudioFormatHolder(QObject *parent) : QObject(parent)
 
 void AudioFormatHolder::toPb(pb::AudioFormat &pb) const
 {
-    pb.set_samplerate(sampleRate_);
-    pb.set_samplesize(sampleSize_);
-    pb.set_channelcount(channelCount_);
-    switch (sampleType_) {
-    case SampleType::None        : pb.set_sampletype(pb::AudioFormat_SampleType_UnsetSampleType ); break;
-    case SampleType::SignedInt   : pb.set_sampletype(pb::AudioFormat_SampleType_SignedInt       ); break;
-    case SampleType::UnSignedInt : pb.set_sampletype(pb::AudioFormat_SampleType_UnSignedInt     ); break;
-    case SampleType::Float       : pb.set_sampletype(pb::AudioFormat_SampleType_Float           ); break;
+    pb.set_samplerate(audioFormat_.sampleRate());
+    pb.set_samplesize(audioFormat_.sampleSize());
+    pb.set_channelcount(audioFormat_.channelCount());
+    switch (audioFormat_.sampleType()) {
+    case AudioFormat::SampleType::None        : pb.set_sampletype(pb::AudioFormat_SampleType_UnsetSampleType ); break;
+    case AudioFormat::SampleType::SignedInt   : pb.set_sampletype(pb::AudioFormat_SampleType_SignedInt       ); break;
+    case AudioFormat::SampleType::UnSignedInt : pb.set_sampletype(pb::AudioFormat_SampleType_UnSignedInt     ); break;
+    case AudioFormat::SampleType::Float       : pb.set_sampletype(pb::AudioFormat_SampleType_Float           ); break;
     }
-    switch (endian_) {
-    case Endian::None         : pb.set_endian(pb::AudioFormat_Endian_UnsetEndian  ); break;
-    case Endian::BigEndian    : pb.set_endian(pb::AudioFormat_Endian_BigEndian    ); break;
-    case Endian::LittleEndian : pb.set_endian(pb::AudioFormat_Endian_LittleEndian ); break;
+    switch (audioFormat_.endian()) {
+    case AudioFormat::Endian::None         : pb.set_endian(pb::AudioFormat_Endian_UnsetEndian  ); break;
+    case AudioFormat::Endian::BigEndian    : pb.set_endian(pb::AudioFormat_Endian_BigEndian    ); break;
+    case AudioFormat::Endian::LittleEndian : pb.set_endian(pb::AudioFormat_Endian_LittleEndian ); break;
     }
 }
 
 void AudioFormatHolder::fromPb(const pb::AudioFormat &pb)
 {
-    setSampleRate(pb.samplerate());
-    setSampleSize(pb.samplesize());
-    setChannelCount(pb.channelcount());
+    audioFormat_.setSampleRate(pb.samplerate());
+    audioFormat_.setSampleSize(pb.samplesize());
+    audioFormat_.setChannelCount(pb.channelcount());
     switch (pb.sampletype()) {
-    case pb::AudioFormat_SampleType_UnsetSampleType : setSampleType(SampleType::None        ); break;
-    case pb::AudioFormat_SampleType_SignedInt       : setSampleType(SampleType::SignedInt   ); break;
-    case pb::AudioFormat_SampleType_UnSignedInt     : setSampleType(SampleType::UnSignedInt ); break;
-    case pb::AudioFormat_SampleType_Float           : setSampleType(SampleType::Float       ); break;
+    case pb::AudioFormat_SampleType_UnsetSampleType : audioFormat_.setSampleType(AudioFormat::SampleType::None        ); break;
+    case pb::AudioFormat_SampleType_SignedInt       : audioFormat_.setSampleType(AudioFormat::SampleType::SignedInt   ); break;
+    case pb::AudioFormat_SampleType_UnSignedInt     : audioFormat_.setSampleType(AudioFormat::SampleType::UnSignedInt ); break;
+    case pb::AudioFormat_SampleType_Float           : audioFormat_.setSampleType(AudioFormat::SampleType::Float       ); break;
     case pb::AudioFormat_SampleType_AudioFormat_SampleType_INT_MIN_SENTINEL_DO_NOT_USE_:
     case pb::AudioFormat_SampleType_AudioFormat_SampleType_INT_MAX_SENTINEL_DO_NOT_USE_:
         break;
     }
     switch (pb.endian()) {
-    case pb::AudioFormat_Endian_UnsetEndian   : setEndian(Endian::None        ); break;
-    case pb::AudioFormat_Endian_BigEndian     : setEndian(Endian::BigEndian   ); break;
-    case pb::AudioFormat_Endian_LittleEndian  : setEndian(Endian::LittleEndian); break;
+    case pb::AudioFormat_Endian_UnsetEndian   : audioFormat_.setEndian(AudioFormat::Endian::None        ); break;
+    case pb::AudioFormat_Endian_BigEndian     : audioFormat_.setEndian(AudioFormat::Endian::BigEndian   ); break;
+    case pb::AudioFormat_Endian_LittleEndian  : audioFormat_.setEndian(AudioFormat::Endian::LittleEndian); break;
     case pb::AudioFormat_Endian_AudioFormat_Endian_INT_MIN_SENTINEL_DO_NOT_USE_:
     case pb::AudioFormat_Endian_AudioFormat_Endian_INT_MAX_SENTINEL_DO_NOT_USE_:
         break;
     }
+
+    emit audioFormatChanged();
 }
 
 void AudioFormatHolder::fromQAudioFormat(const QAudioFormat &qaf)
 {
-    setSampleRate(qaf.sampleRate());
-    setSampleSize(qaf.sampleSize());
-    setChannelCount(qaf.channelCount());
+    audioFormat_.setSampleRate(qaf.sampleRate());
+    audioFormat_.setSampleSize(qaf.sampleSize());
+    audioFormat_.setChannelCount(qaf.channelCount());
     switch (qaf.sampleType()) {
-    case QAudioFormat::Unknown     : setSampleType(SampleType::None)        ; break;
-    case QAudioFormat::SignedInt   : setSampleType(SampleType::SignedInt)   ; break;
-    case QAudioFormat::UnSignedInt : setSampleType(SampleType::UnSignedInt) ; break;
-    case QAudioFormat::Float       : setSampleType(SampleType::Float)       ; break;
+    case QAudioFormat::Unknown     : audioFormat_.setSampleType(AudioFormat::SampleType::None)        ; break;
+    case QAudioFormat::SignedInt   : audioFormat_.setSampleType(AudioFormat::SampleType::SignedInt)   ; break;
+    case QAudioFormat::UnSignedInt : audioFormat_.setSampleType(AudioFormat::SampleType::UnSignedInt) ; break;
+    case QAudioFormat::Float       : audioFormat_.setSampleType(AudioFormat::SampleType::Float)       ; break;
     }
     switch (qaf.byteOrder()) {
-    case QAudioFormat::BigEndian   : setEndian(Endian::BigEndian)    ; break;
-    case QAudioFormat::LittleEndian: setEndian(Endian::LittleEndian) ; break;
+    case QAudioFormat::BigEndian   : audioFormat_.setEndian(AudioFormat::Endian::BigEndian)    ; break;
+    case QAudioFormat::LittleEndian: audioFormat_.setEndian(AudioFormat::Endian::LittleEndian) ; break;
     }
+
+    emit audioFormatChanged();
 }
 
 QAudioFormat AudioFormatHolder::toQAudioFormat() const
 {
     QAudioFormat qaf;
 
-    qaf.setSampleRate(sampleRate());
-    qaf.setSampleSize(sampleSize());
-    qaf.setChannelCount(channelCount());
-    switch (sampleType()) {
-    case SampleType::None        : qaf.setSampleType(QAudioFormat::Unknown     ) ; break;
-    case SampleType::SignedInt   : qaf.setSampleType(QAudioFormat::SignedInt   ) ; break;
-    case SampleType::UnSignedInt : qaf.setSampleType(QAudioFormat::UnSignedInt ) ; break;
-    case SampleType::Float       : qaf.setSampleType(QAudioFormat::Float       ) ; break;
+    qaf.setSampleRate(audioFormat_.sampleRate());
+    qaf.setSampleSize(audioFormat_.sampleSize());
+    qaf.setChannelCount(audioFormat_.channelCount());
+    switch (audioFormat_.sampleType()) {
+    case AudioFormat::SampleType::None        : qaf.setSampleType(QAudioFormat::Unknown     ) ; break;
+    case AudioFormat::SampleType::SignedInt   : qaf.setSampleType(QAudioFormat::SignedInt   ) ; break;
+    case AudioFormat::SampleType::UnSignedInt : qaf.setSampleType(QAudioFormat::UnSignedInt ) ; break;
+    case AudioFormat::SampleType::Float       : qaf.setSampleType(QAudioFormat::Float       ) ; break;
     }
-    switch (endian()) {
-    case Endian::BigEndian   : qaf.setByteOrder(QAudioFormat::BigEndian    ) ; break;
-    case Endian::LittleEndian: qaf.setByteOrder(QAudioFormat::LittleEndian ) ; break;
-    case Endian::None: // Leave the default, I guess.
+    switch (audioFormat_.endian()) {
+    case AudioFormat::Endian::BigEndian   : qaf.setByteOrder(QAudioFormat::BigEndian    ) ; break;
+    case AudioFormat::Endian::LittleEndian: qaf.setByteOrder(QAudioFormat::LittleEndian ) ; break;
+    case AudioFormat::Endian::None: // Leave the default, I guess.
         break;
     }
 
     qaf.setCodec("audio/pcm");
 
     return qaf;
+}
+
+AudioFormat AudioFormatHolder::audioFormat() const
+{
+    return audioFormat_;
+}
+
+void AudioFormatHolder::setAudioFormat(const AudioFormat &audioFormat)
+{
+    audioFormat_ = audioFormat;
+    emit audioFormatChanged();
 }

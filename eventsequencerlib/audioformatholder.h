@@ -9,10 +9,9 @@ class AudioFormat;
 
 class QAudioFormat;
 
-class AudioFormatHolder : public QObject
+class AudioFormat
 {
-    Q_OBJECT
-
+    Q_GADGET
 public:
     enum class SampleType {
         None,
@@ -35,26 +34,12 @@ private:
     SampleType sampleType_ = SampleType::None;
     Endian endian_ = Endian::None;
 
-    Q_PROPERTY(int        sampleRate   READ sampleRate   WRITE setSampleRate   NOTIFY sampleRateChanged)
-    Q_PROPERTY(int        sampleSize   READ sampleSize   WRITE setSampleSize   NOTIFY sampleSizeChanged)
-    Q_PROPERTY(int        channelCount READ channelCount WRITE setChannelCount NOTIFY channelCountChanged)
-    Q_PROPERTY(SampleType sampleType   READ sampleType   WRITE setSampleType   NOTIFY sampleTypeChanged)
-    Q_PROPERTY(Endian     endian       READ endian       WRITE setEndian       NOTIFY endianChanged)
-
-    // Enum helpers
-    Q_PROPERTY(QStringList sampleTypeModel READ sampleTypeModel CONSTANT)
-    Q_PROPERTY(QStringList endianModel READ endianModel CONSTANT)
-    Q_PROPERTY(int sampleTypeIndex READ sampleTypeIndex WRITE setSampleTypeIndex NOTIFY sampleTypeIndexChanged)
-    Q_PROPERTY(int endianIndex READ endianIndex WRITE setEndianIndex NOTIFY endianIndexChanged)
-
+    Q_PROPERTY(int        sampleRate   READ sampleRate   WRITE setSampleRate  )
+    Q_PROPERTY(int        sampleSize   READ sampleSize   WRITE setSampleSize  )
+    Q_PROPERTY(int        channelCount READ channelCount WRITE setChannelCount)
+    Q_PROPERTY(SampleType sampleType   READ sampleType   WRITE setSampleType  )
+    Q_PROPERTY(Endian     endian       READ endian       WRITE setEndian      )
 public:
-    explicit AudioFormatHolder(QObject *parent = nullptr);
-
-    void toPb(pb::AudioFormat& pb) const;
-    void fromPb(const pb::AudioFormat& pb);
-
-    void fromQAudioFormat(const QAudioFormat& qAudioFormat);
-    QAudioFormat toQAudioFormat() const;
 
     int sampleRate() const;
     void setSampleRate(int sampleRate);
@@ -70,6 +55,34 @@ public:
 
     Endian endian() const;
     void setEndian(const Endian &endian);
+};
+Q_DECLARE_METATYPE(AudioFormat)
+
+class AudioFormatHolder : public QObject
+{
+    Q_OBJECT
+
+    AudioFormat audioFormat_;
+
+    Q_PROPERTY(AudioFormat audioFormat READ audioFormat WRITE setAudioFormat NOTIFY audioFormatChanged)
+
+    // Enum helpers
+    Q_PROPERTY(QStringList sampleTypeModel READ sampleTypeModel CONSTANT)
+    Q_PROPERTY(QStringList endianModel READ endianModel CONSTANT)
+    Q_PROPERTY(int sampleTypeIndex READ sampleTypeIndex WRITE setSampleTypeIndex NOTIFY audioFormatChanged)
+    Q_PROPERTY(int endianIndex READ endianIndex WRITE setEndianIndex NOTIFY audioFormatChanged)
+
+public:
+    explicit AudioFormatHolder(QObject *parent = nullptr);
+
+    void toPb(pb::AudioFormat& pb) const;
+    void fromPb(const pb::AudioFormat& pb);
+
+    void fromQAudioFormat(const QAudioFormat& qAudioFormat);
+    QAudioFormat toQAudioFormat() const;
+
+    AudioFormat audioFormat() const;
+    void setAudioFormat(const AudioFormat& audioFormat);
 
     // Enum helpers
     QStringList sampleTypeModel();
@@ -81,15 +94,7 @@ public:
     
 signals:
 
-    void sampleRateChanged();
-    void sampleSizeChanged();
-    void channelCountChanged();
-    void sampleTypeChanged();
-    void endianChanged();
-
-    // Enum helpers
-    void sampleTypeIndexChanged();
-    void endianIndexChanged();
+    void audioFormatChanged();
 
 public slots:
 };

@@ -1136,20 +1136,20 @@ ApplicationWindow {
                                             Label { text: "\u2514 Sample Rate" }
                                             ESTextField {
                                                 Layout.fillWidth: true
-                                                text: document.audioFormat.sampleRate
-                                                onEsEditingFinished: document.audioFormat.sampleRate = parseInt(text, 10)
+                                                text: document.audioFormat.audioFormat.sampleRate
+                                                onEsEditingFinished: document.audioFormat.audioFormat.sampleRate = parseInt(text, 10)
                                             }
                                             Label { text: "\u2514 Sample Size" }
                                             ESTextField {
                                                 Layout.fillWidth: true
-                                                text: document.audioFormat.sampleSize
-                                                onEsEditingFinished: document.audioFormat.sampleSize = parseInt(text, 10)
+                                                text: document.audioFormat.audioFormat.sampleSize
+                                                onEsEditingFinished: document.audioFormat.audioFormat.sampleSize = parseInt(text, 10)
                                             }
                                             Label { text: "\u2514 Channels" }
                                             ESTextField {
                                                 Layout.fillWidth: true
-                                                text: document.audioFormat.channelCount
-                                                onEsEditingFinished: document.audioFormat.channelCount = parseInt(text, 10)
+                                                text: document.audioFormat.audioFormat.channelCount
+                                                onEsEditingFinished: document.audioFormat.audioFormat.channelCount = parseInt(text, 10)
                                             }
                                             Label { text: "\u2514 Sample Type" }
                                             ComboBox {
