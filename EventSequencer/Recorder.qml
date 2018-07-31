@@ -14,12 +14,18 @@ Window {
 
     property QtObject audioFormatHolder
     property QtObject sessionAudio
+    property string fileResourceDirectory
 
     property bool destroyOnHide: false
     onVisibleChanged: {
         if (destroyOnHide && visible === false) {
             destroy()
         }
+    }
+
+    ES.ManagedResources {
+        id: managedResources
+        fileResourceDirectory: recorderWin.fileResourceDirectory
     }
 
     ES.RecorderControl {

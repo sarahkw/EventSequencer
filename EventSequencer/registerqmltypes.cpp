@@ -16,6 +16,7 @@
 #include "recordercontrol.h"
 #include "resource.h"
 #include "session.h"
+#include "managedresources.h"
 
 #include <QQmlEngine>
 
@@ -41,4 +42,5 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<RecorderControl>("eventsequencer", 1, 0, "RecorderControl");
     qmlRegisterUncreatableType<Resource>("eventsequencer", 1, 0, "Resource", "For enum");
     qmlRegisterType<Session>("eventsequencer", 1, 0, "Session");
+    qmlRegisterType<ManagedResources>("eventsequencer", 1, 0, "ManagedResources");
 }
