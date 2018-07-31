@@ -16,16 +16,6 @@ class RecorderControl : public AudioControl
 {
     Q_OBJECT
 
-public:
-    enum class AudioState {
-        Unset,
-        Active,
-        Suspended,
-        Stopped,
-        Idle,
-        Interrupted
-    };
-    Q_ENUM(AudioState)
 private:
 
     QAudioInput* audioInput_ = nullptr;
@@ -35,9 +25,7 @@ private:
     Q_PROPERTY(QString audioInputReadyStatus READ audioInputReadyStatus NOTIFY audioInputReadyStatusChanged)
 
     QString error_;
-    AudioState audioState_ = AudioState::Unset;
     Q_PROPERTY(QString error READ error NOTIFY errorChanged)
-    Q_PROPERTY(QVariant audioState READ audioState NOTIFY audioStateChanged)
 
     QFile* outputFile_ = nullptr;
 
@@ -62,7 +50,6 @@ private:
     void setError(const QString &error);
 public:
 
-    QVariant audioState() const;
 private:
     void updateAudioState();
 public:
@@ -74,7 +61,6 @@ signals:
 
     void audioInputReadyStatusChanged();
 
-    void audioStateChanged();
     void errorChanged();
 
     void allowOverwriteChanged();

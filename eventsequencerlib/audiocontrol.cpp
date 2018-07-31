@@ -8,6 +8,28 @@ AudioControl::AudioControl(QObject *parent) : QObject(parent)
 
 }
 
+QVariant AudioControl::audioState() const
+{
+    return QVariant::fromValue(audioState_);
+}
+
+void AudioControl::setAudioState(AudioState audioState)
+{
+    audioState_ = audioState;
+    emit audioStateChanged();
+}
+
+void AudioControl::setAudioState(QAudio::State audioState)
+{
+    switch (audioState) {
+    case QAudio::ActiveState:      setAudioState(AudioState::Active     ) ; break;
+    case QAudio::SuspendedState:   setAudioState(AudioState::Suspended  ) ; break;
+    case QAudio::StoppedState:     setAudioState(AudioState::Stopped    ) ; break;
+    case QAudio::IdleState:        setAudioState(AudioState::Idle       ) ; break;
+    case QAudio::InterruptedState: setAudioState(AudioState::Interrupted) ; break;
+    }
+}
+
 QObject *AudioControl::audioFormatHolder() const
 {
     return audioFormatHolder_;

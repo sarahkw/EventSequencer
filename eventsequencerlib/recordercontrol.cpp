@@ -126,29 +126,15 @@ void RecorderControl::setAllowOverwrite(bool allowOverwrite)
     }
 }
 
-QVariant RecorderControl::audioState() const
-{
-    return QVariant::fromValue(audioState_);
-}
-
 void RecorderControl::updateAudioState()
 {
     if (audioInput_ == nullptr) {
-        audioState_ = AudioState::Unset;
-        emit audioStateChanged();
+        setAudioState(AudioControl::AudioState::Unset);
         setError("");
         return;
     }
 
-    switch (audioInput_->state()) {
-    case QAudio::ActiveState:      audioState_ = AudioState::Active; break;
-    case QAudio::SuspendedState:   audioState_ = AudioState::Suspended; break;
-    case QAudio::StoppedState:     audioState_ = AudioState::Stopped; break;
-    case QAudio::IdleState:        audioState_ = AudioState::Idle; break;
-    case QAudio::InterruptedState: audioState_ = AudioState::Interrupted; break;
-    }
-
-    emit audioStateChanged();
+    setAudioState(audioInput_->state());
 
     switch (audioInput_->error()) {
     case QAudio::NoError:       setError(""); break;
