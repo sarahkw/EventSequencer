@@ -45,6 +45,9 @@ private:
     Q_PROPERTY(QObject* audioFormatHolder READ audioFormatHolder WRITE setAudioFormatHolder NOTIFY audioFormatHolderChanged)
     Q_PROPERTY(QObject* sessionAudio READ sessionAudio WRITE setSessionAudio NOTIFY sessionAudioChanged)
 
+    bool allowOverwrite_ = false;
+    Q_PROPERTY(bool allowOverwrite READ allowOverwrite WRITE setAllowOverwrite NOTIFY allowOverwriteChanged)
+
 public:
     explicit RecorderControl(QObject *parent = nullptr);
     ~RecorderControl();
@@ -74,6 +77,9 @@ private:
     void updateAudioState();
 public:
 
+    bool allowOverwrite() const;
+    void setAllowOverwrite(bool allowOverwrite);
+
 signals:
 
     void audioInputReadyStatusChanged();
@@ -83,6 +89,8 @@ signals:
 
     void audioFormatHolderChanged();
     void sessionAudioChanged();
+
+    void allowOverwriteChanged();
 
 public slots:
 };

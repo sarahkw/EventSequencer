@@ -100,7 +100,7 @@ void RecorderControl::record()
 
     std::unique_ptr<QFile> of(new QFile("/tmp/output.au"));
 
-    if (!of->open(QFile::WriteOnly)) {
+    if (!of->open(allowOverwrite() ? QFile::WriteOnly : QFile::NewOnly)) {
         setError(QString("Cannot open file: %1").arg(of->errorString()));
         return;
     }
@@ -181,6 +181,19 @@ void RecorderControl::updateAudioInput()
 
     audioInputReadyStatus_ = errors.join(", ");
     emit audioInputReadyStatusChanged();
+}
+
+bool RecorderControl::allowOverwrite() const
+{
+    return allowOverwrite_;
+}
+
+void RecorderControl::setAllowOverwrite(bool allowOverwrite)
+{
+    if (allowOverwrite_ != allowOverwrite) {
+        allowOverwrite_ = allowOverwrite;
+        emit allowOverwriteChanged();
+    }
 }
 
 QVariant RecorderControl::audioState() const

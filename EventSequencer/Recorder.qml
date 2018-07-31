@@ -57,6 +57,12 @@ Window {
             Layout.fillWidth: true
         }
 
+        Label { text: "\u2514 Allow Overwrite" }
+        CheckBox {
+            checked: recorderControl.allowOverwrite
+            onCheckedChanged: recorderControl.allowOverwrite = checked
+        }
+
         Label { text: "Error" }
         Label {
             Layout.fillWidth: true
