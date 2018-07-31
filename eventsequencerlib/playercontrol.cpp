@@ -18,7 +18,9 @@ void PlayerControl::play()
         qWarning() << "Not stopped";
     }
 
-    audioOutput_->start(new QBuffer(this));  // TEMPORARY!
+    auto buf = new QBuffer(this); // TEMPORARY! Replace with real data.
+    buf->open(QBuffer::ReadOnly);
+    audioOutput_->start(buf);
     updateAudioState();
 }
 

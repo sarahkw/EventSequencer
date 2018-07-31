@@ -29,5 +29,6 @@
         <file>Recorder.qml</file>
         <file>ESTextField.qml</file>
         <file>Control/PlaylistControl.qml</file>
+        <file>Player.qml</file>
     </qresource>
 </RCC>
