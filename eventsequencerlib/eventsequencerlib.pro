@@ -58,7 +58,9 @@ SOURCES += \
     aufileheader.cpp \
     recordercontrol.cpp \
     audioformatholder.cpp \
-    documentstripsonchannel.cpp
+    documentstripsonchannel.cpp \
+    audiocontrol.cpp \
+    playercontrol.cpp
 
 
 HEADERS += \
@@ -97,7 +99,9 @@ HEADERS += \
     aufileheader.h \
     recordercontrol.h \
     audioformatholder.h \
-    documentstripsonchannel.h
+    documentstripsonchannel.h \
+    audiocontrol.h \
+    playercontrol.h
 
 unix {
     target.path = /usr/lib

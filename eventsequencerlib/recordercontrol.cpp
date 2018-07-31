@@ -250,7 +250,7 @@ void RecorderControl::setError(const QString &error)
     }
 }
 
-RecorderControl::RecorderControl(QObject *parent) : QObject(parent)
+RecorderControl::RecorderControl(QObject *parent) : AudioControl(parent)
 {
     QObject::connect(this, &RecorderControl::audioFormatHolderChanged,
                      this, &RecorderControl::updateAudioInput);

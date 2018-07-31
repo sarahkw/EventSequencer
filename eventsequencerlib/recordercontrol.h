@@ -1,6 +1,8 @@
 #ifndef RECORDERCONTROL_H
 #define RECORDERCONTROL_H
 
+#include "audiocontrol.h"
+
 #include <QObject>
 #include <QAudio>
 #include <QVariant>
@@ -10,7 +12,7 @@ class SessionAudio;
 class QAudioInput;
 class QFile;
 
-class RecorderControl : public QObject
+class RecorderControl : public AudioControl
 {
     Q_OBJECT
 
