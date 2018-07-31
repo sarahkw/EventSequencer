@@ -17,6 +17,7 @@
 #include "resource.h"
 #include "session.h"
 #include "managedresources.h"
+#include "playercontrol.h"
 
 #include <QQmlEngine>
 
@@ -43,4 +44,5 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterUncreatableType<Resource>("eventsequencer", 1, 0, "Resource", "For enum");
     qmlRegisterType<Session>("eventsequencer", 1, 0, "Session");
     qmlRegisterType<ManagedResources>("eventsequencer", 1, 0, "ManagedResources");
+    qmlRegisterType<PlayerControl>("eventsequencer", 1, 0, "PlayerControl");
 }
