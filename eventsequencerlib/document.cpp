@@ -260,10 +260,17 @@ void Document::setFileForkEditFlag(const ForkEditFlag &fileForkEditFlag)
     }
 }
 
+const DocumentStripsOnChannel &Document::stripsOnChannel() const
+{
+    return stripsOnChannel_;
+}
+
 Document::Document(QObject *parent)
     : QObject(parent), stripsModel_(*this), channelsModel_(*this)
 {
-
+    QObject::connect(this, &Document::stripAfterPlaced, &stripsOnChannel_, &DocumentStripsOnChannel::stripAfterPlaced);
+    QObject::connect(this, &Document::stripBeforeDelete, &stripsOnChannel_, &DocumentStripsOnChannel::stripBeforeDelete);
+    QObject::connect(this, &Document::stripMoved, &stripsOnChannel_, &DocumentStripsOnChannel::stripMoved);
 }
 
 void Document::toPb(pb::Document &pb) const

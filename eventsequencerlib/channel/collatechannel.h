@@ -83,12 +83,8 @@ private slots:
 
     void triggerRefresh();
 
-    void stripAfterAdd(Strip* strip);
-    void stripBeforeDelete(Strip* strip);
-    void stripMoved(Strip* strip,
-                    int previousChannel,
-                    int previousStartFrame,
-                    int previousLength);
+    void channelStripSetChanged(int channel);
+    void channelStripLocationChanged(int channel, Strip* whichStrip);
 
 private:
 

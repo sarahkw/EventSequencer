@@ -3,6 +3,7 @@
 
 #include "channel/channeltype.h"
 #include "waitforhost.h"
+#include "documentstripsonchannel.h"
 
 #include <QAbstractListModel>
 #include <QUrl>
@@ -117,6 +118,8 @@ private:
     Q_PROPERTY(QString fileForkedFromChecksum READ fileForkedFromChecksum WRITE setFileForkedFromChecksum NOTIFY fileForkedFromChecksumChanged)
     Q_PROPERTY(ForkEditFlag fileForkEditFlag READ fileForkEditFlag WRITE setFileForkEditFlag NOTIFY fileForkEditFlagChanged)
 
+    DocumentStripsOnChannel stripsOnChannel_;
+
 public:
 
     explicit Document(QObject *parent = nullptr);
@@ -165,6 +168,8 @@ public:
 
     ForkEditFlag fileForkEditFlag() const;
     void setFileForkEditFlag(const ForkEditFlag &fileForkEditFlag);
+
+    const DocumentStripsOnChannel& stripsOnChannel() const;
 
 private:
 

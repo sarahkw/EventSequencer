@@ -1,4 +1,4 @@
-#include "collatechannel.h"
+﻿#include "collatechannel.h"
 
 #include <eventsequencer.pb.h>
 #include <document.h>
@@ -89,12 +89,23 @@ void CollateChannel::triggerRefresh()
     }
 }
 
+void CollateChannel::channelStripSetChanged(int channel)
+{
+    channelAffected(channel);
+}
+
+void CollateChannel::channelStripLocationChanged(int channel, Strip *whichStrip)
+{
+    Q_UNUSED(whichStrip);
+    channelAffected(channel);
+}
+
 CollateChannel::CollateChannel(Document& d, QObject *parent)
     : ChannelBase(parent), model_(*this), d_(d)
-{
-    QObject::connect(&d, &Document::stripAfterPlaced, this, &CollateChannel::stripAfterAdd);
-    QObject::connect(&d, &Document::stripBeforeDelete, this, &CollateChannel::stripBeforeDelete);
-    QObject::connect(&d, &Document::stripMoved, this, &CollateChannel::stripMoved);
+{   
+    QObject::connect(&d.stripsOnChannel(), &DocumentStripsOnChannel::channelStripSetChanged, this, &CollateChannel::channelStripSetChanged);
+    QObject::connect(&d.stripsOnChannel(), &DocumentStripsOnChannel::channelStripLocationChanged, this, &CollateChannel::channelStripLocationChanged);
+
     QObject::connect(&d, &Document::startFrameChanged, this, &CollateChannel::triggerRefresh);
     QObject::connect(&d, &Document::endFrameChanged, this, &CollateChannel::triggerRefresh);
 
@@ -125,24 +136,6 @@ QAbstractListModel *CollateChannel::model()
     return &model_;
 }
 
-void CollateChannel::stripAfterAdd(Strip *strip)
-{
-    channelAffected(strip->channel());
-}
-
-void CollateChannel::stripBeforeDelete(Strip *strip)
-{
-    channelAffected(strip->channel());
-}
-
-void CollateChannel::stripMoved(Strip *strip, int previousChannel, int previousStartFrame, int previousLength)
-{
-    Q_UNUSED(previousStartFrame)
-    Q_UNUSED(previousLength)
-    channelAffected(strip->channel());
-    channelAffected(previousChannel);
-}
-
 void CollateChannel::channelAffected(int channel)
 {
     if (refreshPending_) { // Optimization
@@ -160,16 +153,12 @@ void CollateChannel::recalculate()
                                             d_.startFrame(),
                                             d_.endFrame() - d_.startFrame());
     {
-        std::map<int, std::vector<const Strip*>> build;
-        for (const Strip* s : d_.strips()) {
-            if (s->channel() >= channelFrom() && s->channel() < channelTo()) {
-                build[s->channel()].push_back(s);
-            }
-        }
-        for (auto iter = build.crbegin(); iter != build.crend(); ++iter) {
-            // Higher channels take more precedence.
-            for (const Strip* s : iter->second) {
-                cnos.mergeSegment(s->startFrame(), s->length());
+        for (int channel = channelTo() - 1; channel >= channelFrom(); --channel) {
+            auto stripSet = d_.stripsOnChannel().stripsForChannel(channel);
+            if (stripSet != nullptr) {
+                for (const Strip* s : *stripSet) {
+                    cnos.mergeSegment(s->startFrame(), s->length());
+                }
             }
         }
     }
