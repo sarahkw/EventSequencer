@@ -16,6 +16,9 @@ public:
     QString fileResourceDirectory() const;
     void setFileResourceDirectory(const QString &fileResourceDirectory);
 
+    Q_INVOKABLE QString withRandomName(QString suffix);
+    Q_INVOKABLE QString withSpecifiedName(QString name, QString suffix);
+
 signals:
 
     void fileResourceDirectoryChanged();

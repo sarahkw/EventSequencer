@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Window 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.2
+import QtQuick.Dialogs 1.2
 
 import eventsequencer 1.0 as ES
 
@@ -91,7 +92,18 @@ Window {
             Layout.columnSpan: 2
             Button {
                 text: "Record"
-                onClicked: recorderControl.record("/tmp/outputfile.au")
+                onClicked: {
+                    if (managedResources.fileResourceDirectory == "") {
+                        md.open()
+                        return
+                    }
+                    recorderControl.record(managedResources.withRandomName(".au"))
+                }
+
+                MessageDialog {
+                    id: md
+                    text: "Resource directory doesn't exist. Save the file first."
+                }
             }
             Button {
                 text: "Stop"
