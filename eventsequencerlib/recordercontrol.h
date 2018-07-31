@@ -30,7 +30,7 @@ private:
 
     QAudioInput* audioInput_ = nullptr;
     QString audioInputReadyStatus_;
-    void updateAudioInput();
+    void updateAudioInput() override;
     Q_PROPERTY(bool audioInputReady          READ audioInputReady       NOTIFY audioInputReadyStatusChanged)
     Q_PROPERTY(QString audioInputReadyStatus READ audioInputReadyStatus NOTIFY audioInputReadyStatusChanged)
 
@@ -41,12 +41,6 @@ private:
 
     QFile* outputFile_ = nullptr;
 
-    AudioFormatHolder* audioFormatHolder_ = nullptr;
-    SessionAudio* sessionAudio_ = nullptr;
-
-    Q_PROPERTY(QObject* audioFormatHolder READ audioFormatHolder WRITE setAudioFormatHolder NOTIFY audioFormatHolderChanged)
-    Q_PROPERTY(QObject* sessionAudio READ sessionAudio WRITE setSessionAudio NOTIFY sessionAudioChanged)
-
     bool allowOverwrite_ = false;
     Q_PROPERTY(bool allowOverwrite READ allowOverwrite WRITE setAllowOverwrite NOTIFY allowOverwriteChanged)
 
@@ -54,18 +48,10 @@ private:
 
 public:
     explicit RecorderControl(QObject *parent = nullptr);
-    ~RecorderControl();
+    ~RecorderControl() override;
 
     bool audioInputReady() const;
     QString audioInputReadyStatus() const;
-
-    QObject *audioFormatHolder() const;
-    void setAudioFormatHolder(QObject *audioFormatHolder);
-    void clearAudioFormatHolder();
-
-    QObject *sessionAudio() const;
-    void setSessionAudio(QObject *sessionAudio);
-    void clearSessionAudio();
 
     Q_INVOKABLE void record(QString fileName);
     Q_INVOKABLE void stop();
@@ -90,9 +76,6 @@ signals:
 
     void audioStateChanged();
     void errorChanged();
-
-    void audioFormatHolderChanged();
-    void sessionAudioChanged();
 
     void allowOverwriteChanged();
 
