@@ -34,7 +34,6 @@ public:
 
     Q_INVOKABLE void record(QString fileName);
     Q_INVOKABLE void stop();
-    Q_INVOKABLE void debug();
 
 private:
     void updateAudioState();

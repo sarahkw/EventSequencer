@@ -68,11 +68,6 @@ void RecorderControl::stop()
     }
 }
 
-void RecorderControl::debug()
-{
-    qInfo() << audioFormatHolder_ << sessionAudio_;
-}
-
 void RecorderControl::updateAudioObject()
 {
     QStringList errors;
