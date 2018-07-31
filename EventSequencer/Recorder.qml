@@ -58,24 +58,7 @@ Window {
                     Layout.fillWidth: true
                 }
 
-                Label { text: "Output Type" }
-                RowLayout {
-                    Layout.fillWidth: true
-                    ComboBox {
-                        Layout.fillWidth: true
-                        model: ["Managed", "Filesystem"]
-                    }
-                    Button {
-                        text: "Browse"
-                    }
-                }
-
-                Label { text: "\u2514 Path" }
-                ESTextField {
-                    Layout.fillWidth: true
-                }
-
-                Label { text: "\u2514 Allow Overwrite" }
+                Label { text: "Allow Overwrite" }
                 CheckBox {
                     checked: recorderControl.allowOverwrite
                     onCheckedChanged: recorderControl.allowOverwrite = checked
