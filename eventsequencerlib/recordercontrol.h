@@ -3,8 +3,6 @@
 
 #include "audiocontrol.h"
 
-#include <QObject>
-
 class QAudioInput;
 class QFile;
 
