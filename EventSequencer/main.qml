@@ -574,6 +574,17 @@ ApplicationWindow {
                             property int selectionMode: SelectionMode.Whole
                             property bool selected: realIn(cppStrip, selectedCppStrips)
 
+                            property var channelControl: channelControlResolver.control
+                            property var stripComponent: channelControl !== null ? channelControl.stripComponent : undefined
+
+                            QtObject {
+                                id: channelControlResolver
+                                property ES.WaitFor waitFor: document.waitForChannel(cppStrip.channel)
+                                property var chan: waitFor.result
+                                property var type: chan !== null ? chan.channelType : null
+                                property var control: type !== null ? controlResolver.resolve(type) : null
+                            }
+
                             function _selectionClicked(mouse, newSelectionMode) {
                                 if (mouse.modifiers & Qt.ShiftModifier) {
                                     var tmp = selectedCppStrips
@@ -598,7 +609,7 @@ ApplicationWindow {
                             }
 
                             Loader {
-                                sourceComponent: stripComponentResolver.stripComponent === undefined ? dsvComponent : undefined
+                                sourceComponent: stripComponent === undefined ? dsvComponent : undefined
                                 anchors.fill: parent
 
                                 Component {
@@ -619,16 +630,8 @@ ApplicationWindow {
                                 }
                             }
 
-                            QtObject {
-                                id: stripComponentResolver
-                                property ES.WaitFor waitFor: document.waitForChannel(cppStrip.channel)
-                                property var chan: waitFor.result
-                                property var type: chan !== null ? chan.channelType : null
-                                property var stripComponent: type !== null ? controlResolver.resolve(type).stripComponent : undefined
-                            }
-
                             Loader {
-                                sourceComponent: stripComponentResolver.stripComponent
+                                sourceComponent: stripComponent
                                 anchors.fill: parent
 
                                 property ES.Strip cppStrip: stripBase.cppStrip
