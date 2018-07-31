@@ -4,7 +4,8 @@
 
 namespace channel {
 
-AudioChannel::AudioChannel(QObject *parent) : ChannelBase(parent)
+AudioChannel::AudioChannel(int channelIndex, Document& d, QObject* parent)
+    : ChannelBase(channelIndex, d, parent)
 {
 
 }

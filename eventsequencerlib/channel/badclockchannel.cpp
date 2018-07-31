@@ -4,7 +4,8 @@
 
 namespace channel {
 
-BadClockChannel::BadClockChannel(QObject *parent) : ChannelBase(parent)
+BadClockChannel::BadClockChannel(int channelIndex, Document& d, QObject* parent)
+    : ChannelBase(channelIndex, d, parent)
 {
 
 }

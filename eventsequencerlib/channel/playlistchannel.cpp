@@ -4,7 +4,8 @@
 
 namespace channel {
 
-PlaylistChannel::PlaylistChannel(QObject *parent) : ChannelBase(parent)
+PlaylistChannel::PlaylistChannel(int channelIndex, Document& d, QObject* parent)
+    : ChannelBase(channelIndex, d, parent)
 {
 
 }

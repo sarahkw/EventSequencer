@@ -321,7 +321,7 @@ void Document::fromPb(const pb::Document &pb)
     for (auto& mappair : pb.channels()) {
         const int id = mappair.first;
         channel::ChannelBase* addme =
-                channel::ChannelFactory::Create(mappair.second, *this, this);
+                channel::ChannelFactory::Create(mappair.second, id, *this, this);
         if (addme != nullptr) {
             channels_[id] = addme;
             channelAfterAddOrReplace(id, addme, AddOrReplace::Add);
@@ -561,7 +561,7 @@ QAbstractListModel *Document::channelsModel()
 
 QObject *Document::createChannel(int id, channel::ChannelType::Enum type)
 {
-    channel::ChannelBase* chan = channel::ChannelFactory::Create(type, *this, this);
+    channel::ChannelBase* chan = channel::ChannelFactory::Create(type, id, *this, this);
 
     AddOrReplace mode = AddOrReplace::Add;
 
