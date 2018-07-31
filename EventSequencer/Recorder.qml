@@ -16,7 +16,7 @@ Window {
     property QtObject audioFormatHolder
     property QtObject sessionAudio
     property string fileResourceDirectory
-    property var activeCppStrip
+    property ES.Strip activeCppStrip
 
     property bool destroyOnHide: false
     onVisibleChanged: {
