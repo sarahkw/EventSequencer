@@ -4,11 +4,7 @@
 #include "audiocontrol.h"
 
 #include <QObject>
-#include <QAudio>
-#include <QVariant>
 
-class AudioFormatHolder;
-class SessionAudio;
 class QAudioInput;
 class QFile;
 
@@ -23,9 +19,6 @@ private:
     void updateAudioInput() override;
     Q_PROPERTY(bool audioInputReady          READ audioInputReady       NOTIFY audioInputReadyStatusChanged)
     Q_PROPERTY(QString audioInputReadyStatus READ audioInputReadyStatus NOTIFY audioInputReadyStatusChanged)
-
-    QString error_;
-    Q_PROPERTY(QString error READ error NOTIFY errorChanged)
 
     QFile* outputFile_ = nullptr;
 
@@ -45,11 +38,6 @@ public:
     Q_INVOKABLE void stop();
     Q_INVOKABLE void debug();
 
-    QString error() const;
-private:
-    void setError(const QString &error);
-public:
-
 private:
     void updateAudioState();
 public:
@@ -60,8 +48,6 @@ public:
 signals:
 
     void audioInputReadyStatusChanged();
-
-    void errorChanged();
 
     void allowOverwriteChanged();
 

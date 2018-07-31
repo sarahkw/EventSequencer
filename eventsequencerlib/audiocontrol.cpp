@@ -30,6 +30,31 @@ void AudioControl::setAudioState(QAudio::State audioState)
     }
 }
 
+
+QString AudioControl::error() const
+{
+    return error_;
+}
+
+void AudioControl::setError(const QString &error)
+{
+    if (error_ != error) {
+        error_ = error;
+        emit errorChanged();
+    }
+}
+
+void AudioControl::setError(QAudio::Error error)
+{
+    switch (error) {
+    case QAudio::NoError:       setError(""); break;
+    case QAudio::OpenError:     setError("OpenError"); break;
+    case QAudio::IOError:       setError("IOError"); break;
+    case QAudio::UnderrunError: setError("UnderrunError"); break;
+    case QAudio::FatalError:    setError("FatalError"); break;
+    }
+}
+
 QObject *AudioControl::audioFormatHolder() const
 {
     return audioFormatHolder_;

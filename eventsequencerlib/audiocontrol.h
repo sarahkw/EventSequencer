@@ -25,6 +25,9 @@ public:
 private:
     AudioState audioState_ = AudioState::Unset;
     Q_PROPERTY(QVariant audioState READ audioState NOTIFY audioStateChanged)
+
+    QString error_;
+    Q_PROPERTY(QString error READ error NOTIFY errorChanged)
 protected:
 
     AudioFormatHolder* audioFormatHolder_ = nullptr;
@@ -44,6 +47,12 @@ protected:
     void setAudioState(QAudio::State audioState);
 public:
 
+    QString error() const;
+protected:
+    void setError(const QString &error);
+    void setError(QAudio::Error error);
+public:
+
     QObject *audioFormatHolder() const;
     void setAudioFormatHolder(QObject *audioFormatHolder);
     void clearAudioFormatHolder();
@@ -55,6 +64,7 @@ public:
 signals:
 
     void audioStateChanged();
+    void errorChanged();
 
     void audioFormatHolderChanged();
     void sessionAudioChanged();

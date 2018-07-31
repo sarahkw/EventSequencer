@@ -135,27 +135,7 @@ void RecorderControl::updateAudioState()
     }
 
     setAudioState(audioInput_->state());
-
-    switch (audioInput_->error()) {
-    case QAudio::NoError:       setError(""); break;
-    case QAudio::OpenError:     setError("OpenError"); break;
-    case QAudio::IOError:       setError("IOError"); break;
-    case QAudio::UnderrunError: setError("UnderrunError"); break;
-    case QAudio::FatalError:    setError("FatalError"); break;
-    }
-}
-
-QString RecorderControl::error() const
-{
-    return error_;
-}
-
-void RecorderControl::setError(const QString &error)
-{
-    if (error_ != error) {
-        error_ = error;
-        emit errorChanged();
-    }
+    setError(audioInput_->error());
 }
 
 RecorderControl::RecorderControl(QObject *parent) : AudioControl(parent)
