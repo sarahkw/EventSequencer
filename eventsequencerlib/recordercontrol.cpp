@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QAudioInput>
 #include <QFile>
+#include <QFileInfo>
 
 #include <memory>
 
@@ -127,7 +128,7 @@ void RecorderControl::record(QString fileName)
 void RecorderControl::stop()
 {
     if (!writingPath_.isEmpty()) {
-        emit fileDone(writingPath_);
+        emit fileDone(writingPath_, QFileInfo(writingPath_).fileName());
         writingPath_.clear();
     }
 

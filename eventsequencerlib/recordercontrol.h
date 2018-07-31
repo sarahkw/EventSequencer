@@ -94,7 +94,7 @@ signals:
 
     void allowOverwriteChanged();
 
-    void fileDone(QString filePath);
+    void fileDone(QString filePath, QString fileName);
 
 public slots:
 };

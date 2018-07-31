@@ -124,10 +124,14 @@ Window {
 
             Connections {
                 target: recorderControl
-                onFileDone: fileActionFrame.filePath = filePath
+                onFileDone: {
+                    fileActionFrame.filePath = filePath
+                    fileActionFrame.fileName = fileName
+                }
             }
 
             property string filePath: ""
+            property string fileName: ""
             visible: filePath !== ""
 
             Column {
@@ -146,6 +150,11 @@ Window {
                             if (activeCppStrip === null) return false
                             if (activeCppStrip.qmlStrip.channelControl === null) return false
                             return activeCppStrip.qmlStrip.channelControl.willAcceptResource != null
+                        }
+                        onClicked: {
+                            activeCppStrip.resource.type = ES.Resource.Type.ManagedId
+                            activeCppStrip.resource.identifier = fileActionFrame.fileName
+                            fileActionFrame.filePath = "" // Clear
                         }
                     }
                     Button {
