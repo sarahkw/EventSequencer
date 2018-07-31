@@ -10,8 +10,6 @@ class RecorderControl : public AudioControl
 {
     Q_OBJECT
 
-private:
-
     QAudioInput* audioInput_ = nullptr;
     QString audioInputReadyStatus_;
     void updateAudioObject() override;

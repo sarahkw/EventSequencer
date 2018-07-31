@@ -49,11 +49,6 @@ void RecorderControl::record(QString fileName)
 
 void RecorderControl::stop()
 {
-    if (!writingPath_.isEmpty()) {
-        emit fileDone(writingPath_, QFileInfo(writingPath_).fileName());
-        writingPath_.clear();
-    }
-
     if (audioInput_ == nullptr) {
         return;
     }
@@ -65,6 +60,11 @@ void RecorderControl::stop()
     if (outputFile_ != nullptr) {
         outputFile_->close();
         outputFile_ = nullptr;
+    }
+
+    if (!writingPath_.isEmpty()) {
+        emit fileDone(writingPath_, QFileInfo(writingPath_).fileName());
+        writingPath_.clear();
     }
 }
 
