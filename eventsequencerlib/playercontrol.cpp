@@ -16,6 +16,7 @@ void PlayerControl::play()
     }
     if (audioOutput_->state() != QAudio::StoppedState) {
         qWarning() << "Not stopped";
+        return;
     }
 
     auto buf = new QBuffer(this); // TEMPORARY! Replace with real data.

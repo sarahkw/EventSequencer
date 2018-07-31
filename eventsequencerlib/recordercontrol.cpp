@@ -19,6 +19,7 @@ void RecorderControl::record(QString fileName)
     }
     if (audioInput_->state() != QAudio::StoppedState) {
         qWarning() << "Not stopped";
+        return;
     }
 
     std::unique_ptr<QFile> of(new QFile(fileName));
@@ -59,6 +60,7 @@ void RecorderControl::stop()
 
     if (outputFile_ != nullptr) {
         outputFile_->close();
+        delete outputFile_;
         outputFile_ = nullptr;
     }
 
