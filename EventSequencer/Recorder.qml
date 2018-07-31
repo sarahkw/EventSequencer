@@ -92,12 +92,6 @@ Window {
                     text: recorderControl.audioState
                 }
 
-                Label { text: "Output Location" }
-                Label {
-                    Layout.fillWidth: true
-                    text: "Value"
-                }
-
                 Row {
                     Layout.columnSpan: 2
                     Button {
