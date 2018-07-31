@@ -73,7 +73,7 @@ void RecorderControl::debug()
     qInfo() << audioFormatHolder_ << sessionAudio_;
 }
 
-void RecorderControl::updateAudioInput()
+void RecorderControl::updateAudioObject()
 {
     QStringList errors;
     if (audioFormatHolder_ == nullptr) {
@@ -140,12 +140,7 @@ void RecorderControl::updateAudioState()
 
 RecorderControl::RecorderControl(QObject *parent) : AudioControl(parent)
 {
-    QObject::connect(this, &RecorderControl::audioFormatHolderChanged,
-                     this, &RecorderControl::updateAudioInput);
-    QObject::connect(this, &RecorderControl::sessionAudioChanged,
-                     this, &RecorderControl::updateAudioInput);
-
-    updateAudioInput(); // Initial update of ready status
+    updateAudioObject(); // Initial update of ready status
 }
 
 RecorderControl::~RecorderControl()

@@ -5,7 +5,10 @@
 
 AudioControl::AudioControl(QObject *parent) : QObject(parent)
 {
-
+    QObject::connect(this, &AudioControl::audioFormatHolderChanged,
+                     this, &AudioControl::updateAudioObject);
+    QObject::connect(this, &AudioControl::sessionAudioChanged,
+                     this, &AudioControl::updateAudioObject);
 }
 
 QVariant AudioControl::audioState() const
@@ -29,7 +32,6 @@ void AudioControl::setAudioState(QAudio::State audioState)
     case QAudio::InterruptedState: setAudioState(AudioState::Interrupted) ; break;
     }
 }
-
 
 QString AudioControl::error() const
 {
@@ -78,7 +80,7 @@ void AudioControl::setAudioFormatHolder(QObject *audioFormatHolder)
             QObject::connect(tmp, &QObject::destroyed,
                              this, &AudioControl::clearAudioFormatHolder);
             QObject::connect(tmp, &AudioFormatHolder::audioFormatChanged,
-                             this, &AudioControl::updateAudioInput);
+                             this, &AudioControl::updateAudioObject);
         }
 
         audioFormatHolder_ = tmp;

@@ -14,7 +14,7 @@ private:
 
     QAudioInput* audioInput_ = nullptr;
     QString audioInputReadyStatus_;
-    void updateAudioInput() override;
+    void updateAudioObject() override;
     Q_PROPERTY(bool audioInputReady          READ audioInputReady       NOTIFY audioInputReadyStatusChanged)
     Q_PROPERTY(QString audioInputReadyStatus READ audioInputReadyStatus NOTIFY audioInputReadyStatusChanged)
 

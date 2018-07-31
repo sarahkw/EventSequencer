@@ -36,7 +36,7 @@ protected:
     Q_PROPERTY(QObject* audioFormatHolder READ audioFormatHolder WRITE setAudioFormatHolder NOTIFY audioFormatHolderChanged)
     Q_PROPERTY(QObject* sessionAudio READ sessionAudio WRITE setSessionAudio NOTIFY sessionAudioChanged)
 
-    virtual void updateAudioInput() = 0;
+    virtual void updateAudioObject() = 0;
 
 public:
     explicit AudioControl(QObject *parent = nullptr);
