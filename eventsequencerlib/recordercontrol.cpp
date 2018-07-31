@@ -105,6 +105,8 @@ void RecorderControl::record(QString fileName)
         return;
     }
 
+    writingPath_ = fileName;
+
     AuFileHeader afh;
     if (!afh.loadFormat(audioFormatHolder_->toQAudioFormat())) {
         qCritical() << "??? Format was good but now is not?";
@@ -124,6 +126,11 @@ void RecorderControl::record(QString fileName)
 
 void RecorderControl::stop()
 {
+    if (!writingPath_.isEmpty()) {
+        emit fileDone(writingPath_);
+        writingPath_.clear();
+    }
+
     if (audioInput_ == nullptr) {
         return;
     }

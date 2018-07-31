@@ -35,83 +35,136 @@ Window {
         sessionAudio: recorderWin.sessionAudio
     }
 
-    GridLayout {
+    ColumnLayout {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        columns: 2
 
-        Label { text: "Audio Input Ready" }
-        Label { text: recorderControl.audioInputReady }
-
-        Label { text: "\u2514 Reason" }
-        Label { text: recorderControl.audioInputReadyStatus }
-
-        Label { text: "Output Type" }
-        RowLayout {
+        Frame {
             Layout.fillWidth: true
-            ComboBox {
-                Layout.fillWidth: true
-                model: ["Managed random", "Managed", "Filesystem"]
-            }
-            Button {
-                text: "Browse"
-            }
-        }
 
-        Label { text: "\u2514 Path" }
-        ESTextField {
-            Layout.fillWidth: true
-        }
+            GridLayout {
+                id: glayRecord
+                anchors.fill: parent
+                columns: 2
 
-        Label { text: "\u2514 Allow Overwrite" }
-        CheckBox {
-            checked: recorderControl.allowOverwrite
-            onCheckedChanged: recorderControl.allowOverwrite = checked
-        }
+                Label { text: "Audio Input Ready" }
+                Label { text: recorderControl.audioInputReady }
 
-        Label { text: "Error" }
-        Label {
-            Layout.fillWidth: true
-            text: recorderControl.error
-        }
+                Label { text: "\u2514 Reason" }
+                Label {
+                    text: recorderControl.audioInputReadyStatus
+                    Layout.fillWidth: true
+                }
 
-        Label { text: "Audio State" }
-        Label {
-            Layout.fillWidth: true
-            text: recorderControl.audioState
-        }
-
-        Label { text: "Output Location" }
-        Label {
-            Layout.fillWidth: true
-            text: "Value"
-        }
-
-        Row {
-            Layout.columnSpan: 2
-            Button {
-                text: "Record"
-                onClicked: {
-                    if (managedResources.fileResourceDirectory == "") {
-                        md.open()
-                        return
+                Label { text: "Output Type" }
+                RowLayout {
+                    Layout.fillWidth: true
+                    ComboBox {
+                        Layout.fillWidth: true
+                        model: ["Managed", "Filesystem"]
                     }
-                    recorderControl.record(managedResources.withRandomName(".au"))
+                    Button {
+                        text: "Browse"
+                    }
                 }
 
-                MessageDialog {
-                    id: md
-                    text: "Resource directory doesn't exist. Save the file first."
+                Label { text: "\u2514 Path" }
+                ESTextField {
+                    Layout.fillWidth: true
+                }
+
+                Label { text: "\u2514 Allow Overwrite" }
+                CheckBox {
+                    checked: recorderControl.allowOverwrite
+                    onCheckedChanged: recorderControl.allowOverwrite = checked
+                }
+
+                Label { text: "Error" }
+                Label {
+                    Layout.fillWidth: true
+                    text: recorderControl.error
+                }
+
+                Label { text: "Audio State" }
+                Label {
+                    Layout.fillWidth: true
+                    text: recorderControl.audioState
+                }
+
+                Label { text: "Output Location" }
+                Label {
+                    Layout.fillWidth: true
+                    text: "Value"
+                }
+
+                Row {
+                    Layout.columnSpan: 2
+                    Button {
+                        text: "Record"
+                        onClicked: {
+                            if (managedResources.fileResourceDirectory == "") {
+                                md.open()
+                                return
+                            }
+                            recorderControl.record(managedResources.withSpecifiedName(managedResources.generateResourceName(), ".au"))
+                        }
+
+                        MessageDialog {
+                            id: md
+                            text: "Resource directory doesn't exist. Save the file first."
+                        }
+                    }
+                    Button {
+                        text: "Stop"
+                        onClicked: recorderControl.stop()
+                    }
                 }
             }
-            Button {
-                text: "Stop"
-                onClicked: recorderControl.stop()
+        }
+
+        Frame {
+            Layout.fillWidth: true
+            id: fileActionFrame
+
+            Connections {
+                target: recorderControl
+                onFileDone: fileActionFrame.filePath = filePath
             }
-            Button {
-                text: "Debug"
-                onClicked: recorderControl.debug()
+
+            property string filePath: ""
+            visible: filePath !== ""
+
+            Column {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                Text {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    text: fileActionFrame.filePath
+                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                }
+                Row {
+                    Button {
+                        text: "Send to active channel"
+                    }
+                    Button {
+                        MessageDialog {
+                            id: deleteConfirm
+                            text: "Are you sure you want to delete?"
+                            standardButtons: StandardButton.Yes | StandardButton.No
+                            onYes: {
+                                if (managedResources.deleteFile(fileActionFrame.filePath)) {
+                                    fileActionFrame.filePath = ""
+                                } else {
+                                    console.warn("Deletion failed")
+                                }
+                            }
+                        }
+                        text: "Delete"
+                        onClicked: deleteConfirm.open()
+                    }
+                }
             }
         }
     }

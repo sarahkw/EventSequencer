@@ -16,8 +16,10 @@ public:
     QString fileResourceDirectory() const;
     void setFileResourceDirectory(const QString &fileResourceDirectory);
 
-    Q_INVOKABLE QString withRandomName(QString suffix);
+    Q_INVOKABLE QString generateResourceName();
     Q_INVOKABLE QString withSpecifiedName(QString name, QString suffix);
+
+    Q_INVOKABLE bool deleteFile(QString filePath);
 
 signals:
 

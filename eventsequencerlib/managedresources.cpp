@@ -16,10 +16,9 @@ void ManagedResources::setFileResourceDirectory(const QString &fileResourceDirec
     }
 }
 
-QString ManagedResources::withRandomName(QString suffix)
+QString ManagedResources::generateResourceName()
 {
-    return withSpecifiedName(QUuid::createUuid().toString(QUuid::WithoutBraces),
-                             suffix);
+    return QUuid::createUuid().toString(QUuid::WithoutBraces);
 }
 
 QString ManagedResources::withSpecifiedName(QString name, QString suffix)
@@ -32,6 +31,11 @@ QString ManagedResources::withSpecifiedName(QString name, QString suffix)
         dir.mkpath(".");
     }
     return dir.absoluteFilePath(name + suffix);
+}
+
+bool ManagedResources::deleteFile(QString filePath)
+{
+    return QFile::remove(filePath);
 }
 
 ManagedResources::ManagedResources(QObject *parent) : QObject(parent)

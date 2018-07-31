@@ -48,6 +48,8 @@ private:
     bool allowOverwrite_ = false;
     Q_PROPERTY(bool allowOverwrite READ allowOverwrite WRITE setAllowOverwrite NOTIFY allowOverwriteChanged)
 
+    QString writingPath_;
+
 public:
     explicit RecorderControl(QObject *parent = nullptr);
     ~RecorderControl();
@@ -91,6 +93,8 @@ signals:
     void sessionAudioChanged();
 
     void allowOverwriteChanged();
+
+    void fileDone(QString filePath);
 
 public slots:
 };
