@@ -88,7 +88,7 @@ void RecorderControl::clearSessionAudio()
     }
 }
 
-void RecorderControl::record()
+void RecorderControl::record(QString fileName)
 {
     if (audioFormatHolder_ == nullptr || audioInput_ == nullptr) {
         qWarning() << "Not ready";
@@ -98,7 +98,7 @@ void RecorderControl::record()
         qWarning() << "Not stopped";
     }
 
-    std::unique_ptr<QFile> of(new QFile("/tmp/output.au"));
+    std::unique_ptr<QFile> of(new QFile(fileName));
 
     if (!of->open(allowOverwrite() ? QFile::WriteOnly : QFile::NewOnly)) {
         setError(QString("Cannot open file: %1").arg(of->errorString()));

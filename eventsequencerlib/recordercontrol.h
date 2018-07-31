@@ -63,7 +63,7 @@ public:
     void setSessionAudio(QObject *sessionAudio);
     void clearSessionAudio();
 
-    Q_INVOKABLE void record();
+    Q_INVOKABLE void record(QString fileName);
     Q_INVOKABLE void stop();
     Q_INVOKABLE void debug();
 

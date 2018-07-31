@@ -91,7 +91,7 @@ Window {
             Layout.columnSpan: 2
             Button {
                 text: "Record"
-                onClicked: recorderControl.record()
+                onClicked: recorderControl.record("/tmp/outputfile.au")
             }
             Button {
                 text: "Stop"
