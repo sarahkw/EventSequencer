@@ -90,7 +90,13 @@ void RecorderControl::clearSessionAudio()
 
 void RecorderControl::record()
 {
-    Q_ASSERT(outputFile_ == nullptr);
+    if (audioFormatHolder_ == nullptr || audioInput_ == nullptr) {
+        qWarning() << "Not ready";
+        return;
+    }
+    if (audioInput_->state() != QAudio::StoppedState) {
+        qWarning() << "Not stopped";
+    }
 
     std::unique_ptr<QFile> of(new QFile("/tmp/output.au"));
 
@@ -157,6 +163,7 @@ void RecorderControl::updateAudioInput()
         stop();
         delete audioInput_;
         audioInput_ = nullptr;
+        updateAudioState();
     }
 
     if (errors.empty()) {
@@ -183,7 +190,12 @@ QVariant RecorderControl::audioState() const
 
 void RecorderControl::updateAudioState()
 {
-    Q_ASSERT(audioInput_ != nullptr);
+    if (audioInput_ == nullptr) {
+        audioState_ = AudioState::Unset;
+        emit audioStateChanged();
+        setError("");
+        return;
+    }
 
     switch (audioInput_->state()) {
     case QAudio::ActiveState:      audioState_ = AudioState::Active; break;
