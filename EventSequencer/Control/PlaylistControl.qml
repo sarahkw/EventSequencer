@@ -4,5 +4,6 @@ Item {
     AudioControl {
         id: audioControl
     }
+    property bool willAcceptResource: true
     property Component stripPropertiesComponent: audioControl.stripPropertiesComponent
 }
