@@ -16,6 +16,7 @@ Window {
     property QtObject audioFormatHolder
     property QtObject sessionAudio
     property string fileResourceDirectory
+    property var activeCppStrip
 
     property bool destroyOnHide: false
     onVisibleChanged: {
@@ -140,7 +141,12 @@ Window {
                 }
                 Row {
                     Button {
-                        text: "Send to active channel"
+                        text: "Send to active strip"
+                        enabled: {
+                            if (activeCppStrip === null) return false
+                            if (activeCppStrip.qmlStrip.channelControl === null) return false
+                            return activeCppStrip.qmlStrip.channelControl.willAcceptResource != null
+                        }
                     }
                     Button {
                         MessageDialog {

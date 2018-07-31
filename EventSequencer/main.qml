@@ -170,7 +170,14 @@ ApplicationWindow {
                                                destroyOnHide: true,
                                                audioFormatHolder: Qt.binding(function () { return document.audioFormatHolder } ),
                                                sessionAudio: Qt.binding(function () { return session.audio } ),
-                                               fileResourceDirectory: Qt.binding(function () { return document.fileResourceDirectory })
+                                               fileResourceDirectory: Qt.binding(function () { return document.fileResourceDirectory }),
+                                               activeCppStrip: Qt.binding(function () {
+                                                   if (selectedCppStrips.length == 1) {
+                                                       return selectedCppStrips[0];
+                                                   } else {
+                                                       return null;
+                                                   }
+                                               })
                                            })
                 }
             }

@@ -7,6 +7,8 @@ import "../" as Parent
 import eventsequencer 1.0 as ES
 
 Item {
+    property bool willAcceptResource: true
+
     property Component stripPropertiesComponent: Component {
         GridLayout {
             anchors.left: parent.left
