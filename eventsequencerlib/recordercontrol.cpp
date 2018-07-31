@@ -6,6 +6,9 @@
 
 #include <QDebug>
 #include <QAudioInput>
+#include <QFile>
+
+#include <memory>
 
 QObject *RecorderControl::audioFormatHolder() const
 {
@@ -87,12 +90,46 @@ void RecorderControl::clearSessionAudio()
 
 void RecorderControl::record()
 {
+    Q_ASSERT(outputFile_ == nullptr);
 
+    std::unique_ptr<QFile> of(new QFile("/tmp/output.au"));
+
+    if (!of->open(QFile::WriteOnly)) {
+        setError(QString("Cannot open file: %1").arg(of->errorString()));
+        return;
+    }
+
+    AuFileHeader afh;
+    if (!afh.loadFormat(audioFormatHolder_->toQAudioFormat())) {
+        qCritical() << "??? Format was good but now is not?";
+        return;
+    }
+
+    if (!afh.writeFile(*of)) {
+        setError(QString("Cannot write header: %1").arg(of->errorString()));
+        return;
+    }
+
+    outputFile_ = of.release();
+
+    audioInput_->start(outputFile_);
+    updateAudioState();
 }
 
 void RecorderControl::stop()
 {
+    if (audioInput_ == nullptr) {
+        return;
+    }
 
+    if (audioInput_->state() != QAudio::StoppedState) {
+        audioInput_->stop();
+    }
+
+    if (outputFile_ != nullptr) {
+        outputFile_->close();
+        outputFile_ = nullptr;
+    }
 }
 
 void RecorderControl::debug()
@@ -117,6 +154,7 @@ void RecorderControl::updateAudioInput()
     }
 
     if (audioInput_ != nullptr) {
+        stop();
         delete audioInput_;
         audioInput_ = nullptr;
     }
@@ -125,6 +163,9 @@ void RecorderControl::updateAudioInput()
         Q_ASSERT(audioInput_ == nullptr);
         QAudioFormat qaf = audioFormatHolder_->toQAudioFormat();
         audioInput_ = new QAudioInput(sessionAudio_->selectedInputDevice(), qaf);
+
+        QObject::connect(audioInput_, &QAudioInput::stateChanged,
+                         this, &RecorderControl::updateAudioState);
 
         if (!sessionAudio_->selectedInputDevice().isFormatSupported(qaf)) {
             errors.push_back("WARN: Device does not support format");
@@ -135,16 +176,61 @@ void RecorderControl::updateAudioInput()
     emit audioInputReadyStatusChanged();
 }
 
+QVariant RecorderControl::audioState() const
+{
+    return QVariant::fromValue(audioState_);
+}
+
+void RecorderControl::updateAudioState()
+{
+    Q_ASSERT(audioInput_ != nullptr);
+
+    switch (audioInput_->state()) {
+    case QAudio::ActiveState:      audioState_ = AudioState::Active; break;
+    case QAudio::SuspendedState:   audioState_ = AudioState::Suspended; break;
+    case QAudio::StoppedState:     audioState_ = AudioState::Stopped; break;
+    case QAudio::IdleState:        audioState_ = AudioState::Idle; break;
+    case QAudio::InterruptedState: audioState_ = AudioState::Interrupted; break;
+    }
+
+    emit audioStateChanged();
+
+    switch (audioInput_->error()) {
+    case QAudio::NoError:       setError(""); break;
+    case QAudio::OpenError:     setError("OpenError"); break;
+    case QAudio::IOError:       setError("IOError"); break;
+    case QAudio::UnderrunError: setError("UnderrunError"); break;
+    case QAudio::FatalError:    setError("FatalError"); break;
+    }
+}
+
+QString RecorderControl::error() const
+{
+    return error_;
+}
+
+void RecorderControl::setError(const QString &error)
+{
+    if (error_ != error) {
+        error_ = error;
+        emit errorChanged();
+    }
+}
+
 RecorderControl::RecorderControl(QObject *parent) : QObject(parent)
 {
     QObject::connect(this, &RecorderControl::audioFormatHolderChanged,
                      this, &RecorderControl::updateAudioInput);
     QObject::connect(this, &RecorderControl::sessionAudioChanged,
                      this, &RecorderControl::updateAudioInput);
+
+    updateAudioInput(); // Initial update of ready status
 }
 
 RecorderControl::~RecorderControl()
 {
+    stop(); // Also deletes outputFile_.
+
     if (audioInput_ != nullptr) {
         delete audioInput_;
     }

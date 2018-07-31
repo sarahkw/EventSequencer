@@ -57,10 +57,16 @@ Window {
             Layout.fillWidth: true
         }
 
-        Label { text: "State" }
+        Label { text: "Error" }
         Label {
             Layout.fillWidth: true
-            text: "Value"
+            text: recorderControl.error
+        }
+
+        Label { text: "Audio State" }
+        Label {
+            Layout.fillWidth: true
+            text: recorderControl.audioState
         }
 
         Label { text: "Output Location" }
@@ -73,9 +79,11 @@ Window {
             Layout.columnSpan: 2
             Button {
                 text: "Record"
+                onClicked: recorderControl.record()
             }
             Button {
                 text: "Stop"
+                onClicked: recorderControl.stop()
             }
             Button {
                 text: "Debug"
