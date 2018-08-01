@@ -36,6 +36,7 @@ Window {
         audioFormatHolder: playerWin.audioFormatHolder
         sessionAudio: playerWin.sessionAudio
 
+        selectionMode: rdoActiveStrip.checked ? ES.PlayerControl.SelectionMode.Strip : ES.PlayerControl.SelectionMode.Channel
         selectedStrip: activeCppStrip
         selectedChannel: activeCppChannel
     }
@@ -74,6 +75,19 @@ Window {
                     text: playerControl.audioState
                 }
 
+                Label { text: "Selection" }
+                Row {
+                    Layout.fillWidth: true
+                    RadioButton {
+                        id: rdoActiveStrip
+                        text: qsTr("Strip")
+                        checked: true
+                    }
+                    RadioButton {
+                        text: qsTr("Channel")
+                    }
+                }
+
                 Row {
                     Layout.columnSpan: 2
                     Button {
@@ -85,6 +99,8 @@ Window {
                         onClicked: playerControl.stop()
                     }
                 }
+
+
             }
         }
     }
