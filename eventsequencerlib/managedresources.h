@@ -15,6 +15,7 @@ class ManagedResources : public QObject
 
 public:
     explicit ManagedResources(QObject *parent = nullptr);
+    ManagedResources(QString fileResourceDirectory, QObject *parent = nullptr);
 
     QString fileResourceDirectory() const;
     void setFileResourceDirectory(const QString &fileResourceDirectory);
@@ -23,6 +24,8 @@ public:
     Q_INVOKABLE QString withSpecifiedName(QString name, QString suffix);
 
     Q_INVOKABLE bool deleteUrl(QUrl url);
+
+    bool convertToFileName(QUrl url, QString* fileName);
 
 signals:
 

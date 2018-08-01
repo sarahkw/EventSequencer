@@ -3,6 +3,7 @@
 #include "audioformatholder.h"
 #include "sessionaudio.h"
 #include "aufileheader.h"
+#include "managedresources.h"
 
 #include <QAudioOutput>
 
@@ -29,14 +30,9 @@ void PlayerControl::play()
 
     QUrl url = stripsToPlay_[0]->resourceUrl();
     QString fileName;
-    if (url.scheme() == "evseq" && url.host() == "managed") {
-        if (fileResourceDirectory().isEmpty()) {
-            setError("Missing file resource directory");
-            return;
-        }
-        fileName = fileResourceDirectory() + url.path();
-    } else {
-        fileName = url.toLocalFile();
+    if (!ManagedResources(fileResourceDirectory()).convertToFileName(url, &fileName)) {
+        setError("Missing file resource directory");
+        return;
     }
 
     std::unique_ptr<QFile> playingFile(new QFile(fileName));
