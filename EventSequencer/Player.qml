@@ -26,15 +26,11 @@ Window {
         }
     }
 
-    ES.ManagedResources {
-        id: managedResources
-        fileResourceDirectory: playerWin.fileResourceDirectory
-    }
-
     ES.PlayerControl {
         id: playerControl
         audioFormatHolder: playerWin.audioFormatHolder
         sessionAudio: playerWin.sessionAudio
+        fileResourceDirectory: playerWin.fileResourceDirectory
 
         selectionMode: rdoActiveStrip.checked ? ES.PlayerControl.SelectionMode.Strip : ES.PlayerControl.SelectionMode.Channel
         selectedStrip: activeCppStrip

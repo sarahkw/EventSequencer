@@ -2,11 +2,15 @@
 
 #include "audioformatholder.h"
 #include "sessionaudio.h"
+#include "aufileheader.h"
 
 #include <QAudioOutput>
 
 #include <QDebug>
 #include <QBuffer>
+#include <QFile>
+
+#include <memory>
 
 void PlayerControl::play()
 {
@@ -18,10 +22,30 @@ void PlayerControl::play()
         qWarning() << "Not stopped";
         return;
     }
+    if (stripsToPlay_.empty()) {
+        setError("Nothing to play");
+        return;
+    }
+    if (fileResourceDirectory().isEmpty()) {
+        setError("Missing file resource directory");
+        return;
+    }
 
-    auto buf = new QBuffer(this); // TEMPORARY! Replace with real data.
-    buf->open(QBuffer::ReadOnly);
-    audioOutput_->start(buf);
+    std::unique_ptr<QFile> playingFile(new QFile(fileResourceDirectory() + "/" + stripsToPlay_[0]->resource()->identifier()));
+    if (!playingFile->open(QFile::ReadOnly)) {
+        setError(QString("Cannot open: %1").arg(playingFile->errorString()));
+        return;
+    }
+
+    AuFileHeader afh;
+    if (!afh.loadFileAndSeek(*playingFile)) {
+        // TODO Compare the format
+        setError("Cannot load AU file and seek");
+        return;
+    }
+
+    playingFile_ = playingFile.release();
+    audioOutput_->start(playingFile_);
     updateAudioState();
 }
 
@@ -29,6 +53,11 @@ void PlayerControl::stop()
 {
     if (audioOutput_ == nullptr) {
         return;
+    }
+
+    if (playingFile_ != nullptr) {
+        delete playingFile_;
+        playingFile_ = nullptr;
     }
 
     if (audioOutput_->state() != QAudio::StoppedState) {
@@ -93,9 +122,12 @@ void PlayerControl::updateCurrentStrips()
 {
     QStringList sl;
 
+    stripsToPlay_.clear();
+
     switch (selectionMode()) {
     case SelectionMode::Strip:
         if (selectedStrip_ != nullptr) {
+            stripsToPlay_.push_back(selectedStrip_);
             sl.push_back(describeStrip(selectedStrip_));
         }
         break;
@@ -104,6 +136,7 @@ void PlayerControl::updateCurrentStrips()
             auto sset = selectedChannel_->stripSet();
             if (sset != nullptr) {
                 for (auto& stripHolder : *sset) {
+                    stripsToPlay_.push_back(stripHolder.strip);
                     sl.push_back(describeStrip(stripHolder.strip));
                 }
             }
@@ -126,6 +159,19 @@ void PlayerControl::updateCurrentStripsIfSelectionModeIsChannel()
 {
     if (selectionMode() == SelectionMode::Channel) {
         updateCurrentStrips();
+    }
+}
+
+QString PlayerControl::fileResourceDirectory() const
+{
+    return fileResourceDirectory_;
+}
+
+void PlayerControl::setFileResourceDirectory(const QString &fileResourceDirectory)
+{
+    if (fileResourceDirectory_ != fileResourceDirectory) {
+        fileResourceDirectory_ = fileResourceDirectory;
+        emit fileResourceDirectoryChanged();
     }
 }
 

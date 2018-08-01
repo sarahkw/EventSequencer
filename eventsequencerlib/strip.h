@@ -68,6 +68,7 @@ public:
     void setLength(int length);
 
     Resource* resource();
+    const Resource* resource() const;
 
     stripext::BadJsStripExt *badJs() const;
     void setBadJs(stripext::BadJsStripExt *badJs);

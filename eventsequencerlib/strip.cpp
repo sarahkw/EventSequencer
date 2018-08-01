@@ -70,6 +70,11 @@ Resource* Strip::resource()
     return &resource_;
 }
 
+const Resource *Strip::resource() const
+{
+    return &resource_;
+}
+
 stripext::BadJsStripExt *Strip::badJs() const
 {
     return badJs_;
