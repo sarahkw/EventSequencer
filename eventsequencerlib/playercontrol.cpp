@@ -82,6 +82,43 @@ void PlayerControl::updateAudioState()
     setError(audioOutput_->error());
 }
 
+void PlayerControl::updateCurrentStrips()
+{
+    qInfo() << "BEGIN updateCurrentStrips";
+    switch (selectionMode()) {
+    case SelectionMode::Strip:
+        if (selectedStrip_ != nullptr) {
+            qInfo() << selectedStrip_;
+        }
+        break;
+    case SelectionMode::Channel:
+        if (selectedChannel_ != nullptr) {
+            auto sset = selectedChannel_->stripSet();
+            if (sset != nullptr) {
+                for (Strip* s : *sset) {
+                    qInfo() << s;
+                }
+            }
+        }
+        break;
+    }
+    qInfo() << "END updateCurrentStrips";
+}
+
+void PlayerControl::updateCurrentStripsIfSelectionModeIsStrip()
+{
+    if (selectionMode() == SelectionMode::Strip) {
+        updateCurrentStrips();
+    }
+}
+
+void PlayerControl::updateCurrentStripsIfSelectionModeIsChannel()
+{
+    if (selectionMode() == SelectionMode::Channel) {
+        updateCurrentStrips();
+    }
+}
+
 PlayerControl::SelectionMode PlayerControl::selectionMode() const
 {
     return selectionMode_;
@@ -92,6 +129,7 @@ void PlayerControl::setSelectionMode(const SelectionMode &selectionMode)
     if (selectionMode_ != selectionMode) {
         selectionMode_ = selectionMode;
         emit selectionModeChanged();
+        updateCurrentStrips();
     }
 }
 
@@ -111,10 +149,15 @@ void PlayerControl::setSelectedChannel(channel::ChannelBase *selectedChannel)
         if (selectedChannel != nullptr) {
             QObject::connect(selectedChannel, &channel::ChannelBase::destroyed,
                              this, &PlayerControl::clearSelectedChannel);
+
+            QObject::connect(selectedChannel, &channel::ChannelBase::stripSetChanged,
+                             this, &PlayerControl::updateCurrentStripsIfSelectionModeIsChannel);
         }
 
         selectedChannel_ = selectedChannel;
         emit selectedChannelChanged();
+
+        updateCurrentStripsIfSelectionModeIsChannel();
     }
 }
 
@@ -141,6 +184,8 @@ void PlayerControl::setSelectedStrip(Strip *selectedStrip)
 
         selectedStrip_ = selectedStrip;
         emit selectedStripChanged();
+
+        updateCurrentStripsIfSelectionModeIsStrip();
     }
 }
 

@@ -33,6 +33,9 @@ private:
     Q_PROPERTY(Strip* selectedStrip READ selectedStrip WRITE setSelectedStrip NOTIFY selectedStripChanged)
     Q_PROPERTY(channel::ChannelBase* selectedChannel READ selectedChannel WRITE setSelectedChannel NOTIFY selectedChannelChanged)
 
+    void updateCurrentStrips();
+    void updateCurrentStripsIfSelectionModeIsStrip();
+    void updateCurrentStripsIfSelectionModeIsChannel();
 
 public:
     explicit PlayerControl(QObject* parent = nullptr);
