@@ -156,8 +156,8 @@ void CollateChannel::recalculate()
         for (int channel = channelTo() - 1; channel >= channelFrom(); --channel) {
             auto stripSet = d_.stripsOnChannel().stripsForChannel(channel);
             if (stripSet != nullptr) {
-                for (const Strip* s : *stripSet) {
-                    cnos.mergeSegment(s->startFrame(), s->length());
+                for (auto& s : *stripSet) {
+                    cnos.mergeSegment(s.strip->startFrame(), s.strip->length());
                 }
             }
         }

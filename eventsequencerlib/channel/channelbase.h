@@ -4,6 +4,7 @@
 #include <QObject>
 #include <set>
 
+#include "documentstripsonchannel.h"
 #include "channeltype.h"
 #include "strip.h"
 
@@ -31,7 +32,7 @@ public:
 
     virtual ChannelType::Enum channelType() const = 0;
 
-    virtual const std::set<Strip*>* stripSet();
+    virtual const DocumentStripsOnChannel::StripSet* stripSet();
 
 signals:
 

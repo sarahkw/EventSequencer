@@ -28,7 +28,7 @@ public:
             bool collides = (a.start < b.start ?
                                  (a.start + a.length > b.start) :
                                  (b.start + b.length > a.start));
-            if (collides) return false;
+            if (collides) return false; // Treat collision as "equal".
             return a.start < b.start;
         }
     };

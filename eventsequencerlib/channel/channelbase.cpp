@@ -13,7 +13,7 @@ ChannelBase::ChannelBase(int channelIndex, Document& d, QObject* parent)
                      this, &ChannelBase::channelStripLocationChanged);
 }
 
-const std::set<Strip *> *ChannelBase::stripSet()
+const DocumentStripsOnChannel::StripSet *ChannelBase::stripSet()
 {
     return d_.stripsOnChannel().stripsForChannel(channelIndex_);
 }

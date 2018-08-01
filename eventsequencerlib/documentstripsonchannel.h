@@ -10,12 +10,23 @@ class DocumentStripsOnChannel : public QObject
 {
     Q_OBJECT
 
-    std::map<int, std::set<Strip*>> data_;
+public:
+    struct StripHolder {
+        int startFrame;
+        Strip* strip;
+    };
+    struct Compare {
+        bool operator()(const StripHolder& a, const StripHolder& b) const;
+    };
+    using StripSet = std::set<StripHolder, Compare>;
+private:
+    std::map<int, StripSet> data_;
 
 public:
+
     explicit DocumentStripsOnChannel(QObject *parent = nullptr);
 
-    const std::set<Strip*>* stripsForChannel(int channel) const;
+    const StripSet* stripsForChannel(int channel) const;
 
 signals:
 

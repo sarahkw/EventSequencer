@@ -96,8 +96,8 @@ void PlayerControl::updateCurrentStrips()
         if (selectedChannel_ != nullptr) {
             auto sset = selectedChannel_->stripSet();
             if (sset != nullptr) {
-                for (Strip* s : *sset) {
-                    sl.push_back(QString("%1").arg(s->startFrame()));
+                for (auto& stripHolder : *sset) {
+                    sl.push_back(QString("%1").arg(stripHolder.strip->startFrame()));
                 }
             }
         }
@@ -159,6 +159,8 @@ void PlayerControl::setSelectedChannel(channel::ChannelBase *selectedChannel)
                              this, &PlayerControl::clearSelectedChannel);
 
             QObject::connect(selectedChannel, &channel::ChannelBase::stripSetChanged,
+                             this, &PlayerControl::updateCurrentStripsIfSelectionModeIsChannel);
+            QObject::connect(selectedChannel, &channel::ChannelBase::stripLocationChanged,
                              this, &PlayerControl::updateCurrentStripsIfSelectionModeIsChannel);
         }
 
