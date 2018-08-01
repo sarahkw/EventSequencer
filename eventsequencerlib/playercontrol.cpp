@@ -84,11 +84,12 @@ void PlayerControl::updateAudioState()
 
 void PlayerControl::updateCurrentStrips()
 {
-    qInfo() << "BEGIN updateCurrentStrips";
+    QStringList sl;
+
     switch (selectionMode()) {
     case SelectionMode::Strip:
         if (selectedStrip_ != nullptr) {
-            qInfo() << selectedStrip_;
+            sl.push_back(QString("%1").arg(selectedStrip_->startFrame()));
         }
         break;
     case SelectionMode::Channel:
@@ -96,13 +97,15 @@ void PlayerControl::updateCurrentStrips()
             auto sset = selectedChannel_->stripSet();
             if (sset != nullptr) {
                 for (Strip* s : *sset) {
-                    qInfo() << s;
+                    sl.push_back(QString("%1").arg(s->startFrame()));
                 }
             }
         }
         break;
     }
-    qInfo() << "END updateCurrentStrips";
+
+    currentStripsReport_ = sl.join("\n");
+    emit currentStripsReportChanged();
 }
 
 void PlayerControl::updateCurrentStripsIfSelectionModeIsStrip()
@@ -117,6 +120,11 @@ void PlayerControl::updateCurrentStripsIfSelectionModeIsChannel()
     if (selectionMode() == SelectionMode::Channel) {
         updateCurrentStrips();
     }
+}
+
+QString PlayerControl::currentStripsReport() const
+{
+    return currentStripsReport_;
 }
 
 PlayerControl::SelectionMode PlayerControl::selectionMode() const

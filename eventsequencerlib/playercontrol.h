@@ -37,6 +37,9 @@ private:
     void updateCurrentStripsIfSelectionModeIsStrip();
     void updateCurrentStripsIfSelectionModeIsChannel();
 
+    QString currentStripsReport_;
+    Q_PROPERTY(QString currentStripsReport READ currentStripsReport NOTIFY currentStripsReportChanged)
+
 public:
     explicit PlayerControl(QObject* parent = nullptr);
     ~PlayerControl() override;
@@ -58,6 +61,8 @@ public:
     void setSelectedChannel(channel::ChannelBase *selectedChannel);
     void clearSelectedChannel();
 
+    QString currentStripsReport() const;
+
 signals:
 
     void audioOutputReadyStatusChanged();
@@ -65,6 +70,8 @@ signals:
     void selectionModeChanged();
     void selectedStripChanged();
     void selectedChannelChanged();
+
+    void currentStripsReportChanged();
 };
 
 #endif // PLAYERCONTROL_H

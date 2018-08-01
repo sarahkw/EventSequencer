@@ -42,9 +42,7 @@ Window {
     }
 
     ColumnLayout {
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
+        anchors.fill: parent
 
         Frame {
             Layout.fillWidth: true
@@ -103,5 +101,14 @@ Window {
 
             }
         }
+
+        ScrollView {
+            Layout.fillHeight: true
+            TextEdit {
+                text: playerControl.currentStripsReport
+            }
+        }
+
+
     }
 }
