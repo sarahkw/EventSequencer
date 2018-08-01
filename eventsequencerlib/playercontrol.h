@@ -41,9 +41,6 @@ private:
     QString currentStripsReport_;
     Q_PROPERTY(QString currentStripsReport READ currentStripsReport NOTIFY currentStripsReportChanged)
 
-    QString fileResourceDirectory_;
-    Q_PROPERTY(QString fileResourceDirectory READ fileResourceDirectory WRITE setFileResourceDirectory NOTIFY fileResourceDirectoryChanged)
-
     std::vector<const Strip*> stripsToPlay_;
     QFile* playingFile_ = nullptr;
 
@@ -70,9 +67,6 @@ public:
 
     QString currentStripsReport() const;
 
-    QString fileResourceDirectory() const;
-    void setFileResourceDirectory(const QString &fileResourceDirectory);
-
 signals:
 
     void audioOutputReadyStatusChanged();
@@ -82,8 +76,6 @@ signals:
     void selectedChannelChanged();
 
     void currentStripsReportChanged();
-
-    void fileResourceDirectoryChanged();
 };
 
 #endif // PLAYERCONTROL_H

@@ -11,7 +11,7 @@
 
 #include <memory>
 
-void RecorderControl::record(QString fileName)
+void RecorderControl::record(QUrl url)
 {
     if (audioFormatHolder_ == nullptr || audioInput_ == nullptr) {
         qWarning() << "Not ready";
@@ -22,6 +22,17 @@ void RecorderControl::record(QString fileName)
         return;
     }
 
+    QString fileName;
+    if (url.scheme() == "evseq" && url.host() == "managed") {
+        if (fileResourceDirectory().isEmpty()) {
+            setError("Missing file resource directory");
+            return;
+        }
+        fileName = fileResourceDirectory() + url.path();
+    } else {
+        fileName = url.toLocalFile();
+    }
+
     std::unique_ptr<QFile> of(new QFile(fileName));
 
     if (!of->open(allowOverwrite() ? QFile::WriteOnly : QFile::NewOnly)) {
@@ -29,7 +40,7 @@ void RecorderControl::record(QString fileName)
         return;
     }
 
-    writingPath_ = fileName;
+    writingUrl_ = url;
 
     AuFileHeader afh;
     if (!afh.loadFormat(audioFormatHolder_->toQAudioFormat())) {
@@ -64,9 +75,9 @@ void RecorderControl::stop()
         outputFile_ = nullptr;
     }
 
-    if (!writingPath_.isEmpty()) {
-        emit fileDone(writingPath_, QFileInfo(writingPath_).fileName());
-        writingPath_.clear();
+    if (!writingUrl_.isEmpty()) {
+        emit fileDone(writingUrl_);
+        writingUrl_.clear();
     }
 }
 

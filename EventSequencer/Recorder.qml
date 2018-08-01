@@ -34,6 +34,7 @@ Window {
         id: recorderControl
         audioFormatHolder: recorderWin.audioFormatHolder
         sessionAudio: recorderWin.sessionAudio
+        fileResourceDirectory: recorderWin.fileResourceDirectory
     }
 
     ColumnLayout {
@@ -108,14 +109,12 @@ Window {
             Connections {
                 target: recorderControl
                 onFileDone: {
-                    fileActionFrame.filePath = filePath
-                    fileActionFrame.fileName = fileName
+                    fileActionFrame.writtenUrl = writtenUrl
                 }
             }
 
-            property string filePath: ""
-            property string fileName: ""
-            visible: filePath !== ""
+            property string writtenUrl: ""
+            visible: writtenUrl !== ""
 
             Column {
                 anchors.left: parent.left
@@ -123,7 +122,7 @@ Window {
                 Text {
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    text: fileActionFrame.filePath
+                    text: fileActionFrame.writtenUrl
                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 }
                 Row {
@@ -135,9 +134,8 @@ Window {
                             return activeCppStrip.qmlStrip.channelControl.willAcceptResource != null
                         }
                         onClicked: {
-                            activeCppStrip.resource.type = ES.Resource.Type.ManagedId
-                            activeCppStrip.resource.identifier = fileActionFrame.fileName
-                            fileActionFrame.filePath = "" // Clear
+                            activeCppStrip.resourceUrl = fileActionFrame.writtenUrl
+                            fileActionFrame.writtenUrl = "" // Clear
                         }
                     }
                     Button {
@@ -146,8 +144,8 @@ Window {
                             text: "Are you sure you want to delete?"
                             standardButtons: StandardButton.Yes | StandardButton.No
                             onYes: {
-                                if (managedResources.deleteFile(fileActionFrame.filePath)) {
-                                    fileActionFrame.filePath = ""
+                                if (managedResources.deleteUrl(fileActionFrame.writtenUrl)) {
+                                    fileActionFrame.writtenUrl = ""
                                 } else {
                                     console.warn("Deletion failed")
                                 }

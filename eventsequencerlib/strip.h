@@ -1,9 +1,8 @@
 #ifndef STRIP_H
 #define STRIP_H
 
-#include "resource.h"
-
 #include <QObject>
+#include <QUrl>
 
 namespace pb {
 class Strip;
@@ -33,7 +32,7 @@ class Strip : public QObject
     int startFrame_ = 0;
     int length_ = 0;
 
-    Resource resource_;
+    QUrl resourceUrl_;
 
     stripext::BadJsStripExt* badJs_ = nullptr;
     stripext::AudioStripExt* audio_ = nullptr;
@@ -44,7 +43,7 @@ class Strip : public QObject
     Q_PROPERTY(int channel READ channel WRITE setChannel NOTIFY channelChanged)
     Q_PROPERTY(int startFrame READ startFrame WRITE setStartFrame NOTIFY startFrameChanged)
     Q_PROPERTY(int length READ length WRITE setLength NOTIFY lengthChanged)
-    Q_PROPERTY(Resource* resource READ resource CONSTANT)
+    Q_PROPERTY(QUrl resourceUrl READ resourceUrl WRITE setResourceUrl NOTIFY resourceUrlChanged)
     Q_PROPERTY(stripext::BadJsStripExt* badJs READ badJs WRITE setBadJs NOTIFY badJsChanged)
     Q_PROPERTY(stripext::AudioStripExt* audio READ audio WRITE setAudio NOTIFY audioChanged)
     Q_PROPERTY(stripext::TextStripExt* text READ text WRITE setText NOTIFY textChanged)
@@ -67,8 +66,8 @@ public:
     int length() const;
     void setLength(int length);
 
-    Resource* resource();
-    const Resource* resource() const;
+    QUrl resourceUrl() const;
+    void setResourceUrl(QUrl resourceUrl);
 
     stripext::BadJsStripExt *badJs() const;
     void setBadJs(stripext::BadJsStripExt *badJs);
@@ -95,6 +94,7 @@ signals:
     void channelChanged();
     void startFrameChanged();
     void lengthChanged();
+    void resourceUrlChanged();
     void badJsChanged();
     void audioChanged();
     void textChanged();

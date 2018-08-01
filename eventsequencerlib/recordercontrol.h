@@ -3,6 +3,8 @@
 
 #include "audiocontrol.h"
 
+#include <QUrl>
+
 class QAudioInput;
 class QFile;
 
@@ -21,7 +23,7 @@ class RecorderControl : public AudioControl
     bool allowOverwrite_ = false;
     Q_PROPERTY(bool allowOverwrite READ allowOverwrite WRITE setAllowOverwrite NOTIFY allowOverwriteChanged)
 
-    QString writingPath_;
+    QUrl writingUrl_;
 
 public:
     explicit RecorderControl(QObject *parent = nullptr);
@@ -30,7 +32,7 @@ public:
     bool audioInputReady() const;
     QString audioInputReadyStatus() const;
 
-    Q_INVOKABLE void record(QString fileName);
+    Q_INVOKABLE void record(QUrl url);
     Q_INVOKABLE void stop();
 
 private:
@@ -46,7 +48,7 @@ signals:
 
     void allowOverwriteChanged();
 
-    void fileDone(QString filePath, QString fileName);
+    void fileDone(QUrl writtenUrl);
 
 public slots:
 };

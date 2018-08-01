@@ -64,15 +64,17 @@ void Strip::setLength(int length)
     }
 }
 
-
-Resource* Strip::resource()
+QUrl Strip::resourceUrl() const
 {
-    return &resource_;
+    return resourceUrl_;
 }
 
-const Resource *Strip::resource() const
+void Strip::setResourceUrl(QUrl resourceUrl)
 {
-    return &resource_;
+    if (resourceUrl_ != resourceUrl) {
+        resourceUrl_ = resourceUrl;
+        emit resourceUrlChanged();
+    }
 }
 
 stripext::BadJsStripExt *Strip::badJs() const
@@ -196,7 +198,7 @@ void Strip::toPb(pb::Strip &pb) const
     pb.set_channel(channel_);
     pb.set_startframe(startFrame_);
     pb.set_length(length_);
-    resource_.toPb(*pb.mutable_resource());
+    pb.set_resourceurl(resourceUrl_.toString().toStdString());
     if (badJs() != nullptr) {
         badJs()->toPb(*pb.mutable_badjs());
     }
@@ -221,7 +223,7 @@ void Strip::fromPb(const pb::Strip &pb)
     setStartFrame(pb.startframe());
     setLength(pb.length());
     markAsPlaced();
-    resource_.fromPb(pb.resource());
+    setResourceUrl(QString::fromStdString(pb.resourceurl()));
 
     if (pb.has_badjs()) {
         auto tmp = new stripext::BadJsStripExt(this);

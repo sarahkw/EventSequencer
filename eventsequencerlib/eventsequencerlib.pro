@@ -48,7 +48,6 @@ SOURCES += \
     collatenonoverlappingsegments.cpp \
     saferfilereplacement.cpp \
     managedresources.cpp \
-    resource.cpp \
     stripext/audiostripext.cpp \
     stripext/playliststripext.cpp \
     channel/audiochannel.cpp \
@@ -89,7 +88,6 @@ HEADERS += \
     collatenonoverlappingsegments.h \
     saferfilereplacement.h \
     managedresources.h \
-    resource.h \
     stripext/audiostripext.h \
     stripext/playliststripext.h \
     channel/audiochannel.h \

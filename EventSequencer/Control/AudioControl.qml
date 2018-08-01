@@ -17,59 +17,21 @@ Item {
 
             Label { text: "Resource" }
             RowLayout {
-                ComboBox {
-                    id: cmbResourceType
+                Parent.ESTextField {
                     Layout.fillWidth: true
-                    model: ["", "Filesystem", "Managed"]
-                    currentIndex: {
-                        switch (cppStrip.resource.type) {
-                        case ES.Resource.Type.None: return 0
-                        case ES.Resource.Type.FilePath: return 1
-                        case ES.Resource.Type.ManagedId: return 2
-                        }
-                    }
-                    readonly property bool shouldShowIdentifier: currentIndex !== 0
-                    readonly property bool shouldAllowBrowse: currentIndex === 1
-                    onCurrentIndexChanged: {
-                        switch (currentIndex) {
-                        case 0:
-                            cppStrip.resource.type = ES.Resource.Type.None
-                            break
-                        case 1:
-                            cppStrip.resource.type = ES.Resource.Type.FilePath
-                            break
-                        case 2:
-                            cppStrip.resource.type = ES.Resource.Type.ManagedId
-                            break
-                        }
-                    }
-                    onActivated: {
-                        cppStrip.resource.identifier = ""
-                    }
+                    text: cppStrip.resourceUrl
+                    onEsEditingFinished: cppStrip.resourceUrl = text
                 }
                 Button {
                     text: "Browse"
                     onClicked: fopenDialog.open()
-                    enabled: cmbResourceType.shouldAllowBrowse
 
                     Qlp.FileDialog {
                         id: fopenDialog
-                        onAccepted: cppStrip.resource.setFilePathFromUrl(currentFile)
+                        onAccepted: cppStrip.resourceUrl = currentFile
                     }
                 }
             }
-
-            Label {
-                text: "\u2514 Identifier"
-                visible: cmbResourceType.shouldShowIdentifier
-            }
-            Parent.ESTextField {
-                Layout.fillWidth: true
-                visible: cmbResourceType.shouldShowIdentifier
-                text: cppStrip.resource.identifier
-                onEsEditingFinished: cppStrip.resource.identifier = text
-            }
-
         }
     }
 }

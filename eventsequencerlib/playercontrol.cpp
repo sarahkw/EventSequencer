@@ -26,12 +26,20 @@ void PlayerControl::play()
         setError("Nothing to play");
         return;
     }
-    if (fileResourceDirectory().isEmpty()) {
-        setError("Missing file resource directory");
-        return;
+
+    QUrl url = stripsToPlay_[0]->resourceUrl();
+    QString fileName;
+    if (url.scheme() == "evseq" && url.host() == "managed") {
+        if (fileResourceDirectory().isEmpty()) {
+            setError("Missing file resource directory");
+            return;
+        }
+        fileName = fileResourceDirectory() + url.path();
+    } else {
+        fileName = url.toLocalFile();
     }
 
-    std::unique_ptr<QFile> playingFile(new QFile(fileResourceDirectory() + "/" + stripsToPlay_[0]->resource()->identifier()));
+    std::unique_ptr<QFile> playingFile(new QFile(fileName));
     if (!playingFile->open(QFile::ReadOnly)) {
         setError(QString("Cannot open: %1").arg(playingFile->errorString()));
         return;
@@ -114,7 +122,7 @@ void PlayerControl::updateAudioState()
 namespace {
 QString describeStrip(Strip* s)
 {
-    return QString("%1 - %2").arg(s->startFrame()).arg(s->resource()->identifier());
+    return QString("%1 - %2").arg(s->startFrame()).arg(s->resourceUrl().toString());
 }
 }
 
@@ -159,19 +167,6 @@ void PlayerControl::updateCurrentStripsIfSelectionModeIsChannel()
 {
     if (selectionMode() == SelectionMode::Channel) {
         updateCurrentStrips();
-    }
-}
-
-QString PlayerControl::fileResourceDirectory() const
-{
-    return fileResourceDirectory_;
-}
-
-void PlayerControl::setFileResourceDirectory(const QString &fileResourceDirectory)
-{
-    if (fileResourceDirectory_ != fileResourceDirectory) {
-        fileResourceDirectory_ = fileResourceDirectory;
-        emit fileResourceDirectoryChanged();
     }
 }
 

@@ -2,19 +2,20 @@ syntax = "proto3";
 
 package pb;
 
-message Resource {
-  oneof reference {
-    string filePath = 1;
-    string managedId = 2;
-  };
-}
+//message Resource {
+//  oneof reference {
+//    string filePath = 1;
+//    string managedId = 2;
+//  };
+//}
 
 message Strip {
   int32 channel = 1;
   int32 startFrame = 2;
   int32 length = 3;
 
-  Resource resource = 5;
+  //Resource resource = 5;
+  string resourceUrl = 6;
 
   BadJs badJs = 10;
   Audio audio = 11;
@@ -101,8 +102,4 @@ message File {
   Document document = 1;
   string checksum = 2;
   string forkedFromChecksum = 3;
-}
-
-message ManagedResourceFile {
-  string suffix = 1;
 }

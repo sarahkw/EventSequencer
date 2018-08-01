@@ -14,7 +14,6 @@
 #include "wordwrappedtexttrack.h"
 #include "showmultiplelinesononeline.h"
 #include "recordercontrol.h"
-#include "resource.h"
 #include "session.h"
 #include "managedresources.h"
 #include "playercontrol.h"
@@ -41,7 +40,6 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<WordWrappedTextTrack>("eventsequencer", 1, 0, "WordWrappedTextTrack");
     qmlRegisterType<ShowMultipleLinesOnOneLine>("eventsequencer", 1, 0, "ShowMultipleLinesOnOneLine");
     qmlRegisterType<RecorderControl>("eventsequencer", 1, 0, "RecorderControl");
-    qmlRegisterUncreatableType<Resource>("eventsequencer", 1, 0, "Resource", "For enum");
     qmlRegisterType<Session>("eventsequencer", 1, 0, "Session");
     qmlRegisterType<ManagedResources>("eventsequencer", 1, 0, "ManagedResources");
     qmlRegisterType<PlayerControl>("eventsequencer", 1, 0, "PlayerControl");

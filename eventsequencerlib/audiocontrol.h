@@ -38,6 +38,10 @@ protected:
 
     virtual void updateAudioObject() = 0;
 
+
+    QString fileResourceDirectory_;
+    Q_PROPERTY(QString fileResourceDirectory READ fileResourceDirectory WRITE setFileResourceDirectory NOTIFY fileResourceDirectoryChanged)
+
 public:
     explicit AudioControl(QObject *parent = nullptr);
 
@@ -61,6 +65,9 @@ public:
     void setSessionAudio(QObject *sessionAudio);
     void clearSessionAudio();
 
+    QString fileResourceDirectory() const;
+    void setFileResourceDirectory(const QString &fileResourceDirectory);
+
 signals:
 
     void audioStateChanged();
@@ -68,6 +75,8 @@ signals:
 
     void audioFormatHolderChanged();
     void sessionAudioChanged();
+
+    void fileResourceDirectoryChanged();
 
 public slots:
 };

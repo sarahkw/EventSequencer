@@ -2,6 +2,7 @@
 #define MANAGEDRESOURCES_H
 
 #include <QObject>
+#include <QUrl>
 
 class ManagedResources : public QObject
 {
@@ -9,6 +10,8 @@ class ManagedResources : public QObject
 
     QString fileResourceDirectory_;
     Q_PROPERTY(QString fileResourceDirectory READ fileResourceDirectory WRITE setFileResourceDirectory NOTIFY fileResourceDirectoryChanged)
+
+    void mkpathManagedDirectory();
 
 public:
     explicit ManagedResources(QObject *parent = nullptr);
@@ -19,7 +22,7 @@ public:
     Q_INVOKABLE QString generateResourceName();
     Q_INVOKABLE QString withSpecifiedName(QString name, QString suffix);
 
-    Q_INVOKABLE bool deleteFile(QString filePath);
+    Q_INVOKABLE bool deleteUrl(QUrl url);
 
 signals:
 

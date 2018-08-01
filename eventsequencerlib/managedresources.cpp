@@ -3,6 +3,17 @@
 #include <QDir>
 #include <QUuid>
 
+void ManagedResources::mkpathManagedDirectory()
+{
+    if (fileResourceDirectory().isEmpty()) {
+        return;
+    }
+    QDir dir(fileResourceDirectory());
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+}
+
 QString ManagedResources::fileResourceDirectory() const
 {
     return fileResourceDirectory_;
@@ -23,19 +34,23 @@ QString ManagedResources::generateResourceName()
 
 QString ManagedResources::withSpecifiedName(QString name, QString suffix)
 {
-    if (fileResourceDirectory_.isEmpty()) {
-        return "";
-    }
-    QDir dir(fileResourceDirectory_);
-    if (!dir.exists()) {
-        dir.mkpath(".");
-    }
-    return dir.absoluteFilePath(name + suffix);
+    mkpathManagedDirectory();
+    return "evseq://managed/" + name + suffix;
 }
 
-bool ManagedResources::deleteFile(QString filePath)
+bool ManagedResources::deleteUrl(QUrl url)
 {
-    return QFile::remove(filePath);
+    QString fileName;
+    if (url.scheme() == "evseq" && url.host() == "managed") {
+        if (fileResourceDirectory().isEmpty()) {
+            return false;
+        }
+        fileName = fileResourceDirectory() + url.path();
+    } else {
+        fileName = url.toLocalFile();
+    }
+
+    return QFile::remove(fileName);
 }
 
 ManagedResources::ManagedResources(QObject *parent) : QObject(parent)
