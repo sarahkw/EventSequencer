@@ -90,11 +90,7 @@ void AudioControl::setAudioFormatHolder(QObject *audioFormatHolder)
 
 void AudioControl::clearAudioFormatHolder()
 {
-    if (audioFormatHolder_ != nullptr) {
-        audioFormatHolder_->disconnect(this);
-        audioFormatHolder_ = nullptr;
-        emit audioFormatHolderChanged();
-    }
+    setAudioFormatHolder(nullptr);
 }
 
 QObject *AudioControl::sessionAudio() const
@@ -128,9 +124,5 @@ void AudioControl::setSessionAudio(QObject *sessionAudio)
 
 void AudioControl::clearSessionAudio()
 {
-    if (sessionAudio_ != nullptr) {
-        sessionAudio_->disconnect(this);
-        sessionAudio_ = nullptr;
-        emit sessionAudioChanged();
-    }
+    setSessionAudio(nullptr);
 }

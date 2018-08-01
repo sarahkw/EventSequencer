@@ -197,7 +197,8 @@ ApplicationWindow {
                                                    } else {
                                                        return null;
                                                    }
-                                               })
+                                               }),
+                                               activeCppChannel: Qt.binding(function () { return channelPanel.activeCppChannel })
                                            })
                 }
             }
@@ -493,6 +494,9 @@ ApplicationWindow {
                 channelPixels: appwin.channelPixels
                 yposition: body.y
                 doc: document
+
+                property ES.WaitFor waitForchannel: document.waitForChannel(activeChannel)
+                property var activeCppChannel: waitForchannel.result
             }
 
             Dragger {
@@ -1088,8 +1092,7 @@ ApplicationWindow {
                         anchors.left: parent.left
                         anchors.right: parent.right
 
-                        property ES.WaitFor waitForchannel: document.waitForChannel(channelPanel.activeChannel)
-                        property var channel: waitForchannel.result
+                        property var channel: channelPanel.activeCppChannel
                         property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
                         property var chanPropComp: (
                                                        (control !== null && control.channelPropertiesComponent !== undefined) ?

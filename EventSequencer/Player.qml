@@ -17,6 +17,7 @@ Window {
     property QtObject sessionAudio
     property string fileResourceDirectory
     property ES.Strip activeCppStrip
+    property var activeCppChannel
 
     property bool destroyOnHide: false
     onVisibleChanged: {
@@ -34,6 +35,9 @@ Window {
         id: playerControl
         audioFormatHolder: playerWin.audioFormatHolder
         sessionAudio: playerWin.sessionAudio
+
+        selectedStrip: activeCppStrip
+        selectedChannel: activeCppChannel
     }
 
     ColumnLayout {

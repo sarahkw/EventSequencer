@@ -82,6 +82,73 @@ void PlayerControl::updateAudioState()
     setError(audioOutput_->error());
 }
 
+PlayerControl::SelectionMode PlayerControl::selectionMode() const
+{
+    return selectionMode_;
+}
+
+void PlayerControl::setSelectionMode(const SelectionMode &selectionMode)
+{
+    if (selectionMode_ != selectionMode) {
+        selectionMode_ = selectionMode;
+        emit selectionModeChanged();
+    }
+}
+
+channel::ChannelBase *PlayerControl::selectedChannel() const
+{
+    return selectedChannel_;
+}
+
+void PlayerControl::setSelectedChannel(channel::ChannelBase *selectedChannel)
+{
+    if (selectedChannel_ != selectedChannel) {
+
+        if (selectedChannel_ != nullptr) {
+            selectedChannel_->disconnect(this);
+        }
+
+        if (selectedChannel != nullptr) {
+            QObject::connect(selectedChannel, &channel::ChannelBase::destroyed,
+                             this, &PlayerControl::clearSelectedChannel);
+        }
+
+        selectedChannel_ = selectedChannel;
+        emit selectedChannelChanged();
+    }
+}
+
+void PlayerControl::clearSelectedChannel()
+{
+    setSelectedChannel(nullptr);
+}
+
+Strip *PlayerControl::selectedStrip() const
+{
+    return selectedStrip_;
+}
+
+void PlayerControl::setSelectedStrip(Strip *selectedStrip)
+{
+    if (selectedStrip_ != selectedStrip) {
+        if (selectedStrip_ != nullptr) {
+            selectedStrip_->disconnect(this);
+        }
+        if (selectedStrip != nullptr) {
+            QObject::connect(selectedStrip, &Strip::destroyed,
+                             this, &PlayerControl::clearSelectedStrip);
+        }
+
+        selectedStrip_ = selectedStrip;
+        emit selectedStripChanged();
+    }
+}
+
+void PlayerControl::clearSelectedStrip()
+{
+    setSelectedStrip(nullptr);
+}
+
 PlayerControl::PlayerControl(QObject* parent) : AudioControl(parent)
 {
     updateAudioObject(); // Initial update of ready status

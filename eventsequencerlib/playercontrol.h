@@ -2,6 +2,8 @@
 #define PLAYERCONTROL_H
 
 #include "audiocontrol.h"
+#include "strip.h"
+#include "channel/channelbase.h"
 
 class QAudioOutput;
 
@@ -18,6 +20,21 @@ class PlayerControl : public AudioControl
     void updateAudioState();
 
 public:
+    enum class SelectionMode {
+        Strip,
+        Channel
+    };
+    Q_ENUM(SelectionMode)
+private:
+    SelectionMode selectionMode_ = SelectionMode::Strip;
+    Strip* selectedStrip_ = nullptr;
+    channel::ChannelBase* selectedChannel_ = nullptr;
+    Q_PROPERTY(SelectionMode selectionMode READ selectionMode WRITE setSelectionMode NOTIFY selectionModeChanged)
+    Q_PROPERTY(Strip* selectedStrip READ selectedStrip WRITE setSelectedStrip NOTIFY selectedStripChanged)
+    Q_PROPERTY(channel::ChannelBase* selectedChannel READ selectedChannel WRITE setSelectedChannel NOTIFY selectedChannelChanged)
+
+
+public:
     explicit PlayerControl(QObject* parent = nullptr);
     ~PlayerControl() override;
 
@@ -27,10 +44,24 @@ public:
     Q_INVOKABLE void play();
     Q_INVOKABLE void stop();
 
+    SelectionMode selectionMode() const;
+    void setSelectionMode(const SelectionMode &selectionMode);
+
+    Strip *selectedStrip() const;
+    void setSelectedStrip(Strip *selectedStrip);
+    void clearSelectedStrip();
+
+    channel::ChannelBase *selectedChannel() const;
+    void setSelectedChannel(channel::ChannelBase *selectedChannel);
+    void clearSelectedChannel();
+
 signals:
 
     void audioOutputReadyStatusChanged();
 
+    void selectionModeChanged();
+    void selectedStripChanged();
+    void selectedChannelChanged();
 };
 
 #endif // PLAYERCONTROL_H
