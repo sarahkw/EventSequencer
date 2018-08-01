@@ -82,6 +82,13 @@ void PlayerControl::updateAudioState()
     setError(audioOutput_->error());
 }
 
+namespace {
+QString describeStrip(Strip* s)
+{
+    return QString("%1 - %2").arg(s->startFrame()).arg(s->resource()->identifier());
+}
+}
+
 void PlayerControl::updateCurrentStrips()
 {
     QStringList sl;
@@ -89,7 +96,7 @@ void PlayerControl::updateCurrentStrips()
     switch (selectionMode()) {
     case SelectionMode::Strip:
         if (selectedStrip_ != nullptr) {
-            sl.push_back(QString("%1").arg(selectedStrip_->startFrame()));
+            sl.push_back(describeStrip(selectedStrip_));
         }
         break;
     case SelectionMode::Channel:
@@ -97,7 +104,7 @@ void PlayerControl::updateCurrentStrips()
             auto sset = selectedChannel_->stripSet();
             if (sset != nullptr) {
                 for (auto& stripHolder : *sset) {
-                    sl.push_back(QString("%1").arg(stripHolder.strip->startFrame()));
+                    sl.push_back(describeStrip(stripHolder.strip));
                 }
             }
         }
