@@ -2,7 +2,6 @@
 #define CONCATIODEVICE_H
 
 #include <QIODevice>
-#include <QFile>
 #include <list>
 
 class ConcatIODevice : public QIODevice
