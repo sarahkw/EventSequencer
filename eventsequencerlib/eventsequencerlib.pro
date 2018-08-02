@@ -59,7 +59,8 @@ SOURCES += \
     audioformatholder.cpp \
     documentstripsonchannel.cpp \
     audiocontrol.cpp \
-    playercontrol.cpp
+    playercontrol.cpp \
+    concatiodevice.cpp
 
 
 HEADERS += \
@@ -99,7 +100,8 @@ HEADERS += \
     audioformatholder.h \
     documentstripsonchannel.h \
     audiocontrol.h \
-    playercontrol.h
+    playercontrol.h \
+    concatiodevice.h
 
 unix {
     target.path = /usr/lib

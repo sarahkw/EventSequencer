@@ -10,7 +10,8 @@ HEADERS += \
         tst_testcasename.h \
     tst_strip.h \
     tst_framesandseconds.h \
-    tst_collatenonoverlappingsegments.h
+    tst_collatenonoverlappingsegments.h \
+    tst_concatiodevice.h
 
 SOURCES += \
         main.cpp
