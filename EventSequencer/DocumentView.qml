@@ -3,6 +3,7 @@ import QtQuick.Window 2.11
 import QtQuick.Controls 2.2
 
 import eventsequencer 1.0
+import QtQuick.Layouts 1.3
 
 Window {
     visible: true
@@ -27,43 +28,80 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
         constrainByWidthValue: 10
     }
 
-    WordWrappedTextTrack {
-        id: wwtt
-        width: destRect.width - cmfu.constrainByWidthValue /*For wrapped space or NewLine*/
-        text: crazyText
-        font: cmfu.builtFont
-    }
+    ColumnLayout {
+        id: columnLayout
+        anchors.fill: parent
 
-    Rectangle {
-        id: destRect
-        border.width: 1
+        Flow {
+            id: flow1
+            width: 400
+            height: 400
+            Layout.fillWidth: true
 
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
+            Row {
+                id: row
 
-        anchors.leftMargin: 5
-        anchors.rightMargin: 5
-        anchors.topMargin: 5
-        anchors.bottomMargin: 5
-
-        ListView {
-            anchors.fill: parent
-            model: wwtt
-            delegate: Item {
-                height: cmfu.builtFontHeight * 2
-                Text {
-                    text: modelData
-                    font: cmfu.builtFont
+                Label {
+                    id: label
+                    text: qsTr("Text Channel")
                 }
-                Rectangle {
-                    y: cmfu.builtFontHeight
-                    height: cmfu.builtFontHeight
-                    width: modelData.length * cmfu.constrainByWidthValue
-                    color: "pink"
+
+                TextField {
+                    id: textField
+                    text: qsTr("Text Field")
+                }
+            }
+
+            Row {
+                id: row1
+
+                Label {
+                    id: label1
+                    text: qsTr("Render Channel")
+                }
+
+                TextField {
+                    id: textField1
+                    text: qsTr("Text Field")
+                }
+            }
+        }
+
+        ScrollView {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+            clip: true
+            ListView {
+                id: lview
+                model: wwtt
+                delegate: Item {
+                    height: cmfu.builtFontHeight * 2
+                    Text {
+                        text: modelData
+                        font: cmfu.builtFont
+                    }
+                    Rectangle {
+                        y: cmfu.builtFontHeight
+                        height: cmfu.builtFontHeight
+                        width: modelData.length * cmfu.constrainByWidthValue
+                        color: "pink"
+                    }
                 }
             }
         }
     }
+
+    WordWrappedTextTrack {
+        id: wwtt
+        width: lview.width - cmfu.constrainByWidthValue /*For wrapped space or NewLine*/
+        text: crazyText
+        font: cmfu.builtFont
+    }
+
 }
+
+/*##^## Designer {
+    D{i:8;anchors_height:100;anchors_width:100;anchors_x:5;anchors_y:5}
+}
+ ##^##*/
