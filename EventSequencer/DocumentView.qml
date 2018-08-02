@@ -5,7 +5,7 @@ import QtQuick.Controls 2.2
 import eventsequencer 1.0 as ES
 import QtQuick.Layouts 1.3
 
-Window {
+ApplicationWindow {
     visible: true
     width: 640
     height: 480
@@ -30,48 +30,38 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
         constrainByWidthValue: 10
     }
 
-    ColumnLayout {
-        id: columnLayout
-        anchors.fill: parent
-
-        Flow {
-            id: flow1
-            width: 400
-            height: 400
-            Layout.fillWidth: true
-
-            Row {
-                id: row
-
-                Label {
-                    id: label
-                    text: qsTr("Text Channel")
-                }
-
-                TextField {
-                    id: textField
-                    text: qsTr("Text Field")
-                }
+    header: RowLayout {
+        id: flow1
+        Row {
+            id: row
+            Label {
+                id: label
+                text: qsTr("Text Channel")
             }
-
-            Row {
-                id: row1
-
-                Label {
-                    id: label1
-                    text: qsTr("Render Channel")
-                }
-
-                TextField {
-                    id: textField1
-                    text: qsTr("Text Field")
-                }
+            TextField {
+                id: textField
+                text: qsTr("Text Field")
             }
         }
+        Row {
+            id: row1
+            Label {
+                id: label1
+                text: qsTr("Render Channel")
+            }
+            TextField {
+                id: textField1
+                text: qsTr("Text Field")
+            }
+        }
+    }
 
+
+    Rectangle {
+        anchors.fill: parent
+        color: "white"
         ScrollView {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
+            anchors.fill: parent
             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
             clip: true
             ListView {
