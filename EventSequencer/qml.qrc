@@ -23,7 +23,7 @@
         <file>SelectionMode.qml</file>
         <file>DebugConstrainedMetricsFontUtil.qml</file>
         <file>Control/LabelControl.qml</file>
-        <file>DebugWordWrappedTextTrack.qml</file>
+        <file>DocumentView.qml</file>
         <file>DebugChannelsModel.qml</file>
         <file>Control/CollateControl.qml</file>
         <file>Recorder.qml</file>

@@ -168,6 +168,17 @@ ApplicationWindow {
                                            })
                 }
             }
+            CustomMenuItem {
+                text: "Document View"
+                onTriggered: {
+                    var component = Qt.createComponent("DocumentView.qml")
+                    var obj = component.createObject(appwin, {
+                        visible: true,
+                        destroyOnHide: true
+                    })
+                }
+            }
+
             Action {
                 text: "Recorder"
                 onTriggered: {
@@ -217,13 +228,6 @@ ApplicationWindow {
                 text: "ConstrainedMetricsFontUtil"
                 onTriggered: {
                     var component = Qt.createComponent("DebugConstrainedMetricsFontUtil.qml")
-                    var obj = component.createObject(appwin, {visible: true})
-                }
-            }
-            CustomMenuItem {
-                text: "WordWrappedTextTrack"
-                onTriggered: {
-                    var component = Qt.createComponent("DebugWordWrappedTextTrack.qml")
                     var obj = component.createObject(appwin, {visible: true})
                 }
             }
