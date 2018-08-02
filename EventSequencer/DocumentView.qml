@@ -68,8 +68,23 @@ ApplicationWindow {
                 id: txtRenderChannel
                 property int chan: 0
                 property ES.WaitFor waitFor: document.waitForChannel(chan)
+                property var control: waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
+                property bool canRender: control != null ? control.docViewCanRender === true : false
+
                 text: chan
                 onEsEditingFinished: chan = parseInt(text, 10)
+
+                states: [
+                    State {
+                        when: !txtRenderChannel.canRender
+                        PropertyChanges {
+                            target: txtRenderChannel.background
+                            color: "red"
+                            ToolTip.visible: txtRenderChannel.hovered
+                            ToolTip.text: "ERROR: Channel does not render for Document View"
+                        }
+                    }
+                ]
             }
         }
         Item {
