@@ -30,7 +30,7 @@ void PlayerControl::play()
     }
 
     ManagedResources managedResources(fileResourceDirectory());
-    std::unique_ptr<ConcatIODevice> playingFile(new ConcatIODevice);
+    std::unique_ptr<ConcatIODevice> playingDevice(new ConcatIODevice);
 
     for (const Strip* s : stripsToPlay_) {
         QString fileName;
@@ -52,12 +52,12 @@ void PlayerControl::play()
             return;
         }
 
-        playingFile->append(muhFile.release());
+        playingDevice->append(muhFile.release());
     }
 
-    playingFile_ = playingFile.release();
-    playingFile_->open(QIODevice::ReadOnly);
-    audioOutput_->start(playingFile_);
+    playingDevice_ = playingDevice.release();
+    playingDevice_->open(QIODevice::ReadOnly);
+    audioOutput_->start(playingDevice_);
     updateAudioState();
 }
 
@@ -67,9 +67,9 @@ void PlayerControl::stop()
         return;
     }
 
-    if (playingFile_ != nullptr) {
-        delete playingFile_;
-        playingFile_ = nullptr;
+    if (playingDevice_ != nullptr) {
+        delete playingDevice_;
+        playingDevice_ = nullptr;
     }
 
     if (audioOutput_->state() != QAudio::StoppedState) {

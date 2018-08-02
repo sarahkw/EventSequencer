@@ -42,7 +42,7 @@ private:
     Q_PROPERTY(QString currentStripsReport READ currentStripsReport NOTIFY currentStripsReportChanged)
 
     std::vector<const Strip*> stripsToPlay_;
-    QIODevice* playingFile_ = nullptr;
+    QIODevice* playingDevice_ = nullptr;
 
 public:
     explicit PlayerControl(QObject* parent = nullptr);
