@@ -13,7 +13,7 @@ class DocumentStripsOnChannel : public QObject
 public:
     struct StripHolder {
         int startFrame;
-        Strip* strip;
+        const Strip* strip;
     };
     struct Compare {
         bool operator()(const StripHolder& a, const StripHolder& b) const;

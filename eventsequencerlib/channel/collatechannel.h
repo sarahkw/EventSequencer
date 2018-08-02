@@ -55,6 +55,7 @@ class CollateChannel : public ChannelBase
         QColor segmentColor;
     };
     std::vector<Segment> segments_;
+    DocumentStripsOnChannel::StripSet stripSet_;
 
 public:
     explicit CollateChannel(int channelIndex, Document& d, QObject *parent = nullptr);
@@ -74,6 +75,8 @@ public:
 
     bool event(QEvent *event) override;
 
+    const DocumentStripsOnChannel::StripSet* stripSet() override;
+
 signals:
 
     void channelFromChanged();
@@ -83,8 +86,8 @@ private slots:
 
     void triggerRefresh();
 
-    void channelStripSetChanged(int channel);
-    void channelStripLocationChanged(int channel, Strip* whichStrip);
+    void channelStripSetChanged(int channel) override;
+    void channelStripLocationChanged(int channel, Strip* whichStrip) override;
 
 private:
 

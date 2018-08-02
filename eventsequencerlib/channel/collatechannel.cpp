@@ -81,6 +81,18 @@ bool CollateChannel::event(QEvent *event)
     return ChannelBase::event(event);
 }
 
+const DocumentStripsOnChannel::StripSet *CollateChannel::stripSet()
+{
+    // Need to forcefully call recalculate() each time this is read. Otherwise,
+    // we could be returning a set with a strip that was deleted.
+    if (refreshPending_) {
+        refreshPending_ = false;
+        recalculate();
+    }
+
+    return &stripSet_;
+}
+
 void CollateChannel::triggerRefresh()
 {
     if (!refreshPending_) {
@@ -138,26 +150,28 @@ QAbstractListModel *CollateChannel::model()
 
 void CollateChannel::channelAffected(int channel)
 {
-    if (refreshPending_) { // Optimization
-        return;
-    }
-
     if (channel >= channelFrom() && channel < channelTo()) {
         triggerRefresh();
+        emit stripSetChanged();
     }
 }
 
 void CollateChannel::recalculate()
 {
-    CollateNonOverlappingSegments<int> cnos(cnos.BoundaryMode::HasBounds,
-                                            d_.startFrame(),
-                                            d_.endFrame() - d_.startFrame());
+    using CnosType = CollateNonOverlappingSegments<const Strip*>;
+    CnosType cnos(CnosType::BoundaryMode::HasBounds,
+                  d_.startFrame(),
+                  d_.endFrame() - d_.startFrame());
+    
     {
         for (int channel = channelTo() - 1; channel >= channelFrom(); --channel) {
             auto stripSet = d_.stripsOnChannel().stripsForChannel(channel);
             if (stripSet != nullptr) {
                 for (auto& s : *stripSet) {
-                    cnos.mergeSegment(s.strip->startFrame(), s.strip->length());
+                    cnos.mergeSegment(s.strip->startFrame(),
+                                      s.strip->length(),
+                                      CnosType::ReplaceMode::No,
+                                      s.strip);
                 }
             }
         }
@@ -165,17 +179,22 @@ void CollateChannel::recalculate()
 
     model_.beginResetModel();
     segments_.clear();
+    stripSet_.clear();
 
-    for (auto& segment : cnos.segments(cnos.WantEmpties::DoWantEmpties)) {
+    for (auto& segment : cnos.segments(CnosType::WantEmpties::DoWantEmpties)) {
+        if (segment.type == CnosType::Segment::Type::Chosen) {
+            stripSet_.insert({segment.data->startFrame(), segment.data});
+        }
+        
         QColor col;
         switch (segment.type) {
-        case segment.Type::Empty:
+        case CnosType::Segment::Type::Empty:
             col = Qt::black;
             break;
-        case segment.Type::Chosen:
+        case CnosType::Segment::Type::Chosen:
             col = Qt::green;
             break;
-        case segment.Type::Conflict:
+        case CnosType::Segment::Type::Conflict:
             col = Qt::gray;
             break;
         }
@@ -184,7 +203,6 @@ void CollateChannel::recalculate()
     }
 
     model_.endResetModel();
-
 }
 
 } // namespace channel

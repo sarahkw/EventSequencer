@@ -124,7 +124,7 @@ void PlayerControl::updateAudioState()
 }
 
 namespace {
-QString describeStrip(Strip* s)
+QString describeStrip(const Strip* s)
 {
     return QString("%1 - %2").arg(s->startFrame()).arg(s->resourceUrl().toString());
 }
@@ -211,8 +211,6 @@ void PlayerControl::setSelectedChannel(channel::ChannelBase *selectedChannel)
                              this, &PlayerControl::clearSelectedChannel);
 
             QObject::connect(selectedChannel, &channel::ChannelBase::stripSetChanged,
-                             this, &PlayerControl::updateCurrentStripsIfSelectionModeIsChannel);
-            QObject::connect(selectedChannel, &channel::ChannelBase::stripLocationChanged,
                              this, &PlayerControl::updateCurrentStripsIfSelectionModeIsChannel);
         }
 

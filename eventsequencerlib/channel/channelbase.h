@@ -37,7 +37,6 @@ public:
 signals:
 
     void stripSetChanged();
-    void stripLocationChanged(Strip* whichStrip);
 
 private slots:
 

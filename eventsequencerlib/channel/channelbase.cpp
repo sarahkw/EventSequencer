@@ -28,7 +28,10 @@ void ChannelBase::channelStripSetChanged(int channel)
 void ChannelBase::channelStripLocationChanged(int channel, Strip *whichStrip)
 {
     if (channel == channelIndex_) {
-        emit stripLocationChanged(whichStrip);
+        // Used to have a stripLocationChanged signal, but for
+        // subclasses that remake the strips list from scratch, it's
+        // hard to do. The benefits aren't worth the cost.
+        emit stripSetChanged();
     }
 }
 
