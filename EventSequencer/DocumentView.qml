@@ -32,7 +32,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
     header: RowLayout {
         id: flow1
-        Row {
+        RowLayout {
             id: row
             Label {
                 id: label
@@ -43,7 +43,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
                 text: qsTr("Text Field")
             }
         }
-        Row {
+        RowLayout {
             id: row1
             Label {
                 id: label1
@@ -53,6 +53,9 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
                 id: textField1
                 text: qsTr("Text Field")
             }
+        }
+        Item {
+            Layout.fillWidth: true
         }
     }
 
