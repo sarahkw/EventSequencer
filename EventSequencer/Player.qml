@@ -18,6 +18,7 @@ Window {
     property string fileResourceDirectory
     property ES.Strip activeCppStrip
     property var activeCppChannel
+    property int cursorFrame
 
     property bool destroyOnHide: false
     onVisibleChanged: {
@@ -35,6 +36,7 @@ Window {
         selectionMode: rdoActiveStrip.checked ? ES.PlayerControl.SelectionMode.Strip : ES.PlayerControl.SelectionMode.Channel
         selectedStrip: activeCppStrip
         selectedChannel: activeCppChannel
+        onlyStripsAfter: rdoAfterCursor.checked ? cursorFrame : null
     }
 
     ColumnLayout {
@@ -79,6 +81,10 @@ Window {
                     }
                     RadioButton {
                         text: qsTr("Channel")
+                    }
+                    RadioButton {
+                        id: rdoAfterCursor
+                        text: qsTr("Channel After Cursor")
                     }
                 }
 

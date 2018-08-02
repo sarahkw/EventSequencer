@@ -148,6 +148,11 @@ void PlayerControl::updateCurrentStrips()
             auto sset = selectedChannel_->stripSet();
             if (sset != nullptr) {
                 for (auto& stripHolder : *sset) {
+                    if (!onlyStripsAfter_.isNull()) {
+                        if (stripHolder.startFrame < onlyStripsAfter_.toInt()) {
+                            continue;
+                        }
+                    }
                     stripsToPlay_.push_back(stripHolder.strip);
                     sl.push_back(describeStrip(stripHolder.strip));
                 }
@@ -254,8 +259,23 @@ void PlayerControl::clearSelectedStrip()
     setSelectedStrip(nullptr);
 }
 
+QVariant PlayerControl::onlyStripsAfter() const
+{
+    return onlyStripsAfter_;
+}
+
+void PlayerControl::setOnlyStripsAfter(const QVariant &onlyStripsAfter)
+{
+    if (onlyStripsAfter_ != onlyStripsAfter) {
+        onlyStripsAfter_ = onlyStripsAfter;
+        emit onlyStripsAfterChanged();
+    }
+}
+
 PlayerControl::PlayerControl(QObject* parent) : AudioControl(parent)
 {
+    QObject::connect(this, &PlayerControl::onlyStripsAfterChanged,
+                     this, &PlayerControl::updateCurrentStripsIfSelectionModeIsChannel);
     updateAudioObject(); // Initial update of ready status
 }
 
