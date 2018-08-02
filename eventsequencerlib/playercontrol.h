@@ -6,7 +6,7 @@
 #include "channel/channelbase.h"
 
 class QAudioOutput;
-class QFile;
+class QIODevice;
 
 class PlayerControl : public AudioControl
 {
@@ -42,7 +42,7 @@ private:
     Q_PROPERTY(QString currentStripsReport READ currentStripsReport NOTIFY currentStripsReportChanged)
 
     std::vector<const Strip*> stripsToPlay_;
-    QFile* playingFile_ = nullptr;
+    QIODevice* playingFile_ = nullptr;
 
 public:
     explicit PlayerControl(QObject* parent = nullptr);

@@ -27,6 +27,10 @@ qint64 ConcatIODevice::writeData(const char *data, qint64 len)
     return -1;
 }
 
+ConcatIODevice::ConcatIODevice()
+{
+}
+
 ConcatIODevice::ConcatIODevice(std::list<QIODevice *> *inputs)
 {
     inputs_.swap(*inputs);
@@ -37,4 +41,9 @@ ConcatIODevice::~ConcatIODevice()
     for (QIODevice* iod : inputs_) {
         delete iod;
     }
+}
+
+void ConcatIODevice::append(QIODevice *iod)
+{
+    inputs_.push_back(iod);
 }

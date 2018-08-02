@@ -4,6 +4,7 @@
 #include "sessionaudio.h"
 #include "aufileheader.h"
 #include "managedresources.h"
+#include "concatiodevice.h"
 
 #include <QAudioOutput>
 
@@ -28,27 +29,34 @@ void PlayerControl::play()
         return;
     }
 
-    QUrl url = stripsToPlay_[0]->resourceUrl();
-    QString fileName;
-    if (!ManagedResources(fileResourceDirectory()).convertToFileName(url, &fileName)) {
-        setError("Missing file resource directory");
-        return;
-    }
+    ManagedResources managedResources(fileResourceDirectory());
+    std::unique_ptr<ConcatIODevice> playingFile(new ConcatIODevice);
 
-    std::unique_ptr<QFile> playingFile(new QFile(fileName));
-    if (!playingFile->open(QFile::ReadOnly)) {
-        setError(QString("Cannot open: %1").arg(playingFile->errorString()));
-        return;
-    }
+    for (const Strip* s : stripsToPlay_) {
+        QString fileName;
+        if (!managedResources.convertToFileName(s->resourceUrl(), &fileName)) {
+            setError("Missing file resource directory");
+            return;
+        }
 
-    AuFileHeader afh;
-    if (!afh.loadFileAndSeek(*playingFile)) {
-        // TODO Compare the format
-        setError("Cannot load AU file and seek");
-        return;
+        std::unique_ptr<QFile> muhFile(new QFile(fileName));
+        if (!muhFile->open(QFile::ReadOnly)) {
+            setError(QString("Cannot open: %1").arg(muhFile->errorString()));
+            return;
+        }
+
+        AuFileHeader afh;
+        if (!afh.loadFileAndSeek(*muhFile)) {
+            // TODO Compare the format
+            setError("Cannot load AU file and seek");
+            return;
+        }
+
+        playingFile->append(muhFile.release());
     }
 
     playingFile_ = playingFile.release();
+    playingFile_->open(QIODevice::ReadOnly);
     audioOutput_->start(playingFile_);
     updateAudioState();
 }

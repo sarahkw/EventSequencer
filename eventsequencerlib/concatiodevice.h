@@ -17,8 +17,11 @@ protected:
     qint64 writeData(const char *data, qint64 len) override;
 
 public:
+    ConcatIODevice();
     ConcatIODevice(std::list<QIODevice*>* inputs);
     ~ConcatIODevice() override;
+
+    void append(QIODevice* iod);
 };
 
 #endif // CONCATIODEVICE_H
