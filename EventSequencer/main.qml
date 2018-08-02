@@ -174,7 +174,8 @@ ApplicationWindow {
                     var component = Qt.createComponent("DocumentView.qml")
                     var obj = component.createObject(appwin, {
                         visible: true,
-                        destroyOnHide: true
+                        destroyOnHide: true,
+                        document: Qt.binding(function () { return document })
                     })
                 }
             }

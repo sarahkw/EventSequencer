@@ -2,7 +2,7 @@ import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Controls 2.2
 
-import eventsequencer 1.0
+import eventsequencer 1.0 as ES
 import QtQuick.Layouts 1.3
 
 Window {
@@ -11,6 +11,8 @@ Window {
     height: 480
     title: qsTr("Document View")
     flags: Qt.Dialog
+
+    property ES.Document document
 
     property bool destroyOnHide: false
     onVisibleChanged: {
@@ -23,7 +25,7 @@ Window {
 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
-    ConstrainedMetricsFontUtil {
+    ES.ConstrainedMetricsFontUtil {
         id: cmfu
         constrainByWidthValue: 10
     }
@@ -92,7 +94,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
         }
     }
 
-    WordWrappedTextTrack {
+    ES.WordWrappedTextTrack {
         id: wwtt
         width: lview.width - cmfu.constrainByWidthValue /*For wrapped space or NewLine*/
         text: crazyText
