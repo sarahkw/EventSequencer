@@ -58,6 +58,7 @@ ApplicationWindow {
         }
         CustomMenu {
             title: "View"
+            width: 270
             Action {
                 text: "Go to Origin"
                 onTriggered: {
@@ -79,6 +80,12 @@ ApplicationWindow {
                 text: "Show Seconds"
                 checkable: true
                 shortcut: "Ctrl+T"
+            }
+            Action {
+                id: activeChannelFollowsSelectionAction
+                text: "Active Channel Follows Selection"
+                checkable: true
+                checked: true
             }
             MenuSeparator { }
             Action {
@@ -636,7 +643,9 @@ ApplicationWindow {
 
                                 stripBase.selectionMode = newSelectionMode
 
-                                channelPanel.activeChannel = cppStrip.channel
+                                if (activeChannelFollowsSelectionAction.checked) {
+                                    channelPanel.activeChannel = cppStrip.channel
+                                }
                             }
 
                             Loader {
