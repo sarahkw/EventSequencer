@@ -4,6 +4,7 @@ import QtQuick.Controls 2.2
 
 import eventsequencer 1.0 as ES
 import QtQuick.Layouts 1.3
+import "Control/" as Control
 
 ApplicationWindow {
     visible: true
@@ -21,9 +22,9 @@ ApplicationWindow {
         }
     }
 
-    property string crazyText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    Control.Resolver {
+        id: resolver
+    }
 
     ES.ConstrainedMetricsFontUtil {
         id: cmfu
@@ -31,27 +32,44 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     }
 
     header: RowLayout {
-        id: flow1
         RowLayout {
-            id: row
             Label {
-                id: label
                 text: qsTr("Text Channel")
             }
-            TextField {
-                id: textField
-                text: qsTr("Text Field")
+            ESTextField {
+                id: txtTextChannel
+                property int chan: 0
+                property ES.WaitFor waitFor: document.waitForChannel(chan)
+                property var control: waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
+                property bool providesText: control != null ? control.docViewProvidesText === true : false
+                property string textContent: providesText ? waitFor.result.content : ""
+
+                text: chan
+                onEsEditingFinished: chan = parseInt(text, 10)
+
+                states: [
+                    State {
+                        when: !txtTextChannel.providesText
+                        PropertyChanges {
+                            target: txtTextChannel.background
+                            color: "red"
+                            ToolTip.visible: txtTextChannel.hovered
+                            ToolTip.text: "ERROR: Channel does not provide text for Document View"
+                        }
+                    }
+                ]
             }
         }
         RowLayout {
-            id: row1
             Label {
-                id: label1
                 text: qsTr("Render Channel")
             }
-            TextField {
-                id: textField1
-                text: qsTr("Text Field")
+            ESTextField {
+                id: txtRenderChannel
+                property int chan: 0
+                property ES.WaitFor waitFor: document.waitForChannel(chan)
+                text: chan
+                onEsEditingFinished: chan = parseInt(text, 10)
             }
         }
         Item {
@@ -90,7 +108,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     ES.WordWrappedTextTrack {
         id: wwtt
         width: lview.width - cmfu.constrainByWidthValue /*For wrapped space or NewLine*/
-        text: crazyText
+        text: txtTextChannel.textContent
         font: cmfu.builtFont
     }
 

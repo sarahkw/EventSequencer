@@ -4,6 +4,9 @@ import QtQuick.Layouts 1.3
 import "../" as Parent
 
 Item {
+
+    property bool docViewCanRender: true
+
     property Component channelPropertiesComponent: Component {
         GridLayout {
             anchors.left: parent.left

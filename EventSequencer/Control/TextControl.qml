@@ -6,6 +6,9 @@ import eventsequencer 1.0
 import "../" as Parent
 
 Item {
+
+    property bool docViewProvidesText: true
+
     property Component channelPropertiesComponent: Component {
         Column {
             Label {
