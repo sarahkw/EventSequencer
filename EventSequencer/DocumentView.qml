@@ -14,6 +14,7 @@ ApplicationWindow {
     flags: Qt.Dialog
 
     property ES.Document document
+    property int cursorFrame
 
     property bool destroyOnHide: false
     onVisibleChanged: {

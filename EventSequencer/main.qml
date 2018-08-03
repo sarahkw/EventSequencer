@@ -175,7 +175,8 @@ ApplicationWindow {
                     var obj = component.createObject(appwin, {
                         visible: true,
                         destroyOnHide: true,
-                        document: Qt.binding(function () { return document })
+                        document: Qt.binding(function () { return document }),
+                        cursorFrame: Qt.binding(function () { return cursor.frame })
                     })
                 }
             }
