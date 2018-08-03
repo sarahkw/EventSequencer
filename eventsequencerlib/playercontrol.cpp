@@ -134,11 +134,16 @@ void PlayerControl::updateCurrentStrips()
 {
     QStringList sl;
 
+    for (const Strip* s : stripsToPlay_) {
+        s->disconnect(this);
+    }
     stripsToPlay_.clear();
 
     switch (selectionMode()) {
     case SelectionMode::Strip:
         if (selectedStrip_ != nullptr) {
+            QObject::connect(selectedStrip_, &Strip::resourceUrlChanged,
+                             this, &PlayerControl::updateCurrentStrips);
             stripsToPlay_.push_back(selectedStrip_);
             sl.push_back(describeStrip(selectedStrip_));
         }
@@ -153,6 +158,8 @@ void PlayerControl::updateCurrentStrips()
                             continue;
                         }
                     }
+                    QObject::connect(stripHolder.strip, &Strip::resourceUrlChanged,
+                                     this, &PlayerControl::updateCurrentStrips);
                     stripsToPlay_.push_back(stripHolder.strip);
                     sl.push_back(describeStrip(stripHolder.strip));
                 }
