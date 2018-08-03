@@ -103,10 +103,12 @@ Item {
                     height: txtChannelTrack.height
                     x: width * modelData
                     Rectangle {
-                        color: "salmon"
-                        anchors.centerIn: parent
-                        width: Math.min(parent.width, parent.height) - 2
-                        height: width
+                        color: "gray"
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 2
+                        width: 1
+                        height: parent.height - 6
                     }
                 }
             }
