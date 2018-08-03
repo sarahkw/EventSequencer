@@ -55,9 +55,15 @@ Item {
                 x: (segmentStart - textOffset_) * widthPerCharacter
                 width: segmentLength * widthPerCharacter
                 property var colors: segmentTypeToColor(segmentType)
-                border.color: colors[0]
-                border.width: 1
-                color: colors[1]
+                color: colors[2] || "white"
+                Rectangle {
+                    height: 1
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    color: colors[1] || "white"
+                    visible: colors[1] !== undefined
+                }
             }
         }
     }
@@ -65,9 +71,9 @@ Item {
     // Implementation
     function segmentTypeToColor(stype) {
         switch (stype + 0) {
-        case ES.CollateChannel.SegmentType.Empty:    return ["black"    , "white"                     ];
-        case ES.CollateChannel.SegmentType.Chosen:   return ["lime"     , Qt.lighter("lime"     , 1.8)];
-        case ES.CollateChannel.SegmentType.Conflict: return ["red"      , Qt.lighter("red"      , 1.8)];
+        case ES.CollateChannel.SegmentType.Empty:    return ["black"    , "lightgray", undefined                   ];
+        case ES.CollateChannel.SegmentType.Chosen:   return ["lime"     , undefined  , Qt.lighter("lime"     , 1.8)];
+        case ES.CollateChannel.SegmentType.Conflict: return ["red"      , undefined  , Qt.lighter("red"      , 1.8)];
         }
         console.error("Invalid segment type", stype);
     }
