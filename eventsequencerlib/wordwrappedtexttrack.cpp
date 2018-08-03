@@ -1,7 +1,6 @@
 #include "wordwrappedtexttrack.h"
 
 #include <QTextLayout>
-#include <QDebug>
 
 int WordWrappedTextTrack::width() const
 {
@@ -71,9 +70,6 @@ void WordWrappedTextTrack::relayout()
         for (int i = 0; i < textLayout.lineCount(); ++i) {
             QTextLine line = textLayout.lineAt(i);
             QString thing = text_.mid(line.textStart(), line.textLength());
-
-            qInfo() << i << thing;
-
             build.push_back({thing, line.textStart()});
         }
     }
