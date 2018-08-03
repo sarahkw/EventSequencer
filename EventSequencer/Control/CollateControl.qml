@@ -60,9 +60,9 @@ Item {
     // Implementation
     function segmentTypeToColor(stype) {
         switch (stype + 0) {
-        case ES.CollateChannel.SegmentType.Empty:    return "black";
+        case ES.CollateChannel.SegmentType.Empty:    return "red";
         case ES.CollateChannel.SegmentType.Chosen:   return "lime";
-        case ES.CollateChannel.SegmentType.Conflict: return "gray";
+        case ES.CollateChannel.SegmentType.Conflict: return "orange";
         }
         console.error("Invalid segment type", stype);
     }
