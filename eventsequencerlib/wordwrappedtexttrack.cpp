@@ -100,9 +100,54 @@ void WordWrappedTextTrack::relayout()
         rows_.resize(build.size());
         endRemoveRows();
     }
+
+    reposition();
 }
 
-WordWrappedTextTrack::WordWrappedTextTrack(QObject *parent) : QAbstractListModel(parent)
+void WordWrappedTextTrack::reposition()
+{
+    // TEXTOFFSET:   10   5   0
+    //                  ^6           We want to find 5.
+
+    QPoint newP(-1, -1);
+
+    auto iter = std::lower_bound(rows_.rbegin(), rows_.rend(), cursorFrame_, [](RowData& rd, int cf) {
+        return cf < rd.offset;
+    });
+
+    if (iter != rows_.rend()) {
+        if (cursorFrame_ >= iter->offset && cursorFrame_ < iter->offset + iter->text.size()) {
+            newP.setY(std::distance(iter, rows_.rend()) - 1);
+            newP.setX(cursorFrame_ - iter->offset);
+        }
+    }
+    if (cursorPosition_ != newP) {
+        cursorPosition_ = newP;
+        emit cursorPositionChanged();
+    }
+}
+
+QPoint WordWrappedTextTrack::cursorPosition() const
+{
+    return cursorPosition_;
+}
+
+int WordWrappedTextTrack::cursorFrame() const
+{
+    return cursorFrame_;
+}
+
+void WordWrappedTextTrack::setCursorFrame(int cursorFrame)
+{
+    if (cursorFrame_ != cursorFrame) {
+        cursorFrame_ = cursorFrame;
+        emit cursorFrameChanged();
+
+        reposition();
+    }
+}
+
+WordWrappedTextTrack::WordWrappedTextTrack(QObject *parent) : QAbstractListModel(parent), cursorPosition_(-1, -1)
 {
 
 }

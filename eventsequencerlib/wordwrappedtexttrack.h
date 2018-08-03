@@ -5,6 +5,7 @@
 #include <QFont>
 #include <QAbstractListModel>
 #include <vector>
+#include <QPoint>
 
 class WordWrappedTextTrack : public QAbstractListModel
 {
@@ -31,6 +32,13 @@ class WordWrappedTextTrack : public QAbstractListModel
 
     void relayout();
 
+    int cursorFrame_ = 0;
+    QPoint cursorPosition_;
+    Q_PROPERTY(int cursorFrame READ cursorFrame WRITE setCursorFrame NOTIFY cursorFrameChanged)
+    Q_PROPERTY(QPoint cursorPosition READ cursorPosition NOTIFY cursorPositionChanged)
+
+    void reposition();
+
 public:
     explicit WordWrappedTextTrack(QObject *parent = nullptr);
 
@@ -47,11 +55,19 @@ public:
     QFont font() const;
     void setFont(const QFont &font);
 
+    int cursorFrame() const;
+    void setCursorFrame(int cursorFrame);
+
+    QPoint cursorPosition() const;
+
 signals:
 
     void widthChanged();
     void textChanged();
     void fontChanged();
+
+    void cursorFrameChanged();
+    void cursorPositionChanged();
 
 public slots:
 };

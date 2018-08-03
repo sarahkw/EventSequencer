@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.3
 import "Control/" as Control
 
 ApplicationWindow {
+    id: appwin
     visible: true
     width: 640
     height: 480
@@ -98,7 +99,9 @@ ApplicationWindow {
     Rectangle {
         anchors.fill: parent
         color: "white"
+
         ScrollView {
+            id: sview
             anchors.fill: parent
             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
             clip: true
@@ -127,6 +130,15 @@ ApplicationWindow {
                     }
                 }
             }
+            Rectangle {
+                id: cursor
+                width: 1
+                height: cmfu.builtFontHeight
+                color: "black"
+                x: wwtt.cursorPosition.x * cmfu.constrainByWidthValue
+                y: wwtt.cursorPosition.y * cmfu.builtFontHeight
+                z: 10
+            }
         }
     }
 
@@ -135,6 +147,7 @@ ApplicationWindow {
         width: lview.width - cmfu.constrainByWidthValue /*For wrapped space or NewLine*/
         text: txtTextChannel.textContent
         font: cmfu.builtFont
+        cursorFrame: appwin.cursorFrame
     }
 
 }
