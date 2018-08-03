@@ -50,9 +50,13 @@ Item {
             Rectangle {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                anchors.topMargin: 1
+                anchors.bottomMargin: 1
                 x: (segmentStart - textOffset_) * widthPerCharacter
                 width: segmentLength * widthPerCharacter
-                color: segmentTypeToColor(segmentType)
+                border.color: segmentTypeToColor(segmentType)
+                border.width: 1
+                color: Qt.lighter(border.color, 1.8)
             }
         }
     }
