@@ -132,12 +132,23 @@ ApplicationWindow {
             }
             Rectangle {
                 id: cursor
-                width: 1
+                width: 2
                 height: cmfu.builtFontHeight
                 color: "black"
-                x: wwtt.cursorPosition.x * cmfu.constrainByWidthValue
-                y: wwtt.cursorPosition.y * cmfu.builtFontHeight
+                property alias cpos: wwtt.cursorPosition
+                x: cpos.x * cmfu.constrainByWidthValue
+                y: cpos.y * cmfu.builtFontHeight
                 z: 10
+                readonly property int blinkDelay: 750
+                onCposChanged: saVisible.restart()
+                SequentialAnimation on visible {
+                    id: saVisible
+                    loops: Animation.Infinite
+                    PropertyAction { value: true }
+                    PauseAnimation { duration: cursor.blinkDelay }
+                    PropertyAction { value: false }
+                    PauseAnimation { duration: cursor.blinkDelay }
+                }
             }
         }
     }
