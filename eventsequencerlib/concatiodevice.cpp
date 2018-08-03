@@ -4,8 +4,15 @@
 qint64 ConcatIODevice::readData(char *data, qint64 maxlen)
 {
     if (inputs_.empty()) {
+        return -1;
+    }
+    if (maxlen == 0) {
+        // Audio input can request maxlen of 0. Need this special case because
+        // we rely on QFile::read to try to fill the whole buffer, and return 0
+        // if it can't.
         return 0;
     }
+    // TODO This error handling isn't so great.
     QIODevice* front = inputs_.front();
     qint64 bytesRead = front->read(data, maxlen);
     if (bytesRead == 0) {
