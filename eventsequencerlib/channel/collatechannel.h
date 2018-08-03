@@ -20,15 +20,17 @@ class CollateChannelModel : public QAbstractListModel {
     CollateChannel& cc_;
     CollateChannelModel(CollateChannel& cc) : cc_(cc) { }
 
+public:
     enum CustomRoles {
         SegmentStartRole = Qt::UserRole + 1,
         SegmentLengthRole,
         SegmentColorRole
     };
-public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QHash<int,QByteArray> roleNames() const override;
+
+    Q_INVOKABLE QAbstractItemModel* makeFilterModel(int start, int length);
 };
 
 class CollateChannel : public ChannelBase

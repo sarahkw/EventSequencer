@@ -9,6 +9,7 @@
 
 #include <QDebug>
 #include <QCoreApplication>
+#include <QSortFilterProxyModel>
 
 namespace channel {
 
@@ -39,6 +40,36 @@ QHash<int, QByteArray> CollateChannelModel::roleNames() const
         {SegmentLengthRole, "segmentLength"},
         {SegmentColorRole, "segmentColor"}
     };
+}
+
+/**/ class CollateChannelFilterModel : public QSortFilterProxyModel {
+/**/     int start_;
+/**/     int length_;
+/**/ public:
+/**/     CollateChannelFilterModel(int start, int length);
+/**/     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+/**/ };
+/**/ 
+/**/ CollateChannelFilterModel::CollateChannelFilterModel(int start, int length) : start_(start), length_(length)
+/**/ {
+/**/ }
+/**/ 
+/**/ bool CollateChannelFilterModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+/**/ {
+/**/     QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
+/**/     int theStart = sourceModel()->data(index0, CollateChannelModel::CustomRoles::SegmentStartRole).toInt();
+/**/     int theLength = sourceModel()->data(index0, CollateChannelModel::CustomRoles::SegmentLengthRole).toInt();
+/**/     bool collides = (theStart < start_ ?
+/**/                          (theStart + theLength > start_) :
+/**/                          (start_ + length_ > theStart));
+/**/     return collides;
+/**/ }
+
+QAbstractItemModel *CollateChannelModel::makeFilterModel(int start, int length)
+{
+    auto ret = new CollateChannelFilterModel(start, length);
+    ret->setSourceModel(this);
+    return ret;
 }
 
 /******************************************************************************/
