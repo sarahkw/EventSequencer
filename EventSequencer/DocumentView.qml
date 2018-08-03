@@ -109,11 +109,20 @@ ApplicationWindow {
                         text: modelData
                         font: cmfu.builtFont
                     }
-                    Rectangle {
+                    Item {
                         y: cmfu.builtFontHeight
                         height: cmfu.builtFontHeight
                         width: modelData.length * cmfu.constrainByWidthValue
-                        color: "pink"
+                        clip: true
+                        Loader {
+                            anchors.top: parent.top
+                            anchors.bottom: parent.bottom
+                            sourceComponent: txtRenderChannel.control.docViewRenderComponent
+                            property var cppChannel: txtRenderChannel.waitFor.result
+                            property string textData: modelData
+                            property int textOffset_: textOffset
+                            property int widthPerCharacter: cmfu.constrainByWidthValue
+                        }
                     }
                 }
             }

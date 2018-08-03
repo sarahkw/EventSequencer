@@ -41,4 +41,19 @@ Item {
             }
         }
     }
+
+    property Component docViewRenderComponent: Component {
+        Repeater {
+            //property var noGarbageCollectPlease: cppChannel.model
+            //model: noGarbageCollectPlease.makeFilterModel(textOffset_, textData.length)
+            model: cppChannel.model
+            Rectangle {
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                x: (segmentStart - textOffset_) * widthPerCharacter
+                width: segmentLength * widthPerCharacter
+                color: segmentColor
+            }
+        }
+    }
 }
