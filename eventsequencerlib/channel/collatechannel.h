@@ -24,7 +24,8 @@ public:
     enum CustomRoles {
         SegmentStartRole = Qt::UserRole + 1,
         SegmentLengthRole,
-        SegmentColorRole
+        SegmentColorRole,
+        SegmentTypeRole
     };
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -36,6 +37,14 @@ public:
 class CollateChannel : public ChannelBase
 {
     Q_OBJECT
+public:
+    enum class SegmentType {
+        Empty,
+        Chosen,
+        Conflict
+    };
+    Q_ENUM(SegmentType)
+private:
 
     friend class CollateChannelModel;
     CollateChannelModel model_;
@@ -54,7 +63,7 @@ class CollateChannel : public ChannelBase
     struct Segment {
         int segmentStart;
         int segmentLength;
-        QColor segmentColor;
+        SegmentType segmentType;
     };
     std::vector<Segment> segments_;
     DocumentStripsOnChannel::StripSet stripSet_;

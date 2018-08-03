@@ -26,7 +26,18 @@ QVariant CollateChannelModel::data(const QModelIndex &index, int role) const
         switch (role) {
         case SegmentStartRole: return cc_.segments_[index.row()].segmentStart;
         case SegmentLengthRole: return cc_.segments_[index.row()].segmentLength;
-        case SegmentColorRole: return cc_.segments_[index.row()].segmentColor;
+        case SegmentColorRole: {
+            switch (cc_.segments_[index.row()].segmentType) {
+            case CollateChannel::SegmentType::Empty:
+                return QColor(Qt::black);
+            case CollateChannel::SegmentType::Chosen:
+                return QColor(Qt::green);
+            case CollateChannel::SegmentType::Conflict:
+                return QColor(Qt::gray);
+            }
+            break;
+        }
+        case SegmentTypeRole: return QVariant::fromValue(cc_.segments_[index.row()].segmentType);
         }
     }
 
@@ -38,7 +49,8 @@ QHash<int, QByteArray> CollateChannelModel::roleNames() const
     return {
         {SegmentStartRole, "segmentStart"},
         {SegmentLengthRole, "segmentLength"},
-        {SegmentColorRole, "segmentColor"}
+        {SegmentColorRole, "segmentColor"},
+        {SegmentTypeRole, "segmentType"}
     };
 }
 
@@ -217,20 +229,20 @@ void CollateChannel::recalculate()
             stripSet_.insert({segment.data->startFrame(), segment.data});
         }
         
-        QColor col;
+        SegmentType segmentType;
         switch (segment.type) {
         case CnosType::Segment::Type::Empty:
-            col = Qt::black;
+            segmentType = SegmentType::Empty;
             break;
         case CnosType::Segment::Type::Chosen:
-            col = Qt::green;
+            segmentType = SegmentType::Chosen;
             break;
         case CnosType::Segment::Type::Conflict:
-            col = Qt::gray;
+            segmentType = SegmentType::Conflict;
             break;
         }
 
-        segments_.push_back({segment.start, segment.length, col});
+        segments_.push_back({segment.start, segment.length, segmentType});
     }
 
     model_.endResetModel();
