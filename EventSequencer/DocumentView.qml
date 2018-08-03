@@ -105,13 +105,8 @@ ApplicationWindow {
                 id: lview
                 model: wwtt
                 delegate: Item {
-                    height: cmfu.builtFontHeight * 2
-                    Text {
-                        text: modelData
-                        font: cmfu.builtFont
-                    }
+                    height: cmfu.builtFontHeight
                     Item {
-                        y: cmfu.builtFontHeight
                         height: cmfu.builtFontHeight
                         width: modelData.length * cmfu.constrainByWidthValue
                         clip: true
@@ -124,6 +119,10 @@ ApplicationWindow {
                             property int textOffset_: textOffset
                             property int widthPerCharacter: cmfu.constrainByWidthValue
                         }
+                    }
+                    Text {
+                        text: modelData
+                        font: cmfu.builtFont
                     }
                 }
             }
