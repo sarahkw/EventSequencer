@@ -5,7 +5,6 @@
 
 #include <QObject>
 #include <QAbstractListModel>
-#include <QColor>
 
 class Document;
 class Strip;
@@ -24,7 +23,6 @@ public:
     enum CustomRoles {
         SegmentStartRole = Qt::UserRole + 1,
         SegmentLengthRole,
-        SegmentColorRole,
         SegmentTypeRole
     };
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

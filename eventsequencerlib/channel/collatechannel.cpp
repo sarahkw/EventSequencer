@@ -26,17 +26,6 @@ QVariant CollateChannelModel::data(const QModelIndex &index, int role) const
         switch (role) {
         case SegmentStartRole: return cc_.segments_[index.row()].segmentStart;
         case SegmentLengthRole: return cc_.segments_[index.row()].segmentLength;
-        case SegmentColorRole: {
-            switch (cc_.segments_[index.row()].segmentType) {
-            case CollateChannel::SegmentType::Empty:
-                return QColor(Qt::black);
-            case CollateChannel::SegmentType::Chosen:
-                return QColor(Qt::green);
-            case CollateChannel::SegmentType::Conflict:
-                return QColor(Qt::gray);
-            }
-            break;
-        }
         case SegmentTypeRole: return QVariant::fromValue(cc_.segments_[index.row()].segmentType);
         }
     }
@@ -49,7 +38,6 @@ QHash<int, QByteArray> CollateChannelModel::roleNames() const
     return {
         {SegmentStartRole, "segmentStart"},
         {SegmentLengthRole, "segmentLength"},
-        {SegmentColorRole, "segmentColor"},
         {SegmentTypeRole, "segmentType"}
     };
 }
