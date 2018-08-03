@@ -34,7 +34,7 @@ private:
     Q_PROPERTY(SelectionMode selectionMode READ selectionMode WRITE setSelectionMode NOTIFY selectionModeChanged)
     Q_PROPERTY(Strip* selectedStrip READ selectedStrip WRITE setSelectedStrip NOTIFY selectedStripChanged)
     Q_PROPERTY(channel::ChannelBase* selectedChannel READ selectedChannel WRITE setSelectedChannel NOTIFY selectedChannelChanged)
-    Q_PROPERTY(QVariant onlyStripsAfter READ onlyStripsAfter WRITE setOnlyStripsAfter NOTIFY onlyStripsAfter)
+    Q_PROPERTY(QVariant onlyStripsAfter READ onlyStripsAfter WRITE setOnlyStripsAfter NOTIFY onlyStripsAfterChanged)
 
     void updateCurrentStrips();
     void updateCurrentStripsIfSelectionModeIsStrip();
