@@ -126,7 +126,9 @@ ApplicationWindow {
                         }
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: appwin.changeCursorFrame(textOffset)
+                            onClicked: {
+                                appwin.changeCursorFrame(textOffset + Math.floor(mouse.x / cmfu.constrainByWidthValue))
+                            }
                         }
                     }
                     Text {
