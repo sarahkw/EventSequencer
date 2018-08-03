@@ -70,6 +70,7 @@ ApplicationWindow {
                 property ES.WaitFor waitFor: document.waitForChannel(chan)
                 property var control: waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
                 property bool canRender: control != null ? control.docViewCanRender === true : false
+                property var cppChannel: canRender ? waitFor.result : null
 
                 text: chan
                 onEsEditingFinished: chan = parseInt(text, 10)
@@ -118,7 +119,7 @@ ApplicationWindow {
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
                             sourceComponent: txtRenderChannel.control.docViewRenderComponent
-                            property var cppChannel: txtRenderChannel.waitFor.result
+                            property var cppChannel: txtRenderChannel.cppChannel
                             property string textData: modelData
                             property int textOffset_: textOffset
                             property int widthPerCharacter: cmfu.constrainByWidthValue
