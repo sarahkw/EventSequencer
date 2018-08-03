@@ -44,9 +44,8 @@ Item {
 
     property Component docViewRenderComponent: Component {
         Repeater {
-            //property var noGarbageCollectPlease: cppChannel.model
-            //model: noGarbageCollectPlease.makeFilterModel(textOffset_, textData.length)
-            model: cppChannel.model
+            property var noGarbageCollectPlease: cppChannel.model.makeFilterModel(textOffset_, textData.length)
+            model: noGarbageCollectPlease
             Rectangle {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
