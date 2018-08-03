@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import "../" as Parent
+import eventsequencer 1.0 as ES
 
 Item {
 
@@ -37,7 +38,7 @@ Item {
                 anchors.bottom: parent.bottom
                 x: zoom.mapFrameToDisplayX(segmentStart)
                 width: zoom.mapLengthToDisplayWidth(segmentLength)
-                color: segmentColor
+                color: segmentTypeToColor(segmentType)
             }
         }
     }
@@ -51,8 +52,18 @@ Item {
                 anchors.bottom: parent.bottom
                 x: (segmentStart - textOffset_) * widthPerCharacter
                 width: segmentLength * widthPerCharacter
-                color: segmentColor
+                color: segmentTypeToColor(segmentType)
             }
         }
+    }
+
+    // Implementation
+    function segmentTypeToColor(stype) {
+        switch (stype + 0) {
+        case ES.CollateChannel.SegmentType.Empty:    return "black";
+        case ES.CollateChannel.SegmentType.Chosen:   return "lime";
+        case ES.CollateChannel.SegmentType.Conflict: return "gray";
+        }
+        console.error("Invalid segment type", stype);
     }
 }
