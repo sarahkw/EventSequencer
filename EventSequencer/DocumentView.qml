@@ -29,7 +29,7 @@ ApplicationWindow {
 
     ES.ConstrainedMetricsFontUtil {
         id: cmfu
-        constrainByWidthValue: 10
+        constrainByWidthValue: 8
     }
 
     header: RowLayout {
