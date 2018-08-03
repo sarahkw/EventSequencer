@@ -177,7 +177,7 @@ ApplicationWindow {
                         destroyOnHide: true,
                         document: Qt.binding(function () { return document }),
                         cursorFrame: Qt.binding(function () { return cursor.frame }),
-                        changeCursorFrame: function (newFrame) { cursor.frame = newFrame }
+                        changeCursorFrame: function (newFrame) { cursor.moveFrame(newFrame) }
                     })
                 }
             }
@@ -347,7 +347,7 @@ ApplicationWindow {
                 document: document
                 shouldShowTime: showSecondsAction.checked
                 frame: cursor.frame
-                onFrameEditingFinished: cursor.frame = frame
+                onFrameEditingFinished: cursor.moveFrame(frame)
                 horizontalAlignment: TextInput.AlignRight
                 ToolTip.text: "Current"
                 ToolTip.visible: hovered
@@ -564,6 +564,12 @@ ApplicationWindow {
                     color: "lime"
                     x: body.x + zoom.mapFrameToDisplayX(frame) - 1
                     z: 1
+
+                    function moveFrame(newFrame) {
+                        var newX = body.x + zoom.mapFrameToDisplayX(newFrame) - 1
+                        body.x -= newX - bodyView.width + bodyView.width * 0.9
+                        frame = newFrame
+                    }
 
                     Rectangle {
                         color: cursor.color
