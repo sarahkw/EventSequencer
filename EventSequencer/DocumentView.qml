@@ -16,6 +16,7 @@ ApplicationWindow {
 
     property ES.Document document
     property int cursorFrame
+    property var changeCursorFrame // Fn
 
     property bool destroyOnHide: false
     onVisibleChanged: {
@@ -122,6 +123,10 @@ ApplicationWindow {
                             property string textData: modelData
                             property int textOffset_: textOffset
                             property int widthPerCharacter: cmfu.constrainByWidthValue
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: appwin.changeCursorFrame(textOffset)
                         }
                     }
                     Text {

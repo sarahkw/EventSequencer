@@ -176,7 +176,8 @@ ApplicationWindow {
                         visible: true,
                         destroyOnHide: true,
                         document: Qt.binding(function () { return document }),
-                        cursorFrame: Qt.binding(function () { return cursor.frame })
+                        cursorFrame: Qt.binding(function () { return cursor.frame }),
+                        changeCursorFrame: function (newFrame) { cursor.frame = newFrame }
                     })
                 }
             }
