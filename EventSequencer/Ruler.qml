@@ -5,14 +5,14 @@ Rectangle {
     property int xposition
     property var displayFrameNumber
 
-    id: sbHoriz
+    id: root
     color: "whitesmoke"
     clip: true
 
     ScrollHelper {
         id: sh
-        itemSize: sbHoriz.zoom.displayWidthPerRulerTick
-        scrollbarSize: sbHoriz.width
+        itemSize: root.zoom.displayWidthPerRulerTick
+        scrollbarSize: root.width
         currentPosition: xposition
     }
 
@@ -22,10 +22,10 @@ Rectangle {
             property int myTickIndex: index + sh.initialIndex
             property bool shouldShowNumber: zoom.tickIndexShouldShowNumber(myTickIndex)
 
-            anchors.top: sbHoriz.top
-            anchors.bottom: sbHoriz.bottom
+            anchors.top: root.top
+            anchors.bottom: root.bottom
             x: (sh.initialPosition +
-                index * sbHoriz.zoom.displayWidthPerRulerTick)
+                index * root.zoom.displayWidthPerRulerTick)
             Rectangle {
                 width: 1
                 color: "black"
