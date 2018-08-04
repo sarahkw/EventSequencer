@@ -177,7 +177,7 @@ ApplicationWindow {
                         destroyOnHide: true,
                         document: Qt.binding(function () { return document }),
                         cursorFrame: Qt.binding(function () { return cursor.frame }),
-                        changeCursorFrame: function (newFrame) { cursor.moveFrame(newFrame) }
+                        changeCursorFrame: function (newFrame) { cursor.showFrame(newFrame) }
                     })
                 }
             }
@@ -347,7 +347,7 @@ ApplicationWindow {
                 document: document
                 shouldShowTime: showSecondsAction.checked
                 frame: cursor.frame
-                onFrameEditingFinished: cursor.moveFrame(frame)
+                onFrameEditingFinished: cursor.showFrame(frame)
                 horizontalAlignment: TextInput.AlignRight
                 ToolTip.text: "Current"
                 ToolTip.visible: hovered
@@ -367,7 +367,7 @@ ApplicationWindow {
             RoundButton {
                 anchors.verticalCenter: parent.verticalCenter
                 text: controlUnicode.prev
-                onClicked: cursor.frame = document.startFrame
+                onClicked: cursor.showFrame(document.startFrame)
             }
             RoundButton {
                 ToolTip.text: "Play/Stop (long press for menu)"
@@ -396,7 +396,7 @@ ApplicationWindow {
             RoundButton {
                 anchors.verticalCenter: parent.verticalCenter
                 text: controlUnicode.next
-                onClicked: cursor.frame = document.endFrame
+                onClicked: cursor.showFrame(document.endFrame)
             }
             Label {
                 text: "   "
@@ -565,7 +565,7 @@ ApplicationWindow {
                     x: body.x + zoom.mapFrameToDisplayX(frame) - 1
                     z: 1
 
-                    function moveFrame(newFrame) {
+                    function showFrame(newFrame) {
                         var newX = body.x + zoom.mapFrameToDisplayX(newFrame) - 1
                         body.x -= newX - bodyView.width + bodyView.width * 0.9
                         frame = newFrame
