@@ -13,6 +13,11 @@ qint64 ConcatIODevice::readData(char *data, qint64 maxlen)
         return 0;
     }
     // TODO This error handling isn't so great.
+
+    // TODO We are relying on the underlying QIODevice* to always try
+    //      to return the amount of data that was asked
+    //      for. Currently, we don't do the same in the case where we
+    //      exhaust a stream and are waiting for the next one.
     QIODevice* front = inputs_.front();
     qint64 bytesRead = front->read(data, maxlen);
     if (bytesRead == 0) {
