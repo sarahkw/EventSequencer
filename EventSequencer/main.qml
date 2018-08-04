@@ -87,6 +87,12 @@ ApplicationWindow {
                 checkable: true
                 checked: true
             }
+            Action {
+                id: allowMultipleFramesPerTickAction
+                text: "Allow Multiple Frames Per Tick"
+                checkable: true
+                checked: true
+            }
             MenuSeparator { }
             Action {
                 id: propertiesAction
