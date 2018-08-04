@@ -1,6 +1,10 @@
 import QtQuick 2.0
 import "util.js" as Util
 
+// Has tests:
+//
+// ~/Qt/5.11.1/gcc_64/bin/qmltestrunner -input tst_ZoomLogic.qml
+
 QtObject {
     // When zoomLevel is zero or negative, the abs value will be the
     // number of ADDITIONAL pixels. When zoomLevel is positive, it
