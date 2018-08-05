@@ -61,7 +61,7 @@ SOURCES += \
     audiocontrol.cpp \
     playercontrol.cpp \
     concatiodevice.cpp \
-    channelindex.cpp
+    channelpath.cpp
 
 
 HEADERS += \
@@ -103,7 +103,7 @@ HEADERS += \
     audiocontrol.h \
     playercontrol.h \
     concatiodevice.h \
-    channelindex.h
+    channelpath.h
 
 unix {
     target.path = /usr/lib
