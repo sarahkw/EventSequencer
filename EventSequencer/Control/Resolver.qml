@@ -24,6 +24,9 @@ Item {
     PlaylistControl {
         id: playlist
     }
+    SpanControl {
+        id: span
+    }
 
     function resolve(type) {
         switch (type) {
@@ -34,6 +37,7 @@ Item {
         case ES.ChannelType.Label: return label
         case ES.ChannelType.Collate: return collate
         case ES.ChannelType.Playlist: return playlist
+        case ES.ChannelType.Span: return span
         }
         console.assert(false, "Unable to resolve type")
     }

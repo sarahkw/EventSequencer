@@ -47,6 +47,7 @@ class ChannelData_BadJs;
 class ChannelData_Collate;
 class ChannelData_Label;
 class ChannelData_Playlist;
+class ChannelData_Span;
 class ChannelData_Text;
 class Document;
 class File;
@@ -1419,6 +1420,88 @@ class ChannelData_Playlist : public ::google::protobuf::Message /* @@protoc_inse
 };
 // -------------------------------------------------------------------
 
+class ChannelData_Span : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelData.Span) */ {
+ public:
+  ChannelData_Span();
+  virtual ~ChannelData_Span();
+
+  ChannelData_Span(const ChannelData_Span& from);
+
+  inline ChannelData_Span& operator=(const ChannelData_Span& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChannelData_Span& default_instance();
+
+  void Swap(ChannelData_Span* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ChannelData_Span* New() const { return New(NULL); }
+
+  ChannelData_Span* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ChannelData_Span& from);
+  void MergeFrom(const ChannelData_Span& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(ChannelData_Span* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int32 count = 1;
+  void clear_count();
+  static const int kCountFieldNumber = 1;
+  ::google::protobuf::int32 count() const;
+  void set_count(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:pb.ChannelData.Span)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  ::google::protobuf::int32 count_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static ChannelData_Span* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelData) */ {
  public:
   ChannelData();
@@ -1442,6 +1525,7 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
     kLabel = 14,
     kCollate = 15,
     kPlaylist = 16,
+    kSpan = 17,
     CHANNEL_NOT_SET = 0,
   };
 
@@ -1495,6 +1579,7 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
   typedef ChannelData_Label Label;
   typedef ChannelData_Collate Collate;
   typedef ChannelData_Playlist Playlist;
+  typedef ChannelData_Span Span;
 
   // accessors -------------------------------------------------------
 
@@ -1561,6 +1646,15 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::pb::ChannelData_Playlist* release_playlist();
   void set_allocated_playlist(::pb::ChannelData_Playlist* playlist);
 
+  // optional .pb.ChannelData.Span span = 17;
+  bool has_span() const;
+  void clear_span();
+  static const int kSpanFieldNumber = 17;
+  const ::pb::ChannelData_Span& span() const;
+  ::pb::ChannelData_Span* mutable_span();
+  ::pb::ChannelData_Span* release_span();
+  void set_allocated_span(::pb::ChannelData_Span* span);
+
   ChannelCase channel_case() const;
   // @@protoc_insertion_point(class_scope:pb.ChannelData)
  private:
@@ -1571,6 +1665,7 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
   inline void set_has_label();
   inline void set_has_collate();
   inline void set_has_playlist();
+  inline void set_has_span();
 
   inline bool has_channel() const;
   void clear_channel();
@@ -1587,6 +1682,7 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
     ::pb::ChannelData_Label* label_;
     ::pb::ChannelData_Collate* collate_;
     ::pb::ChannelData_Playlist* playlist_;
+    ::pb::ChannelData_Span* span_;
   } channel_;
   mutable int _cached_size_;
   ::google::protobuf::uint32 _oneof_case_[1];
@@ -2501,6 +2597,24 @@ inline void ChannelData_Collate::set_channelto(::google::protobuf::int32 value) 
 
 // -------------------------------------------------------------------
 
+// ChannelData_Span
+
+// optional int32 count = 1;
+inline void ChannelData_Span::clear_count() {
+  count_ = 0;
+}
+inline ::google::protobuf::int32 ChannelData_Span::count() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.Span.count)
+  return count_;
+}
+inline void ChannelData_Span::set_count(::google::protobuf::int32 value) {
+  
+  count_ = value;
+  // @@protoc_insertion_point(field_set:pb.ChannelData.Span.count)
+}
+
+// -------------------------------------------------------------------
+
 // ChannelData
 
 // optional .pb.ChannelData.BadClock badClock = 10;
@@ -2839,6 +2953,54 @@ inline void ChannelData::set_allocated_playlist(::pb::ChannelData_Playlist* play
   // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.playlist)
 }
 
+// optional .pb.ChannelData.Span span = 17;
+inline bool ChannelData::has_span() const {
+  return channel_case() == kSpan;
+}
+inline void ChannelData::set_has_span() {
+  _oneof_case_[0] = kSpan;
+}
+inline void ChannelData::clear_span() {
+  if (has_span()) {
+    delete channel_.span_;
+    clear_has_channel();
+  }
+}
+inline  const ::pb::ChannelData_Span& ChannelData::span() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.span)
+  return has_span()
+      ? *channel_.span_
+      : ::pb::ChannelData_Span::default_instance();
+}
+inline ::pb::ChannelData_Span* ChannelData::mutable_span() {
+  if (!has_span()) {
+    clear_channel();
+    set_has_span();
+    channel_.span_ = new ::pb::ChannelData_Span;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.span)
+  return channel_.span_;
+}
+inline ::pb::ChannelData_Span* ChannelData::release_span() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.span)
+  if (has_span()) {
+    clear_has_channel();
+    ::pb::ChannelData_Span* temp = channel_.span_;
+    channel_.span_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void ChannelData::set_allocated_span(::pb::ChannelData_Span* span) {
+  clear_channel();
+  if (span) {
+    set_has_span();
+    channel_.span_ = span;
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.span)
+}
+
 inline bool ChannelData::has_channel() const {
   return channel_case() != CHANNEL_NOT_SET;
 }
@@ -3111,6 +3273,8 @@ inline void File::set_allocated_forkedfromchecksum(::std::string* forkedfromchec
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

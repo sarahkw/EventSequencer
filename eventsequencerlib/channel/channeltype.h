@@ -19,7 +19,8 @@ public:
         Audio,
         Label,
         Collate,
-        Playlist
+        Playlist,
+        Span
     };
     Q_ENUM(Enum)
 };

@@ -30,5 +30,6 @@
         <file>ESTextField.qml</file>
         <file>Control/PlaylistControl.qml</file>
         <file>Player.qml</file>
+        <file>Control/SpanControl.qml</file>
     </qresource>
 </RCC>
