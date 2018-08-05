@@ -10,7 +10,7 @@ package pb;
 //}
 
 message Strip {
-  int32 channel = 1;
+  repeated int32 channelPath = 1;
   int32 startFrame = 2;
   int32 length = 3;
 
@@ -77,6 +77,10 @@ message ChannelData {
     int32 channelTo = 11;
   }
   message Playlist {}
+  message Span {
+    int32 count = 1;
+    repeated ChannelData channels = 2;
+  }
 
   oneof channel {
     BadClock badClock = 10;
@@ -86,6 +90,7 @@ message ChannelData {
     Label label = 14;
     Collate collate = 15;
     Playlist playlist = 16;
+    Span span = 17;
   };
 }
 
