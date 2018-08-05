@@ -14,7 +14,7 @@ class BadClockChannel : public ChannelBase, public IClockRole
     Q_OBJECT
 
 public:
-    explicit BadClockChannel(int channelIndex, Document& d, QObject *parent = nullptr);
+    explicit BadClockChannel(ChannelIndex channelIndex, Document& d, QObject *parent = nullptr);
 
     void toPb(pb::ChannelData& pb) const override;
     void fromPb(const pb::ChannelData& pb) override;

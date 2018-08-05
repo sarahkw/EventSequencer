@@ -2,6 +2,7 @@
 #define CHANNELFACTORY_H
 
 #include "channeltype.h"
+#include "channelindex.h"
 
 class QObject;
 
@@ -20,8 +21,8 @@ class ChannelFactory
     ChannelFactory() = delete;
 public:
 
-    static ChannelBase* Create(const pb::ChannelData& pb, int channelIndex, Document& d, QObject* parent=nullptr);
-    static ChannelBase* Create(ChannelType::Enum type, int channelIndex, Document& d, QObject* parent=nullptr);
+    static ChannelBase* Create(const pb::ChannelData& pb, ChannelIndex channelIndex, Document& d, QObject* parent=nullptr);
+    static ChannelBase* Create(ChannelType::Enum type, ChannelIndex channelIndex, Document& d, QObject* parent=nullptr);
 
 };
 

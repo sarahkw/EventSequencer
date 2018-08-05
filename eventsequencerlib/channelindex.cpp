@@ -22,6 +22,16 @@ bool ChannelIndex::operator<(const ChannelIndex &o) const
     return first_ < o.first_;
 }
 
+bool ChannelIndex::operator==(const ChannelIndex &o) const
+{
+    return first_ == o.first_;
+}
+
+bool ChannelIndex::operator!=(const ChannelIndex &o) const
+{
+    return !operator==(o);
+}
+
 QString ChannelIndex::toDebugString() const
 {
     return QString("(ChannelIndex %1)").arg(first_);

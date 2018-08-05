@@ -4,7 +4,7 @@
 
 namespace channel {
 
-ChannelBase::ChannelBase(int channelIndex, Document& d, QObject* parent)
+ChannelBase::ChannelBase(ChannelIndex channelIndex, Document& d, QObject* parent)
     : QObject(parent), channelIndex_(channelIndex), d_(d)
 {
     QObject::connect(&d_.stripsOnChannel(), &DocumentStripsOnChannel::channelStripSetChanged,
@@ -18,16 +18,16 @@ const DocumentStripsOnChannel::StripSet *ChannelBase::stripSet()
     return d_.stripsOnChannel().stripsForChannel(channelIndex_);
 }
 
-void ChannelBase::channelStripSetChanged(int channel)
+void ChannelBase::channelStripSetChanged(ChannelIndex channelIndex)
 {
-    if (channel == channelIndex_) {
+    if (channelIndex == channelIndex_) {
         emit stripSetChanged();
     }
 }
 
-void ChannelBase::channelStripLocationChanged(int channel, Strip *whichStrip)
+void ChannelBase::channelStripLocationChanged(ChannelIndex channelIndex, Strip *whichStrip)
 {
-    if (channel == channelIndex_) {
+    if (channelIndex == channelIndex_) {
         // Used to have a stripLocationChanged signal, but for
         // subclasses that remake the strips list from scratch, it's
         // hard to do. The benefits aren't worth the cost.

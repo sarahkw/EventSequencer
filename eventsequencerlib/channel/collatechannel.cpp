@@ -1,4 +1,5 @@
-﻿#include "collatechannel.h"
+﻿#ifdef TMPDISABLE
+#include "collatechannel.h"
 
 #include <eventsequencer.pb.h>
 #include <document.h>
@@ -132,18 +133,18 @@ void CollateChannel::triggerRefresh()
     }
 }
 
-void CollateChannel::channelStripSetChanged(int channel)
+void CollateChannel::channelStripSetChanged(ChannelIndex channelIndex)
 {
-    channelAffected(channel);
+    channelAffected(channelIndex);
 }
 
-void CollateChannel::channelStripLocationChanged(int channel, Strip *whichStrip)
+void CollateChannel::channelStripLocationChanged(ChannelIndex channelIndex, Strip *whichStrip)
 {
     Q_UNUSED(whichStrip);
-    channelAffected(channel);
+    channelAffected(channelIndex);
 }
 
-CollateChannel::CollateChannel(int channelIndex, Document& d, QObject *parent)
+CollateChannel::CollateChannel(ChannelIndex channelIndex, Document& d, QObject *parent)
     : ChannelBase(channelIndex, d, parent), model_(*this), d_(d)
 {   
     QObject::connect(&d.stripsOnChannel(), &DocumentStripsOnChannel::channelStripSetChanged, this, &CollateChannel::channelStripSetChanged);
@@ -179,9 +180,9 @@ QAbstractListModel *CollateChannel::model()
     return &model_;
 }
 
-void CollateChannel::channelAffected(int channel)
+void CollateChannel::channelAffected(ChannelIndex channelIndex)
 {
-    if (channel >= channelFrom() && channel < channelTo()) {
+    if (channelIndex >= channelFrom() && channelIndex < channelTo()) {
         triggerRefresh();
         emit stripSetChanged();
     }
@@ -237,3 +238,4 @@ void CollateChannel::recalculate()
 }
 
 } // namespace channel
+#endif

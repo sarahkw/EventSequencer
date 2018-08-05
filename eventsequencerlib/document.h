@@ -4,6 +4,7 @@
 #include "channel/channeltype.h"
 #include "waitforhost.h"
 #include "documentstripsonchannel.h"
+#include "channelindex.h"
 
 #include <QAbstractListModel>
 #include <QUrl>
@@ -49,11 +50,11 @@ class DocumentChannelsModel : public QAbstractListModel
         ChannelIndexRole
     };
 
-    std::vector<int> displayRows_;
+    std::vector<ChannelIndex> displayRows_;
 
-    void afterAdd(int id);
+    void afterAdd(ChannelIndex channelIndex);
 
-    void beforeDelete(int id);
+    void beforeDelete(ChannelIndex channelIndex);
 
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -83,9 +84,9 @@ class Document : public QObject
     Q_PROPERTY(int startFrame READ startFrame WRITE setStartFrame NOTIFY startFrameChanged)
     Q_PROPERTY(int endFrame READ endFrame WRITE setEndFrame NOTIFY endFrameChanged)
 
-    std::map<int, channel::ChannelBase*> channels_;
-    WaitForHost<int> channelWaitFor_;
-    std::set<int> channelsProvidingClock_;
+    std::map<ChannelIndex, channel::ChannelBase*> channels_;
+    WaitForHost<ChannelIndex> channelWaitFor_;
+    std::set<ChannelIndex> channelsProvidingClock_;
 
     Q_PROPERTY(QVariantList channelsProvidingClock
                READ channelsProvidingClock
@@ -140,9 +141,9 @@ public:
     Q_INVOKABLE void dumpProtobuf() const;
 
     QAbstractListModel* channelsModel();
-    Q_INVOKABLE QObject* createChannel(int id, channel::ChannelType::Enum type);
-    Q_INVOKABLE void deleteChannel(int id);
-    Q_INVOKABLE WaitFor* waitForChannel(int id);
+    Q_INVOKABLE QObject* createChannel(ChannelIndex channelIndex, channel::ChannelType::Enum type);
+    Q_INVOKABLE void deleteChannel(ChannelIndex channelIndex);
+    Q_INVOKABLE WaitFor* waitForChannel(ChannelIndex channelIndex);
 
     int framesPerSecond() const;
     void setFramesPerSecond(int framesPerSecond);
@@ -177,8 +178,8 @@ private:
         Add,
         Replace
     };
-    void channelAfterAddOrReplace(int id, QObject* channel, AddOrReplace mode);
-    void channelBeforeDelete(int id);
+    void channelAfterAddOrReplace(ChannelIndex channelIndex, QObject* channel, AddOrReplace mode);
+    void channelBeforeDelete(ChannelIndex channelIndex);
 
 signals:
 
@@ -200,7 +201,7 @@ signals:
     void stripAfterPlaced(Strip* strip);
     void stripBeforeDelete(Strip* strip);
     void stripMoved(Strip* strip,
-                    int previousChannel,
+                    ChannelIndex previousChannelIndex,
                     int previousStartFrame,
                     int previousLength);
 

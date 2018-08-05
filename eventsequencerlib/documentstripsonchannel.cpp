@@ -8,9 +8,9 @@ DocumentStripsOnChannel::DocumentStripsOnChannel(QObject* parent)
 }
 
 const DocumentStripsOnChannel::StripSet*
-DocumentStripsOnChannel::stripsForChannel(int channel) const
+DocumentStripsOnChannel::stripsForChannel(ChannelIndex channelIndex) const
 {
-    auto iter = data_.find(channel);
+    auto iter = data_.find(channelIndex);
     if (iter == data_.end()) {
         return nullptr;
     }
@@ -19,17 +19,18 @@ DocumentStripsOnChannel::stripsForChannel(int channel) const
 
 void DocumentStripsOnChannel::stripAfterPlaced(Strip *strip)
 {
-    data_[strip->channel()].insert({strip->startFrame(), strip});
-    emit channelStripSetChanged(strip->channel());
+    data_[strip->channelIndex()].insert({strip->startFrame(), strip});
+    emit channelStripSetChanged(strip->channelIndex());
 }
 
 void DocumentStripsOnChannel::stripBeforeDelete(Strip *strip)
 {
-    data_[strip->channel()].erase({strip->startFrame(), strip});
-    emit channelStripSetChanged(strip->channel());
+    data_[strip->channelIndex()].erase({strip->startFrame(), strip});
+    emit channelStripSetChanged(strip->channelIndex());
 }
 
-void DocumentStripsOnChannel::stripMoved(Strip* strip, int previousChannel,
+void DocumentStripsOnChannel::stripMoved(Strip* strip,
+                                         ChannelIndex previousChannelIndex,
                                          int previousStartFrame,
                                          int previousLength)
 {
@@ -41,7 +42,7 @@ void DocumentStripsOnChannel::stripMoved(Strip* strip, int previousChannel,
 
     // Delete from old
     {
-        auto& stripset = data_[previousChannel];
+        auto& stripset = data_[previousChannelIndex];
         auto iterFound = stripset.end();
         for (auto iter =
                  stripset.lower_bound({previousStartFrame, nullptr});
@@ -63,14 +64,14 @@ void DocumentStripsOnChannel::stripMoved(Strip* strip, int previousChannel,
     }
 
     // Add to new
-    data_[strip->channel()].insert({strip->startFrame(), strip});
+    data_[strip->channelIndex()].insert({strip->startFrame(), strip});
 
     // Emit signals
-    if (strip->channel() == previousChannel) {
-        emit channelStripLocationChanged(strip->channel(), strip);
+    if (strip->channelIndex() == previousChannelIndex) {
+        emit channelStripLocationChanged(strip->channelIndex(), strip);
     } else {
-        emit channelStripSetChanged(previousChannel);
-        emit channelStripSetChanged(strip->channel());
+        emit channelStripSetChanged(previousChannelIndex);
+        emit channelStripSetChanged(strip->channelIndex());
     }
 }
 

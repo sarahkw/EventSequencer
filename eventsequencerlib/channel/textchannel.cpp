@@ -17,7 +17,7 @@ void TextChannel::setContent(const QString &content)
     }
 }
 
-TextChannel::TextChannel(int channelIndex, Document& d, QObject* parent)
+TextChannel::TextChannel(ChannelIndex channelIndex, Document& d, QObject* parent)
     : ChannelBase(channelIndex, d, parent)
 {
 

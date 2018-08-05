@@ -1,3 +1,4 @@
+#ifdef TMPDISABLE
 #ifndef COLLATECHANNEL_H
 #define COLLATECHANNEL_H
 
@@ -67,7 +68,7 @@ private:
     DocumentStripsOnChannel::StripSet stripSet_;
 
 public:
-    explicit CollateChannel(int channelIndex, Document& d, QObject *parent = nullptr);
+    explicit CollateChannel(ChannelIndex channelIndex, Document& d, QObject *parent = nullptr);
 
     virtual void toPb(pb::ChannelData& pb) const override;
     virtual void fromPb(const pb::ChannelData& pb) override;
@@ -95,12 +96,12 @@ private slots:
 
     void triggerRefresh();
 
-    void channelStripSetChanged(int channel) override;
-    void channelStripLocationChanged(int channel, Strip* whichStrip) override;
+    void channelStripSetChanged(ChannelIndex channelIndex) override;
+    void channelStripLocationChanged(ChannelIndex channelIndex, Strip* whichStrip) override;
 
 private:
 
-    void channelAffected(int channel);
+    void channelAffected(ChannelIndex channelIndex);
     void recalculate();
 
 public slots:
@@ -109,3 +110,4 @@ public slots:
 } // namespace channel
 
 #endif // COLLATECHANNEL_H
+#endif

@@ -17,7 +17,7 @@ class TextChannel : public ChannelBase
     Q_PROPERTY(QString content READ content WRITE setContent NOTIFY contentChanged)
 
 public:
-    explicit TextChannel(int channelIndex, Document& d, QObject *parent = nullptr);
+    explicit TextChannel(ChannelIndex channelIndex, Document& d, QObject *parent = nullptr);
 
     void toPb(pb::ChannelData& pb) const override;
     void fromPb(const pb::ChannelData& pb) override;

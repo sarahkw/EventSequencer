@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QUrl>
 
+#include "channelindex.h"
+
 namespace pb {
 class Strip;
 }
@@ -28,7 +30,7 @@ class Strip : public QObject
     //     so we'll never be "not placed".
     bool hasPlaced_ = false;
 
-    int channel_ = 0;
+    ChannelIndex channelIndex_;
     int startFrame_ = 0;
     int length_ = 0;
 
@@ -40,7 +42,7 @@ class Strip : public QObject
     stripext::LabelStripExt* label_ = nullptr;
     stripext::PlaylistStripExt* playlist_ = nullptr;
 
-    Q_PROPERTY(int channel READ channel WRITE setChannel NOTIFY channelChanged)
+    Q_PROPERTY(ChannelIndex channelIndex READ channelIndex WRITE setChannelIndex NOTIFY channelIndexChanged)
     Q_PROPERTY(int startFrame READ startFrame WRITE setStartFrame NOTIFY startFrameChanged)
     Q_PROPERTY(int length READ length WRITE setLength NOTIFY lengthChanged)
     Q_PROPERTY(QUrl resourceUrl READ resourceUrl WRITE setResourceUrl NOTIFY resourceUrlChanged)
@@ -57,8 +59,8 @@ public:
     void toPb(pb::Strip& pb) const;
     void fromPb(const pb::Strip& pb);
 
-    int channel() const;
-    void setChannel(int channel);
+    ChannelIndex channelIndex() const;
+    void setChannelIndex(ChannelIndex channelIndex);
 
     int startFrame() const;
     void setStartFrame(int startFrame);
@@ -91,7 +93,7 @@ public:
 
 signals:
 
-    void channelChanged();
+    void channelIndexChanged();
     void startFrameChanged();
     void lengthChanged();
     void resourceUrlChanged();

@@ -4,7 +4,7 @@
 
 namespace channel {
 
-LabelChannel::LabelChannel(int channelIndex, Document& d, QObject* parent)
+LabelChannel::LabelChannel(ChannelIndex channelIndex, Document& d, QObject* parent)
     : ChannelBase(channelIndex, d, parent)
 {
 
