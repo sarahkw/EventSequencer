@@ -77,6 +77,9 @@ message ChannelData {
     int32 channelTo = 11;
   }
   message Playlist {}
+  message Span {
+    int32 count = 1;
+  }
 
   oneof channel {
     BadClock badClock = 10;
@@ -86,6 +89,7 @@ message ChannelData {
     Label label = 14;
     Collate collate = 15;
     Playlist playlist = 16;
+    Span span = 17;
   };
 }
 
