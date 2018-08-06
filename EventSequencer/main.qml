@@ -1048,9 +1048,9 @@ ApplicationWindow {
                                     }
                                     ESTextField {
                                         Layout.fillWidth: true
-                                        text: selectedCppStrip.channelIndex.toPathString()
+                                        text: selectedCppStrip.channelIndex.first
                                         validator: IntValidator { }
-                                        onEsEditingFinished: selectedCppStrip.channel = parseInt(text, 10)
+                                        onEsEditingFinished: selectedCppStrip.channelIndex = ES.ChannelIndexFactory.make1(text)
                                     }
                                     Label {
                                         text: "Start"

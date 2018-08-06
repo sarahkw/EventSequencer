@@ -11,6 +11,11 @@ class ChannelIndex
     int first_ = 0;       // The first one is a map.
     unsigned second_ = 0; // The second one is an indexed list.
     bool hasSecond_ = false;
+
+    Q_PROPERTY(int first READ first CONSTANT)
+    Q_PROPERTY(unsigned second READ second CONSTANT)
+    Q_PROPERTY(bool hasSecond READ hasSecond CONSTANT)
+
 public:
     ChannelIndex();
     static ChannelIndex make1(int first);
