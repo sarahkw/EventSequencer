@@ -1098,7 +1098,7 @@ ApplicationWindow {
                                     anchors.left: parent.left
                                     anchors.right: parent.right
 
-                                    property ES.WaitFor waitForchannel: document.waitForChannel(selectedCppStrip.channel)
+                                    property ES.WaitFor waitForchannel: document.waitForChannelIndex(selectedCppStrip.channelIndex)
                                     property var channel: waitForchannel.result
                                     property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
                                     property var stripPropComp: control !== null ? Util.nvl(control.stripPropertiesComponent, blankComponent) : blankComponent
