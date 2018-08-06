@@ -18,7 +18,27 @@ struct TestVisualPositionManager : public testing::Test {
     }
 };
 
-TEST_F(TestVisualPositionManager, Simple)
+TEST_F(TestVisualPositionManager, IdxIsValid)
 {
-    vpm_.del(0);
+    EXPECT_TRUE(vpm_.chanIdxIsValid(ChannelIndex::make1(5)));
+    EXPECT_FALSE(vpm_.chanIdxIsValid(ChannelIndex::make2(5, 2)));
+    EXPECT_FALSE(vpm_.chanIdxIsValid(ChannelIndex::make2(5, 3)));
+
+    vpm_.setSpan(5, 3);
+
+    EXPECT_TRUE(vpm_.chanIdxIsValid(ChannelIndex::make1(5)));
+    EXPECT_TRUE(vpm_.chanIdxIsValid(ChannelIndex::make2(5, 2)));
+    EXPECT_FALSE(vpm_.chanIdxIsValid(ChannelIndex::make2(5, 3)));
 }
+
+//TEST_F(TestVisualPositionManager, Simple)
+//{
+//    EXPECT_EQ(vpm_.chanIdxToVisualPosition(0), 0);
+//    EXPECT_EQ(vpm_.chanIdxToVisualPosition(10), 10);
+
+//    vpm_.setSpan(5, 5);
+//    EXPECT_CALL(*this, visualPositionChangedAfter(5, 5));
+
+//    EXPECT_EQ(vpm_.chanIdxToVisualPosition(5), 5);
+
+//}

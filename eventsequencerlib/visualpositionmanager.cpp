@@ -19,9 +19,23 @@ void VisualPositionManager::del(int channelIndexFirst)
     setSpan(channelIndexFirst, 0);
 }
 
-int VisualPositionManager::chanIdxToVisualPosition(int chanIdx)
+int VisualPositionManager::chanIdxToVisualPosition(ChannelIndex chanIdx)
 {
     return 0;
+}
+
+bool VisualPositionManager::chanIdxIsValid(ChannelIndex chanIdx)
+{
+    if (!chanIdx.hasSecond()) {
+        return true;
+    } else {
+        auto it = spanMap_.find(chanIdx.first());
+        if (it != spanMap_.end()) {
+            return chanIdx.second() < it->second;
+        } else {
+            return false;
+        }
+    }
 }
 
 int VisualPositionManager::visualPositionToChanIdx(int visualPosition)
