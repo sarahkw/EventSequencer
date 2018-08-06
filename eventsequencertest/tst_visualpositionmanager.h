@@ -48,19 +48,34 @@ TEST_F(TestVisualPositionManager, ChangedBeforeAndAfterSignals)
     vpm_.setSpan(6, 0);
 }
 
-TEST_F(TestVisualPositionManager, SignalsOnUpdate)
+TEST_F(TestVisualPositionManager, SignalsOnDelete)
 {
     using testing::_;
 
     EXPECT_CALL(*this, visualPositionChangedAfter(5, 3));
     vpm_.setSpan(5, 3);
     EXPECT_CALL(*this, visualPositionChangedAfter(5, -3));
-    vpm_.setSpan(5, 0);
+    vpm_.del(5);
 
     EXPECT_CALL(*this, visualPositionChangedBefore(-5, 3));
     vpm_.setSpan(-5, 3);
     EXPECT_CALL(*this, visualPositionChangedBefore(-5, -3));
-    vpm_.setSpan(5, 0);
+    vpm_.del(-5);
+}
+
+TEST_F(TestVisualPositionManager, SignalsOnUpdate)
+{
+    using testing::_;
+
+    EXPECT_CALL(*this, visualPositionChangedAfter(5, 3));
+    vpm_.setSpan(5, 3);
+    EXPECT_CALL(*this, visualPositionChangedAfter(5, -1));
+    vpm_.setSpan(5, 2);
+
+    EXPECT_CALL(*this, visualPositionChangedBefore(-5, 3));
+    vpm_.setSpan(-5, 3);
+    EXPECT_CALL(*this, visualPositionChangedBefore(-5, -2));
+    vpm_.setSpan(5, 1);
 }
 
 //TEST_F(TestVisualPositionManager, Simple)
