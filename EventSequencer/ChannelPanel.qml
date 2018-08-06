@@ -11,7 +11,7 @@ Rectangle {
     property int yposition
     property ES.Document doc
 
-    property int activeChannel: 0
+    property int activeChannelPosition: 0
 
     color: "white"
 
@@ -27,7 +27,7 @@ Rectangle {
 
         Item {
             property int myIndex: index + sh.initialIndex
-            property ES.WaitFor myWait: doc.waitForChannel(myIndex)
+            property ES.WaitFor myWait: doc.waitForChannelPosition(myIndex)
             property var cppChannel: myWait.result
 
             anchors.left: cPanel.left
@@ -94,7 +94,7 @@ Rectangle {
 
             Rectangle {
                 id: selectIndicator
-                readonly property bool amActive: activeChannel == myIndex
+                readonly property bool amActive: activeChannelPosition == myIndex
                 border.width: 1
                 border.color: amActive ? "lightgrey" : "whitesmoke"
                 anchors.top: parent.top
@@ -112,7 +112,7 @@ Rectangle {
                 anchors.fill: parent
                 acceptedButtons: Qt.RightButton
                 onClicked: {
-                    activeChannel = myIndex
+                    activeChannelPosition = myIndex
                 }
             }
         }

@@ -10,7 +10,7 @@ Window {
         model: win.model
         delegate: Row {
             Text {
-                text: channelIndex
+                text: channelPosition
                 width: 50
             }
             Text {

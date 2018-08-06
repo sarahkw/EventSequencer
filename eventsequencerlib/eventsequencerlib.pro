@@ -63,7 +63,8 @@ SOURCES += \
     concatiodevice.cpp \
     channelindex.cpp \
     channel/spanchannel.cpp \
-    visualpositionmanager.cpp
+    visualpositionmanager.cpp \
+    channelindexfactory.cpp
 
 
 HEADERS += \
@@ -107,7 +108,8 @@ HEADERS += \
     concatiodevice.h \
     channelindex.h \
     channel/spanchannel.h \
-    visualpositionmanager.h
+    visualpositionmanager.h \
+    channelindexfactory.h
 
 unix {
     target.path = /usr/lib

@@ -128,7 +128,7 @@ ApplicationWindow {
                 text: "&Strip"
                 onTriggered: {
                     var cppStrip = document.createStrip()
-                    cppStrip.channel = channelPanel.activeChannel
+                    cppStrip.channelPosition = channelPanel.activeChannelPosition
                     cppStrip.startFrame = cursor.frame
                     cppStrip.length = 10 // Maybe make this one large tick instead
                     cppStrip.markAsPlaced()
@@ -510,7 +510,7 @@ ApplicationWindow {
                 yposition: body.y
                 doc: document
 
-                property ES.WaitFor waitForchannel: document.waitForChannel(activeChannel)
+                property ES.WaitFor waitForchannel: document.waitForChannelPosition(activeChannelPosition)
                 property var activeCppChannel: waitForchannel.result
             }
 
@@ -532,7 +532,7 @@ ApplicationWindow {
                 }
                 onClicked: {
                     selectedCppStrips = []
-                    channelPanel.activeChannel = xyPositionToChannel(mouse.x, mouse.y)
+                    channelPanel.activeChannelPosition = xyPositionToChannel(mouse.x, mouse.y)
                 }
             }
 
@@ -611,7 +611,7 @@ ApplicationWindow {
                         Loader {
                             sourceComponent: controlResolver.resolve(modelData.channelType).channelTrackComponent
                             property var cppChannel: modelData
-                            y: channelIndex * channelPixels
+                            y: channelPosition * channelPixels
                             height: channelPixels
                             property ES.ConstrainedMetricsFontUtil cmfuAlignedFont: body.cmfuAlignedFont
                             property ZoomLogic zoom: appwin.zoom
@@ -631,7 +631,7 @@ ApplicationWindow {
 
                             QtObject {
                                 id: channelControlResolver
-                                property ES.WaitFor waitFor: document.waitForChannel(cppStrip.channel)
+                                property ES.WaitFor waitFor: document.waitForChannelIndex(cppStrip.channelIndex)
                                 property var chan: waitFor.result
                                 property var type: chan !== null ? chan.channelType : null
                                 property var control: type !== null ? controlResolver.resolve(type) : null
@@ -658,7 +658,7 @@ ApplicationWindow {
                                 stripBase.selectionMode = newSelectionMode
 
                                 if (activeChannelFollowsSelectionAction.checked) {
-                                    channelPanel.activeChannel = cppStrip.channel
+                                    channelPanel.activeChannelPosition = cppStrip.channelPosition
                                 }
                             }
 
@@ -1048,7 +1048,7 @@ ApplicationWindow {
                                     }
                                     ESTextField {
                                         Layout.fillWidth: true
-                                        text: selectedCppStrip.channel
+                                        text: selectedCppStrip.channelIndex.toPathString()
                                         validator: IntValidator { }
                                         onEsEditingFinished: selectedCppStrip.channel = parseInt(text, 10)
                                     }
@@ -1125,7 +1125,7 @@ ApplicationWindow {
 
                         sourceComponent: ((chanPropComp !== null &&
                                            selectedCppStrips.every(function (cppStrip) {
-                                               return cppStrip.channel === channelPanel.activeChannel
+                                               return cppStrip.channelPosition === channelPanel.activeChannelPosition
                                            })) ? channelPropertiesComponent : blankComponent)
 
                         Component {

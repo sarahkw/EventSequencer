@@ -6,6 +6,8 @@
 
 class ChannelIndex
 {
+    Q_GADGET
+
     int first_ = 0;       // The first one is a map.
     unsigned second_ = 0; // The second one is an indexed list.
     bool hasSecond_ = false;
@@ -20,6 +22,8 @@ public:
     bool operator==(const ChannelIndex& o) const;
     bool operator!=(const ChannelIndex& o) const;
     QString toDebugString() const;
+
+    Q_INVOKABLE QString toPathString();
 };
 
 Q_DECLARE_METATYPE(ChannelIndex)

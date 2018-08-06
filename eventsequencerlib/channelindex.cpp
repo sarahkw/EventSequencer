@@ -60,5 +60,14 @@ QString ChannelIndex::toDebugString() const
 {
     return QString("(ChannelIndex %1%2)")
         .arg(first_)
-        .arg(hasSecond_ ? QString(" %1").arg(second_) : QString());
+            .arg(hasSecond_ ? QString(" %1").arg(second_) : QString());
+}
+
+QString ChannelIndex::toPathString()
+{
+    if (hasSecond_) {
+        return QString("%1.%1").arg(first_).arg(second_);
+    } else {
+        return QString::number(first_);
+    }
 }

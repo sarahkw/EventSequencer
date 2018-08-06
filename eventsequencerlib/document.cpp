@@ -77,6 +77,9 @@ QVariant DocumentChannelsModel::data(const QModelIndex &index, int role) const
             return QVariant::fromValue(d_.channels_[displayRows_[index.row()]]);
         } else if (role == ChannelIndexRole) {
             return QVariant::fromValue(displayRows_[index.row()]);
+        } else if (role == ChannelPositionRole) {
+            return QVariant::fromValue(
+                        d_.channelPositionManager().chanIdxToVisualPosition(displayRows_[index.row()]));
         }
     }
     return QVariant();
@@ -86,7 +89,8 @@ QHash<int, QByteArray> DocumentChannelsModel::roleNames() const
 {
     return {
         {ModelDataRole, "modelData"},
-        {ChannelIndexRole, "channelIndex"}
+        {ChannelIndexRole, "channelIndex"},
+        {ChannelPositionRole, "channelPosition"}
     };
 }
 

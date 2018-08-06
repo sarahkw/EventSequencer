@@ -48,7 +48,8 @@ class DocumentChannelsModel : public QAbstractListModel
 
     enum CustomRoles {
         ModelDataRole = Qt::UserRole + 1,
-        ChannelIndexRole
+        ChannelIndexRole,
+        ChannelPositionRole
     };
 
     std::vector<ChannelIndex> displayRows_;
