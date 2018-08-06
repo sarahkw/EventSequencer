@@ -12,7 +12,7 @@ ChannelIndex ChannelIndex::make1(int first)
     return cidx;
 }
 
-ChannelIndex ChannelIndex::make2(int first, int second)
+ChannelIndex ChannelIndex::make2(int first, unsigned second)
 {
     ChannelIndex cidx;
     cidx.first_ = first;
@@ -31,7 +31,7 @@ bool ChannelIndex::hasSecond() const
     return hasSecond_;
 }
 
-int ChannelIndex::second() const
+unsigned ChannelIndex::second() const
 {
     return second_;
 }
@@ -58,5 +58,7 @@ bool ChannelIndex::operator!=(const ChannelIndex &o) const
 
 QString ChannelIndex::toDebugString() const
 {
-    return QString("(ChannelIndex %1)").arg(first_);
+    return QString("(ChannelIndex %1%2)")
+        .arg(first_)
+        .arg(hasSecond_ ? QString(" %1").arg(second_) : QString());
 }

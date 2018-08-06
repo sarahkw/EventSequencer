@@ -6,16 +6,16 @@
 
 class ChannelIndex
 {
-    int first_ = 0;
-    int second_ = 0;
+    int first_ = 0;       // The first one is a map.
+    unsigned second_ = 0; // The second one is an indexed list.
     bool hasSecond_ = false;
 public:
     ChannelIndex();
     static ChannelIndex make1(int first);
-    static ChannelIndex make2(int first, int second);
+    static ChannelIndex make2(int first, unsigned second);
     int first() const;
     bool hasSecond() const;
-    int second() const;
+    unsigned second() const;
     bool operator<(const ChannelIndex& o) const;
     bool operator==(const ChannelIndex& o) const;
     bool operator!=(const ChannelIndex& o) const;
