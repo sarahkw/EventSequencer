@@ -7,17 +7,28 @@ VisualPositionManager::VisualPositionManager(QObject* parent) : QObject(parent)
 
 void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
 {
-    if (span == 0) {
-        spanMap_.erase(channelIndexFirst);
+    unsigned oldSpan = 0;
+
+    auto oldSpanIter = spanMap_.find(channelIndexFirst);
+    if (oldSpanIter != spanMap_.end()) {
+        oldSpan = oldSpanIter->second;
+        if (span == 0) {
+            spanMap_.erase(oldSpanIter);
+        } else {
+            oldSpanIter->second = span;
+        }
     } else {
+        // New!
         spanMap_[channelIndexFirst] = span;
     }
 
-    if (span > 0) {
+    int diffSpan = static_cast<int>(span) - static_cast<int>(oldSpan);
+
+    if (diffSpan != 0) {
         if (channelIndexFirst >= 0) {
-            emit visualPositionChangedAfter(channelIndexFirst, static_cast<int>(span));
+            emit visualPositionChangedAfter(channelIndexFirst, diffSpan);
         } else {
-            emit visualPositionChangedBefore(channelIndexFirst, static_cast<int>(span));
+            emit visualPositionChangedBefore(channelIndexFirst, diffSpan);
         }
     }
 }

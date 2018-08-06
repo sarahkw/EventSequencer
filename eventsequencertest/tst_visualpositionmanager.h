@@ -75,7 +75,7 @@ TEST_F(TestVisualPositionManager, SignalsOnUpdate)
     EXPECT_CALL(*this, visualPositionChangedBefore(-5, 3));
     vpm_.setSpan(-5, 3);
     EXPECT_CALL(*this, visualPositionChangedBefore(-5, -2));
-    vpm_.setSpan(5, 1);
+    vpm_.setSpan(-5, 1);
 }
 
 //TEST_F(TestVisualPositionManager, Simple)
