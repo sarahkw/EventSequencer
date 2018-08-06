@@ -52,7 +52,19 @@ int VisualPositionManager::chanIdxToVisualPosition(ChannelIndex chanIdx)
     if (!chanIdxIsValid(chanIdx)) {
         qWarning() << "Channel index not valid!" << chanIdx.toDebugString();
     }
-    return 0;
+
+    auto from = spanMap_.lower_bound(0);
+    auto to = spanMap_.lower_bound(chanIdx.first());
+    int delta = 0;
+    for (auto iter = from; iter != to; ++iter) {
+        delta += iter->second;
+    }
+
+    int ret = chanIdx.first() + delta;
+    if (chanIdx.hasSecond()) {
+        ret += 1 + chanIdx.second();
+    }
+    return ret;
 }
 
 bool VisualPositionManager::chanIdxIsValid(ChannelIndex chanIdx)
