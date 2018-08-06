@@ -120,6 +120,12 @@ TEST_F(TestVisualPositionManager, IdxToVisPos)
     EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make2(10, 0)), 11);
     EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make2(10, 4)), 15);
     EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make1(11)), 16);
+
+    // Another round
+    vpm_.setSpan(12, 1);
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make1(12)), 17);
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make2(12, 0)), 18);
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make1(13)), 19);
 }
 
 TEST_F(TestVisualPositionManager, IdxToVisPos_Negative)
@@ -134,6 +140,12 @@ TEST_F(TestVisualPositionManager, IdxToVisPos_Negative)
     EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make2(-10, 0)), -11);
     EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make2(-10, 4)), -15);
     EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make1(-11)), -16);
+
+    // Another round
+    vpm_.setSpan(-12, 1);
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make1(-12)), -17);
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make2(-12, 0)), -18);
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make1(-13)), -19);
 }
 
 TEST_F(TestVisualPositionManager, VisPosToIdx)
@@ -148,6 +160,12 @@ TEST_F(TestVisualPositionManager, VisPosToIdx)
     EXPECT_EQ(vpm_.visualPositionToChanIdx(11), ChannelIndex::make2(10, 0));
     EXPECT_EQ(vpm_.visualPositionToChanIdx(15), ChannelIndex::make2(10, 4));
     EXPECT_EQ(vpm_.visualPositionToChanIdx(16), ChannelIndex::make1(11));
+
+    // Another round
+    vpm_.setSpan(12, 1);
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(17), ChannelIndex::make1(12));
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(18), ChannelIndex::make2(12, 0));
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(19), ChannelIndex::make1(13));
 }
 
 TEST_F(TestVisualPositionManager, VisPosToIdx_Negative)
@@ -165,4 +183,11 @@ TEST_F(TestVisualPositionManager, VisPosToIdx_Negative)
     EXPECT_EQ(vpm_.visualPositionToChanIdx(-14), ChannelIndex::make2(-10, 3));
     EXPECT_EQ(vpm_.visualPositionToChanIdx(-15), ChannelIndex::make2(-10, 4));
     EXPECT_EQ(vpm_.visualPositionToChanIdx(-16), ChannelIndex::make1(-11));
+
+    // Another round
+    vpm_.setSpan(-12, 1);
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(-17), ChannelIndex::make1(-12));
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(-18), ChannelIndex::make2(-12, 0));
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(-19), ChannelIndex::make1(-13));
+
 }
