@@ -22,7 +22,7 @@ public:
 
     int chanIdxToVisualPosition(ChannelIndex chanIdx);
     bool chanIdxIsValid(ChannelIndex chanIdx);
-    int visualPositionToChanIdx(int visualPosition);
+    ChannelIndex visualPositionToChanIdx(int visualPosition);
 
     const std::map<int, unsigned>& spanMap() const; // Needed to make placeholders
 

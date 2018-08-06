@@ -98,9 +98,9 @@ bool VisualPositionManager::chanIdxIsValid(ChannelIndex chanIdx)
     }
 }
 
-int VisualPositionManager::visualPositionToChanIdx(int visualPosition)
+ChannelIndex VisualPositionManager::visualPositionToChanIdx(int visualPosition)
 {
-    return 0;
+    return ChannelIndex::make1(0);
 }
 
 const std::map<int, unsigned> &VisualPositionManager::spanMap() const
