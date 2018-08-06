@@ -168,7 +168,9 @@ QObject *Document::audioFormatHolderQObject()
 
 void Document::channelAfterAddOrReplace(ChannelIndex channelIndex, QObject *channel, AddOrReplace mode)
 {
-    channelWaitFor_.afterAdd(channelIndex, channel);
+    channelWaitForIndex_.afterAdd(channelIndex, channel);
+    channelWaitForPosition_.afterAdd(channelPositionManager().chanIdxToVisualPosition(channelIndex),
+                                     channel);
 
     // TODO If we know we're adding or replacing, we would use less resources.
     auto iter = channelsProvidingClock_.find(channelIndex);
@@ -198,7 +200,8 @@ void Document::channelAfterAddOrReplace(ChannelIndex channelIndex, QObject *chan
 
 void Document::channelBeforeDelete(ChannelIndex channelIndex)
 {
-    channelWaitFor_.beforeDelete(channelIndex);
+    channelWaitForIndex_.beforeDelete(channelIndex);
+    channelWaitForPosition_.beforeDelete(channelPositionManager().chanIdxToVisualPosition(channelIndex));
 
     auto iter = channelsProvidingClock_.find(channelIndex);
     if (iter != channelsProvidingClock_.end()) {
@@ -588,13 +591,23 @@ void Document::deleteChannel(ChannelIndex channelIndex)
     }
 }
 
-WaitFor *Document::waitForChannel(ChannelIndex channelIndex)
+WaitFor *Document::waitForChannelIndex(ChannelIndex channelIndex)
 {
     auto it = channels_.find(channelIndex);
     if (it != channels_.end()) {
-        return channelWaitFor_.waitFor(channelIndex, it->second);
+        return channelWaitForIndex_.waitFor(channelIndex, it->second);
     } else {
-        return channelWaitFor_.waitFor(channelIndex);
+        return channelWaitForIndex_.waitFor(channelIndex);
+    }
+}
+
+WaitFor *Document::waitForChannelPosition(int channelPosition)
+{
+    auto it = channels_.find(channelPositionManager().visualPositionToChanIdx(channelPosition));
+    if (it != channels_.end()) {
+        return channelWaitForPosition_.waitFor(channelPosition, it->second);
+    } else {
+        return channelWaitForPosition_.waitFor(channelPosition);
     }
 }
 

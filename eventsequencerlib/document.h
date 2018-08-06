@@ -87,7 +87,8 @@ class Document : public QObject
 
     std::map<ChannelIndex, channel::ChannelBase*> channels_;
     VisualPositionManager channelPositionManager_;
-    WaitForHost<ChannelIndex> channelWaitFor_;
+    WaitForHost<ChannelIndex> channelWaitForIndex_;
+    WaitForHost<int> channelWaitForPosition_;
     std::set<ChannelIndex> channelsProvidingClock_;
 
     Q_PROPERTY(QVariantList channelsProvidingClock
@@ -145,7 +146,8 @@ public:
     QAbstractListModel* channelsModel();
     Q_INVOKABLE QObject* createChannel(ChannelIndex channelIndex, channel::ChannelType::Enum type);
     Q_INVOKABLE void deleteChannel(ChannelIndex channelIndex);
-    Q_INVOKABLE WaitFor* waitForChannel(ChannelIndex channelIndex);
+    Q_INVOKABLE WaitFor* waitForChannelIndex(ChannelIndex channelIndex);
+    Q_INVOKABLE WaitFor* waitForChannelPosition(int channelPosition);
     const VisualPositionManager& channelPositionManager() const;
 
     int framesPerSecond() const;
