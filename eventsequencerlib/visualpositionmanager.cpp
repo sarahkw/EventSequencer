@@ -100,7 +100,20 @@ bool VisualPositionManager::chanIdxIsValid(ChannelIndex chanIdx)
 
 ChannelIndex VisualPositionManager::visualPositionToChanIdx(int visualPosition)
 {
-    return ChannelIndex::make1(0);
+    for (auto iter = spanMap_.lower_bound(0); iter != spanMap_.end(); ++iter) {
+        if (visualPosition > iter->first) {
+            const bool inThisRange = visualPosition <= iter->first + iter->second;
+            if (inThisRange) {
+                return ChannelIndex::make2(iter->first, visualPosition - 1 - iter->first);
+            } else {
+                visualPosition -= iter->second;
+            }
+        } else {
+            break;
+        }
+    }
+
+    return ChannelIndex::make1(visualPosition);
 }
 
 const std::map<int, unsigned> &VisualPositionManager::spanMap() const
