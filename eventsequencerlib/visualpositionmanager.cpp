@@ -69,8 +69,8 @@ int VisualPositionManager::chanIdxToVisualPosition(ChannelIndex chanIdx)
         }
         return ret;
     } else {
-        auto from = spanMap_.upper_bound(chanIdx.first());
-        auto to = spanMap_.lower_bound(0);
+        auto from = std::make_reverse_iterator(spanMap_.lower_bound(0));
+        auto to = std::make_reverse_iterator(spanMap_.upper_bound(chanIdx.first()));
         int delta = 0;
         for (auto iter = from; iter != to; ++iter) {
             delta += iter->second;
@@ -100,16 +100,32 @@ bool VisualPositionManager::chanIdxIsValid(ChannelIndex chanIdx)
 
 ChannelIndex VisualPositionManager::visualPositionToChanIdx(int visualPosition)
 {
-    for (auto iter = spanMap_.lower_bound(0); iter != spanMap_.end(); ++iter) {
-        if (visualPosition > iter->first) {
-            const bool inThisRange = visualPosition <= iter->first + iter->second;
-            if (inThisRange) {
-                return ChannelIndex::make2(iter->first, visualPosition - 1 - iter->first);
+    if (visualPosition >= 0) {
+        for (auto iter = spanMap_.lower_bound(0); iter != spanMap_.end(); ++iter) {
+            if (visualPosition > iter->first) {
+                const bool inThisRange = visualPosition <= iter->first + iter->second;
+                if (inThisRange) {
+                    return ChannelIndex::make2(iter->first, visualPosition - (1 + iter->first));
+                } else {
+                    visualPosition -= iter->second;
+                }
             } else {
-                visualPosition -= iter->second;
+                break;
             }
-        } else {
-            break;
+        }
+    } else {
+        for (auto iter = std::make_reverse_iterator(spanMap_.lower_bound(0));
+             iter != spanMap_.rend(); ++iter) {
+            if (visualPosition < iter->first) {
+                const bool inThisRange = visualPosition >= iter->first - iter->second;
+                if (inThisRange) {
+                    return ChannelIndex::make2(iter->first, -(visualPosition - (iter->first - 1)));
+                } else {
+                    visualPosition += iter->second;
+                }
+            } else {
+                break;
+            }
         }
     }
 
