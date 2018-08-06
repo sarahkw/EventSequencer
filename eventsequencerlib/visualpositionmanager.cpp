@@ -1,5 +1,7 @@
 #include "visualpositionmanager.h"
 
+#include <QDebug>
+
 VisualPositionManager::VisualPositionManager(QObject* parent) : QObject(parent)
 {
 
@@ -45,6 +47,11 @@ void VisualPositionManager::del(int channelIndexFirst)
 
 int VisualPositionManager::chanIdxToVisualPosition(ChannelIndex chanIdx)
 {
+    // We'll get bad visual results but I don't think it's worth ASSERTing over.
+    // XXX Maybe if we had a soft assert...
+    if (!chanIdxIsValid(chanIdx)) {
+        qWarning() << "Channel index not valid!" << chanIdx.toDebugString();
+    }
     return 0;
 }
 

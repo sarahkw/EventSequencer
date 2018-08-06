@@ -108,14 +108,15 @@ TEST_F(TestVisualPositionManager, DestroySignals)
     vpm_.setSpan(5, 0);
 }
 
-//TEST_F(TestVisualPositionManager, Simple)
-//{
-//    EXPECT_EQ(vpm_.chanIdxToVisualPosition(0), 0);
-//    EXPECT_EQ(vpm_.chanIdxToVisualPosition(10), 10);
-
-//    vpm_.setSpan(5, 5);
-//    EXPECT_CALL(*this, visualPositionChangedAfter(5, 5));
-
-//    EXPECT_EQ(vpm_.chanIdxToVisualPosition(5), 5);
-
-//}
+TEST_F(TestVisualPositionManager, IdxToVisPos)
+{
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make1(9)), 9);
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make1(10)), 10);
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make1(11)), 11);
+    vpm_.setSpan(10, 5);
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make1(9)), 9);
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make1(10)), 10);
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make2(10, 0)), 11);
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make2(10, 4)), 15);
+    EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make1(11)), 16);
+}
