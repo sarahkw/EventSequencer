@@ -5,6 +5,7 @@
 #include "waitforhost.h"
 #include "documentstripsonchannel.h"
 #include "channelindex.h"
+#include "visualpositionmanager.h"
 
 #include <QAbstractListModel>
 #include <QUrl>
@@ -85,6 +86,7 @@ class Document : public QObject
     Q_PROPERTY(int endFrame READ endFrame WRITE setEndFrame NOTIFY endFrameChanged)
 
     std::map<ChannelIndex, channel::ChannelBase*> channels_;
+    VisualPositionManager channelPositionManager_;
     WaitForHost<ChannelIndex> channelWaitFor_;
     std::set<ChannelIndex> channelsProvidingClock_;
 
@@ -144,6 +146,7 @@ public:
     Q_INVOKABLE QObject* createChannel(ChannelIndex channelIndex, channel::ChannelType::Enum type);
     Q_INVOKABLE void deleteChannel(ChannelIndex channelIndex);
     Q_INVOKABLE WaitFor* waitForChannel(ChannelIndex channelIndex);
+    const VisualPositionManager& channelPositionManager() const;
 
     int framesPerSecond() const;
     void setFramesPerSecond(int framesPerSecond);

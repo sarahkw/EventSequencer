@@ -21,10 +21,21 @@ void Strip::setChannelIndex(ChannelIndex channelIndex)
         auto oldChannelIndex = channelIndex_;
         channelIndex_ = channelIndex;
         emit channelIndexChanged();
+        emit channelPositionChanged();
         if (hasPlaced_) {
             emit d_.stripMoved(this, oldChannelIndex, startFrame_, length_);
         }
     }
+}
+
+int Strip::channelPosition() const
+{
+    return d_.channelPositionManager().chanIdxToVisualPosition(channelIndex());
+}
+
+void Strip::setChannelPosition(int channelPosition)
+{
+    setChannelIndex(d_.channelPositionManager().visualPositionToChanIdx(channelPosition));
 }
 
 int Strip::startFrame() const

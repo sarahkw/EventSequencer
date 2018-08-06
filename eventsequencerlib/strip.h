@@ -43,6 +43,7 @@ class Strip : public QObject
     stripext::PlaylistStripExt* playlist_ = nullptr;
 
     Q_PROPERTY(ChannelIndex channelIndex READ channelIndex WRITE setChannelIndex NOTIFY channelIndexChanged)
+    Q_PROPERTY(int channelPosition READ channelPosition WRITE setChannelPosition NOTIFY channelPositionChanged)
     Q_PROPERTY(int startFrame READ startFrame WRITE setStartFrame NOTIFY startFrameChanged)
     Q_PROPERTY(int length READ length WRITE setLength NOTIFY lengthChanged)
     Q_PROPERTY(QUrl resourceUrl READ resourceUrl WRITE setResourceUrl NOTIFY resourceUrlChanged)
@@ -61,6 +62,9 @@ public:
 
     ChannelIndex channelIndex() const;
     void setChannelIndex(ChannelIndex channelIndex);
+
+    int channelPosition() const;
+    void setChannelPosition(int channelPosition);
 
     int startFrame() const;
     void setStartFrame(int startFrame);
@@ -94,6 +98,7 @@ public:
 signals:
 
     void channelIndexChanged();
+    void channelPositionChanged();
     void startFrameChanged();
     void lengthChanged();
     void resourceUrlChanged();

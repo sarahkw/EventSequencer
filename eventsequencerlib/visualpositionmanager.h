@@ -20,9 +20,9 @@ public:
     void setSpan(int channelIndexFirst, unsigned span);
     void del(int channelIndexFirst);
 
-    int chanIdxToVisualPosition(ChannelIndex chanIdx);
-    bool chanIdxIsValid(ChannelIndex chanIdx);
-    ChannelIndex visualPositionToChanIdx(int visualPosition);
+    int chanIdxToVisualPosition(ChannelIndex chanIdx) const;
+    bool chanIdxIsValid(ChannelIndex chanIdx) const;
+    ChannelIndex visualPositionToChanIdx(int visualPosition) const;
 
     const std::map<int, unsigned>& spanMap() const; // Needed to make placeholders
 

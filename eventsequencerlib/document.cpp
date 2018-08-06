@@ -597,3 +597,8 @@ WaitFor *Document::waitForChannel(ChannelIndex channelIndex)
         return channelWaitFor_.waitFor(channelIndex);
     }
 }
+
+const VisualPositionManager &Document::channelPositionManager() const
+{
+    return channelPositionManager_;
+}

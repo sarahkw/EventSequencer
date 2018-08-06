@@ -45,7 +45,7 @@ void VisualPositionManager::del(int channelIndexFirst)
     setSpan(channelIndexFirst, 0);
 }
 
-int VisualPositionManager::chanIdxToVisualPosition(ChannelIndex chanIdx)
+int VisualPositionManager::chanIdxToVisualPosition(ChannelIndex chanIdx) const
 {
     // We'll get bad visual results but I don't think it's worth ASSERTing over.
     // XXX Maybe if we had a soft assert...
@@ -84,7 +84,7 @@ int VisualPositionManager::chanIdxToVisualPosition(ChannelIndex chanIdx)
     }
 }
 
-bool VisualPositionManager::chanIdxIsValid(ChannelIndex chanIdx)
+bool VisualPositionManager::chanIdxIsValid(ChannelIndex chanIdx) const
 {
     if (!chanIdx.hasSecond()) {
         return true;
@@ -98,7 +98,7 @@ bool VisualPositionManager::chanIdxIsValid(ChannelIndex chanIdx)
     }
 }
 
-ChannelIndex VisualPositionManager::visualPositionToChanIdx(int visualPosition)
+ChannelIndex VisualPositionManager::visualPositionToChanIdx(int visualPosition) const
 {
     if (visualPosition >= 0) {
         for (auto iter = spanMap_.lower_bound(0); iter != spanMap_.end(); ++iter) {
