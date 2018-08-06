@@ -62,7 +62,8 @@ SOURCES += \
     playercontrol.cpp \
     concatiodevice.cpp \
     channelindex.cpp \
-    channel/spanchannel.cpp
+    channel/spanchannel.cpp \
+    visualpositionmanager.cpp
 
 
 HEADERS += \
@@ -105,7 +106,8 @@ HEADERS += \
     playercontrol.h \
     concatiodevice.h \
     channelindex.h \
-    channel/spanchannel.h
+    channel/spanchannel.h \
+    visualpositionmanager.h
 
 unix {
     target.path = /usr/lib
