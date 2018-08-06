@@ -3,6 +3,11 @@
 
 #include "visualpositionmanager.h"
 
+inline void PrintTo(const ChannelIndex &val, ::std::ostream *os)
+{
+    *os << val.toDebugString().toStdString();
+}
+
 struct TestVisualPositionManager : public testing::Test {
     MOCK_METHOD2(visualPositionChangedAfter, void(int, int));
     MOCK_METHOD2(visualPositionChangedBefore, void(int, int));
