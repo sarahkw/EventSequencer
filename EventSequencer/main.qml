@@ -712,7 +712,7 @@ ApplicationWindow {
                                            zoom.displayWidthPerRulerTick / 2),
                                        3 // Hard limit.
                                        )
-                            y: cppStrip.channel * channelPixels
+                            y: cppStrip.channelPosition * channelPixels
                             height: channelPixels
 
                             function floorDiv(a, b) {
@@ -732,7 +732,7 @@ ApplicationWindow {
                                         switch (stripBase.selectionMode) {
                                         case SelectionMode.Whole:
                                             cppStrip.startFrame += zoom.mapDisplayWidthToFullFrames(myDiffX)
-                                            cppStrip.channel += floorDiv(myDiffY, channelPixels)
+                                            cppStrip.channelPosition += floorDiv(myDiffY, channelPixels)
                                             break;
                                         case SelectionMode.Right:
                                             cppStrip.length += zoom.mapDisplayWidthToFullFrames(myDiffX)
@@ -748,7 +748,7 @@ ApplicationWindow {
                             }
 
                             property int initialFrame
-                            property int initialChannel
+                            property int initialChannelPosition
                             property int initialLength
 
                             StateGroup {
@@ -762,15 +762,15 @@ ApplicationWindow {
                                             target: stripBase
                                             explicit: true
                                             initialFrame: cppStrip.startFrame
-                                            initialChannel: cppStrip.channel
+                                            initialChannelPosition: cppStrip.channelPosition
                                         }
 
                                         PropertyChanges {
                                             target: cppStrip
                                             startFrame: (initialFrame +
                                                          zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
-                                            channel: (initialChannel +
-                                                      floorDiv(grabMode.diffY, channelPixels))
+                                            channelPosition: (initialChannelPosition +
+                                                              floorDiv(grabMode.diffY, channelPixels))
                                         }
                                     },
                                     State {
