@@ -2,6 +2,7 @@
 #define CHANNELINDEXFACTORY_H
 
 #include <QObject>
+#include <QVariant>
 #include "channelindex.h"
 
 class ChannelIndexFactory : public QObject
@@ -10,8 +11,8 @@ class ChannelIndexFactory : public QObject
 public:
     explicit ChannelIndexFactory(QObject *parent = nullptr);
 
-    Q_INVOKABLE ChannelIndex make1(int first);
-    Q_INVOKABLE ChannelIndex make2(int first, unsigned second);
+    Q_INVOKABLE QVariant make1(int first);
+    Q_INVOKABLE QVariant make2(int first, unsigned second);
 
 signals:
 

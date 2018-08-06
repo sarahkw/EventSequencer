@@ -26,8 +26,8 @@ Rectangle {
         model: sh.itemsToRender
 
         Item {
-            property int myIndex: index + sh.initialIndex
-            property ES.WaitFor myWait: doc.waitForChannelPosition(myIndex)
+            property int myPosition: index + sh.initialIndex
+            property ES.WaitFor myWait: doc.waitForChannelPosition(myPosition)
             property var cppChannel: myWait.result
 
             anchors.left: cPanel.left
@@ -83,10 +83,10 @@ Rectangle {
                 onCurrentIndexChanged: {
                     if (currentIndex === 0) {
                         if (cppChannel !== null) {
-                            doc.deleteChannel(myIndex)
+                            doc.deleteChannel(ES.ChannelIndexFactory.make1(myPosition))
                         }
                     } else if (cppChannel === null || modelUtil.enumToIndex(cppChannel.channelType) !== currentIndex) {
-                        doc.createChannel(myIndex, modelUtil.indexToEnum(currentIndex))
+                        doc.createChannel(ES.ChannelIndexFactory.make1(myPosition), modelUtil.indexToEnum(currentIndex))
                     }
                 }
                 onFocusChanged: focus = false
@@ -94,7 +94,7 @@ Rectangle {
 
             Rectangle {
                 id: selectIndicator
-                readonly property bool amActive: activeChannelPosition == myIndex
+                readonly property bool amActive: activeChannelPosition == myPosition
                 border.width: 1
                 border.color: amActive ? "lightgrey" : "whitesmoke"
                 anchors.top: parent.top
@@ -112,7 +112,7 @@ Rectangle {
                 anchors.fill: parent
                 acceptedButtons: Qt.RightButton
                 onClicked: {
-                    activeChannelPosition = myIndex
+                    activeChannelPosition = myPosition
                 }
             }
         }
