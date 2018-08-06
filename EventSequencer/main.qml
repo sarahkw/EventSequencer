@@ -1099,8 +1099,8 @@ ApplicationWindow {
                                     anchors.right: parent.right
 
                                     property ES.WaitFor waitForchannel: document.waitForChannelIndex(selectedCppStrip.channelIndex)
-                                    property var channel: waitForchannel.result
-                                    property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
+                                    property var cppChannel: waitForchannel.result
+                                    property var control: cppChannel !== null ? controlResolver.resolve(cppChannel.channelType) : null
                                     property var stripPropComp: control !== null ? Util.nvl(control.stripPropertiesComponent, blankComponent) : blankComponent
 
                                     sourceComponent: stripPropComp
@@ -1115,8 +1115,8 @@ ApplicationWindow {
                         anchors.left: parent.left
                         anchors.right: parent.right
 
-                        property var channel: channelPanel.activeCppChannel
-                        property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
+                        property var cppChannel: channelPanel.activeCppChannel
+                        property var control: cppChannel !== null ? controlResolver.resolve(cppChannel.channelType) : null
                         property var chanPropComp: (
                                                        (control !== null && control.channelPropertiesComponent !== undefined) ?
                                                            control.channelPropertiesComponent :
@@ -1144,7 +1144,7 @@ ApplicationWindow {
                                     anchors.right: parent.right
                                     sourceComponent: chanPropComp
 
-                                    property var cppChannel: channel
+                                    property var cppChannel: channelPanel.activeCppChannel
                                 }
                             }
                         }
