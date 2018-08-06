@@ -6,6 +6,7 @@
 struct TestVisualPositionManager : public testing::Test {
     MOCK_METHOD2(visualPositionChangedAfter, void(int, int));
     MOCK_METHOD2(visualPositionChangedBefore, void(int, int));
+    MOCK_METHOD2(destroyChanIdx, void(ChannelIndex, ChannelIndex));
     VisualPositionManager vpm_;
     TestVisualPositionManager()
     {
@@ -15,6 +16,10 @@ struct TestVisualPositionManager : public testing::Test {
         QObject::connect(
             &vpm_, &VisualPositionManager::visualPositionChangedBefore,
             [this](int a, int b) { this->visualPositionChangedBefore(a, b); });
+        QObject::connect(&vpm_, &VisualPositionManager::destroyChanIdx,
+                         [this](ChannelIndex from, ChannelIndex to) {
+                             this->destroyChanIdx(from, to);
+                         });
     }
 };
 
@@ -48,7 +53,7 @@ TEST_F(TestVisualPositionManager, ChangedBeforeAndAfterSignals)
     vpm_.setSpan(6, 0);
 }
 
-TEST_F(TestVisualPositionManager, SignalsOnDelete)
+TEST_F(TestVisualPositionManager, ChangedSignalsOnDelete)
 {
     using testing::_;
 
@@ -63,7 +68,7 @@ TEST_F(TestVisualPositionManager, SignalsOnDelete)
     vpm_.del(-5);
 }
 
-TEST_F(TestVisualPositionManager, SignalsOnUpdate)
+TEST_F(TestVisualPositionManager, ChangedSignalsOnUpdate)
 {
     using testing::_;
 
@@ -76,6 +81,26 @@ TEST_F(TestVisualPositionManager, SignalsOnUpdate)
     vpm_.setSpan(-5, 3);
     EXPECT_CALL(*this, visualPositionChangedBefore(-5, -2));
     vpm_.setSpan(-5, 1);
+}
+
+TEST_F(TestVisualPositionManager, DestroySignals)
+{
+    using testing::_;
+    using testing::InSequence;
+
+    {
+        testing::InSequence dummy;
+
+        EXPECT_CALL(*this, visualPositionChangedAfter(5, 3));
+        EXPECT_CALL(*this, destroyChanIdx(ChannelIndex::make2(5, 2), ChannelIndex::make2(5, 2)));
+        EXPECT_CALL(*this, visualPositionChangedAfter(5, -1));
+        EXPECT_CALL(*this, destroyChanIdx(ChannelIndex::make2(5, 0), ChannelIndex::make2(5, 1)));
+        EXPECT_CALL(*this, visualPositionChangedAfter(5, -2));
+    }
+
+    vpm_.setSpan(5, 3);
+    vpm_.setSpan(5, 2);
+    vpm_.setSpan(5, 0);
 }
 
 //TEST_F(TestVisualPositionManager, Simple)
