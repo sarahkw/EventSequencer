@@ -146,3 +146,16 @@ TEST_F(TestVisualPositionManager, VisPosToIdx)
     EXPECT_EQ(vpm_.visualPositionToChanIdx(15), ChannelIndex::make2(10, 4));
     EXPECT_EQ(vpm_.visualPositionToChanIdx(16), ChannelIndex::make1(11));
 }
+
+TEST_F(TestVisualPositionManager, VisPosToIdx_Negative)
+{
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(-9), ChannelIndex::make1(-9));
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(-10), ChannelIndex::make1(-10));
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(-11), ChannelIndex::make1(-11));
+    vpm_.setSpan(-10, 5);
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(-9), ChannelIndex::make1(-9));
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(-10), ChannelIndex::make1(-10));
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(-11), ChannelIndex::make2(-10, 0));
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(-15), ChannelIndex::make2(-10, 4));
+    EXPECT_EQ(vpm_.visualPositionToChanIdx(-16), ChannelIndex::make1(-11));
+}
