@@ -31,6 +31,24 @@ TEST_F(TestVisualPositionManager, IdxIsValid)
     EXPECT_FALSE(vpm_.chanIdxIsValid(ChannelIndex::make2(5, 3)));
 }
 
+TEST_F(TestVisualPositionManager, ChangedBeforeAndAfterSignals)
+{
+    using testing::_;
+    using testing::Return;
+
+    EXPECT_CALL(*this, visualPositionChangedAfter(5, 3));
+    vpm_.setSpan(5, 3);
+
+    EXPECT_CALL(*this, visualPositionChangedAfter(0, 2));
+    vpm_.setSpan(0, 2);
+
+    EXPECT_CALL(*this, visualPositionChangedBefore(-1, -4));
+    vpm_.setSpan(-1, 4);
+
+    EXPECT_CALL(*this, visualPositionChangedBefore(6, 0)).Times(0);
+    vpm_.setSpan(6, 0);
+}
+
 //TEST_F(TestVisualPositionManager, Simple)
 //{
 //    EXPECT_EQ(vpm_.chanIdxToVisualPosition(0), 0);

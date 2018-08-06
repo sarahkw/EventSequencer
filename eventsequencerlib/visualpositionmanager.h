@@ -12,19 +12,19 @@ class VisualPositionManager : public QObject
     Q_OBJECT
 
     // chanIdx -> span
-    std::map<int, int> spanMap_;
+    std::map<int, unsigned> spanMap_;
 
 public:
     VisualPositionManager(QObject* parent = nullptr);
 
-    void setSpan(int channelIndexFirst, int span);
+    void setSpan(int channelIndexFirst, unsigned span);
     void del(int channelIndexFirst);
 
     int chanIdxToVisualPosition(ChannelIndex chanIdx);
     bool chanIdxIsValid(ChannelIndex chanIdx);
     int visualPositionToChanIdx(int visualPosition);
 
-    const std::map<int, int>& spanMap() const; // Needed to make placeholders
+    const std::map<int, unsigned>& spanMap() const; // Needed to make placeholders
 
 signals:
 
