@@ -12,7 +12,10 @@ class ChannelIndex
 public:
     ChannelIndex();
     static ChannelIndex make1(int first);
+    static ChannelIndex make2(int first, int second);
     int first() const;
+    bool hasSecond() const;
+    int second() const;
     bool operator<(const ChannelIndex& o) const;
     bool operator==(const ChannelIndex& o) const;
     bool operator!=(const ChannelIndex& o) const;
