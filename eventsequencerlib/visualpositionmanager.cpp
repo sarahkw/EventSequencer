@@ -17,7 +17,7 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
         if (channelIndexFirst >= 0) {
             emit visualPositionChangedAfter(channelIndexFirst, static_cast<int>(span));
         } else {
-            emit visualPositionChangedBefore(channelIndexFirst, -static_cast<int>(span));
+            emit visualPositionChangedBefore(channelIndexFirst, static_cast<int>(span));
         }
     }
 }
