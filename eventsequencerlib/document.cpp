@@ -219,12 +219,19 @@ void Document::channelBeforeDelete(ChannelIndex channelIndex)
 // VisualPositionManager signal
 void Document::visualPositionChangedAfter(int channelIndexFirst, int delta)
 {
-    auto stripsMoved = stripsOnChannel_.stripsGreaterEqualChannel(ChannelIndex::make1(channelIndexFirst));
+    ChannelIndex cidx = ChannelIndex::make1(channelIndexFirst);
+
+    auto stripsMoved = stripsOnChannel_.stripsGreaterEqualChannel(cidx);
     for (auto iter = stripsMoved.first; iter != stripsMoved.second; ++iter) {
         for (auto& sh : iter->second) {
             sh.strip->channelPositionChanged();
         }
     }
+
+    // Everything in channelWaitForPosition_ that's affected to get new keys.
+    channelWaitForPosition_.rekeyAfter(
+                channelPositionManager_.chanIdxToVisualPosition(cidx),
+                delta);
 }
 
 // VisualPositionManager signal
@@ -236,6 +243,8 @@ void Document::visualPositionChangedBefore(int channelIndexFirst, int delta)
             sh.strip->channelPositionChanged();
         }
     }
+
+    // TODO Need a rekeyBefore
 }
 
 // VisualPositionManager signal
