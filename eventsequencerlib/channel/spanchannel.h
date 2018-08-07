@@ -11,6 +11,8 @@ class SpanChannel : public ChannelBase
 {
     Q_OBJECT
 
+    ChannelIndex channelIndex_;
+
     int count_ = 0;
     Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
 
@@ -28,6 +30,7 @@ public:
 signals:
 
     void countChanged();
+    void setSpan(ChannelIndex channelIndex, unsigned span);
 
 public slots:
 };

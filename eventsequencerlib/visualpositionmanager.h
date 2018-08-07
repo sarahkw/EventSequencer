@@ -36,6 +36,8 @@ signals:
 
 public slots:
 
+    void setSpan(ChannelIndex channelIndex, unsigned span);
+
 };
 
 #endif // VISUALPOSITIONMANAGER_H

@@ -136,3 +136,12 @@ const std::map<int, unsigned> &VisualPositionManager::spanMap() const
 {
     return spanMap_;
 }
+
+void VisualPositionManager::setSpan(ChannelIndex channelIndex, unsigned span)
+{
+    if (channelIndex.hasSecond()) {
+        qWarning() << "Setting Span for subchannel not supported!";
+        return;
+    }
+    setSpan(channelIndex.first(), span);
+}

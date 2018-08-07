@@ -1,5 +1,8 @@
 #include "spanchannel.h"
 
+#include "document.h"
+#include "visualpositionmanager.h"
+
 #include <eventsequencer.pb.h>
 
 namespace channel {
@@ -11,16 +14,22 @@ int SpanChannel::count() const
 
 void SpanChannel::setCount(int count)
 {
+    if (count < 0) {
+        count = 0;
+    }
     if (count_ != count) {
         count_ = count;
         emit countChanged();
+        emit setSpan(channelIndex_, count);
     }
 }
 
 SpanChannel::SpanChannel(ChannelIndex channelIndex, Document& d, QObject* parent)
-    : ChannelBase(channelIndex, d, parent)
+    : ChannelBase(channelIndex, d, parent), channelIndex_(channelIndex)
 {
-
+    QObject::connect(this, &SpanChannel::setSpan,
+                     &d.channelPositionManager(),
+                     qOverload<ChannelIndex, unsigned>(&VisualPositionManager::setSpan));
 }
 
 void SpanChannel::toPb(pb::ChannelData &pb) const
