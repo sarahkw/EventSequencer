@@ -17,6 +17,15 @@ DocumentStripsOnChannel::stripsForChannel(ChannelIndex channelIndex) const
     return &iter->second;
 }
 
+std::pair<DocumentStripsOnChannel::ChannelStripsMap::const_iterator,
+          DocumentStripsOnChannel::ChannelStripsMap::const_iterator>
+DocumentStripsOnChannel::stripsBetweenChannels(ChannelIndex from,
+                                               ChannelIndex toExclusive) const
+{
+    return std::make_pair(data_.lower_bound(from),
+                          data_.lower_bound(toExclusive));
+}
+
 void DocumentStripsOnChannel::stripAfterPlaced(Strip *strip)
 {
     data_[strip->channelIndex()].insert({strip->startFrame(), strip});

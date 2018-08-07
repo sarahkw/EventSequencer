@@ -51,6 +51,11 @@ bool ChannelIndex::operator==(const ChannelIndex &o) const
     return first_ == o.first_ && hasSecond_ == o.hasSecond_ && second_ == o.second_;
 }
 
+bool ChannelIndex::operator>=(const ChannelIndex &o) const
+{
+    return !operator<(o);
+}
+
 bool ChannelIndex::operator!=(const ChannelIndex &o) const
 {
     return !operator==(o);

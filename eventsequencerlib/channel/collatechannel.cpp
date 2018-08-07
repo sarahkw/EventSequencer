@@ -1,5 +1,4 @@
-﻿#ifdef TMPDISABLE
-#include "collatechannel.h"
+﻿#include "collatechannel.h"
 
 #include <eventsequencer.pb.h>
 #include <document.h>
@@ -182,7 +181,8 @@ QAbstractListModel *CollateChannel::model()
 
 void CollateChannel::channelAffected(ChannelIndex channelIndex)
 {
-    if (channelIndex >= channelFrom() && channelIndex < channelTo()) {
+    if (channelIndex >= ChannelIndex::make1(channelFrom()) &&
+            channelIndex < ChannelIndex::make1(channelTo())) {
         triggerRefresh();
         emit stripSetChanged();
     }
@@ -196,15 +196,17 @@ void CollateChannel::recalculate()
                   d_.endFrame() - d_.startFrame());
     
     {
-        for (int channel = channelTo() - 1; channel >= channelFrom(); --channel) {
-            auto stripSet = d_.stripsOnChannel().stripsForChannel(channel);
-            if (stripSet != nullptr) {
-                for (auto& s : *stripSet) {
-                    cnos.mergeSegment(s.strip->startFrame(),
-                                      s.strip->length(),
-                                      CnosType::ReplaceMode::No,
-                                      s.strip);
-                }
+        auto p = d_.stripsOnChannel().stripsBetweenChannels(
+                    ChannelIndex::make1(channelFrom()),
+                    ChannelIndex::make1(channelTo()));
+        for (auto iter = std::make_reverse_iterator(p.second);
+             iter != std::make_reverse_iterator(p.first);
+             ++iter) {
+            for (auto& s : iter->second) {
+                cnos.mergeSegment(s.strip->startFrame(),
+                                  s.strip->length(),
+                                  CnosType::ReplaceMode::No,
+                                  s.strip);
             }
         }
     }
@@ -238,4 +240,3 @@ void CollateChannel::recalculate()
 }
 
 } // namespace channel
-#endif

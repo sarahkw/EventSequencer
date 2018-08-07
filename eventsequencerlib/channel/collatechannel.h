@@ -1,4 +1,3 @@
-#ifdef TMPDISABLE
 #ifndef COLLATECHANNEL_H
 #define COLLATECHANNEL_H
 
@@ -110,4 +109,3 @@ public slots:
 } // namespace channel
 
 #endif // COLLATECHANNEL_H
-#endif

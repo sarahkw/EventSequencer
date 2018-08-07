@@ -25,6 +25,7 @@ public:
     unsigned second() const;
     bool operator<(const ChannelIndex& o) const;
     bool operator==(const ChannelIndex& o) const;
+    bool operator>=(const ChannelIndex& o) const;
     bool operator!=(const ChannelIndex& o) const;
     QString toDebugString() const;
 

@@ -50,7 +50,5 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<Session>("eventsequencer", 1, 0, "Session");
     qmlRegisterType<ManagedResources>("eventsequencer", 1, 0, "ManagedResources");
     qmlRegisterType<PlayerControl>("eventsequencer", 1, 0, "PlayerControl");
-#ifdef TMPDISABLE
     qmlRegisterUncreatableType<channel::CollateChannel>("eventsequencer", 1, 0, "CollateChannel", "Only used for enumeration");
-#endif
 }

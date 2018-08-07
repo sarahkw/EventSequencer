@@ -20,14 +20,19 @@ public:
         bool operator()(const StripHolder& a, const StripHolder& b) const;
     };
     using StripSet = std::set<StripHolder, Compare>;
+    using ChannelStripsMap = std::map<ChannelIndex, StripSet>;
 private:
-    std::map<ChannelIndex, StripSet> data_;
+    ChannelStripsMap data_;
 
 public:
 
     explicit DocumentStripsOnChannel(QObject *parent = nullptr);
 
     const StripSet* stripsForChannel(ChannelIndex channelIndex) const;
+
+    std::pair<ChannelStripsMap::const_iterator,
+              ChannelStripsMap::const_iterator>
+    stripsBetweenChannels(ChannelIndex from, ChannelIndex toExclusive) const;
 
 signals:
 

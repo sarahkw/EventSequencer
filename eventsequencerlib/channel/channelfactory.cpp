@@ -36,11 +36,9 @@ channel::ChannelBase *channel::ChannelFactory::Create(const pb::ChannelData &pb,
     case ::pb::ChannelData::kLabel:
         cb = new channel::LabelChannel(channelIndex, d, parent);
         break;
-#ifdef TMPDISABLE
     case ::pb::ChannelData::kCollate:
         cb = new channel::CollateChannel(channelIndex, d, parent);
         break;
-#endif
     case ::pb::ChannelData::kPlaylist:
         cb = new channel::PlaylistChannel(channelIndex, d, parent);
         break;
@@ -75,10 +73,8 @@ channel::ChannelBase *channel::ChannelFactory::Create(channel::ChannelType::Enum
         return new channel::AudioChannel(channelIndex, d, parent);
     case channel::ChannelType::Label:
         return new channel::LabelChannel(channelIndex, d, parent);
-#ifdef TMPDISABLE
     case channel::ChannelType::Collate:
         return new channel::CollateChannel(channelIndex, d, parent);
-#endif
     case channel::ChannelType::Playlist:
         return new channel::PlaylistChannel(channelIndex, d, parent);
     case channel::ChannelType::Span:
