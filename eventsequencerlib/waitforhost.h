@@ -30,7 +30,6 @@ public:
     void rekeyAfter(KeyType afterExclusive, KeyType delta)
     {
         std::map<KeyType, QObject*> collectDataTypes;
-
         for (auto iter = waiters_.upper_bound(afterExclusive);
              iter != waiters_.end();
              ++iter) {
@@ -38,18 +37,41 @@ public:
                 collectDataTypes[iter->first] = iter->second[0]->result();
             }
         }
-
         for (auto iter = waiters_.upper_bound(afterExclusive);
              iter != waiters_.end();
              ++iter) {
             beforeDelete(iter->first);
         }
-
         for (auto iter = collectDataTypes.begin();
              iter != collectDataTypes.end();
              ++iter) {
             KeyType newLocation = iter->first + delta;
             if (newLocation > afterExclusive) {
+                afterAdd(newLocation, iter->second);
+            }
+        }
+    }
+
+    void rekeyBefore(KeyType beforeExclusive, KeyType delta)
+    {
+        std::map<KeyType, QObject*> collectDataTypes;
+        for (auto iter = waiters_.begin(); 
+             iter != waiters_.lower_bound(beforeExclusive);
+             ++iter) {
+            if (!iter->second.empty()) {
+                collectDataTypes[iter->first] = iter->second[0]->result();
+            }
+        }
+        for (auto iter = waiters_.begin();
+             iter != waiters_.lower_bound(beforeExclusive);
+             ++iter) {
+            beforeDelete(iter->first);
+        }
+        for (auto iter = collectDataTypes.begin();
+             iter != collectDataTypes.end();
+             ++iter) {
+            KeyType newLocation = iter->first - delta;
+            if (newLocation < beforeExclusive) {
                 afterAdd(newLocation, iter->second);
             }
         }

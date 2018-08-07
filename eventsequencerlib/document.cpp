@@ -237,14 +237,18 @@ void Document::visualPositionChangedAfter(int channelIndexFirst, int delta)
 // VisualPositionManager signal
 void Document::visualPositionChangedBefore(int channelIndexFirst, int delta)
 {
-    auto stripsMoved = stripsOnChannel_.stripsLessChannel(ChannelIndex::make1(channelIndexFirst));
+    ChannelIndex cidx = ChannelIndex::make1(channelIndexFirst);
+
+    auto stripsMoved = stripsOnChannel_.stripsLessChannel(cidx);
     for (auto iter = stripsMoved.first; iter != stripsMoved.second; ++iter) {
         for (auto& sh : iter->second) {
             sh.strip->channelPositionChanged();
         }
     }
 
-    // TODO Need a rekeyBefore
+    channelWaitForPosition_.rekeyBefore(
+                channelPositionManager_.chanIdxToVisualPosition(cidx),
+                delta);
 }
 
 // VisualPositionManager signal
