@@ -14,3 +14,14 @@ QVariant ChannelIndexFactory::make2(int first, unsigned second)
 {
     return QVariant::fromValue(ChannelIndex::make2(first, second));
 }
+
+QVariant ChannelIndexFactory::makeFromPathString(QString pathString)
+{
+    bool success;
+    auto ci = ChannelIndex::makeFromPathString(pathString, &success);
+    if (success) {
+        return QVariant::fromValue(ci);
+    } else {
+        return QVariant();
+    }
+}

@@ -1032,9 +1032,16 @@ ApplicationWindow {
                                     }
                                     ESTextField {
                                         Layout.fillWidth: true
-                                        text: selectedCppStrip.channelIndex.first
-                                        validator: IntValidator { }
-                                        onEsEditingFinished: selectedCppStrip.channelIndex = ES.ChannelIndexFactory.make1(text)
+                                        text: selectedCppStrip.channelIndex.toPathString()
+                                        onEsEditingFinished: {
+                                            var r = ES.ChannelIndexFactory.makeFromPathString(text)
+                                            if (r != null) {
+                                                selectedCppStrip.channelIndex = r
+                                            } else {
+                                                // TODO Error handling
+                                                console.error("Bad channel index")
+                                            }
+                                        }
                                     }
                                     Label {
                                         text: "Start"

@@ -92,7 +92,7 @@ QString ChannelIndex::toDebugString() const
 QString ChannelIndex::toPathString()
 {
     if (hasSecond_) {
-        return QString("%1.%1").arg(first_).arg(second_);
+        return QString("%1.%2").arg(first_).arg(second_);
     } else {
         return QString::number(first_);
     }

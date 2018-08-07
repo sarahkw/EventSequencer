@@ -13,6 +13,7 @@ public:
 
     Q_INVOKABLE QVariant make1(int first);
     Q_INVOKABLE QVariant make2(int first, unsigned second);
+    Q_INVOKABLE QVariant makeFromPathString(QString pathString);
 
 signals:
 
