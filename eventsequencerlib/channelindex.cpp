@@ -61,10 +61,19 @@ bool ChannelIndex::operator<(const ChannelIndex &o) const
 {
     if (first_ < o.first_) return true;
     else if (first_ > o.first_) return false;
-    else if (hasSecond_ && !o.hasSecond_) return false;
-    else if (!hasSecond_ && o.hasSecond_) return true;
-    else if (hasSecond_ && o.hasSecond_) return second_ < o.second_;
-    else return false; // Neither has second and first is equal -- Equal
+
+    else if (hasSecond_ || o.hasSecond_) {
+        if (first_ < 0) {
+            if (hasSecond_ && !o.hasSecond_) return true;
+            else if (!hasSecond_ && o.hasSecond_) return false;
+            else return second_ > o.second_;
+        } else {
+            if (hasSecond_ && !o.hasSecond_) return false;
+            else if (!hasSecond_ && o.hasSecond_) return true;
+            else return second_ < o.second_;
+        }
+    }
+    else return false;
 }
 
 bool ChannelIndex::operator==(const ChannelIndex &o) const

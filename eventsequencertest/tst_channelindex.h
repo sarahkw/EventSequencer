@@ -27,8 +27,13 @@ TEST(ChannelIndex, Order)
             ChannelIndex::make1(2)
     };
 
-    EXPECT_THAT(std::set<ChannelIndex>(expectedOrder.begin(), expectedOrder.end()),
-                testing::ElementsAreArray(expectedOrder.begin(), expectedOrder.end()));
+    std::vector<ChannelIndex> test1(expectedOrder);
+    std::vector<ChannelIndex> test2(expectedOrder.rbegin(), expectedOrder.rend());
+    std::sort(test1.begin(), test1.end());
+    std::sort(test2.begin(), test2.end());
+
+    EXPECT_EQ(expectedOrder, test1);
+    EXPECT_EQ(expectedOrder, test2);
 }
 
 TEST(ChannelIndex, MakeFromPathString)
