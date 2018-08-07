@@ -279,8 +279,8 @@ ApplicationWindow {
         property ES.WaitFor waitForChannel: (clockChannelIndex !== null ?
                                              document.waitForChannelIndex(clockChannelIndex) :
                                              null)
-        property var channel: waitForChannel !== null ? waitForChannel.result : null
-        property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
+        property var cppChannel: waitForChannel !== null ? waitForChannel.result : null
+        property var control: cppChannel !== null ? controlResolver.resolve(cppChannel.channelType) : null
         property var clockComponent: control !== null ? control.clockComponent : null
 
         Loader {
