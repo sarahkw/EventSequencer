@@ -108,6 +108,26 @@ TEST_F(TestVisualPositionManager, DestroySignals)
     vpm_.setSpan(5, 0);
 }
 
+TEST_F(TestVisualPositionManager, DestroySignals_Negative)
+{
+    using testing::_;
+    using testing::InSequence;
+
+    {
+        testing::InSequence dummy;
+
+        EXPECT_CALL(*this, visualPositionChangedBefore(-5, 3));
+        EXPECT_CALL(*this, destroyChanIdx(ChannelIndex::make2(-5, 2), ChannelIndex::make2(-5, 1)));
+        EXPECT_CALL(*this, visualPositionChangedBefore(-5, -1));
+        EXPECT_CALL(*this, destroyChanIdx(ChannelIndex::make2(-5, 1), ChannelIndex::make1(-5)));
+        EXPECT_CALL(*this, visualPositionChangedBefore(-5, -2));
+    }
+
+    vpm_.setSpan(-5, 3);
+    vpm_.setSpan(-5, 2);
+    vpm_.setSpan(-5, 0);
+}
+
 TEST_F(TestVisualPositionManager, IdxToVisPos)
 {
     EXPECT_EQ(vpm_.chanIdxToVisualPosition(ChannelIndex::make1(9)), 9);

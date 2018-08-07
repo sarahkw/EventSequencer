@@ -27,14 +27,18 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
     int diffSpan = static_cast<int>(span) - static_cast<int>(oldSpan);
 
     if (diffSpan != 0) {
-        if (span < oldSpan) {
-            emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, span),
-                                ChannelIndex::make2(channelIndexFirst, oldSpan));
-        }
-
         if (channelIndexFirst >= 0) {
+            if (span < oldSpan) {
+                emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, span),
+                                    ChannelIndex::make2(channelIndexFirst, oldSpan));
+            }
             emit visualPositionChangedAfter(channelIndexFirst, diffSpan);
         } else {
+            if (span < oldSpan) {
+                emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, oldSpan - 1),
+                                    (span > 0) ? ChannelIndex::make2(channelIndexFirst, span - 1) :
+                                                 ChannelIndex::make1(channelIndexFirst));
+            }
             emit visualPositionChangedBefore(channelIndexFirst, diffSpan);
         }
     }
