@@ -11,9 +11,8 @@ struct WaitForHostTest : testing::Test {
     std::vector<WaitFor*> waitFors_;
     WaitForHostTest() : qobjs_(7)
     {
-        WaitForHost<int> wfh;
         for (int i = 0; i < qobjs_.size(); ++i) {
-            waitFors_.push_back(wfh.waitFor(i - 3, &qobjs_[i]));
+            waitFors_.push_back(wfh_.waitFor(i - 3, &qobjs_[i]));
         }
     }
     std::vector<QObject*> result()
@@ -40,3 +39,62 @@ TEST_F(WaitForHostTest, TestTheTest)
             ));
 }
 
+TEST_F(WaitForHostTest, Rekey_Pos_AddOne)
+{
+    wfh_.rekeyAfter(1, 1);
+    EXPECT_THAT(result(),
+                testing::ElementsAre(
+                    &qobjs_[0], // -3
+                    &qobjs_[1],
+                    &qobjs_[2],
+                    &qobjs_[3], // 0
+                    &qobjs_[4],
+                    nullptr,
+                    &qobjs_[5]
+            ));
+}
+
+TEST_F(WaitForHostTest, Rekey_Pos_DelOne)
+{
+    wfh_.rekeyAfter(1, -1);
+    EXPECT_THAT(result(),
+            testing::ElementsAre(
+                &qobjs_[0], // -3
+                &qobjs_[1],
+                &qobjs_[2],
+                &qobjs_[3], // 0
+                &qobjs_[4],
+                &qobjs_[6],
+                nullptr
+        ));
+}
+
+TEST_F(WaitForHostTest, Rekey_Pos_AddMany)
+{
+    wfh_.rekeyAfter(1, 99);
+    EXPECT_THAT(result(),
+                testing::ElementsAre(
+                    &qobjs_[0], // -3
+                    &qobjs_[1],
+                    &qobjs_[2],
+                    &qobjs_[3], // 0
+                    &qobjs_[4],
+                    nullptr,
+                    nullptr
+            ));
+}
+
+TEST_F(WaitForHostTest, Rekey_Pos_DelMany)
+{
+    wfh_.rekeyAfter(1, -99);
+    EXPECT_THAT(result(),
+                testing::ElementsAre(
+                    &qobjs_[0], // -3
+                    &qobjs_[1],
+                    &qobjs_[2],
+                    &qobjs_[3], // 0
+                    &qobjs_[4],
+                    nullptr,
+                    nullptr
+            ));
+}
