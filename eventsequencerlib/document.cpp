@@ -216,6 +216,24 @@ void Document::channelBeforeDelete(ChannelIndex channelIndex)
     channelsModel_.beforeDelete(channelIndex);
 }
 
+// VisualPositionManager signal
+void Document::visualPositionChangedAfter(int channelIndexFirst, int delta)
+{
+
+}
+
+// VisualPositionManager signal
+void Document::visualPositionChangedBefore(int channelIndexFirst, int delta)
+{
+
+}
+
+// VisualPositionManager signal
+void Document::destroyChanIdx(ChannelIndex from, ChannelIndex to)
+{
+
+}
+
 QUrl Document::currentUrl() const
 {
     return currentUrl_;
@@ -276,6 +294,10 @@ Document::Document(QObject *parent)
     QObject::connect(this, &Document::stripAfterPlaced, &stripsOnChannel_, &DocumentStripsOnChannel::stripAfterPlaced);
     QObject::connect(this, &Document::stripBeforeDelete, &stripsOnChannel_, &DocumentStripsOnChannel::stripBeforeDelete);
     QObject::connect(this, &Document::stripMoved, &stripsOnChannel_, &DocumentStripsOnChannel::stripMoved);
+
+    QObject::connect(&channelPositionManager_, &VisualPositionManager::visualPositionChangedAfter,  this, &Document::visualPositionChangedAfter);
+    QObject::connect(&channelPositionManager_, &VisualPositionManager::visualPositionChangedBefore, this, &Document::visualPositionChangedBefore);
+    QObject::connect(&channelPositionManager_, &VisualPositionManager::destroyChanIdx,              this, &Document::destroyChanIdx);
 }
 
 void Document::toPb(pb::Document &pb) const

@@ -189,6 +189,11 @@ private:
     void channelAfterAddOrReplace(ChannelIndex channelIndex, QObject* channel, AddOrReplace mode);
     void channelBeforeDelete(ChannelIndex channelIndex);
 
+    // VisualPositionManager
+    void visualPositionChangedAfter(int channelIndexFirst, int delta);
+    void visualPositionChangedBefore(int channelIndexFirst, int delta);
+    void destroyChanIdx(ChannelIndex from, ChannelIndex to);
+
 signals:
 
     void framesPerSecondChanged();
