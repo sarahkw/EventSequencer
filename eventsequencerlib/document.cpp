@@ -241,21 +241,38 @@ void Document::visualPositionChangedBefore(int channelIndexFirst, int delta)
 // VisualPositionManager signal
 void Document::destroyChanIdx(ChannelIndex from, ChannelIndex toExclusive)
 {
-    // Build a vector of stuff to delete. Otherwise we'd have to take care to
-    // ensure we don't hold invalid iterators.
-    std::vector<Strip*> toDelete;
-
     {
-        auto stripsDeleted = stripsOnChannel_.stripsBetweenChannels(from, toExclusive);
-        for (auto iter = stripsDeleted.first; iter != stripsDeleted.second; ++iter) {
-            for (auto& sh : iter->second) {
-                toDelete.push_back(sh.strip);
+        // Build a vector of stuff to delete. Otherwise we'd have to take care to
+        // ensure we don't hold invalid iterators.
+        std::vector<Strip*> toDelete;
+
+        {
+            auto stripsDeleted = stripsOnChannel_.stripsBetweenChannels(from, toExclusive);
+            for (auto iter = stripsDeleted.first; iter != stripsDeleted.second; ++iter) {
+                for (auto& sh : iter->second) {
+                    toDelete.push_back(sh.strip);
+                }
             }
         }
-    }
 
-    for (Strip* s : toDelete) {
-        deleteStrip(s);
+        for (Strip* s : toDelete) {
+            deleteStrip(s);
+        }
+    }
+    {
+        std::vector<ChannelIndex> toDelete;
+
+        {
+            auto lo = channels_.lower_bound(from);
+            auto hi = channels_.lower_bound(toExclusive);
+            for (auto iter = lo; iter != hi; ++iter) {
+                toDelete.push_back(iter->first);
+            }
+        }
+
+        for (ChannelIndex& ci : toDelete) {
+            deleteChannel(ci);
+        }
     }
 }
 
