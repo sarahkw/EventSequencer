@@ -128,6 +128,7 @@ private:
 public:
 
     explicit Document(QObject *parent = nullptr);
+    ~Document();
 
     void toPb(pb::Document& pb) const;
     void fromPb(const pb::Document& pb);

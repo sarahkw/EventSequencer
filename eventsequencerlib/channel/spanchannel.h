@@ -18,6 +18,7 @@ class SpanChannel : public ChannelBase
 
 public:
     explicit SpanChannel(ChannelIndex channelIndex, Document& d, QObject *parent = nullptr);
+    ~SpanChannel() override;
 
     virtual void toPb(pb::ChannelData& pb) const override;
     virtual void fromPb(const pb::ChannelData& pb) override;

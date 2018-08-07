@@ -11,17 +11,28 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
 {
     unsigned oldSpan = 0;
 
+    // We want to emit destoryChanIdx() before actually modifying the structure.
+    // Because destroying the channel may need to know where its visual position
+    // is. For example, to "unbind" itself to a visual position.
+    std::function<void()> modifyStructure;
+
     auto oldSpanIter = spanMap_.find(channelIndexFirst);
     if (oldSpanIter != spanMap_.end()) {
         oldSpan = oldSpanIter->second;
         if (span == 0) {
-            spanMap_.erase(oldSpanIter);
+            modifyStructure = [this, &oldSpanIter]() {
+                spanMap_.erase(oldSpanIter);
+            };
         } else {
-            oldSpanIter->second = span;
+            modifyStructure = [&oldSpanIter, span]() {
+                oldSpanIter->second = span;
+            };
         }
     } else {
         // New!
-        spanMap_[channelIndexFirst] = span;
+        modifyStructure = [this, channelIndexFirst, span]() {
+            spanMap_[channelIndexFirst] = span;
+        };
     }
 
     int diffSpan = static_cast<int>(span) - static_cast<int>(oldSpan);
@@ -32,6 +43,7 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
                 emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, span),
                                     ChannelIndex::make2(channelIndexFirst, oldSpan));
             }
+            modifyStructure();
             emit visualPositionChangedAfter(channelIndexFirst, diffSpan);
         } else {
             if (span < oldSpan) {
@@ -39,6 +51,7 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
                                     (span > 0) ? ChannelIndex::make2(channelIndexFirst, span - 1) :
                                                  ChannelIndex::make1(channelIndexFirst));
             }
+            modifyStructure();
             emit visualPositionChangedBefore(channelIndexFirst, diffSpan);
         }
     }

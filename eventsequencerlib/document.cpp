@@ -355,6 +355,12 @@ Document::Document(QObject *parent)
     QObject::connect(&channelPositionManager_, &VisualPositionManager::destroyChanIdx,              this, &Document::destroyChanIdx);
 }
 
+Document::~Document()
+{
+    // Rely on reset() to delete everything.
+    reset();
+}
+
 void Document::toPb(pb::Document &pb) const
 {
     for (const Strip* s : strips_) {
@@ -378,9 +384,22 @@ void Document::toPb(pb::Document &pb) const
 
 void Document::fromPb(const pb::Document &pb)
 {
-    // TODO Delete all current strips first!
-    // TODO We do not want to create a single strip each time so don't call createStrip(),
-    //      because we don't want to spam the GUI with signals.
+    // Create channels before strips, because Span channels define the structure.
+
+    Q_ASSERT(channels_.empty()); // Because channelAfterAddOrReplace will always say Add. Replace not implemented.
+
+    for (auto& mappair : pb.channels()) {
+        const ChannelIndex channelIndex = ChannelIndex::make1(mappair.first);
+        channel::ChannelBase* addme =
+                channel::ChannelFactory::Create(mappair.second, channelIndex, *this, this);
+        if (addme != nullptr) {
+            channels_[channelIndex] = addme;
+            channelAfterAddOrReplace(channelIndex, addme, AddOrReplace::Add);
+        }
+    }
+
+    Q_ASSERT(strips_.empty()); // Should have reset() before calling this
+
     for (int i = 0; i < pb.strips_size(); ++i) {
         createStrip()->fromPb(pb.strips(i));
     }
@@ -396,18 +415,6 @@ void Document::fromPb(const pb::Document &pb)
         audioFormatHolder_->fromPb(pb.audioformat());
     } else {
         setAudioFormatHolderSet(false);
-    }
-
-    Q_ASSERT(channels_.empty()); // Because channelAfterAddOrReplace will always say Add. Replace not implemented.
-
-    for (auto& mappair : pb.channels()) {
-        const ChannelIndex channelIndex = ChannelIndex::make1(mappair.first);
-        channel::ChannelBase* addme =
-                channel::ChannelFactory::Create(mappair.second, channelIndex, *this, this);
-        if (addme != nullptr) {
-            channels_[channelIndex] = addme;
-            channelAfterAddOrReplace(channelIndex, addme, AddOrReplace::Add);
-        }
     }
 }
 

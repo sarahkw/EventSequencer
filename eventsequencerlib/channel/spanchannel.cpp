@@ -32,6 +32,11 @@ SpanChannel::SpanChannel(ChannelIndex channelIndex, Document& d, QObject* parent
                      qOverload<ChannelIndex, unsigned>(&VisualPositionManager::setSpan));
 }
 
+SpanChannel::~SpanChannel()
+{
+    emit setSpan(channelIndex_, 0);
+}
+
 void SpanChannel::toPb(pb::ChannelData &pb) const
 {
     auto mut = pb.mutable_span();
