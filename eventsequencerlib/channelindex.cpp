@@ -1,5 +1,8 @@
 #include "channelindex.h"
 
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+
 ChannelIndex::ChannelIndex()
 {
 
@@ -18,6 +21,24 @@ ChannelIndex ChannelIndex::make2(int first, unsigned second)
     cidx.first_ = first;
     cidx.hasSecond_ = true;
     cidx.second_ = second;
+    return cidx;
+}
+
+ChannelIndex ChannelIndex::makeFromPathString(QString pathString, bool *success)
+{
+    *success = false;
+    ChannelIndex cidx;
+
+    QRegularExpression re("^(?<first>-?[0-9]+)(\\.(?<second>[0-9]+))?$");
+    QRegularExpressionMatch match = re.match(pathString);
+    if (match.hasMatch()) {
+        *success = true;
+        cidx.first_ = match.captured("first").toInt();
+        if (match.capturedLength("second") > 0) {
+            cidx.hasSecond_ = true;
+            cidx.second_ = match.captured("second").toInt();
+        }
+    }
     return cidx;
 }
 

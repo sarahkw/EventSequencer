@@ -20,6 +20,8 @@ public:
     ChannelIndex();
     static ChannelIndex make1(int first);
     static ChannelIndex make2(int first, unsigned second);
+    static ChannelIndex makeFromPathString(QString pathString, bool* success);
+
     int first() const;
     bool hasSecond() const;
     unsigned second() const;
