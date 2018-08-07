@@ -106,7 +106,13 @@ public:
             ret->setResult(initialValue);
         }
 
-        waiters_[key].push_back(ret);
+        std::vector<WaitFor*>& v = waiters_[key];
+        if (!v.empty()) {
+            if (v[0]->result() != initialValue) {
+                qWarning("WaitFor had a mismatch between new value and old values");
+            }
+        }
+        v.push_back(ret);
         return ret;
     }
 
