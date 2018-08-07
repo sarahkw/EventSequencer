@@ -275,8 +275,10 @@ ApplicationWindow {
     }
 
     Item {
-        property alias clockChannel: cmbClockChannel.clockChannel
-        property ES.WaitFor waitForChannel: clockChannel !== null ? document.waitForChannel(clockChannel) : null
+        property alias clockChannelIndex: cmbClockChannel.clockChannelIndex
+        property ES.WaitFor waitForChannel: (clockChannelIndex !== null ?
+                                             document.waitForChannelIndex(clockChannelIndex) :
+                                             null)
         property var channel: waitForChannel !== null ? waitForChannel.result : null
         property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
         property var clockComponent: control !== null ? control.clockComponent : null
@@ -292,8 +294,8 @@ ApplicationWindow {
                 cursor.frame = frameNo
 
                 document.stripsOnFrame(frameNo).forEach(function (cppStrip) {
-                    var chan = cppStrip.channel;
-                    var waitFor = document.waitForChannel(chan);
+                    var chan = cppStrip.channelIndex;
+                    var waitFor = document.waitForChannelIndex(chan);
                     if (waitFor.result === null) {
                         return;
                     }
@@ -403,42 +405,24 @@ ApplicationWindow {
                 anchors.verticalCenter: parent.verticalCenter
             }
             ComboBox {
-                property var clockChannel: null
-
-                property var cache: document.channelsProvidingClock
-                property bool blockSignal: false
-
-                onCacheChanged: {
-                    var newIndex = clockChannel === null ? -1 : cache.indexOf(clockChannel)
-
-                    if (newIndex === -1 && cache.length > 0) {
-                        newIndex = 0
-                    }
-
-                    blockSignal = true
-                    model = cache
-                    currentIndex = newIndex
-                    blockSignal = false
-
-                    var newClockChannel = currentIndex === -1 ? null : cache[currentIndex]
-
-                    if (clockChannel !== newClockChannel) {
-                        clockChannel = newClockChannel
+                property var clockChannelIndex: {
+                    if (currentIndex === -1) {
+                        null
+                    } else {
+                        things[currentIndex]
                     }
                 }
+
+                property var things: [null].concat(document.channelsProvidingClock)
+                property var labels: [""].concat(document.channelsProvidingClock.map(function (ci) { return ci.toPathString() }))
+                onThingsChanged: currentIndex = -1
 
                 id: cmbClockChannel
                 ToolTip.text: "Clock channel"
                 ToolTip.visible: hovered
                 anchors.verticalCenter: parent.verticalCenter
                 width: 50
-                model: cache
-
-                onCurrentIndexChanged: {
-                    if (!blockSignal) {
-                        clockChannel = cache[currentIndex]
-                    }
-                }
+                model: labels
             }
 
             Label {
