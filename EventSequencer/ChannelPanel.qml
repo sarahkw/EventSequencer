@@ -83,10 +83,10 @@ Rectangle {
                 onCurrentIndexChanged: {
                     if (currentIndex === 0) {
                         if (cppChannel !== null) {
-                            doc.deleteChannel(ES.ChannelIndexFactory.make1(myPosition))
+                            doc.deleteChannelByPosition(myPosition)
                         }
                     } else if (cppChannel === null || modelUtil.enumToIndex(cppChannel.channelType) !== currentIndex) {
-                        doc.createChannel(ES.ChannelIndexFactory.make1(myPosition), modelUtil.indexToEnum(currentIndex))
+                        doc.createChannelByPosition(myPosition, modelUtil.indexToEnum(currentIndex))
                     }
                 }
                 onFocusChanged: focus = false

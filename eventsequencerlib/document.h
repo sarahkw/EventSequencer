@@ -146,7 +146,9 @@ public:
 
     QAbstractListModel* channelsModel();
     Q_INVOKABLE QObject* createChannel(ChannelIndex channelIndex, channel::ChannelType::Enum type);
+    Q_INVOKABLE QObject* createChannelByPosition(int position, channel::ChannelType::Enum type);
     Q_INVOKABLE void deleteChannel(ChannelIndex channelIndex);
+    Q_INVOKABLE void deleteChannelByPosition(int position);
     Q_INVOKABLE WaitFor* waitForChannelIndex(ChannelIndex channelIndex);
     Q_INVOKABLE WaitFor* waitForChannelPosition(int channelPosition);
     const VisualPositionManager& channelPositionManager() const;

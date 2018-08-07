@@ -581,6 +581,12 @@ QObject *Document::createChannel(ChannelIndex channelIndex, channel::ChannelType
     return chan;
 }
 
+QObject *Document::createChannelByPosition(int position, channel::ChannelType::Enum type)
+{
+    return createChannel(channelPositionManager().visualPositionToChanIdx(position),
+                         type);
+}
+
 void Document::deleteChannel(ChannelIndex channelIndex)
 {
     channelBeforeDelete(channelIndex);
@@ -593,6 +599,11 @@ void Document::deleteChannel(ChannelIndex channelIndex)
     } else {
         qWarning() << "Nothing removed with id" << channelIndex.toDebugString();
     }
+}
+
+void Document::deleteChannelByPosition(int position)
+{
+    deleteChannel(channelPositionManager().visualPositionToChanIdx(position));
 }
 
 WaitFor *Document::waitForChannelIndex(ChannelIndex channelIndex)
