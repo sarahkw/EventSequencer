@@ -1,12 +1,9 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include "visualpositionmanager.h"
+#include "printto_channelindex.h"
 
-inline void PrintTo(const ChannelIndex &val, ::std::ostream *os)
-{
-    *os << val.toDebugString().toStdString();
-}
+#include "visualpositionmanager.h"
 
 struct TestVisualPositionManager : public testing::Test {
     MOCK_METHOD2(visualPositionChangedAfter, void(int, int));

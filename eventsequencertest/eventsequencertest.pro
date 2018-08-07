@@ -12,7 +12,8 @@ HEADERS += \
     tst_collatenonoverlappingsegments.h \
     tst_concatiodevice.h \
     tst_visualpositionmanager.h \
-    tst_channelindex.h
+    tst_channelindex.h \
+    printto_channelindex.h
 
 SOURCES += \
         main.cpp

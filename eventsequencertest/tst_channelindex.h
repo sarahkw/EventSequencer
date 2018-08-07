@@ -4,12 +4,7 @@
 #include <set>
 
 #include "channelindex.h"
-
-inline void PrintTo(const ChannelIndex &val, ::std::ostream *os)
-{
-    *os << val.toDebugString().toStdString();
-}
-
+#include "printto_channelindex.h"
 
 TEST(ChannelIndex, Order)
 {
