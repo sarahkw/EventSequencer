@@ -192,7 +192,7 @@ private:
     // VisualPositionManager
     void visualPositionChangedAfter(int channelIndexFirst, int delta);
     void visualPositionChangedBefore(int channelIndexFirst, int delta);
-    void destroyChanIdx(ChannelIndex from, ChannelIndex to);
+    void destroyChanIdx(ChannelIndex from, ChannelIndex toExclusive);
 
 signals:
 

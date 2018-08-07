@@ -239,7 +239,7 @@ void Document::visualPositionChangedBefore(int channelIndexFirst, int delta)
 }
 
 // VisualPositionManager signal
-void Document::destroyChanIdx(ChannelIndex from, ChannelIndex to)
+void Document::destroyChanIdx(ChannelIndex from, ChannelIndex toExclusive)
 {
 
 }

@@ -97,9 +97,9 @@ TEST_F(TestVisualPositionManager, DestroySignals)
         testing::InSequence dummy;
 
         EXPECT_CALL(*this, visualPositionChangedAfter(5, 3));
-        EXPECT_CALL(*this, destroyChanIdx(ChannelIndex::make2(5, 2), ChannelIndex::make2(5, 2)));
+        EXPECT_CALL(*this, destroyChanIdx(ChannelIndex::make2(5, 2), ChannelIndex::make2(5, 3)));
         EXPECT_CALL(*this, visualPositionChangedAfter(5, -1));
-        EXPECT_CALL(*this, destroyChanIdx(ChannelIndex::make2(5, 0), ChannelIndex::make2(5, 1)));
+        EXPECT_CALL(*this, destroyChanIdx(ChannelIndex::make2(5, 0), ChannelIndex::make2(5, 2)));
         EXPECT_CALL(*this, visualPositionChangedAfter(5, -2));
     }
 

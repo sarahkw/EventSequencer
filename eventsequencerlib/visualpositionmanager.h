@@ -31,8 +31,8 @@ signals:
     void visualPositionChangedAfter(int channelIndexFirst, int delta);
     void visualPositionChangedBefore(int channelIndexFirst, int delta);
 
-    // Destroy *before* reclaiming the space used. [from, to]
-    void destroyChanIdx(ChannelIndex from, ChannelIndex to);
+    // Destroy *before* reclaiming the space used. [from, to)
+    void destroyChanIdx(ChannelIndex from, ChannelIndex toExclusive);
 
 public slots:
 

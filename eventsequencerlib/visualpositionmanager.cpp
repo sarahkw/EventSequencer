@@ -29,7 +29,7 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
     if (diffSpan != 0) {
         if (span < oldSpan) {
             emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, span),
-                                ChannelIndex::make2(channelIndexFirst, oldSpan - 1));
+                                ChannelIndex::make2(channelIndexFirst, oldSpan));
         }
 
         if (channelIndexFirst >= 0) {
