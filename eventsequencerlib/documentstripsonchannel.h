@@ -14,7 +14,8 @@ class DocumentStripsOnChannel : public QObject
 public:
     struct StripHolder {
         int startFrame;
-        const Strip* strip;
+        Strip* strip; // TODO This should be const. Make a .mutable_strip()
+                      //      so it's easy to find where someone modifies this.
     };
     struct Compare {
         bool operator()(const StripHolder& a, const StripHolder& b) const;
@@ -33,6 +34,14 @@ public:
     std::pair<ChannelStripsMap::const_iterator,
               ChannelStripsMap::const_iterator>
     stripsBetweenChannels(ChannelIndex from, ChannelIndex toExclusive) const;
+
+    std::pair<ChannelStripsMap::const_iterator,
+              ChannelStripsMap::const_iterator>
+    stripsGreaterEqualChannel(ChannelIndex fromInclusive) const;
+
+    std::pair<ChannelStripsMap::const_reverse_iterator,
+              ChannelStripsMap::const_reverse_iterator>
+    stripsLessChannel(ChannelIndex fromExclusive) const;
 
 signals:
 

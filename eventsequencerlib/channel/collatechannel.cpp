@@ -190,7 +190,7 @@ void CollateChannel::channelAffected(ChannelIndex channelIndex)
 
 void CollateChannel::recalculate()
 {
-    using CnosType = CollateNonOverlappingSegments<const Strip*>;
+    using CnosType = CollateNonOverlappingSegments<Strip*>;
     CnosType cnos(CnosType::BoundaryMode::HasBounds,
                   d_.startFrame(),
                   d_.endFrame() - d_.startFrame());
