@@ -42,6 +42,17 @@ Rectangle {
                 color: "lightgrey"
             }
 
+            Text {
+                id: txtIndex
+                anchors.left: parent.left
+                anchors.leftMargin: 5
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                verticalAlignment: Text.AlignVCenter
+                font.pointSize: 7
+                text: myPosition
+            }
+
             ComboBox {
                 // TODO move modelUtil to Controls/
                 readonly property var modelUtil: (function () { return {
@@ -72,9 +83,10 @@ Rectangle {
                     },
                 }})()
 
-                anchors.leftMargin: 10
+                anchors.leftMargin: 5
                 anchors.rightMargin: 10
-                anchors.left: parent.left
+                anchors.left: txtIndex.right
+                //anchors.left: parent.left
                 anchors.right: selectIndicator.left
                 anchors.verticalCenter: parent.verticalCenter
                 model: modelUtil.model
