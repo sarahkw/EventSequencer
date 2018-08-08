@@ -422,17 +422,38 @@ void Document::fromPb(const pb::Document &pb)
 
     Q_ASSERT(channels_.empty()); // Because channelAfterAddOrReplace will always say Add. Replace not implemented.
 
-    for (auto& mappair : pb.channels()) {
-        const ChannelIndex channelIndex = ChannelIndex::make1(mappair.first);
+    const auto addPbChannel = [this](ChannelIndex cidx, const pb::ChannelData& pb) {
         channel::ChannelBase* addme =
-                channel::ChannelFactory::Create(mappair.second, channelIndex, *this, this);
+                channel::ChannelFactory::Create(pb, cidx, *this, this);
         if (addme != nullptr) {
-            channels_[channelIndex] = addme;
-            channelAfterAddOrReplace(channelIndex, addme, AddOrReplace::Add);
+            channels_[cidx] = addme;
+            channelAfterAddOrReplace(cidx, addme, AddOrReplace::Add);
+        }
+    };
+
+    for (auto& mp1 : pb.channels()) {
+        const int topLevelIndex = mp1.first;
+        const pb::ChannelData& topLevelPb = mp1.second;
+        addPbChannel(ChannelIndex::make1(topLevelIndex), topLevelPb);
+
+        if (topLevelPb.has_span()) {
+            for (auto& mp2 : topLevelPb.span().channels()) {
+                const int childLevelIndex = mp2.first;
+                const pb::ChannelData& childLevelPb = mp2.second;
+
+                addPbChannel(ChannelIndex::make2(topLevelIndex, childLevelIndex),
+                             childLevelPb);
+            }
+            for (int i = 0; i < topLevelPb.span().strips_size(); ++i) {
+                const pb::Strip& pbStrip = topLevelPb.span().strips(i);
+                Strip* s = createStrip();
+                s->fromPb(pbStrip);
+                // TODO Fix this ugly hack!
+                s->setChannelIndex(ChannelIndex::make2(topLevelIndex,
+                                                       pbStrip.channel()));
+            }
         }
     }
-
-    Q_ASSERT(strips_.empty()); // Should have reset() before calling this
 
     for (int i = 0; i < pb.strips_size(); ++i) {
         createStrip()->fromPb(pb.strips(i));
