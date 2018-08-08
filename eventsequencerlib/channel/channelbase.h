@@ -32,6 +32,7 @@ public:
     virtual ChannelType::Enum channelType() const = 0;
 
     virtual std::vector<Strip*> strips();
+    virtual std::vector<Strip*> possiblyOverlappingStrips();
 
 signals:
 

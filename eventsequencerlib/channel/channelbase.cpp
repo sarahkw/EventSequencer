@@ -25,6 +25,11 @@ std::vector<Strip*> ChannelBase::strips()
     return ret;
 }
 
+std::vector<Strip *> ChannelBase::possiblyOverlappingStrips()
+{
+    return strips();
+}
+
 void ChannelBase::channelStripSetChanged(ChannelIndex channelIndex)
 {
     if (channelIndex == channelIndex_) {

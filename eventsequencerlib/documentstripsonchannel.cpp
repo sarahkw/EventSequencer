@@ -35,6 +35,14 @@ DocumentStripsOnChannel::stripsGreaterChannel(
                           data_.end());
 }
 
+std::pair<DocumentStripsOnChannel::ChannelStripsMap::const_iterator,
+          DocumentStripsOnChannel::ChannelStripsMap::const_iterator>
+DocumentStripsOnChannel::stripsChildOfChannel(int channelIndexFirst) const
+{
+    return std::make_pair(data_.upper_bound(ChannelIndex::make1(channelIndexFirst)),
+                          data_.lower_bound(ChannelIndex::make1(channelIndexFirst + 1)));
+}
+
 void DocumentStripsOnChannel::stripAfterPlaced(Strip *strip)
 {
     data_[strip->channelIndex()].insert({strip->startFrame(), strip});

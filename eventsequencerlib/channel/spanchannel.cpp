@@ -24,8 +24,41 @@ void SpanChannel::setCount(int count)
     }
 }
 
+std::vector<Strip *> SpanChannel::strips()
+{
+    return {};
+}
+
+std::vector<Strip *> SpanChannel::possiblyOverlappingStrips()
+{
+    std::vector<Strip*> ret;
+    if (!channelIndex_.hasSecond()) {
+        auto pair = d_.stripsOnChannel().stripsChildOfChannel(channelIndex_.first());
+        for (auto it = pair.first; it != pair.second; ++it) {
+            for (auto& sh : it->second) {
+                ret.push_back(sh.strip);
+            }
+        }
+    }
+    return ret;
+}
+
+void SpanChannel::channelStripSetChanged(ChannelIndex channelIndex)
+{
+    if (!channelIndex_.hasSecond()) {
+        if (channelIndex.hasSecond() && channelIndex.first() == channelIndex_.first()) {
+            emit stripsChanged();
+        }
+    }
+}
+
+void SpanChannel::channelStripLocationChanged(ChannelIndex channelIndex, Strip *whichStrip)
+{
+    channelStripSetChanged(channelIndex);
+}
+
 SpanChannel::SpanChannel(ChannelIndex channelIndex, Document& d, QObject* parent)
-    : ChannelBase(channelIndex, d, parent), channelIndex_(channelIndex)
+    : ChannelBase(channelIndex, d, parent), channelIndex_(channelIndex), d_(d)
 {
     QObject::connect(this, &SpanChannel::setSpan,
                      &d.channelPositionManager(),

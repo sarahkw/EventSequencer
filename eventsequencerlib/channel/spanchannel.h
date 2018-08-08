@@ -12,6 +12,7 @@ class SpanChannel : public ChannelBase
     Q_OBJECT
 
     ChannelIndex channelIndex_;
+    Document& d_;
 
     int count_ = 0;
     Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
@@ -28,10 +29,18 @@ public:
     int count() const;
     void setCount(int count);
 
+    std::vector<Strip*> strips() override;
+    std::vector<Strip*> possiblyOverlappingStrips() override;
+
 signals:
 
     void countChanged();
     void setSpan(ChannelIndex channelIndex, unsigned span);
+
+private slots:
+
+    void channelStripSetChanged(ChannelIndex channelIndex) override;
+    void channelStripLocationChanged(ChannelIndex channelIndex, Strip* whichStrip) override;
 
 public slots:
 };
