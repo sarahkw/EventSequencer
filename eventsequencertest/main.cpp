@@ -1,4 +1,3 @@
-#include "tst_waitforhost.h"
 #include "tst_channelindex.h"
 #include "tst_visualpositionmanager.h"
 #include "tst_concatiodevice.h"

@@ -13,8 +13,7 @@ HEADERS += \
     tst_concatiodevice.h \
     tst_visualpositionmanager.h \
     tst_channelindex.h \
-    printto_channelindex.h \
-    tst_waitforhost.h
+    printto_channelindex.h
 
 SOURCES += \
         main.cpp
