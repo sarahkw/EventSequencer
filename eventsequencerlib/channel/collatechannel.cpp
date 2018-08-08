@@ -146,9 +146,6 @@ void CollateChannel::channelStripLocationChanged(ChannelIndex channelIndex, Stri
 CollateChannel::CollateChannel(ChannelIndex channelIndex, Document& d, QObject *parent)
     : ChannelBase(channelIndex, d, parent), model_(*this), d_(d)
 {   
-    QObject::connect(&d.stripsOnChannel(), &DocumentStripsOnChannel::channelStripSetChanged, this, &CollateChannel::channelStripSetChanged);
-    QObject::connect(&d.stripsOnChannel(), &DocumentStripsOnChannel::channelStripLocationChanged, this, &CollateChannel::channelStripLocationChanged);
-
     QObject::connect(&d, &Document::startFrameChanged, this, &CollateChannel::triggerRefresh);
     QObject::connect(&d, &Document::endFrameChanged, this, &CollateChannel::triggerRefresh);
 
