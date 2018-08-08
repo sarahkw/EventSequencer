@@ -12,18 +12,11 @@ Item {
             anchors.right: parent.right
             columns: 2
 
-            Label { text: "Channel From" }
+            Label { text: "Channel" }
             Parent.ESTextField {
                 Layout.fillWidth: true
-                onEsEditingFinished: cppChannel.channelFrom = parseInt(text, 10)
-                text: cppChannel.channelFrom
-            }
-
-            Label { text: "Channel To" }
-            Parent.ESTextField {
-                Layout.fillWidth: true
-                onEsEditingFinished: cppChannel.channelTo = parseInt(text, 10)
-                text: cppChannel.channelTo
+                onEsEditingFinished: cppChannel.channel = ES.ChannelIndexFactory.makeFromPathString(text)
+                text: cppChannel.channel.toPathString()
             }
         }
     }

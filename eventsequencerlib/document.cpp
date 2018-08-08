@@ -709,14 +709,18 @@ QObject *Document::createChannel(ChannelIndex channelIndex, channel::ChannelType
 
     AddOrReplace mode = AddOrReplace::Add;
 
+    // Give people a chance to clean up reliance on the old channel.
+    channel::ChannelBase* deleteMe = nullptr;
+
     auto old = channels_.find(channelIndex);
     if (old != channels_.end()) {
-        delete old->second;
+        deleteMe = old->second;
         mode = AddOrReplace::Replace;
     }
 
     channels_[channelIndex] = chan;
     channelAfterAddOrReplace(channelIndex, chan, mode);
+    delete deleteMe;
     return chan;
 }
 

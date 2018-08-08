@@ -74,31 +74,20 @@ QAbstractItemModel *CollateChannelModel::makeFilterModel(int start, int length)
 
 /******************************************************************************/
 
-int CollateChannel::channelFrom() const
+ChannelIndex CollateChannel::channel() const
 {
-    return channelFrom_;
+    return channel_;
 }
 
-void CollateChannel::setChannelFrom(int channelFrom)
+void CollateChannel::setChannel(const ChannelIndex &channel)
 {
-    if (channelFrom_ != channelFrom) {
-        channelFrom_ = channelFrom;
-        emit channelFromChanged();
-        triggerRefresh();
-    }
-}
-
-int CollateChannel::channelTo() const
-{
-    return channelTo_;
-}
-
-void CollateChannel::setChannelTo(int channelTo)
-{
-    if (channelTo_ != channelTo) {
-        channelTo_ = channelTo;
-        emit channelToChanged();
-        triggerRefresh();
+    if (channel_ != channel) {
+        channel_ = channel;
+        emit channelChanged();
+        waitForChannel_.reset(d_.waitForChannelIndex(channel));
+        QObject::connect(waitForChannel_.get(), &WaitFor::resultChanged,
+                         this, &CollateChannel::channelWaitForResultChanged);
+        channelWaitForResultChanged();
     }
 }
 
@@ -114,6 +103,8 @@ bool CollateChannel::event(QEvent *event)
 
 std::vector<Strip*> CollateChannel::strips()
 {
+    // TODO: Recursion guard
+
     // Need to forcefully call recalculate() each time this is read. Otherwise,
     // we could be returning a set with a strip that was deleted.
     if (refreshPending_) {
@@ -122,6 +113,26 @@ std::vector<Strip*> CollateChannel::strips()
     }
 
     return stripSet_;
+}
+
+void CollateChannel::channelWaitForResultChanged()
+{
+    if (sourceChannel_ != nullptr) {
+        sourceChannel_->disconnect(this);
+    }
+
+    sourceChannel_ = qobject_cast<channel::ChannelBase*>(waitForChannel_->result());
+    if (sourceChannel_ != nullptr) {
+        QObject::connect(sourceChannel_, &ChannelBase::stripsChanged,
+                         this, &CollateChannel::channelWaitForStripsChanged);
+    }
+    channelWaitForStripsChanged();
+}
+
+void CollateChannel::channelWaitForStripsChanged()
+{
+    triggerRefresh();
+    emit stripsChanged();
 }
 
 void CollateChannel::triggerRefresh()
@@ -134,13 +145,12 @@ void CollateChannel::triggerRefresh()
 
 void CollateChannel::channelStripSetChanged(ChannelIndex channelIndex)
 {
-    channelAffected(channelIndex);
+    // Disable base impl
 }
 
 void CollateChannel::channelStripLocationChanged(ChannelIndex channelIndex, Strip *whichStrip)
 {
-    Q_UNUSED(whichStrip);
-    channelAffected(channelIndex);
+    // Disable base impl
 }
 
 CollateChannel::CollateChannel(ChannelIndex channelIndex, Document& d, QObject *parent)
@@ -155,15 +165,13 @@ CollateChannel::CollateChannel(ChannelIndex channelIndex, Document& d, QObject *
 void CollateChannel::toPb(pb::ChannelData &pb) const
 {
     auto mut = pb.mutable_collate();
-    mut->set_channelfrom(channelFrom());
-    mut->set_channelto(channelTo());
+    channel().toPb(*mut->mutable_channel());
 }
 
 void CollateChannel::fromPb(const pb::ChannelData &pb)
 {
     Q_ASSERT(pb.has_collate());
-    setChannelFrom(pb.collate().channelfrom());
-    setChannelTo(pb.collate().channelto());
+    setChannel(ChannelIndex::makeFromPb(pb.collate().channel()));
 }
 
 ChannelType::Enum CollateChannel::channelType() const
@@ -176,15 +184,6 @@ QAbstractListModel *CollateChannel::model()
     return &model_;
 }
 
-void CollateChannel::channelAffected(ChannelIndex channelIndex)
-{
-    if (channelIndex >= ChannelIndex::make1(channelFrom()) &&
-            channelIndex < ChannelIndex::make1(channelTo())) {
-        triggerRefresh();
-        emit stripsChanged();
-    }
-}
-
 void CollateChannel::recalculate()
 {
     using CnosType = CollateNonOverlappingSegments<Strip*>;
@@ -192,19 +191,16 @@ void CollateChannel::recalculate()
                   d_.startFrame(),
                   d_.endFrame() - d_.startFrame());
     
-    {
-        auto p = d_.stripsOnChannel().stripsBetweenChannels(
-                    ChannelIndex::make1(channelFrom()),
-                    ChannelIndex::make1(channelTo()));
-        for (auto iter = std::make_reverse_iterator(p.second);
-             iter != std::make_reverse_iterator(p.first);
+    if (sourceChannel_ != nullptr) {
+        std::vector<Strip*> strips = sourceChannel_->multiChannelStrips();
+        // Relying on strips() to be sorted, by channel index first.
+        for (auto iter = strips.rbegin();
+             iter != strips.rend();
              ++iter) {
-            for (auto& s : iter->second) {
-                cnos.mergeSegment(s.strip->startFrame(),
-                                  s.strip->length(),
-                                  CnosType::ReplaceMode::No,
-                                  s.strip);
-            }
+            Strip* s = *iter;
+            cnos.mergeSegment(s->startFrame(), s->length(),
+                              CnosType::ReplaceMode::No,
+                              s);
         }
     }
 

@@ -49,6 +49,7 @@ class ChannelData_Label;
 class ChannelData_Playlist;
 class ChannelData_Span;
 class ChannelData_Text;
+class ChannelIndex;
 class Document;
 class File;
 class Strip;
@@ -104,6 +105,95 @@ inline bool AudioFormat_Endian_Parse(
     AudioFormat_Endian_descriptor(), name, value);
 }
 // ===================================================================
+
+class ChannelIndex : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelIndex) */ {
+ public:
+  ChannelIndex();
+  virtual ~ChannelIndex();
+
+  ChannelIndex(const ChannelIndex& from);
+
+  inline ChannelIndex& operator=(const ChannelIndex& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChannelIndex& default_instance();
+
+  void Swap(ChannelIndex* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ChannelIndex* New() const { return New(NULL); }
+
+  ChannelIndex* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ChannelIndex& from);
+  void MergeFrom(const ChannelIndex& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(ChannelIndex* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated int32 idx = 1;
+  int idx_size() const;
+  void clear_idx();
+  static const int kIdxFieldNumber = 1;
+  ::google::protobuf::int32 idx(int index) const;
+  void set_idx(int index, ::google::protobuf::int32 value);
+  void add_idx(::google::protobuf::int32 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+      idx() const;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+      mutable_idx();
+
+  // @@protoc_insertion_point(class_scope:pb.ChannelIndex)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > idx_;
+  mutable int _idx_cached_byte_size_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static ChannelIndex* default_instance_;
+};
+// -------------------------------------------------------------------
 
 class Strip_BadJs : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.Strip.BadJs) */ {
  public:
@@ -1316,25 +1406,21 @@ class ChannelData_Collate : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
-  // optional int32 channelFrom = 10;
-  void clear_channelfrom();
-  static const int kChannelFromFieldNumber = 10;
-  ::google::protobuf::int32 channelfrom() const;
-  void set_channelfrom(::google::protobuf::int32 value);
-
-  // optional int32 channelTo = 11;
-  void clear_channelto();
-  static const int kChannelToFieldNumber = 11;
-  ::google::protobuf::int32 channelto() const;
-  void set_channelto(::google::protobuf::int32 value);
+  // optional .pb.ChannelIndex channel = 12;
+  bool has_channel() const;
+  void clear_channel();
+  static const int kChannelFieldNumber = 12;
+  const ::pb::ChannelIndex& channel() const;
+  ::pb::ChannelIndex* mutable_channel();
+  ::pb::ChannelIndex* release_channel();
+  void set_allocated_channel(::pb::ChannelIndex* channel);
 
   // @@protoc_insertion_point(class_scope:pb.ChannelData.Collate)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
-  ::google::protobuf::int32 channelfrom_;
-  ::google::protobuf::int32 channelto_;
+  ::pb::ChannelIndex* channel_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_eventsequencer_2eproto();
   friend void protobuf_AssignDesc_eventsequencer_2eproto();
@@ -1983,6 +2069,40 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
 // ===================================================================
 
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
+// ChannelIndex
+
+// repeated int32 idx = 1;
+inline int ChannelIndex::idx_size() const {
+  return idx_.size();
+}
+inline void ChannelIndex::clear_idx() {
+  idx_.Clear();
+}
+inline ::google::protobuf::int32 ChannelIndex::idx(int index) const {
+  // @@protoc_insertion_point(field_get:pb.ChannelIndex.idx)
+  return idx_.Get(index);
+}
+inline void ChannelIndex::set_idx(int index, ::google::protobuf::int32 value) {
+  idx_.Set(index, value);
+  // @@protoc_insertion_point(field_set:pb.ChannelIndex.idx)
+}
+inline void ChannelIndex::add_idx(::google::protobuf::int32 value) {
+  idx_.Add(value);
+  // @@protoc_insertion_point(field_add:pb.ChannelIndex.idx)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+ChannelIndex::idx() const {
+  // @@protoc_insertion_point(field_list:pb.ChannelIndex.idx)
+  return idx_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+ChannelIndex::mutable_idx() {
+  // @@protoc_insertion_point(field_mutable_list:pb.ChannelIndex.idx)
+  return &idx_;
+}
+
+// -------------------------------------------------------------------
+
 // Strip_BadJs
 
 // optional string script = 1;
@@ -2597,32 +2717,42 @@ inline void ChannelData_Text::set_allocated_content(::std::string* content) {
 
 // ChannelData_Collate
 
-// optional int32 channelFrom = 10;
-inline void ChannelData_Collate::clear_channelfrom() {
-  channelfrom_ = 0;
+// optional .pb.ChannelIndex channel = 12;
+inline bool ChannelData_Collate::has_channel() const {
+  return !_is_default_instance_ && channel_ != NULL;
 }
-inline ::google::protobuf::int32 ChannelData_Collate::channelfrom() const {
-  // @@protoc_insertion_point(field_get:pb.ChannelData.Collate.channelFrom)
-  return channelfrom_;
+inline void ChannelData_Collate::clear_channel() {
+  if (GetArenaNoVirtual() == NULL && channel_ != NULL) delete channel_;
+  channel_ = NULL;
 }
-inline void ChannelData_Collate::set_channelfrom(::google::protobuf::int32 value) {
+inline const ::pb::ChannelIndex& ChannelData_Collate::channel() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.Collate.channel)
+  return channel_ != NULL ? *channel_ : *default_instance_->channel_;
+}
+inline ::pb::ChannelIndex* ChannelData_Collate::mutable_channel() {
   
-  channelfrom_ = value;
-  // @@protoc_insertion_point(field_set:pb.ChannelData.Collate.channelFrom)
+  if (channel_ == NULL) {
+    channel_ = new ::pb::ChannelIndex;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.Collate.channel)
+  return channel_;
 }
-
-// optional int32 channelTo = 11;
-inline void ChannelData_Collate::clear_channelto() {
-  channelto_ = 0;
-}
-inline ::google::protobuf::int32 ChannelData_Collate::channelto() const {
-  // @@protoc_insertion_point(field_get:pb.ChannelData.Collate.channelTo)
-  return channelto_;
-}
-inline void ChannelData_Collate::set_channelto(::google::protobuf::int32 value) {
+inline ::pb::ChannelIndex* ChannelData_Collate::release_channel() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.Collate.channel)
   
-  channelto_ = value;
-  // @@protoc_insertion_point(field_set:pb.ChannelData.Collate.channelTo)
+  ::pb::ChannelIndex* temp = channel_;
+  channel_ = NULL;
+  return temp;
+}
+inline void ChannelData_Collate::set_allocated_channel(::pb::ChannelIndex* channel) {
+  delete channel_;
+  channel_ = channel;
+  if (channel) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.Collate.channel)
 }
 
 // -------------------------------------------------------------------
@@ -3355,6 +3485,8 @@ inline void File::set_allocated_forkedfromchecksum(::std::string* forkedfromchec
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

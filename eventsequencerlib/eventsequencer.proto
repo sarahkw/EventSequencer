@@ -9,6 +9,10 @@ package pb;
 //  };
 //}
 
+message ChannelIndex {
+  repeated int32 idx = 1;
+}
+
 message Strip {
   int32 channel = 1;
   int32 startFrame = 2;
@@ -73,8 +77,10 @@ message ChannelData {
   message Audio {}
   message Label {}
   message Collate {
-    int32 channelFrom = 10;
-    int32 channelTo = 11;
+    //int32 channelFrom = 10;
+    //int32 channelTo = 11;
+
+    ChannelIndex channel = 12;
   }
   message Playlist {}
   message Span {

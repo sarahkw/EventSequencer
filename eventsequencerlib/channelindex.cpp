@@ -3,6 +3,8 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 
+#include "eventsequencer.pb.h"
+
 ChannelIndex::ChannelIndex()
 {
 
@@ -40,6 +42,27 @@ ChannelIndex ChannelIndex::makeFromPathString(QString pathString, bool *success)
         }
     }
     return cidx;
+}
+
+ChannelIndex ChannelIndex::makeFromPb(const pb::ChannelIndex &pb)
+{
+    if (pb.idx_size() == 1) {
+        return ChannelIndex::make1(pb.idx(0));
+    } else if (pb.idx_size() == 2) {
+        return ChannelIndex::make2(pb.idx(0), pb.idx(1));
+    } else {
+        qWarning("ChannelIndex makeFromPb invalid idx_size %d", pb.idx_size());
+    }
+    return ChannelIndex();
+}
+
+void ChannelIndex::toPb(pb::ChannelIndex &pb) const
+{
+    pb.clear_idx();
+    pb.add_idx(first_);
+    if (hasSecond_) {
+        pb.add_idx(second_);
+    }
 }
 
 int ChannelIndex::first() const
@@ -98,7 +121,7 @@ QString ChannelIndex::toDebugString() const
             .arg(hasSecond_ ? QString(" %1").arg(second_) : QString());
 }
 
-QString ChannelIndex::toPathString()
+QString ChannelIndex::toPathString() const
 {
     if (hasSecond_) {
         return QString("%1.%2").arg(first_).arg(second_);

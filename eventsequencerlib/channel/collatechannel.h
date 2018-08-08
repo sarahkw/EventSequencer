@@ -2,9 +2,12 @@
 #define COLLATECHANNEL_H
 
 #include "channelbase.h"
+#include "waitfor.h"
 
 #include <QObject>
 #include <QAbstractListModel>
+
+#include <memory>
 
 class Document;
 class Strip;
@@ -52,11 +55,10 @@ private:
 
     bool refreshPending_ = false;
 
-    int channelFrom_ = 0;
-    int channelTo_ = 0;
-
-    Q_PROPERTY(int channelFrom READ channelFrom WRITE setChannelFrom NOTIFY channelFromChanged)
-    Q_PROPERTY(int channelTo READ channelTo WRITE setChannelTo NOTIFY channelToChanged)
+    ChannelIndex channel_;
+    Q_PROPERTY(ChannelIndex channel READ channel WRITE setChannel NOTIFY channelChanged)
+    std::unique_ptr<WaitFor> waitForChannel_;
+    channel::ChannelBase* sourceChannel_ = nullptr;
 
     struct Segment {
         int segmentStart;
@@ -76,11 +78,8 @@ public:
 
     QAbstractListModel* model();
 
-    int channelFrom() const;
-    void setChannelFrom(int channelFrom);
-
-    int channelTo() const;
-    void setChannelTo(int channelTo);
+    ChannelIndex channel() const;
+    void setChannel(const ChannelIndex &channel);
 
     bool event(QEvent *event) override;
 
@@ -88,10 +87,12 @@ public:
 
 signals:
 
-    void channelFromChanged();
-    void channelToChanged();
+    void channelChanged();
 
 private slots:
+
+    void channelWaitForResultChanged();
+    void channelWaitForStripsChanged();
 
     void triggerRefresh();
 
@@ -100,7 +101,6 @@ private slots:
 
 private:
 
-    void channelAffected(ChannelIndex channelIndex);
     void recalculate();
 
 public slots:

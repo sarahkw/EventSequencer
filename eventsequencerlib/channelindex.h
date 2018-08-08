@@ -4,6 +4,10 @@
 #include <QString>
 #include <QMetaType>
 
+namespace pb {
+class ChannelIndex;
+}
+
 class ChannelIndex
 {
     Q_GADGET
@@ -21,6 +25,9 @@ public:
     static ChannelIndex make1(int first);
     static ChannelIndex make2(int first, unsigned second);
     static ChannelIndex makeFromPathString(QString pathString, bool* success);
+    static ChannelIndex makeFromPb(const pb::ChannelIndex& pb);
+
+    void toPb(pb::ChannelIndex& pb) const;
 
     int first() const;
     bool hasSecond() const;
@@ -31,7 +38,7 @@ public:
     bool operator!=(const ChannelIndex& o) const;
     QString toDebugString() const;
 
-    Q_INVOKABLE QString toPathString();
+    Q_INVOKABLE QString toPathString() const;
 };
 
 Q_DECLARE_METATYPE(ChannelIndex)
