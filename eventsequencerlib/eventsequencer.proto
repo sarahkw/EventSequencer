@@ -79,6 +79,8 @@ message ChannelData {
   message Playlist {}
   message Span {
     int32 count = 1;
+    repeated Strip strips = 2;
+    map<int32, ChannelData> channels = 3;
   }
 
   oneof channel {

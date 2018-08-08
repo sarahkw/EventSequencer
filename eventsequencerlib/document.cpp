@@ -358,10 +358,52 @@ Document::~Document()
     reset();
 }
 
+template <typename T>
+void DescribeType()
+{
+    qInfo() << "DescribeType" << __PRETTY_FUNCTION__;
+}
+
 void Document::toPb(pb::Document &pb) const
 {
+    // Need to build all the main channels before we could add subchannels
+    // to them.
+    std::map<int, std::map<unsigned, channel::ChannelBase*>> subChannels;
+
+    for (auto& mappair : channels_) {
+        if (mappair.first.hasSecond()) {
+            subChannels[mappair.first.first()][mappair.first.second()] =
+                    mappair.second;
+        } else {
+            mappair.second->toPb((*pb.mutable_channels())[mappair.first.first()]);
+        }
+    }
+
+    auto mutableSpan = [&pb](int idxFirst) {
+        auto& pbChannel = (*pb.mutable_channels())[idxFirst];
+        Q_ASSERT(pbChannel.has_span());
+        return pbChannel.mutable_span();
+    };
+
+    for (auto& mp1 : subChannels) {
+        for (auto& mp2 : mp1.second) {
+            const int idxFirst = mp1.first;
+            const unsigned idxSecond = mp2.first;
+            const channel::ChannelBase* chan = mp2.second;
+
+            auto& chanMap = *mutableSpan(idxFirst)->mutable_channels();
+            chan->toPb(chanMap[idxSecond]);
+        }
+    }
+    
     for (const Strip* s : strips_) {
-        s->toPb(*pb.add_strips());
+        if (!s->channelIndex().hasSecond()) {
+            s->toPb(*pb.add_strips());
+        } else {
+            pb::Strip* pbStrip = mutableSpan(s->channelIndex().first())->add_strips();
+            s->toPb(*pbStrip);
+            pbStrip->set_channel(s->channelIndex().second()); // TODO: Hack!
+        }
     }
     pb.set_framespersecond(framesPerSecond_);
     pb.set_startframe(startFrame_);
@@ -371,11 +413,6 @@ void Document::toPb(pb::Document &pb) const
         audioFormatHolder_->toPb(*pb.mutable_audioformat());
     } else {
         pb.clear_audioformat();
-    }
-
-    auto* pb_channels = pb.mutable_channels();
-    for (auto& mappair : channels_) {
-        mappair.second->toPb((*pb_channels)[mappair.first.first()]);
     }
 }
 

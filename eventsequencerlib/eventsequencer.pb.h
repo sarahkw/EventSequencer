@@ -1478,6 +1478,7 @@ class ChannelData_Span : public ::google::protobuf::Message /* @@protoc_insertio
 
   // nested types ----------------------------------------------------
 
+
   // accessors -------------------------------------------------------
 
   // optional int32 count = 1;
@@ -1486,11 +1487,44 @@ class ChannelData_Span : public ::google::protobuf::Message /* @@protoc_insertio
   ::google::protobuf::int32 count() const;
   void set_count(::google::protobuf::int32 value);
 
+  // repeated .pb.Strip strips = 2;
+  int strips_size() const;
+  void clear_strips();
+  static const int kStripsFieldNumber = 2;
+  const ::pb::Strip& strips(int index) const;
+  ::pb::Strip* mutable_strips(int index);
+  ::pb::Strip* add_strips();
+  ::google::protobuf::RepeatedPtrField< ::pb::Strip >*
+      mutable_strips();
+  const ::google::protobuf::RepeatedPtrField< ::pb::Strip >&
+      strips() const;
+
+  // map<int32, .pb.ChannelData> channels = 3;
+  int channels_size() const;
+  void clear_channels();
+  static const int kChannelsFieldNumber = 3;
+  const ::google::protobuf::Map< ::google::protobuf::int32, ::pb::ChannelData >&
+      channels() const;
+  ::google::protobuf::Map< ::google::protobuf::int32, ::pb::ChannelData >*
+      mutable_channels();
+
   // @@protoc_insertion_point(class_scope:pb.ChannelData.Span)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
+  ::google::protobuf::RepeatedPtrField< ::pb::Strip > strips_;
+  typedef ::google::protobuf::internal::MapEntryLite<
+      ::google::protobuf::int32, ::pb::ChannelData,
+      ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
+      ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
+      0 >
+      ChannelData_Span_ChannelsEntry;
+  ::google::protobuf::internal::MapField<
+      ::google::protobuf::int32, ::pb::ChannelData,
+      ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
+      ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > channels_;
   ::google::protobuf::int32 count_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_eventsequencer_2eproto();
@@ -2611,6 +2645,54 @@ inline void ChannelData_Span::set_count(::google::protobuf::int32 value) {
   
   count_ = value;
   // @@protoc_insertion_point(field_set:pb.ChannelData.Span.count)
+}
+
+// repeated .pb.Strip strips = 2;
+inline int ChannelData_Span::strips_size() const {
+  return strips_.size();
+}
+inline void ChannelData_Span::clear_strips() {
+  strips_.Clear();
+}
+inline const ::pb::Strip& ChannelData_Span::strips(int index) const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.Span.strips)
+  return strips_.Get(index);
+}
+inline ::pb::Strip* ChannelData_Span::mutable_strips(int index) {
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.Span.strips)
+  return strips_.Mutable(index);
+}
+inline ::pb::Strip* ChannelData_Span::add_strips() {
+  // @@protoc_insertion_point(field_add:pb.ChannelData.Span.strips)
+  return strips_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::pb::Strip >*
+ChannelData_Span::mutable_strips() {
+  // @@protoc_insertion_point(field_mutable_list:pb.ChannelData.Span.strips)
+  return &strips_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::pb::Strip >&
+ChannelData_Span::strips() const {
+  // @@protoc_insertion_point(field_list:pb.ChannelData.Span.strips)
+  return strips_;
+}
+
+// map<int32, .pb.ChannelData> channels = 3;
+inline int ChannelData_Span::channels_size() const {
+  return channels_.size();
+}
+inline void ChannelData_Span::clear_channels() {
+  channels_.Clear();
+}
+inline const ::google::protobuf::Map< ::google::protobuf::int32, ::pb::ChannelData >&
+ChannelData_Span::channels() const {
+  // @@protoc_insertion_point(field_map:pb.ChannelData.Span.channels)
+  return channels_.GetMap();
+}
+inline ::google::protobuf::Map< ::google::protobuf::int32, ::pb::ChannelData >*
+ChannelData_Span::mutable_channels() {
+  // @@protoc_insertion_point(field_mutable_map:pb.ChannelData.Span.channels)
+  return channels_.MutableMap();
 }
 
 // -------------------------------------------------------------------
