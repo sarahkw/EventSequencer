@@ -35,14 +35,6 @@ DocumentStripsOnChannel::stripsGreaterChannel(
                           data_.end());
 }
 
-std::pair<DocumentStripsOnChannel::ChannelStripsMap::const_reverse_iterator,
-          DocumentStripsOnChannel::ChannelStripsMap::const_reverse_iterator>
-DocumentStripsOnChannel::stripsLessChannel(ChannelIndex fromExclusive) const
-{
-    return std::make_pair(std::make_reverse_iterator(data_.lower_bound(fromExclusive)),
-                          data_.rend());
-}
-
 void DocumentStripsOnChannel::stripAfterPlaced(Strip *strip)
 {
     data_[strip->channelIndex()].insert({strip->startFrame(), strip});
