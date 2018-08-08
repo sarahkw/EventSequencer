@@ -27,17 +27,17 @@ public:
         }
     }
 
-    void rekeyAfter(KeyType afterExclusive, KeyType delta)
+    void rekey(KeyType fromInclusive, KeyType delta)
     {
         std::map<KeyType, QObject*> collectDataTypes;
-        for (auto iter = waiters_.upper_bound(afterExclusive);
+        for (auto iter = waiters_.lower_bound(fromInclusive);
              iter != waiters_.end();
              ++iter) {
             if (!iter->second.empty()) {
                 collectDataTypes[iter->first] = iter->second[0]->result();
             }
         }
-        for (auto iter = waiters_.upper_bound(afterExclusive);
+        for (auto iter = waiters_.lower_bound(fromInclusive);
              iter != waiters_.end();
              ++iter) {
             beforeDelete(iter->first);
@@ -46,7 +46,7 @@ public:
              iter != collectDataTypes.end();
              ++iter) {
             KeyType newLocation = iter->first + delta;
-            if (newLocation > afterExclusive) {
+            if (newLocation >= fromInclusive) {
                 afterAdd(newLocation, iter->second);
             }
         }

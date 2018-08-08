@@ -14,42 +14,51 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
         return;
     }
 
-    unsigned oldSpan = 0;
-
     // We want to emit destoryChanIdx() before actually modifying the structure.
     // Because destroying the channel may need to know where its visual position
     // is. For example, to "unbind" itself to a visual position.
     std::function<void()> modifyStructure;
 
-    auto oldSpanIter = spanMap_.find(channelIndexFirst);
-    if (oldSpanIter != spanMap_.end()) {
-        oldSpan = oldSpanIter->second;
+    std::function<void()> destroyChannels = [](){};
+
+    int delta = 0;
+
+    ChannelIndex affectedAfter;
+
+    if (spanMap_.count(channelIndexFirst)) {
+        auto oldSpan = spanMap_[channelIndexFirst];
         if (span == 0) {
-            modifyStructure = [this, &oldSpanIter]() {
-                spanMap_.erase(oldSpanIter);
+            modifyStructure = [=]() { spanMap_.erase(channelIndexFirst); };
+            affectedAfter = ChannelIndex::make2(channelIndexFirst, 0);
+            destroyChannels = [=]() {
+                emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, span),
+                                    ChannelIndex::make2(channelIndexFirst, oldSpan));
             };
+            delta = -oldSpan;
         } else {
-            modifyStructure = [&oldSpanIter, span]() {
-                oldSpanIter->second = span;
-            };
+            modifyStructure = [=]() { spanMap_[channelIndexFirst] = span; };
+            if (span > oldSpan) { // Increase
+                affectedAfter = ChannelIndex::make2(channelIndexFirst, oldSpan);
+            } else if (span < oldSpan) { // Decrease
+                affectedAfter = ChannelIndex::make2(channelIndexFirst, span);
+                destroyChannels = [=]() {
+                    emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, span),
+                                        ChannelIndex::make2(channelIndexFirst, oldSpan));
+                };
+            } else {
+                return;                                          // EARLY RETURN
+            }
+            delta = span - oldSpan;
         }
     } else {
-        // New!
-        modifyStructure = [this, channelIndexFirst, span]() {
-            spanMap_[channelIndexFirst] = span;
-        };
+        modifyStructure = [=]() { spanMap_[channelIndexFirst] = span; };
+        affectedAfter = ChannelIndex::make2(channelIndexFirst, 0);
+        delta = span;
     }
 
-    int diffSpan = static_cast<int>(span) - static_cast<int>(oldSpan);
-
-    if (diffSpan != 0) {
-        if (span < oldSpan) {
-            emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, span),
-                                ChannelIndex::make2(channelIndexFirst, oldSpan));
-        }
-        modifyStructure();
-        emit visualPositionChangedAfter(ChannelIndex::make1(channelIndexFirst), diffSpan);
-    }
+    destroyChannels();
+    modifyStructure();
+    emit visualPositionChangedAfter(affectedAfter, delta);
 }
 
 void VisualPositionManager::del(int channelIndexFirst)
