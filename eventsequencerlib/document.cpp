@@ -63,6 +63,15 @@ void DocumentChannelsModel::beforeDelete(ChannelIndex channelIndex)
     endRemoveRows();
 }
 
+void DocumentChannelsModel::invalidateChannelPositions()
+{
+    if (displayRows_.size() > 0) {
+        emit dataChanged(createIndex(0, 0),
+                         createIndex(displayRows_.size() - 1, 0),
+                         {ChannelPositionRole});
+    }
+}
+
 int DocumentChannelsModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
@@ -236,6 +245,8 @@ void Document::visualPositionChangedAfter(ChannelIndex channelIndex, int delta)
                     channelPositionManager().chanIdxToVisualPosition(iter->first),
                     iter->second);
     }
+
+    channelsModel_.invalidateChannelPositions();
 }
 
 // VisualPositionManager signal
