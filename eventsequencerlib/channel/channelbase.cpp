@@ -25,7 +25,7 @@ std::vector<Strip*> ChannelBase::strips()
     return ret;
 }
 
-std::vector<Strip *> ChannelBase::possiblyOverlappingStrips()
+std::vector<Strip *> ChannelBase::multiChannelStrips()
 {
     return strips();
 }

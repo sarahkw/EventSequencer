@@ -29,7 +29,7 @@ std::vector<Strip *> SpanChannel::strips()
     return {};
 }
 
-std::vector<Strip *> SpanChannel::possiblyOverlappingStrips()
+std::vector<Strip *> SpanChannel::multiChannelStrips()
 {
     std::vector<Strip*> ret;
     if (!channelIndex_.hasSecond()) {

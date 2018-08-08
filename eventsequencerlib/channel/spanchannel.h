@@ -30,7 +30,7 @@ public:
     void setCount(int count);
 
     std::vector<Strip*> strips() override;
-    std::vector<Strip*> possiblyOverlappingStrips() override;
+    std::vector<Strip*> multiChannelStrips() override;
 
 signals:
 
