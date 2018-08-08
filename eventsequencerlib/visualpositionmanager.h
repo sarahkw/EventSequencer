@@ -29,7 +29,6 @@ public:
 signals:
 
     void visualPositionChangedAfter(ChannelIndex channelIndex, int delta);
-    void visualPositionChangedBefore(ChannelIndex channelIndex, int delta);
 
     // Destroy *before* reclaiming the space used. [from, to)
     void destroyChanIdx(ChannelIndex from, ChannelIndex toExclusive);

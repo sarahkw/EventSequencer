@@ -9,6 +9,11 @@ VisualPositionManager::VisualPositionManager(QObject* parent) : QObject(parent)
 
 void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
 {
+    if (channelIndexFirst < 0) {
+        qWarning("Spanning is only supported for index >= 0!");
+        return;
+    }
+
     unsigned oldSpan = 0;
 
     // We want to emit destoryChanIdx() before actually modifying the structure.
@@ -38,22 +43,12 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
     int diffSpan = static_cast<int>(span) - static_cast<int>(oldSpan);
 
     if (diffSpan != 0) {
-        if (channelIndexFirst >= 0) {
-            if (span < oldSpan) {
-                emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, span),
-                                    ChannelIndex::make2(channelIndexFirst, oldSpan));
-            }
-            modifyStructure();
-            emit visualPositionChangedAfter(ChannelIndex::make1(channelIndexFirst), diffSpan);
-        } else {
-            if (span < oldSpan) {
-                emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, oldSpan - 1),
-                                    (span > 0) ? ChannelIndex::make2(channelIndexFirst, span - 1) :
-                                                 ChannelIndex::make1(channelIndexFirst));
-            }
-            modifyStructure();
-            emit visualPositionChangedBefore(ChannelIndex::make1(channelIndexFirst), diffSpan);
+        if (span < oldSpan) {
+            emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, span),
+                                ChannelIndex::make2(channelIndexFirst, oldSpan));
         }
+        modifyStructure();
+        emit visualPositionChangedAfter(ChannelIndex::make1(channelIndexFirst), diffSpan);
     }
 }
 
@@ -70,35 +65,20 @@ int VisualPositionManager::chanIdxToVisualPosition(ChannelIndex chanIdx) const
         qWarning() << "Channel index not valid!" << chanIdx.toDebugString();
     }
 
-    const bool ispos = chanIdx.first() >= 0;
-
-    if (ispos) {
+    int delta = 0;
+    if (chanIdx.first() >= 0) {
         auto from = spanMap_.lower_bound(0);
         auto to = spanMap_.lower_bound(chanIdx.first());
-        int delta = 0;
         for (auto iter = from; iter != to; ++iter) {
             delta += iter->second;
         }
-
-        int ret = chanIdx.first() + delta;
-        if (chanIdx.hasSecond()) {
-            ret += 1 + chanIdx.second();
-        }
-        return ret;
-    } else {
-        auto from = std::make_reverse_iterator(spanMap_.lower_bound(0));
-        auto to = std::make_reverse_iterator(spanMap_.upper_bound(chanIdx.first()));
-        int delta = 0;
-        for (auto iter = from; iter != to; ++iter) {
-            delta += iter->second;
-        }
-
-        int ret = chanIdx.first() - delta;
-        if (chanIdx.hasSecond()) {
-            ret -= 1 + chanIdx.second();
-        }
-        return ret;
     }
+
+    int ret = chanIdx.first() + delta;
+    if (chanIdx.hasSecond()) {
+        ret += 1 + chanIdx.second();
+    }
+    return ret;
 }
 
 bool VisualPositionManager::chanIdxIsValid(ChannelIndex chanIdx) const
@@ -117,32 +97,16 @@ bool VisualPositionManager::chanIdxIsValid(ChannelIndex chanIdx) const
 
 ChannelIndex VisualPositionManager::visualPositionToChanIdx(int visualPosition) const
 {
-    if (visualPosition >= 0) {
-        for (auto iter = spanMap_.lower_bound(0); iter != spanMap_.end(); ++iter) {
-            if (visualPosition > iter->first) {
-                const bool inThisRange = visualPosition <= iter->first + iter->second;
-                if (inThisRange) {
-                    return ChannelIndex::make2(iter->first, visualPosition - (1 + iter->first));
-                } else {
-                    visualPosition -= iter->second;
-                }
+    for (auto iter = spanMap_.lower_bound(0); iter != spanMap_.end(); ++iter) {
+        if (visualPosition > iter->first) {
+            const bool inThisRange = visualPosition <= iter->first + iter->second;
+            if (inThisRange) {
+                return ChannelIndex::make2(iter->first, visualPosition - (1 + iter->first));
             } else {
-                break;
+                visualPosition -= iter->second;
             }
-        }
-    } else {
-        for (auto iter = std::make_reverse_iterator(spanMap_.lower_bound(0));
-             iter != spanMap_.rend(); ++iter) {
-            if (visualPosition < iter->first) {
-                const bool inThisRange = visualPosition >= iter->first - iter->second;
-                if (inThisRange) {
-                    return ChannelIndex::make2(iter->first, -(visualPosition - (iter->first - 1)));
-                } else {
-                    visualPosition += iter->second;
-                }
-            } else {
-                break;
-            }
+        } else {
+            break;
         }
     }
 

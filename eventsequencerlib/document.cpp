@@ -233,21 +233,6 @@ void Document::visualPositionChangedAfter(ChannelIndex channelIndex, int delta)
 }
 
 // VisualPositionManager signal
-void Document::visualPositionChangedBefore(ChannelIndex channelIndex, int delta)
-{
-    auto stripsMoved = stripsOnChannel_.stripsLessChannel(channelIndex);
-    for (auto iter = stripsMoved.first; iter != stripsMoved.second; ++iter) {
-        for (auto& sh : iter->second) {
-            sh.strip->channelPositionChanged();
-        }
-    }
-
-    channelWaitForPosition_.rekeyBefore(
-                channelPositionManager_.chanIdxToVisualPosition(channelIndex),
-                delta);
-}
-
-// VisualPositionManager signal
 void Document::destroyChanIdx(ChannelIndex from, ChannelIndex toExclusive)
 {
     {
@@ -347,7 +332,6 @@ Document::Document(QObject *parent)
     QObject::connect(this, &Document::stripMoved, &stripsOnChannel_, &DocumentStripsOnChannel::stripMoved);
 
     QObject::connect(&channelPositionManager_, &VisualPositionManager::visualPositionChangedAfter,  this, &Document::visualPositionChangedAfter);
-    QObject::connect(&channelPositionManager_, &VisualPositionManager::visualPositionChangedBefore, this, &Document::visualPositionChangedBefore);
     QObject::connect(&channelPositionManager_, &VisualPositionManager::destroyChanIdx,              this, &Document::destroyChanIdx);
 }
 
