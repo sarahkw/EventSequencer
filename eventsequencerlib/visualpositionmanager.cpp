@@ -29,7 +29,7 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
         auto oldSpan = spanMap_[channelIndexFirst];
         if (span == 0) {
             modifyStructure = [=]() { spanMap_.erase(channelIndexFirst); };
-            affectedAfter = ChannelIndex::make2(channelIndexFirst, 0);
+            affectedAfter = ChannelIndex::make1(channelIndexFirst);
             destroyChannels = [=]() {
                 emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, span),
                                     ChannelIndex::make2(channelIndexFirst, oldSpan));
@@ -38,9 +38,9 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
         } else {
             modifyStructure = [=]() { spanMap_[channelIndexFirst] = span; };
             if (span > oldSpan) { // Increase
-                affectedAfter = ChannelIndex::make2(channelIndexFirst, oldSpan);
+                affectedAfter = ChannelIndex::make2(channelIndexFirst, oldSpan - 1);
             } else if (span < oldSpan) { // Decrease
-                affectedAfter = ChannelIndex::make2(channelIndexFirst, span);
+                affectedAfter = ChannelIndex::make2(channelIndexFirst, span - 1);
                 destroyChannels = [=]() {
                     emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, span),
                                         ChannelIndex::make2(channelIndexFirst, oldSpan));
@@ -52,7 +52,7 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
         }
     } else {
         modifyStructure = [=]() { spanMap_[channelIndexFirst] = span; };
-        affectedAfter = ChannelIndex::make2(channelIndexFirst, 0);
+        affectedAfter = ChannelIndex::make1(channelIndexFirst);
         delta = span;
     }
 

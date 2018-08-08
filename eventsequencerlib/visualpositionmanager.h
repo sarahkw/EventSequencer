@@ -28,6 +28,8 @@ public:
 
 signals:
 
+    // This is "after", because in the case where subchannels are deleted, the
+    // "starting on" channelIndex is invalid.
     void visualPositionChangedAfter(ChannelIndex channelIndex, int delta);
 
     // Destroy *before* reclaiming the space used. [from, to)

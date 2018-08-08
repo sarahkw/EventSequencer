@@ -41,7 +41,7 @@ TEST_F(WaitForHostTest, TestTheTest)
 
 TEST_F(WaitForHostTest, Rekey_Pos_AddOne)
 {
-    wfh_.rekey(2, 1);
+    wfh_.rekeyAfter(1, 1);
     EXPECT_THAT(result(),
                 testing::ElementsAre(
                     &qobjs_[0], // -3
@@ -56,7 +56,7 @@ TEST_F(WaitForHostTest, Rekey_Pos_AddOne)
 
 TEST_F(WaitForHostTest, Rekey_Pos_DelOne)
 {
-    wfh_.rekey(2, -1);
+    wfh_.rekeyAfter(1, -1);
     EXPECT_THAT(result(),
             testing::ElementsAre(
                 &qobjs_[0], // -3
@@ -71,7 +71,7 @@ TEST_F(WaitForHostTest, Rekey_Pos_DelOne)
 
 TEST_F(WaitForHostTest, Rekey_Pos_AddMany)
 {
-    wfh_.rekey(2, 99);
+    wfh_.rekeyAfter(1, 99);
     EXPECT_THAT(result(),
                 testing::ElementsAre(
                     &qobjs_[0], // -3
@@ -86,7 +86,7 @@ TEST_F(WaitForHostTest, Rekey_Pos_AddMany)
 
 TEST_F(WaitForHostTest, Rekey_Pos_DelMany)
 {
-    wfh_.rekey(2, -99);
+    wfh_.rekeyAfter(1, -99);
     EXPECT_THAT(result(),
                 testing::ElementsAre(
                     &qobjs_[0], // -3

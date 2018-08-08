@@ -38,10 +38,10 @@ TEST_F(TestVisualPositionManager, ChangedBeforeSignal)
 {
     using testing::_;
 
-    EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 0), 3));
+    EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make1(5), 3));
     vpm_.setSpan(5, 3);
 
-    EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(0, 0), 2));
+    EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make1(0), 2));
     vpm_.setSpan(0, 2);
 }
 
@@ -49,9 +49,9 @@ TEST_F(TestVisualPositionManager, ChangedSignalsOnDelete)
 {
     using testing::_;
 
-    EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 0), 3));
+    EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make1(5), 3));
     vpm_.setSpan(5, 3);
-    EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 0), -3));
+    EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make1(5), -3));
     vpm_.del(5);
 }
 
@@ -59,9 +59,9 @@ TEST_F(TestVisualPositionManager, ChangedSignalsOnUpdate)
 {
     using testing::_;
 
-    EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 0), 3));
+    EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make1(5), 3));
     vpm_.setSpan(5, 3);
-    EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 2), -1));
+    EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 1), -1));
     vpm_.setSpan(5, 2);
 }
 
@@ -73,18 +73,18 @@ TEST_F(TestVisualPositionManager, DestroySignals)
     {
         testing::InSequence dummy;
 
-        EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 0), 3));
+        EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make1(5), 3));
 
         EXPECT_CALL(*this, destroyChanIdx(ChannelIndex::make2(5, 1), ChannelIndex::make2(5, 3)));
-        EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 1), -2));
+        EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 0), -2));
 
-        EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 1), 1));
+        EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 0), 1));
 
         EXPECT_CALL(*this, destroyChanIdx(ChannelIndex::make2(5, 1), ChannelIndex::make2(5, 2)));
-        EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 1), -1));
+        EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 0), -1));
 
         EXPECT_CALL(*this, destroyChanIdx(ChannelIndex::make2(5, 0), ChannelIndex::make2(5, 1)));
-        EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make2(5, 0), -1));
+        EXPECT_CALL(*this, visualPositionChangedAfter(ChannelIndex::make1(5), -1));
     }
 
     vpm_.setSpan(5, 3);

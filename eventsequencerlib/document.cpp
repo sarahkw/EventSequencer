@@ -227,7 +227,7 @@ void Document::visualPositionChangedAfter(ChannelIndex channelIndex, int delta)
     }
 
     // Everything in channelWaitForPosition_ that's affected to get new keys.
-    channelWaitForPosition_.rekey(
+    channelWaitForPosition_.rekeyAfter(
                 channelPositionManager_.chanIdxToVisualPosition(channelIndex),
                 delta);
 }
