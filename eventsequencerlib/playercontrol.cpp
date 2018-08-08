@@ -150,19 +150,16 @@ void PlayerControl::updateCurrentStrips()
         break;
     case SelectionMode::Channel:
         if (selectedChannel_ != nullptr) {
-            auto sset = selectedChannel_->stripSet();
-            if (sset != nullptr) {
-                for (auto& stripHolder : *sset) {
-                    if (!onlyStripsAfter_.isNull()) {
-                        if (stripHolder.startFrame < onlyStripsAfter_.toInt()) {
-                            continue;
-                        }
+            for (Strip* s : selectedChannel_->stripSet()) {
+                if (!onlyStripsAfter_.isNull()) {
+                    if (s->startFrame() < onlyStripsAfter_.toInt()) {
+                        continue;
                     }
-                    QObject::connect(stripHolder.strip, &Strip::resourceUrlChanged,
-                                     this, &PlayerControl::updateCurrentStrips);
-                    stripsToPlay_.push_back(stripHolder.strip);
-                    sl.push_back(describeStrip(stripHolder.strip));
                 }
+                QObject::connect(s, &Strip::resourceUrlChanged,
+                                 this, &PlayerControl::updateCurrentStrips);
+                stripsToPlay_.push_back(s);
+                sl.push_back(describeStrip(s));
             }
         }
         break;

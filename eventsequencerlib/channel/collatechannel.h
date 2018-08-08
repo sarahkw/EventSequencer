@@ -64,7 +64,7 @@ private:
         SegmentType segmentType;
     };
     std::vector<Segment> segments_;
-    DocumentStripsOnChannel::StripSet stripSet_;
+    std::vector<Strip*> stripSet_;
 
 public:
     explicit CollateChannel(ChannelIndex channelIndex, Document& d, QObject *parent = nullptr);
@@ -84,7 +84,7 @@ public:
 
     bool event(QEvent *event) override;
 
-    const DocumentStripsOnChannel::StripSet* stripSet() override;
+    std::vector<Strip*> stripSet() override;
 
 signals:
 

@@ -112,7 +112,7 @@ bool CollateChannel::event(QEvent *event)
     return ChannelBase::event(event);
 }
 
-const DocumentStripsOnChannel::StripSet *CollateChannel::stripSet()
+std::vector<Strip*> CollateChannel::stripSet()
 {
     // Need to forcefully call recalculate() each time this is read. Otherwise,
     // we could be returning a set with a strip that was deleted.
@@ -121,7 +121,7 @@ const DocumentStripsOnChannel::StripSet *CollateChannel::stripSet()
         recalculate();
     }
 
-    return &stripSet_;
+    return stripSet_;
 }
 
 void CollateChannel::triggerRefresh()
@@ -217,7 +217,7 @@ void CollateChannel::recalculate()
 
     for (auto& segment : cnos.segments(CnosType::WantEmpties::DoWantEmpties)) {
         if (segment.type == CnosType::Segment::Type::Chosen) {
-            stripSet_.insert({segment.data->startFrame(), segment.data});
+            stripSet_.push_back(segment.data);
         }
         
         SegmentType segmentType;

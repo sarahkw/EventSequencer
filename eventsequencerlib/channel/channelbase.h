@@ -2,9 +2,7 @@
 #define CHANNELBASE_H
 
 #include <QObject>
-#include <set>
 
-#include "documentstripsonchannel.h"
 #include "channeltype.h"
 #include "strip.h"
 #include "channelindex.h"
@@ -33,7 +31,7 @@ public:
 
     virtual ChannelType::Enum channelType() const = 0;
 
-    virtual const DocumentStripsOnChannel::StripSet* stripSet();
+    virtual std::vector<Strip*> stripSet();
 
 signals:
 
