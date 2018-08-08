@@ -226,10 +226,16 @@ void Document::visualPositionChangedAfter(ChannelIndex channelIndex, int delta)
         }
     }
 
-    // Everything in channelWaitForPosition_ that's affected to get new keys.
-    channelWaitForPosition_.rekeyAfter(
-                channelPositionManager_.chanIdxToVisualPosition(channelIndex),
-                delta);
+    channelWaitForPosition_.deleteAfter(
+                channelPositionManager().chanIdxToVisualPosition(channelIndex));
+
+    for (auto iter = channels_.upper_bound(channelIndex);
+         iter != channels_.end();
+         ++iter) {
+        channelWaitForPosition_.afterAdd(
+                    channelPositionManager().chanIdxToVisualPosition(iter->first),
+                    iter->second);
+    }
 }
 
 // VisualPositionManager signal

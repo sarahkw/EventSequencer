@@ -27,6 +27,15 @@ public:
         }
     }
 
+    void deleteAfter(KeyType afterExclusive)
+    {
+        for (auto iter = waiters_.upper_bound(afterExclusive);
+             iter != waiters_.end();
+             ++iter) {
+            beforeDelete(iter->first);
+        }
+    }
+
     void rekeyAfter(KeyType afterExclusive, KeyType delta)
     {
         std::map<KeyType, QObject*> collectDataTypes;
