@@ -44,7 +44,7 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
                                     ChannelIndex::make2(channelIndexFirst, oldSpan));
             }
             modifyStructure();
-            emit visualPositionChangedAfter(channelIndexFirst, diffSpan);
+            emit visualPositionChangedAfter(ChannelIndex::make1(channelIndexFirst), diffSpan);
         } else {
             if (span < oldSpan) {
                 emit destroyChanIdx(ChannelIndex::make2(channelIndexFirst, oldSpan - 1),
@@ -52,7 +52,7 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
                                                  ChannelIndex::make1(channelIndexFirst));
             }
             modifyStructure();
-            emit visualPositionChangedBefore(channelIndexFirst, diffSpan);
+            emit visualPositionChangedBefore(ChannelIndex::make1(channelIndexFirst), diffSpan);
         }
     }
 }
