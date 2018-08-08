@@ -37,7 +37,7 @@ public:
 
     std::pair<ChannelStripsMap::const_iterator,
               ChannelStripsMap::const_iterator>
-    stripsGreaterEqualChannel(ChannelIndex fromInclusive) const;
+    stripsGreaterChannel(ChannelIndex fromExclusive) const;
 
     std::pair<ChannelStripsMap::const_reverse_iterator,
               ChannelStripsMap::const_reverse_iterator>

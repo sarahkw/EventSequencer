@@ -228,7 +228,7 @@ void Document::channelBeforeDelete(ChannelIndex channelIndex)
 // VisualPositionManager signal
 void Document::visualPositionChangedAfter(ChannelIndex channelIndex, int delta)
 {
-    auto stripsMoved = stripsOnChannel_.stripsGreaterEqualChannel(channelIndex);
+    auto stripsMoved = stripsOnChannel_.stripsGreaterChannel(channelIndex);
     for (auto iter = stripsMoved.first; iter != stripsMoved.second; ++iter) {
         for (auto& sh : iter->second) {
             sh.strip->channelPositionChanged();

@@ -28,10 +28,10 @@ DocumentStripsOnChannel::stripsBetweenChannels(ChannelIndex from,
 
 std::pair<DocumentStripsOnChannel::ChannelStripsMap::const_iterator,
           DocumentStripsOnChannel::ChannelStripsMap::const_iterator>
-DocumentStripsOnChannel::stripsGreaterEqualChannel(
-    ChannelIndex fromInclusive) const
+DocumentStripsOnChannel::stripsGreaterChannel(
+    ChannelIndex fromExclusive) const
 {
-    return std::make_pair(data_.lower_bound(fromInclusive),
+    return std::make_pair(data_.upper_bound(fromExclusive),
                           data_.end());
 }
 
