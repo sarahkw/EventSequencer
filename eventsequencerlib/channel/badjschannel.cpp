@@ -4,7 +4,7 @@
 
 namespace channel {
 
-BadJsChannel::BadJsChannel(int channelIndex, Document& d, QObject* parent)
+BadJsChannel::BadJsChannel(ChannelIndex channelIndex, Document& d, QObject* parent)
     : ChannelBase(channelIndex, d, parent)
 {
 

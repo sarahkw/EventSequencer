@@ -60,7 +60,11 @@ SOURCES += \
     documentstripsonchannel.cpp \
     audiocontrol.cpp \
     playercontrol.cpp \
-    concatiodevice.cpp
+    concatiodevice.cpp \
+    channelindex.cpp \
+    channel/spanchannel.cpp \
+    visualpositionmanager.cpp \
+    channelindexfactory.cpp
 
 
 HEADERS += \
@@ -101,7 +105,11 @@ HEADERS += \
     documentstripsonchannel.h \
     audiocontrol.h \
     playercontrol.h \
-    concatiodevice.h
+    concatiodevice.h \
+    channelindex.h \
+    channel/spanchannel.h \
+    visualpositionmanager.h \
+    channelindexfactory.h
 
 unix {
     target.path = /usr/lib

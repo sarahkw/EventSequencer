@@ -10,21 +10,32 @@
 
 #include "eventsequencer.pb.h"
 
-int Strip::channel() const
+ChannelIndex Strip::channelIndex() const
 {
-    return channel_;
+    return channelIndex_;
 }
 
-void Strip::setChannel(int channel)
+void Strip::setChannelIndex(ChannelIndex channelIndex)
 {
-    if (channel_ != channel) {
-        auto oldChannel = channel_;
-        channel_ = channel;
-        emit channelChanged();
+    if (channelIndex_ != channelIndex) {
+        auto oldChannelIndex = channelIndex_;
+        channelIndex_ = channelIndex;
+        emit channelIndexChanged();
+        emit channelPositionChanged();
         if (hasPlaced_) {
-            emit d_.stripMoved(this, oldChannel, startFrame_, length_);
+            emit d_.stripMoved(this, oldChannelIndex, startFrame_, length_);
         }
     }
+}
+
+int Strip::channelPosition() const
+{
+    return d_.channelPositionManager().chanIdxToVisualPosition(channelIndex());
+}
+
+void Strip::setChannelPosition(int channelPosition)
+{
+    setChannelIndex(d_.channelPositionManager().visualPositionToChanIdx(channelPosition));
 }
 
 int Strip::startFrame() const
@@ -39,7 +50,7 @@ void Strip::setStartFrame(int startFrame)
         startFrame_ = startFrame;
         emit startFrameChanged();
         if (hasPlaced_) {
-            emit d_.stripMoved(this, channel_, oldStartFrame, length_);
+            emit d_.stripMoved(this, channelIndex_, oldStartFrame, length_);
         }
     }
 }
@@ -59,7 +70,7 @@ void Strip::setLength(int length)
         length_ = length;
         emit lengthChanged();
         if (hasPlaced_) {
-            emit d_.stripMoved(this, channel_, startFrame_, oldLength);
+            emit d_.stripMoved(this, channelIndex_, startFrame_, oldLength);
         }
     }
 }
@@ -195,7 +206,7 @@ void Strip::markAsPlaced()
 
 void Strip::toPb(pb::Strip &pb) const
 {
-    pb.set_channel(channel_);
+    pb.set_channel(channelIndex_.first());
     pb.set_startframe(startFrame_);
     pb.set_length(length_);
     pb.set_resourceurl(resourceUrl_.toString().toStdString());
@@ -219,7 +230,7 @@ void Strip::toPb(pb::Strip &pb) const
 void Strip::fromPb(const pb::Strip &pb)
 {
     // Calling setters to fire changed signals.
-    setChannel(pb.channel());
+    setChannelIndex(ChannelIndex::make1(pb.channel()));
     setStartFrame(pb.startframe());
     setLength(pb.length());
     markAsPlaced();

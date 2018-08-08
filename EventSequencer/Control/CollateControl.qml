@@ -6,8 +6,6 @@ import eventsequencer 1.0 as ES
 
 Item {
 
-    property bool docViewCanRender: true
-
     property Component channelPropertiesComponent: Component {
         GridLayout {
             anchors.left: parent.left

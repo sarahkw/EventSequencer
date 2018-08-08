@@ -41,14 +41,14 @@ ApplicationWindow {
             }
             ESTextField {
                 id: txtTextChannel
-                property int chan: 0
-                property ES.WaitFor waitFor: document.waitForChannel(chan)
-                property var control: waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
+                property var chan
+                property ES.WaitFor waitFor: chan != null ? document.waitForChannelIndex(chan) : null
+                property var control: waitFor != null && waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
                 property bool providesText: control != null ? control.docViewProvidesText === true : false
                 property string textContent: providesText ? waitFor.result.content : ""
 
-                text: chan
-                onEsEditingFinished: chan = parseInt(text, 10)
+                text: chan != null ? chan.toPathString() : ""
+                onEsEditingFinished: chan = ES.ChannelIndexFactory.makeFromPathString(text)
 
                 states: [
                     State {
@@ -69,18 +69,18 @@ ApplicationWindow {
             }
             ESTextField {
                 id: txtRenderChannel
-                property int chan: 0
-                property ES.WaitFor waitFor: document.waitForChannel(chan)
-                property var control: waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
-                property bool canRender: control != null ? control.docViewCanRender === true : false
-                property var cppChannel: canRender ? waitFor.result : null
+                property var chan
+                property ES.WaitFor waitFor: chan != null ? document.waitForChannelIndex(chan) : null
+                property var control: waitFor != null && waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
+                property var renderComponent: control != null ? control.docViewRenderComponent : null
+                property var cppChannel: renderComponent != null ? waitFor.result : null
 
-                text: chan
-                onEsEditingFinished: chan = parseInt(text, 10)
+                text: chan != null ? chan.toPathString() : ""
+                onEsEditingFinished: chan = ES.ChannelIndexFactory.makeFromPathString(text)
 
                 states: [
                     State {
-                        when: !txtRenderChannel.canRender
+                        when: txtRenderChannel.renderComponent == null
                         PropertyChanges {
                             target: txtRenderChannel.background
                             color: "red"
@@ -118,7 +118,7 @@ ApplicationWindow {
                         Loader {
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
-                            sourceComponent: txtRenderChannel.control.docViewRenderComponent
+                            sourceComponent: txtRenderChannel.control != null ? txtRenderChannel.renderComponent : null
                             property var cppChannel: txtRenderChannel.cppChannel
                             property string textData: modelData
                             property int textOffset_: textOffset

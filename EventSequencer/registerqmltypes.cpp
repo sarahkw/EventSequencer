@@ -18,6 +18,7 @@
 #include "managedresources.h"
 #include "playercontrol.h"
 #include "channel/collatechannel.h"
+#include "channelindexfactory.h"
 
 #include <QQmlEngine>
 
@@ -36,6 +37,11 @@ void RegisterQmlTypes::registerQmlTypes()
         "eventsequencer", 1, 0, "FramesAndSeconds",
         [](QQmlEngine*, QJSEngine*) -> QObject* {
             return new FramesAndSeconds;
+        });
+    qmlRegisterSingletonType<ChannelIndexFactory>(
+        "eventsequencer", 1, 0, "ChannelIndexFactory",
+        [](QQmlEngine*, QJSEngine*) -> QObject* {
+            return new ChannelIndexFactory;
         });
     qmlRegisterType<ConstrainedMetricsFontUtil>("eventsequencer", 1, 0, "ConstrainedMetricsFontUtil");
     qmlRegisterType<WordWrappedTextTrack>("eventsequencer", 1, 0, "WordWrappedTextTrack");

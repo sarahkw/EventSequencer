@@ -12,7 +12,7 @@ class AudioChannel : public ChannelBase
     Q_OBJECT
 
 public:
-    explicit AudioChannel(int channelIndex, Document& d, QObject *parent = nullptr);
+    explicit AudioChannel(ChannelIndex channelIndex, Document& d, QObject *parent = nullptr);
 
     virtual void toPb(pb::ChannelData& pb) const override;
     virtual void fromPb(const pb::ChannelData& pb) override;

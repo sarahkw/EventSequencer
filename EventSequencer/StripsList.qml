@@ -40,7 +40,7 @@ Window {
                 text: "Add"
                 onClicked: {
                     var r = document.createStrip()
-                    r.channel = chan.text
+                    r.channelIndex = ES.ChannelIndexFactory.make1(chan.text)
                     r.startFrame = sf.text
                     r.length = leng.text
                     r.markAsPlaced()
@@ -60,7 +60,7 @@ Window {
                 }
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
-                    text: modelData.channel + ", " + modelData.startFrame + ", " + modelData.length
+                    text: modelData.channelIndex.toPathString() + ", " + modelData.startFrame + ", " + modelData.length
                 }
             }
         }

@@ -13,7 +13,7 @@ class BadJsChannel : public ChannelBase
     Q_OBJECT
 
 public:
-    explicit BadJsChannel(int channelIndex, Document& d, QObject *parent = nullptr);
+    explicit BadJsChannel(ChannelIndex channelIndex, Document& d, QObject *parent = nullptr);
 
     void toPb(pb::ChannelData& pb) const override;
     void fromPb(const pb::ChannelData& pb) override;

@@ -42,25 +42,34 @@ QHash<int,QByteArray> DocumentStripsModel::roleNames() const
 
 /******************************************************************************/
 
-void DocumentChannelsModel::afterAdd(int id)
+void DocumentChannelsModel::afterAdd(ChannelIndex channelIndex)
 {
     beginInsertRows(QModelIndex(), displayRows_.size(), displayRows_.size());
-    displayRows_.push_back(id);
+    displayRows_.push_back(channelIndex);
     endInsertRows();
 }
 
-void DocumentChannelsModel::beforeDelete(int id)
+void DocumentChannelsModel::beforeDelete(ChannelIndex channelIndex)
 {
     // XXX O(n^2) to delete all channels. Maybe have a "clear channels" function.
-    auto location = std::find(displayRows_.begin(), displayRows_.end(), id);
+    auto location = std::find(displayRows_.begin(), displayRows_.end(), channelIndex);
     if (location == displayRows_.end()) {
-        qWarning() << __PRETTY_FUNCTION__ << "Doesn't exist" << id;
+        qWarning() << __PRETTY_FUNCTION__ << "Doesn't exist" << channelIndex.toDebugString();
         return;
     }
     auto index = location - displayRows_.begin();
     beginRemoveRows(QModelIndex(), index, index);
     displayRows_.erase(location);
     endRemoveRows();
+}
+
+void DocumentChannelsModel::invalidateChannelPositions()
+{
+    if (displayRows_.size() > 0) {
+        emit dataChanged(createIndex(0, 0),
+                         createIndex(displayRows_.size() - 1, 0),
+                         {ChannelPositionRole});
+    }
 }
 
 int DocumentChannelsModel::rowCount(const QModelIndex &parent) const
@@ -74,11 +83,12 @@ QVariant DocumentChannelsModel::data(const QModelIndex &index, int role) const
     if (!index.isValid() || index.column() != 0) return QVariant();
     if (index.row() >= 0 && static_cast<unsigned>(index.row()) < displayRows_.size()) {
         if (role == ModelDataRole) {
-            QVariant var;
-            var.setValue(d_.channels_[displayRows_[index.row()]]);
-            return var;
+            return QVariant::fromValue(d_.channels_[displayRows_[index.row()]]);
         } else if (role == ChannelIndexRole) {
-            return displayRows_[index.row()];
+            return QVariant::fromValue(displayRows_[index.row()]);
+        } else if (role == ChannelPositionRole) {
+            return QVariant::fromValue(
+                        d_.channelPositionManager().chanIdxToVisualPosition(displayRows_[index.row()]));
         }
     }
     return QVariant();
@@ -88,7 +98,8 @@ QHash<int, QByteArray> DocumentChannelsModel::roleNames() const
 {
     return {
         {ModelDataRole, "modelData"},
-        {ChannelIndexRole, "channelIndex"}
+        {ChannelIndexRole, "channelIndex"},
+        {ChannelPositionRole, "channelPosition"}
     };
 }
 
@@ -136,8 +147,8 @@ void Document::setEndFrame(int endFrame)
 QVariantList Document::channelsProvidingClock() const
 {
     QVariantList ret;
-    for (int id : channelsProvidingClock_) {
-        ret.push_back(QVariant(id));
+    for (ChannelIndex channelIndex : channelsProvidingClock_) {
+        ret.push_back(QVariant::fromValue(channelIndex));
     }
     return ret;
 }
@@ -168,15 +179,17 @@ QObject *Document::audioFormatHolderQObject()
     return audioFormatHolder_;
 }
 
-void Document::channelAfterAddOrReplace(int id, QObject *channel, AddOrReplace mode)
+void Document::channelAfterAddOrReplace(ChannelIndex channelIndex, QObject *channel, AddOrReplace mode)
 {
-    channelWaitFor_.afterAdd(id, channel);
+    channelWaitForIndex_.afterAdd(channelIndex, channel);
+    channelWaitForPosition_.afterAdd(channelPositionManager().chanIdxToVisualPosition(channelIndex),
+                                     channel);
 
     // TODO If we know we're adding or replacing, we would use less resources.
-    auto iter = channelsProvidingClock_.find(id);
+    auto iter = channelsProvidingClock_.find(channelIndex);
     if (dynamic_cast<channel::IClockRole*>(channel)) {
         if (iter == channelsProvidingClock_.end()) {
-            channelsProvidingClock_.insert(id);
+            channelsProvidingClock_.insert(channelIndex);
             emit channelsProvidingClockChanged();
         }
     } else {
@@ -189,26 +202,89 @@ void Document::channelAfterAddOrReplace(int id, QObject *channel, AddOrReplace m
 
     switch (mode) {
     case AddOrReplace::Add:
-        channelsModel_.afterAdd(id);
+        channelsModel_.afterAdd(channelIndex);
         break;
     case AddOrReplace::Replace:
-        channelsModel_.beforeDelete(id);
-        channelsModel_.afterAdd(id);
+        channelsModel_.beforeDelete(channelIndex);
+        channelsModel_.afterAdd(channelIndex);
         break;
     }
 }
 
-void Document::channelBeforeDelete(int id)
+void Document::channelBeforeDelete(ChannelIndex channelIndex)
 {
-    channelWaitFor_.beforeDelete(id);
+    channelWaitForIndex_.beforeDelete(channelIndex);
+    channelWaitForPosition_.beforeDelete(channelPositionManager().chanIdxToVisualPosition(channelIndex));
 
-    auto iter = channelsProvidingClock_.find(id);
+    auto iter = channelsProvidingClock_.find(channelIndex);
     if (iter != channelsProvidingClock_.end()) {
-        channelsProvidingClock_.erase(id);
+        channelsProvidingClock_.erase(channelIndex);
         emit channelsProvidingClockChanged();
     }
 
-    channelsModel_.beforeDelete(id);
+    channelsModel_.beforeDelete(channelIndex);
+}
+
+// VisualPositionManager signal
+void Document::visualPositionChangedAfter(ChannelIndex channelIndex, int delta)
+{
+    auto stripsMoved = stripsOnChannel_.stripsGreaterChannel(channelIndex);
+    for (auto iter = stripsMoved.first; iter != stripsMoved.second; ++iter) {
+        for (auto& sh : iter->second) {
+            sh.strip->channelPositionChanged();
+        }
+    }
+
+    channelWaitForPosition_.deleteAfter(
+                channelPositionManager().chanIdxToVisualPosition(channelIndex));
+
+    for (auto iter = channels_.upper_bound(channelIndex);
+         iter != channels_.end();
+         ++iter) {
+        channelWaitForPosition_.afterAdd(
+                    channelPositionManager().chanIdxToVisualPosition(iter->first),
+                    iter->second);
+    }
+
+    channelsModel_.invalidateChannelPositions();
+}
+
+// VisualPositionManager signal
+void Document::destroyChanIdx(ChannelIndex from, ChannelIndex toExclusive)
+{
+    {
+        // Build a vector of stuff to delete. Otherwise we'd have to take care to
+        // ensure we don't hold invalid iterators.
+        std::vector<Strip*> toDelete;
+
+        {
+            auto stripsDeleted = stripsOnChannel_.stripsBetweenChannels(from, toExclusive);
+            for (auto iter = stripsDeleted.first; iter != stripsDeleted.second; ++iter) {
+                for (auto& sh : iter->second) {
+                    toDelete.push_back(sh.strip);
+                }
+            }
+        }
+
+        for (Strip* s : toDelete) {
+            deleteStrip(s);
+        }
+    }
+    {
+        std::vector<ChannelIndex> toDelete;
+
+        {
+            auto lo = channels_.lower_bound(from);
+            auto hi = channels_.lower_bound(toExclusive);
+            for (auto iter = lo; iter != hi; ++iter) {
+                toDelete.push_back(iter->first);
+            }
+        }
+
+        for (ChannelIndex& ci : toDelete) {
+            deleteChannel(ci);
+        }
+    }
 }
 
 QUrl Document::currentUrl() const
@@ -271,12 +347,63 @@ Document::Document(QObject *parent)
     QObject::connect(this, &Document::stripAfterPlaced, &stripsOnChannel_, &DocumentStripsOnChannel::stripAfterPlaced);
     QObject::connect(this, &Document::stripBeforeDelete, &stripsOnChannel_, &DocumentStripsOnChannel::stripBeforeDelete);
     QObject::connect(this, &Document::stripMoved, &stripsOnChannel_, &DocumentStripsOnChannel::stripMoved);
+
+    QObject::connect(&channelPositionManager_, &VisualPositionManager::visualPositionChangedAfter,  this, &Document::visualPositionChangedAfter);
+    QObject::connect(&channelPositionManager_, &VisualPositionManager::destroyChanIdx,              this, &Document::destroyChanIdx);
+}
+
+Document::~Document()
+{
+    // Rely on reset() to delete everything.
+    reset();
+}
+
+template <typename T>
+void DescribeType()
+{
+    qInfo() << "DescribeType" << __PRETTY_FUNCTION__;
 }
 
 void Document::toPb(pb::Document &pb) const
 {
+    // Need to build all the main channels before we could add subchannels
+    // to them.
+    std::map<int, std::map<unsigned, channel::ChannelBase*>> subChannels;
+
+    for (auto& mappair : channels_) {
+        if (mappair.first.hasSecond()) {
+            subChannels[mappair.first.first()][mappair.first.second()] =
+                    mappair.second;
+        } else {
+            mappair.second->toPb((*pb.mutable_channels())[mappair.first.first()]);
+        }
+    }
+
+    auto mutableSpan = [&pb](int idxFirst) {
+        auto& pbChannel = (*pb.mutable_channels())[idxFirst];
+        Q_ASSERT(pbChannel.has_span());
+        return pbChannel.mutable_span();
+    };
+
+    for (auto& mp1 : subChannels) {
+        for (auto& mp2 : mp1.second) {
+            const int idxFirst = mp1.first;
+            const unsigned idxSecond = mp2.first;
+            const channel::ChannelBase* chan = mp2.second;
+
+            auto& chanMap = *mutableSpan(idxFirst)->mutable_channels();
+            chan->toPb(chanMap[idxSecond]);
+        }
+    }
+    
     for (const Strip* s : strips_) {
-        s->toPb(*pb.add_strips());
+        if (!s->channelIndex().hasSecond()) {
+            s->toPb(*pb.add_strips());
+        } else {
+            pb::Strip* pbStrip = mutableSpan(s->channelIndex().first())->add_strips();
+            s->toPb(*pbStrip);
+            pbStrip->set_channel(s->channelIndex().second()); // TODO: Hack!
+        }
     }
     pb.set_framespersecond(framesPerSecond_);
     pb.set_startframe(startFrame_);
@@ -287,18 +414,47 @@ void Document::toPb(pb::Document &pb) const
     } else {
         pb.clear_audioformat();
     }
-
-    auto* pb_channels = pb.mutable_channels();
-    for (auto& mappair : channels_) {
-        mappair.second->toPb((*pb_channels)[mappair.first]);
-    }
 }
 
 void Document::fromPb(const pb::Document &pb)
 {
-    // TODO Delete all current strips first!
-    // TODO We do not want to create a single strip each time so don't call createStrip(),
-    //      because we don't want to spam the GUI with signals.
+    // Create channels before strips, because Span channels define the structure.
+
+    Q_ASSERT(channels_.empty()); // Because channelAfterAddOrReplace will always say Add. Replace not implemented.
+
+    const auto addPbChannel = [this](ChannelIndex cidx, const pb::ChannelData& pb) {
+        channel::ChannelBase* addme =
+                channel::ChannelFactory::Create(pb, cidx, *this, this);
+        if (addme != nullptr) {
+            channels_[cidx] = addme;
+            channelAfterAddOrReplace(cidx, addme, AddOrReplace::Add);
+        }
+    };
+
+    for (auto& mp1 : pb.channels()) {
+        const int topLevelIndex = mp1.first;
+        const pb::ChannelData& topLevelPb = mp1.second;
+        addPbChannel(ChannelIndex::make1(topLevelIndex), topLevelPb);
+
+        if (topLevelPb.has_span()) {
+            for (auto& mp2 : topLevelPb.span().channels()) {
+                const int childLevelIndex = mp2.first;
+                const pb::ChannelData& childLevelPb = mp2.second;
+
+                addPbChannel(ChannelIndex::make2(topLevelIndex, childLevelIndex),
+                             childLevelPb);
+            }
+            for (int i = 0; i < topLevelPb.span().strips_size(); ++i) {
+                const pb::Strip& pbStrip = topLevelPb.span().strips(i);
+                Strip* s = createStrip();
+                s->fromPb(pbStrip);
+                // TODO Fix this ugly hack!
+                s->setChannelIndex(ChannelIndex::make2(topLevelIndex,
+                                                       pbStrip.channel()));
+            }
+        }
+    }
+
     for (int i = 0; i < pb.strips_size(); ++i) {
         createStrip()->fromPb(pb.strips(i));
     }
@@ -314,18 +470,6 @@ void Document::fromPb(const pb::Document &pb)
         audioFormatHolder_->fromPb(pb.audioformat());
     } else {
         setAudioFormatHolderSet(false);
-    }
-
-    Q_ASSERT(channels_.empty()); // Because channelAfterAddOrReplace will always say Add. Replace not implemented.
-
-    for (auto& mappair : pb.channels()) {
-        const int id = mappair.first;
-        channel::ChannelBase* addme =
-                channel::ChannelFactory::Create(mappair.second, id, *this, this);
-        if (addme != nullptr) {
-            channels_[id] = addme;
-            channelAfterAddOrReplace(id, addme, AddOrReplace::Add);
-        }
     }
 }
 
@@ -559,43 +703,69 @@ QAbstractListModel *Document::channelsModel()
     return &channelsModel_;
 }
 
-QObject *Document::createChannel(int id, channel::ChannelType::Enum type)
+QObject *Document::createChannel(ChannelIndex channelIndex, channel::ChannelType::Enum type)
 {
-    channel::ChannelBase* chan = channel::ChannelFactory::Create(type, id, *this, this);
+    channel::ChannelBase* chan = channel::ChannelFactory::Create(type, channelIndex, *this, this);
 
     AddOrReplace mode = AddOrReplace::Add;
 
-    auto old = channels_.find(id);
+    auto old = channels_.find(channelIndex);
     if (old != channels_.end()) {
         delete old->second;
         mode = AddOrReplace::Replace;
     }
 
-    channels_[id] = chan;
-    channelAfterAddOrReplace(id, chan, mode);
+    channels_[channelIndex] = chan;
+    channelAfterAddOrReplace(channelIndex, chan, mode);
     return chan;
 }
 
-void Document::deleteChannel(int id)
+QObject *Document::createChannelByPosition(int position, channel::ChannelType::Enum type)
 {
-    channelBeforeDelete(id);
+    return createChannel(channelPositionManager().visualPositionToChanIdx(position),
+                         type);
+}
 
-    auto it = channels_.find(id);
+void Document::deleteChannel(ChannelIndex channelIndex)
+{
+    channelBeforeDelete(channelIndex);
+
+    auto it = channels_.find(channelIndex);
     if (it != channels_.end()) {
         QObject* o = it->second;
         channels_.erase(it);
         delete o;
     } else {
-        qWarning() << "Nothing removed with id" << id;
+        qWarning() << "Nothing removed with id" << channelIndex.toDebugString();
     }
 }
 
-WaitFor *Document::waitForChannel(int id)
+void Document::deleteChannelByPosition(int position)
 {
-    auto it = channels_.find(id);
+    deleteChannel(channelPositionManager().visualPositionToChanIdx(position));
+}
+
+WaitFor *Document::waitForChannelIndex(ChannelIndex channelIndex)
+{
+    auto it = channels_.find(channelIndex);
     if (it != channels_.end()) {
-        return channelWaitFor_.waitFor(id, it->second);
+        return channelWaitForIndex_.waitFor(channelIndex, it->second);
     } else {
-        return channelWaitFor_.waitFor(id);
+        return channelWaitForIndex_.waitFor(channelIndex);
     }
+}
+
+WaitFor *Document::waitForChannelPosition(int channelPosition)
+{
+    auto it = channels_.find(channelPositionManager().visualPositionToChanIdx(channelPosition));
+    if (it != channels_.end()) {
+        return channelWaitForPosition_.waitFor(channelPosition, it->second);
+    } else {
+        return channelWaitForPosition_.waitFor(channelPosition);
+    }
+}
+
+const VisualPositionManager &Document::channelPositionManager() const
+{
+    return channelPositionManager_;
 }

@@ -7,13 +7,14 @@
 #include "labelchannel.h"
 #include "collatechannel.h"
 #include "playlistchannel.h"
+#include "spanchannel.h"
 
 #include <eventsequencer.pb.h>
 
 #include <QDebug>
 
 channel::ChannelBase *channel::ChannelFactory::Create(const pb::ChannelData &pb,
-                                                      int channelIndex,
+                                                      ChannelIndex channelIndex,
                                                       Document& d,
                                                       QObject *parent)
 {
@@ -41,6 +42,9 @@ channel::ChannelBase *channel::ChannelFactory::Create(const pb::ChannelData &pb,
     case ::pb::ChannelData::kPlaylist:
         cb = new channel::PlaylistChannel(channelIndex, d, parent);
         break;
+    case ::pb::ChannelData::kSpan:
+        cb = new channel::SpanChannel(channelIndex, d, parent);
+        break;
     case ::pb::ChannelData::CHANNEL_NOT_SET:
         qWarning() << "Unknown channel! Loading file from newer version?";
         break;
@@ -54,7 +58,7 @@ channel::ChannelBase *channel::ChannelFactory::Create(const pb::ChannelData &pb,
 }
 
 channel::ChannelBase *channel::ChannelFactory::Create(channel::ChannelType::Enum type,
-                                                      int channelIndex,
+                                                      ChannelIndex channelIndex,
                                                       Document& d,
                                                       QObject *parent)
 {
@@ -73,6 +77,8 @@ channel::ChannelBase *channel::ChannelFactory::Create(channel::ChannelType::Enum
         return new channel::CollateChannel(channelIndex, d, parent);
     case channel::ChannelType::Playlist:
         return new channel::PlaylistChannel(channelIndex, d, parent);
+    case channel::ChannelType::Span:
+        return new channel::SpanChannel(channelIndex, d, parent);
     }
 
     Q_ASSERT(false);

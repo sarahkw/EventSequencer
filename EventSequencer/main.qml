@@ -128,7 +128,7 @@ ApplicationWindow {
                 text: "&Strip"
                 onTriggered: {
                     var cppStrip = document.createStrip()
-                    cppStrip.channel = channelPanel.activeChannel
+                    cppStrip.channelPosition = channelPanel.activeChannelPosition
                     cppStrip.startFrame = cursor.frame
                     cppStrip.length = 10 // Maybe make this one large tick instead
                     cppStrip.markAsPlaced()
@@ -275,10 +275,12 @@ ApplicationWindow {
     }
 
     Item {
-        property alias clockChannel: cmbClockChannel.clockChannel
-        property ES.WaitFor waitForChannel: clockChannel !== null ? document.waitForChannel(clockChannel) : null
-        property var channel: waitForChannel !== null ? waitForChannel.result : null
-        property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
+        property alias clockChannelIndex: cmbClockChannel.clockChannelIndex
+        property ES.WaitFor waitForChannel: (clockChannelIndex !== null ?
+                                             document.waitForChannelIndex(clockChannelIndex) :
+                                             null)
+        property var cppChannel: waitForChannel !== null ? waitForChannel.result : null
+        property var control: cppChannel !== null ? controlResolver.resolve(cppChannel.channelType) : null
         property var clockComponent: control !== null ? control.clockComponent : null
 
         Loader {
@@ -292,8 +294,8 @@ ApplicationWindow {
                 cursor.frame = frameNo
 
                 document.stripsOnFrame(frameNo).forEach(function (cppStrip) {
-                    var chan = cppStrip.channel;
-                    var waitFor = document.waitForChannel(chan);
+                    var chan = cppStrip.channelIndex;
+                    var waitFor = document.waitForChannelIndex(chan);
                     if (waitFor.result === null) {
                         return;
                     }
@@ -403,42 +405,24 @@ ApplicationWindow {
                 anchors.verticalCenter: parent.verticalCenter
             }
             ComboBox {
-                property var clockChannel: null
-
-                property var cache: document.channelsProvidingClock
-                property bool blockSignal: false
-
-                onCacheChanged: {
-                    var newIndex = clockChannel === null ? -1 : cache.indexOf(clockChannel)
-
-                    if (newIndex === -1 && cache.length > 0) {
-                        newIndex = 0
-                    }
-
-                    blockSignal = true
-                    model = cache
-                    currentIndex = newIndex
-                    blockSignal = false
-
-                    var newClockChannel = currentIndex === -1 ? null : cache[currentIndex]
-
-                    if (clockChannel !== newClockChannel) {
-                        clockChannel = newClockChannel
+                property var clockChannelIndex: {
+                    if (currentIndex === -1) {
+                        null
+                    } else {
+                        things[currentIndex]
                     }
                 }
+
+                property var things: [null].concat(document.channelsProvidingClock)
+                property var labels: [""].concat(document.channelsProvidingClock.map(function (ci) { return ci.toPathString() }))
+                onThingsChanged: currentIndex = -1
 
                 id: cmbClockChannel
                 ToolTip.text: "Clock channel"
                 ToolTip.visible: hovered
                 anchors.verticalCenter: parent.verticalCenter
                 width: 50
-                model: cache
-
-                onCurrentIndexChanged: {
-                    if (!blockSignal) {
-                        clockChannel = cache[currentIndex]
-                    }
-                }
+                model: labels
             }
 
             Label {
@@ -510,7 +494,7 @@ ApplicationWindow {
                 yposition: body.y
                 doc: document
 
-                property ES.WaitFor waitForchannel: document.waitForChannel(activeChannel)
+                property ES.WaitFor waitForchannel: document.waitForChannelPosition(activeChannelPosition)
                 property var activeCppChannel: waitForchannel.result
             }
 
@@ -532,7 +516,7 @@ ApplicationWindow {
                 }
                 onClicked: {
                     selectedCppStrips = []
-                    channelPanel.activeChannel = xyPositionToChannel(mouse.x, mouse.y)
+                    channelPanel.activeChannelPosition = xyPositionToChannel(mouse.x, mouse.y)
                 }
             }
 
@@ -611,7 +595,7 @@ ApplicationWindow {
                         Loader {
                             sourceComponent: controlResolver.resolve(modelData.channelType).channelTrackComponent
                             property var cppChannel: modelData
-                            y: channelIndex * channelPixels
+                            y: channelPosition * channelPixels
                             height: channelPixels
                             property ES.ConstrainedMetricsFontUtil cmfuAlignedFont: body.cmfuAlignedFont
                             property ZoomLogic zoom: appwin.zoom
@@ -631,7 +615,7 @@ ApplicationWindow {
 
                             QtObject {
                                 id: channelControlResolver
-                                property ES.WaitFor waitFor: document.waitForChannel(cppStrip.channel)
+                                property ES.WaitFor waitFor: document.waitForChannelIndex(cppStrip.channelIndex)
                                 property var chan: waitFor.result
                                 property var type: chan !== null ? chan.channelType : null
                                 property var control: type !== null ? controlResolver.resolve(type) : null
@@ -658,7 +642,7 @@ ApplicationWindow {
                                 stripBase.selectionMode = newSelectionMode
 
                                 if (activeChannelFollowsSelectionAction.checked) {
-                                    channelPanel.activeChannel = cppStrip.channel
+                                    channelPanel.activeChannelPosition = cppStrip.channelPosition
                                 }
                             }
 
@@ -712,7 +696,7 @@ ApplicationWindow {
                                            zoom.displayWidthPerRulerTick / 2),
                                        3 // Hard limit.
                                        )
-                            y: cppStrip.channel * channelPixels
+                            y: cppStrip.channelPosition * channelPixels
                             height: channelPixels
 
                             function floorDiv(a, b) {
@@ -732,7 +716,7 @@ ApplicationWindow {
                                         switch (stripBase.selectionMode) {
                                         case SelectionMode.Whole:
                                             cppStrip.startFrame += zoom.mapDisplayWidthToFullFrames(myDiffX)
-                                            cppStrip.channel += floorDiv(myDiffY, channelPixels)
+                                            cppStrip.channelPosition += floorDiv(myDiffY, channelPixels)
                                             break;
                                         case SelectionMode.Right:
                                             cppStrip.length += zoom.mapDisplayWidthToFullFrames(myDiffX)
@@ -748,7 +732,7 @@ ApplicationWindow {
                             }
 
                             property int initialFrame
-                            property int initialChannel
+                            property int initialChannelPosition
                             property int initialLength
 
                             StateGroup {
@@ -762,15 +746,15 @@ ApplicationWindow {
                                             target: stripBase
                                             explicit: true
                                             initialFrame: cppStrip.startFrame
-                                            initialChannel: cppStrip.channel
+                                            initialChannelPosition: cppStrip.channelPosition
                                         }
 
                                         PropertyChanges {
                                             target: cppStrip
                                             startFrame: (initialFrame +
                                                          zoom.mapDisplayWidthToFullFrames(grabMode.diffX))
-                                            channel: (initialChannel +
-                                                      floorDiv(grabMode.diffY, channelPixels))
+                                            channelPosition: (initialChannelPosition +
+                                                              floorDiv(grabMode.diffY, channelPixels))
                                         }
                                     },
                                     State {
@@ -1048,9 +1032,16 @@ ApplicationWindow {
                                     }
                                     ESTextField {
                                         Layout.fillWidth: true
-                                        text: selectedCppStrip.channel
-                                        validator: IntValidator { }
-                                        onEsEditingFinished: selectedCppStrip.channel = parseInt(text, 10)
+                                        text: selectedCppStrip.channelIndex.toPathString()
+                                        onEsEditingFinished: {
+                                            var r = ES.ChannelIndexFactory.makeFromPathString(text)
+                                            if (r != null) {
+                                                selectedCppStrip.channelIndex = r
+                                            } else {
+                                                // TODO Error handling
+                                                console.error("Bad channel index")
+                                            }
+                                        }
                                     }
                                     Label {
                                         text: "Start"
@@ -1098,9 +1089,9 @@ ApplicationWindow {
                                     anchors.left: parent.left
                                     anchors.right: parent.right
 
-                                    property ES.WaitFor waitForchannel: document.waitForChannel(selectedCppStrip.channel)
-                                    property var channel: waitForchannel.result
-                                    property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
+                                    property ES.WaitFor waitForchannel: document.waitForChannelIndex(selectedCppStrip.channelIndex)
+                                    property var cppChannel: waitForchannel.result
+                                    property var control: cppChannel !== null ? controlResolver.resolve(cppChannel.channelType) : null
                                     property var stripPropComp: control !== null ? Util.nvl(control.stripPropertiesComponent, blankComponent) : blankComponent
 
                                     sourceComponent: stripPropComp
@@ -1115,8 +1106,8 @@ ApplicationWindow {
                         anchors.left: parent.left
                         anchors.right: parent.right
 
-                        property var channel: channelPanel.activeCppChannel
-                        property var control: channel !== null ? controlResolver.resolve(channel.channelType) : null
+                        property var cppChannel: channelPanel.activeCppChannel
+                        property var control: cppChannel !== null ? controlResolver.resolve(cppChannel.channelType) : null
                         property var chanPropComp: (
                                                        (control !== null && control.channelPropertiesComponent !== undefined) ?
                                                            control.channelPropertiesComponent :
@@ -1125,7 +1116,7 @@ ApplicationWindow {
 
                         sourceComponent: ((chanPropComp !== null &&
                                            selectedCppStrips.every(function (cppStrip) {
-                                               return cppStrip.channel === channelPanel.activeChannel
+                                               return cppStrip.channelPosition === channelPanel.activeChannelPosition
                                            })) ? channelPropertiesComponent : blankComponent)
 
                         Component {
@@ -1144,7 +1135,7 @@ ApplicationWindow {
                                     anchors.right: parent.right
                                     sourceComponent: chanPropComp
 
-                                    property var cppChannel: channel
+                                    property var cppChannel: channelPanel.activeCppChannel
                                 }
                             }
                         }

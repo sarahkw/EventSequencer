@@ -8,10 +8,12 @@ CONFIG += thread
 
 HEADERS += \
         tst_testcasename.h \
-    tst_strip.h \
     tst_framesandseconds.h \
     tst_collatenonoverlappingsegments.h \
-    tst_concatiodevice.h
+    tst_concatiodevice.h \
+    tst_visualpositionmanager.h \
+    tst_channelindex.h \
+    printto_channelindex.h
 
 SOURCES += \
         main.cpp

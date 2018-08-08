@@ -8,28 +8,55 @@ DocumentStripsOnChannel::DocumentStripsOnChannel(QObject* parent)
 }
 
 const DocumentStripsOnChannel::StripSet*
-DocumentStripsOnChannel::stripsForChannel(int channel) const
+DocumentStripsOnChannel::stripsForChannel(ChannelIndex channelIndex) const
 {
-    auto iter = data_.find(channel);
+    auto iter = data_.find(channelIndex);
     if (iter == data_.end()) {
         return nullptr;
     }
     return &iter->second;
 }
 
+std::pair<DocumentStripsOnChannel::ChannelStripsMap::const_iterator,
+          DocumentStripsOnChannel::ChannelStripsMap::const_iterator>
+DocumentStripsOnChannel::stripsBetweenChannels(ChannelIndex from,
+                                               ChannelIndex toExclusive) const
+{
+    return std::make_pair(data_.lower_bound(from),
+                          data_.lower_bound(toExclusive));
+}
+
+std::pair<DocumentStripsOnChannel::ChannelStripsMap::const_iterator,
+          DocumentStripsOnChannel::ChannelStripsMap::const_iterator>
+DocumentStripsOnChannel::stripsGreaterChannel(
+    ChannelIndex fromExclusive) const
+{
+    return std::make_pair(data_.upper_bound(fromExclusive),
+                          data_.end());
+}
+
+std::pair<DocumentStripsOnChannel::ChannelStripsMap::const_reverse_iterator,
+          DocumentStripsOnChannel::ChannelStripsMap::const_reverse_iterator>
+DocumentStripsOnChannel::stripsLessChannel(ChannelIndex fromExclusive) const
+{
+    return std::make_pair(std::make_reverse_iterator(data_.lower_bound(fromExclusive)),
+                          data_.rend());
+}
+
 void DocumentStripsOnChannel::stripAfterPlaced(Strip *strip)
 {
-    data_[strip->channel()].insert({strip->startFrame(), strip});
-    emit channelStripSetChanged(strip->channel());
+    data_[strip->channelIndex()].insert({strip->startFrame(), strip});
+    emit channelStripSetChanged(strip->channelIndex());
 }
 
 void DocumentStripsOnChannel::stripBeforeDelete(Strip *strip)
 {
-    data_[strip->channel()].erase({strip->startFrame(), strip});
-    emit channelStripSetChanged(strip->channel());
+    data_[strip->channelIndex()].erase({strip->startFrame(), strip});
+    emit channelStripSetChanged(strip->channelIndex());
 }
 
-void DocumentStripsOnChannel::stripMoved(Strip* strip, int previousChannel,
+void DocumentStripsOnChannel::stripMoved(Strip* strip,
+                                         ChannelIndex previousChannelIndex,
                                          int previousStartFrame,
                                          int previousLength)
 {
@@ -41,7 +68,7 @@ void DocumentStripsOnChannel::stripMoved(Strip* strip, int previousChannel,
 
     // Delete from old
     {
-        auto& stripset = data_[previousChannel];
+        auto& stripset = data_[previousChannelIndex];
         auto iterFound = stripset.end();
         for (auto iter =
                  stripset.lower_bound({previousStartFrame, nullptr});
@@ -63,14 +90,14 @@ void DocumentStripsOnChannel::stripMoved(Strip* strip, int previousChannel,
     }
 
     // Add to new
-    data_[strip->channel()].insert({strip->startFrame(), strip});
+    data_[strip->channelIndex()].insert({strip->startFrame(), strip});
 
     // Emit signals
-    if (strip->channel() == previousChannel) {
-        emit channelStripLocationChanged(strip->channel(), strip);
+    if (strip->channelIndex() == previousChannelIndex) {
+        emit channelStripLocationChanged(strip->channelIndex(), strip);
     } else {
-        emit channelStripSetChanged(previousChannel);
-        emit channelStripSetChanged(strip->channel());
+        emit channelStripSetChanged(previousChannelIndex);
+        emit channelStripSetChanged(strip->channelIndex());
     }
 }
 

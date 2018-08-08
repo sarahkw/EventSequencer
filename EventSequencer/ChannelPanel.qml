@@ -11,7 +11,7 @@ Rectangle {
     property int yposition
     property ES.Document doc
 
-    property int activeChannel: 0
+    property int activeChannelPosition: 0
 
     color: "white"
 
@@ -26,8 +26,8 @@ Rectangle {
         model: sh.itemsToRender
 
         Item {
-            property int myIndex: index + sh.initialIndex
-            property ES.WaitFor myWait: doc.waitForChannel(myIndex)
+            property int myPosition: index + sh.initialIndex
+            property ES.WaitFor myWait: doc.waitForChannelPosition(myPosition)
             property var cppChannel: myWait.result
 
             anchors.left: cPanel.left
@@ -42,10 +42,21 @@ Rectangle {
                 color: "lightgrey"
             }
 
+            Text {
+                id: txtIndex
+                anchors.left: parent.left
+                anchors.leftMargin: 5
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                verticalAlignment: Text.AlignVCenter
+                font.pointSize: 7
+                text: myPosition
+            }
+
             ComboBox {
                 // TODO move modelUtil to Controls/
                 readonly property var modelUtil: (function () { return {
-                    model: ["", "BadClock", "BadJs", "Text", "Audio", "Label", "Collate", "Playlist"],
+                    model: ["", "BadClock", "BadJs", "Text", "Audio", "Label", "Collate", "Playlist", "Span"],
                     enumToIndex: function (v) {
                         switch (v) {
                         case ES.ChannelType.BadClock: return 1;
@@ -55,6 +66,7 @@ Rectangle {
                         case ES.ChannelType.Label: return 5;
                         case ES.ChannelType.Collate: return 6;
                         case ES.ChannelType.Playlist: return 7;
+                        case ES.ChannelType.Span: return 8;
                         }
                     },
                     indexToEnum: function (v) {
@@ -66,13 +78,15 @@ Rectangle {
                         case 5: return ES.ChannelType.Label;
                         case 6: return ES.ChannelType.Collate;
                         case 7: return ES.ChannelType.Playlist;
+                        case 8: return ES.ChannelType.Span;
                         }
                     },
                 }})()
 
-                anchors.leftMargin: 10
+                anchors.leftMargin: 5
                 anchors.rightMargin: 10
-                anchors.left: parent.left
+                anchors.left: txtIndex.right
+                //anchors.left: parent.left
                 anchors.right: selectIndicator.left
                 anchors.verticalCenter: parent.verticalCenter
                 model: modelUtil.model
@@ -81,10 +95,10 @@ Rectangle {
                 onCurrentIndexChanged: {
                     if (currentIndex === 0) {
                         if (cppChannel !== null) {
-                            doc.deleteChannel(myIndex)
+                            doc.deleteChannelByPosition(myPosition)
                         }
                     } else if (cppChannel === null || modelUtil.enumToIndex(cppChannel.channelType) !== currentIndex) {
-                        doc.createChannel(myIndex, modelUtil.indexToEnum(currentIndex))
+                        doc.createChannelByPosition(myPosition, modelUtil.indexToEnum(currentIndex))
                     }
                 }
                 onFocusChanged: focus = false
@@ -92,7 +106,7 @@ Rectangle {
 
             Rectangle {
                 id: selectIndicator
-                readonly property bool amActive: activeChannel == myIndex
+                readonly property bool amActive: activeChannelPosition == myPosition
                 border.width: 1
                 border.color: amActive ? "lightgrey" : "whitesmoke"
                 anchors.top: parent.top
@@ -110,7 +124,7 @@ Rectangle {
                 anchors.fill: parent
                 acceptedButtons: Qt.RightButton
                 onClicked: {
-                    activeChannel = myIndex
+                    activeChannelPosition = myPosition
                 }
             }
         }

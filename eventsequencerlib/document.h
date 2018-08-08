@@ -4,6 +4,8 @@
 #include "channel/channeltype.h"
 #include "waitforhost.h"
 #include "documentstripsonchannel.h"
+#include "channelindex.h"
+#include "visualpositionmanager.h"
 
 #include <QAbstractListModel>
 #include <QUrl>
@@ -46,14 +48,17 @@ class DocumentChannelsModel : public QAbstractListModel
 
     enum CustomRoles {
         ModelDataRole = Qt::UserRole + 1,
-        ChannelIndexRole
+        ChannelIndexRole,
+        ChannelPositionRole
     };
 
-    std::vector<int> displayRows_;
+    std::vector<ChannelIndex> displayRows_;
 
-    void afterAdd(int id);
+    void afterAdd(ChannelIndex channelIndex);
 
-    void beforeDelete(int id);
+    void beforeDelete(ChannelIndex channelIndex);
+
+    void invalidateChannelPositions();
 
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -83,9 +88,11 @@ class Document : public QObject
     Q_PROPERTY(int startFrame READ startFrame WRITE setStartFrame NOTIFY startFrameChanged)
     Q_PROPERTY(int endFrame READ endFrame WRITE setEndFrame NOTIFY endFrameChanged)
 
-    std::map<int, channel::ChannelBase*> channels_;
-    WaitForHost<int> channelWaitFor_;
-    std::set<int> channelsProvidingClock_;
+    std::map<ChannelIndex, channel::ChannelBase*> channels_;
+    VisualPositionManager channelPositionManager_;
+    WaitForHost<ChannelIndex> channelWaitForIndex_;
+    WaitForHost<int> channelWaitForPosition_;
+    std::set<ChannelIndex> channelsProvidingClock_;
 
     Q_PROPERTY(QVariantList channelsProvidingClock
                READ channelsProvidingClock
@@ -123,6 +130,7 @@ private:
 public:
 
     explicit Document(QObject *parent = nullptr);
+    ~Document();
 
     void toPb(pb::Document& pb) const;
     void fromPb(const pb::Document& pb);
@@ -140,9 +148,13 @@ public:
     Q_INVOKABLE void dumpProtobuf() const;
 
     QAbstractListModel* channelsModel();
-    Q_INVOKABLE QObject* createChannel(int id, channel::ChannelType::Enum type);
-    Q_INVOKABLE void deleteChannel(int id);
-    Q_INVOKABLE WaitFor* waitForChannel(int id);
+    Q_INVOKABLE QObject* createChannel(ChannelIndex channelIndex, channel::ChannelType::Enum type);
+    Q_INVOKABLE QObject* createChannelByPosition(int position, channel::ChannelType::Enum type);
+    Q_INVOKABLE void deleteChannel(ChannelIndex channelIndex);
+    Q_INVOKABLE void deleteChannelByPosition(int position);
+    Q_INVOKABLE WaitFor* waitForChannelIndex(ChannelIndex channelIndex);
+    Q_INVOKABLE WaitFor* waitForChannelPosition(int channelPosition);
+    const VisualPositionManager& channelPositionManager() const;
 
     int framesPerSecond() const;
     void setFramesPerSecond(int framesPerSecond);
@@ -177,8 +189,12 @@ private:
         Add,
         Replace
     };
-    void channelAfterAddOrReplace(int id, QObject* channel, AddOrReplace mode);
-    void channelBeforeDelete(int id);
+    void channelAfterAddOrReplace(ChannelIndex channelIndex, QObject* channel, AddOrReplace mode);
+    void channelBeforeDelete(ChannelIndex channelIndex);
+
+    // VisualPositionManager
+    void visualPositionChangedAfter(ChannelIndex channelIndex, int delta);
+    void destroyChanIdx(ChannelIndex from, ChannelIndex toExclusive);
 
 signals:
 
@@ -200,7 +216,7 @@ signals:
     void stripAfterPlaced(Strip* strip);
     void stripBeforeDelete(Strip* strip);
     void stripMoved(Strip* strip,
-                    int previousChannel,
+                    ChannelIndex previousChannelIndex,
                     int previousStartFrame,
                     int previousLength);
 

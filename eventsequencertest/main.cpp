@@ -1,6 +1,7 @@
+#include "tst_channelindex.h"
+#include "tst_visualpositionmanager.h"
 #include "tst_concatiodevice.h"
 #include "tst_testcasename.h"
-#include "tst_strip.h"
 #include "tst_framesandseconds.h"
 #include "tst_collatenonoverlappingsegments.h"
 

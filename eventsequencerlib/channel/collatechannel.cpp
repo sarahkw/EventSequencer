@@ -132,18 +132,18 @@ void CollateChannel::triggerRefresh()
     }
 }
 
-void CollateChannel::channelStripSetChanged(int channel)
+void CollateChannel::channelStripSetChanged(ChannelIndex channelIndex)
 {
-    channelAffected(channel);
+    channelAffected(channelIndex);
 }
 
-void CollateChannel::channelStripLocationChanged(int channel, Strip *whichStrip)
+void CollateChannel::channelStripLocationChanged(ChannelIndex channelIndex, Strip *whichStrip)
 {
     Q_UNUSED(whichStrip);
-    channelAffected(channel);
+    channelAffected(channelIndex);
 }
 
-CollateChannel::CollateChannel(int channelIndex, Document& d, QObject *parent)
+CollateChannel::CollateChannel(ChannelIndex channelIndex, Document& d, QObject *parent)
     : ChannelBase(channelIndex, d, parent), model_(*this), d_(d)
 {   
     QObject::connect(&d.stripsOnChannel(), &DocumentStripsOnChannel::channelStripSetChanged, this, &CollateChannel::channelStripSetChanged);
@@ -179,9 +179,10 @@ QAbstractListModel *CollateChannel::model()
     return &model_;
 }
 
-void CollateChannel::channelAffected(int channel)
+void CollateChannel::channelAffected(ChannelIndex channelIndex)
 {
-    if (channel >= channelFrom() && channel < channelTo()) {
+    if (channelIndex >= ChannelIndex::make1(channelFrom()) &&
+            channelIndex < ChannelIndex::make1(channelTo())) {
         triggerRefresh();
         emit stripSetChanged();
     }
@@ -189,21 +190,23 @@ void CollateChannel::channelAffected(int channel)
 
 void CollateChannel::recalculate()
 {
-    using CnosType = CollateNonOverlappingSegments<const Strip*>;
+    using CnosType = CollateNonOverlappingSegments<Strip*>;
     CnosType cnos(CnosType::BoundaryMode::HasBounds,
                   d_.startFrame(),
                   d_.endFrame() - d_.startFrame());
     
     {
-        for (int channel = channelTo() - 1; channel >= channelFrom(); --channel) {
-            auto stripSet = d_.stripsOnChannel().stripsForChannel(channel);
-            if (stripSet != nullptr) {
-                for (auto& s : *stripSet) {
-                    cnos.mergeSegment(s.strip->startFrame(),
-                                      s.strip->length(),
-                                      CnosType::ReplaceMode::No,
-                                      s.strip);
-                }
+        auto p = d_.stripsOnChannel().stripsBetweenChannels(
+                    ChannelIndex::make1(channelFrom()),
+                    ChannelIndex::make1(channelTo()));
+        for (auto iter = std::make_reverse_iterator(p.second);
+             iter != std::make_reverse_iterator(p.first);
+             ++iter) {
+            for (auto& s : iter->second) {
+                cnos.mergeSegment(s.strip->startFrame(),
+                                  s.strip->length(),
+                                  CnosType::ReplaceMode::No,
+                                  s.strip);
             }
         }
     }

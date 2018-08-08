@@ -12,7 +12,7 @@ class PlaylistChannel : public ChannelBase
     Q_OBJECT
 
 public:
-    explicit PlaylistChannel(int channelIndex, Document& d, QObject *parent = nullptr);
+    explicit PlaylistChannel(ChannelIndex channelIndex, Document& d, QObject *parent = nullptr);
 
     virtual void toPb(pb::ChannelData& pb) const override;
     virtual void fromPb(const pb::ChannelData& pb) override;
