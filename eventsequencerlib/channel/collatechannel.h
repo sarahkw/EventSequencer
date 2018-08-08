@@ -84,7 +84,7 @@ public:
 
     bool event(QEvent *event) override;
 
-    std::vector<Strip*> stripSet() override;
+    std::vector<Strip*> strips() override;
 
 signals:
 

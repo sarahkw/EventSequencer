@@ -13,7 +13,7 @@ ChannelBase::ChannelBase(ChannelIndex channelIndex, Document& d, QObject* parent
                      this, &ChannelBase::channelStripLocationChanged);
 }
 
-std::vector<Strip*> ChannelBase::stripSet()
+std::vector<Strip*> ChannelBase::strips()
 {
     std::vector<Strip*> ret;
     auto* sset = d_.stripsOnChannel().stripsForChannel(channelIndex_);
@@ -28,7 +28,7 @@ std::vector<Strip*> ChannelBase::stripSet()
 void ChannelBase::channelStripSetChanged(ChannelIndex channelIndex)
 {
     if (channelIndex == channelIndex_) {
-        emit stripSetChanged();
+        emit stripsChanged();
     }
 }
 
@@ -38,7 +38,7 @@ void ChannelBase::channelStripLocationChanged(ChannelIndex channelIndex, Strip *
         // Used to have a stripLocationChanged signal, but for
         // subclasses that remake the strips list from scratch, it's
         // hard to do. The benefits aren't worth the cost.
-        emit stripSetChanged();
+        emit stripsChanged();
     }
 }
 

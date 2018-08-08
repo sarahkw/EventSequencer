@@ -150,7 +150,7 @@ void PlayerControl::updateCurrentStrips()
         break;
     case SelectionMode::Channel:
         if (selectedChannel_ != nullptr) {
-            for (Strip* s : selectedChannel_->stripSet()) {
+            for (Strip* s : selectedChannel_->strips()) {
                 if (!onlyStripsAfter_.isNull()) {
                     if (s->startFrame() < onlyStripsAfter_.toInt()) {
                         continue;
@@ -219,7 +219,7 @@ void PlayerControl::setSelectedChannel(channel::ChannelBase *selectedChannel)
             QObject::connect(selectedChannel, &channel::ChannelBase::destroyed,
                              this, &PlayerControl::clearSelectedChannel);
 
-            QObject::connect(selectedChannel, &channel::ChannelBase::stripSetChanged,
+            QObject::connect(selectedChannel, &channel::ChannelBase::stripsChanged,
                              this, &PlayerControl::updateCurrentStripsIfSelectionModeIsChannel);
         }
 

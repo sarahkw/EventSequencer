@@ -31,11 +31,11 @@ public:
 
     virtual ChannelType::Enum channelType() const = 0;
 
-    virtual std::vector<Strip*> stripSet();
+    virtual std::vector<Strip*> strips();
 
 signals:
 
-    void stripSetChanged();
+    void stripsChanged();
 
 private slots:
 

@@ -112,7 +112,7 @@ bool CollateChannel::event(QEvent *event)
     return ChannelBase::event(event);
 }
 
-std::vector<Strip*> CollateChannel::stripSet()
+std::vector<Strip*> CollateChannel::strips()
 {
     // Need to forcefully call recalculate() each time this is read. Otherwise,
     // we could be returning a set with a strip that was deleted.
@@ -184,7 +184,7 @@ void CollateChannel::channelAffected(ChannelIndex channelIndex)
     if (channelIndex >= ChannelIndex::make1(channelFrom()) &&
             channelIndex < ChannelIndex::make1(channelTo())) {
         triggerRefresh();
-        emit stripSetChanged();
+        emit stripsChanged();
     }
 }
 
