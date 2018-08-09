@@ -423,6 +423,7 @@ void Document::fromPb(const pb::Document &pb)
     Q_ASSERT(channels_.empty()); // Because channelAfterAddOrReplace will always say Add. Replace not implemented.
 
     const auto addPbChannel = [this](ChannelIndex cidx, const pb::ChannelData& pb) {
+        // TODO Call createChannel. That way, it can reject invalid channelIndex.
         channel::ChannelBase* addme =
                 channel::ChannelFactory::Create(pb, cidx, *this, this);
         if (addme != nullptr) {
@@ -710,6 +711,7 @@ QAbstractListModel *Document::channelsModel()
 
 QObject *Document::createChannel(ChannelIndex channelIndex, channel::ChannelType::Enum type)
 {
+    // TODO: Reject invalid channelIndex
     channel::ChannelBase* chan = channel::ChannelFactory::Create(type, channelIndex, *this, this);
 
     AddOrReplace mode = AddOrReplace::Add;
