@@ -31,12 +31,8 @@ std::vector<Strip *> ChannelBase::multiChannelStrips()
     return strips();
 }
 
-Strip *ChannelBase::createStrip(int startFrame, int length)
+bool ChannelBase::canCreateStrip(int startFrame, int length)
 {
-    if (!Strip::isValidLength(length)) {
-        return nullptr;
-    }
-
     // I don't think we'll ever have so many strips that O(n) will be a problem.
     auto* sset = d_.stripsOnChannel().stripsForChannel(channelIndex_);
     if (sset != nullptr) {
@@ -44,9 +40,21 @@ Strip *ChannelBase::createStrip(int startFrame, int length)
             if (Collides::startAndLength(startFrame, length,
                                          sh.strip->startFrame(),
                                          sh.strip->length())) {
-                return nullptr;
+                return false;
             }
         }
+    }
+    return true;
+}
+
+Strip *ChannelBase::createStrip(int startFrame, int length)
+{
+    if (!canCreateStrip(startFrame, length)) {
+        return nullptr;
+    }
+
+    if (!Strip::isValidLength(length)) {
+        return nullptr;
     }
 
     Strip* ret = d_.createStrip();
