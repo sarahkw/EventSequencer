@@ -39,6 +39,9 @@ public:
     std::vector<Strip*> strips() override;
     std::vector<Strip*> multiChannelStrips() override;
 
+    // For CollateChannel
+    const std::vector<std::unique_ptr<WaitFor>>& waitersForChildChannels() const;
+
 signals:
 
     void countChanged();

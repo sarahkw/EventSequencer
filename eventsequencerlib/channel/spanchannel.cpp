@@ -71,6 +71,11 @@ std::vector<Strip *> SpanChannel::multiChannelStrips()
     return ret;
 }
 
+const std::vector<std::unique_ptr<WaitFor> > &SpanChannel::waitersForChildChannels() const
+{
+    return waiters_;
+}
+
 void SpanChannel::channelStripSetChanged(ChannelIndex channelIndex)
 {
     // No-op override

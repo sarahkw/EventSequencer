@@ -110,6 +110,16 @@ std::vector<Strip*> CollateChannel::strips()
     return stripSet_;
 }
 
+namespace {
+channel::ChannelBase* findChannelToAcceptStrip(
+    const std::vector<std::unique_ptr<WaitFor>>& waitersForChildChannels,
+    int startFrame, int length)
+{
+    // TODO
+    return nullptr;
+}
+} // namespace anonymous
+
 Strip *CollateChannel::createStrip(int startFrame, int length)
 {
     if (sourceChannel_ == nullptr) {
@@ -119,7 +129,14 @@ Strip *CollateChannel::createStrip(int startFrame, int length)
         // channel type that can expose child channels, I don't want to put that
         // functionality in ChannelBase.
 
-        // TODO!
+        channel::ChannelBase* potentialTarget =
+                findChannelToAcceptStrip(sc->waitersForChildChannels(),
+                                         startFrame, length);
+        if (potentialTarget != nullptr) {
+            return potentialTarget->createStrip(startFrame, length);
+        }
+
+        // TODO Have SpanChannel make a new child channel just for us!
 
         return nullptr;
     } else {
