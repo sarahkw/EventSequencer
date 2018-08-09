@@ -50,7 +50,11 @@ ChannelIndex ChannelIndex::makeFromPb(const pb::ChannelIndex &pb)
         return ChannelIndex::make1(pb.idx(0));
     } else if (pb.idx_size() == 2) {
         return ChannelIndex::make2(pb.idx(0), pb.idx(1));
-    } else {
+    }
+
+    if (pb.idx_size() != 0) {
+        // 0 size shouldn't happen, but I guess it's not worth a warning since a
+        // blank ChannelIndex represents the essence of 0 size.
         qWarning("ChannelIndex makeFromPb invalid idx_size %d", pb.idx_size());
     }
     return ChannelIndex();
