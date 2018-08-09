@@ -99,8 +99,6 @@ Window {
                         onClicked: playerControl.stop()
                     }
                 }
-
-
             }
         }
 
@@ -110,7 +108,5 @@ Window {
                 text: playerControl.currentStripsReport
             }
         }
-
-
     }
 }
