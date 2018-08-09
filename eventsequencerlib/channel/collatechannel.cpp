@@ -100,8 +100,6 @@ bool CollateChannel::event(QEvent *event)
 
 std::vector<Strip*> CollateChannel::strips()
 {
-    // TODO: Recursion guard
-
     // Need to forcefully call recalculate() each time this is read. Otherwise,
     // we could be returning a set with a strip that was deleted.
     if (refreshPending_) {
@@ -119,6 +117,10 @@ void CollateChannel::channelWaitForResultChanged()
     }
 
     sourceChannel_ = qobject_cast<channel::ChannelBase*>(waitForChannel_->result());
+    if (sourceChannel_ == qobject_cast<channel::ChannelBase*>(this)) {
+        // Prevent recursive infinite loop.
+        sourceChannel_ = nullptr;
+    }
     if (sourceChannel_ != nullptr) {
         QObject::connect(sourceChannel_, &ChannelBase::stripsChanged,
                          this, &CollateChannel::channelWaitForStripsChanged);
