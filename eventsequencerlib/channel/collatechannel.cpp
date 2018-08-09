@@ -3,6 +3,7 @@
 #include <eventsequencer.pb.h>
 #include <document.h>
 #include <strip.h>
+#include <collides.h>
 
 #include "collatechannelrefreshevent.h"
 #include "collatenonoverlappingsegments.h"
@@ -59,9 +60,7 @@ QHash<int, QByteArray> CollateChannelModel::roleNames() const
 /**/     QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
 /**/     int theStart = sourceModel()->data(index0, CollateChannelModel::CustomRoles::SegmentStartRole).toInt();
 /**/     int theLength = sourceModel()->data(index0, CollateChannelModel::CustomRoles::SegmentLengthRole).toInt();
-/**/     bool collides = (theStart < start_ ?
-/**/                          (theStart + theLength > start_) :
-/**/                          (start_ + length_ > theStart));
+/**/     const bool collides = Collides::startAndLength(theStart, theLength, start_, length_);
 /**/     return collides;
 /**/ }
 

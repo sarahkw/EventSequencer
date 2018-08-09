@@ -1,6 +1,8 @@
 #ifndef COLLATENONOVERLAPPINGSEGMENTS_H
 #define COLLATENONOVERLAPPINGSEGMENTS_H
 
+#include "collides.h"
+
 #include <map>
 #include <set>
 #include <vector>
@@ -25,9 +27,7 @@ public:
     struct CompareRanges {
         bool operator()(const Range& a, const Range& b) const
         {
-            bool collides = (a.start < b.start ?
-                                 (a.start + a.length > b.start) :
-                                 (b.start + b.length > a.start));
+            const bool collides = Collides::startAndLengthMembers(a, b);
             if (collides) return false; // Treat collision as "equal".
             return a.start < b.start;
         }
