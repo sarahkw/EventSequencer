@@ -84,10 +84,7 @@ void CollateChannel::setChannel(const ChannelIndex &channel)
     if (channel_ != channel) {
         channel_ = channel;
         emit channelChanged();
-        waitForChannel_.reset(d_.waitForChannelIndex(channel));
-        QObject::connect(waitForChannel_.get(), &WaitFor::resultChanged,
-                         this, &CollateChannel::channelWaitForResultChanged);
-        channelWaitForResultChanged();
+        setupCurrentChannel();
     }
 }
 
@@ -153,13 +150,21 @@ void CollateChannel::channelStripLocationChanged(ChannelIndex channelIndex, Stri
     // Disable base impl
 }
 
+void CollateChannel::setupCurrentChannel()
+{
+    waitForChannel_.reset(d_.waitForChannelIndex(channel()));
+    QObject::connect(waitForChannel_.get(), &WaitFor::resultChanged,
+                     this, &CollateChannel::channelWaitForResultChanged);
+    channelWaitForResultChanged();
+}
+
 CollateChannel::CollateChannel(ChannelIndex channelIndex, Document& d, QObject *parent)
     : ChannelBase(channelIndex, d, parent), model_(*this), d_(d)
 {   
     QObject::connect(&d, &Document::startFrameChanged, this, &CollateChannel::triggerRefresh);
     QObject::connect(&d, &Document::endFrameChanged, this, &CollateChannel::triggerRefresh);
 
-    triggerRefresh();
+    setupCurrentChannel();
 }
 
 void CollateChannel::toPb(pb::ChannelData &pb) const

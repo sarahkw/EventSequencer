@@ -68,6 +68,8 @@ private:
     std::vector<Segment> segments_;
     std::vector<Strip*> stripSet_;
 
+    void setupCurrentChannel();
+
 public:
     explicit CollateChannel(ChannelIndex channelIndex, Document& d, QObject *parent = nullptr);
 
