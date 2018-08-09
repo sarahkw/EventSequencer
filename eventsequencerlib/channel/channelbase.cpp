@@ -1,5 +1,6 @@
 #include "channelbase.h"
 
+#include "collides.h"
 #include "document.h"
 
 namespace channel {
@@ -28,6 +29,32 @@ std::vector<Strip*> ChannelBase::strips()
 std::vector<Strip *> ChannelBase::multiChannelStrips()
 {
     return strips();
+}
+
+Strip *ChannelBase::createStrip(int startFrame, int length)
+{
+    if (!Strip::isValidLength(length)) {
+        return nullptr;
+    }
+
+    // I don't think we'll ever have so many strips that O(n) will be a problem.
+    auto* sset = d_.stripsOnChannel().stripsForChannel(channelIndex_);
+    if (sset != nullptr) {
+        for (const DocumentStripsOnChannel::StripHolder& sh : *sset) {
+            if (Collides::startAndLength(startFrame, length,
+                                         sh.strip->startFrame(),
+                                         sh.strip->length())) {
+                return nullptr;
+            }
+        }
+    }
+
+    Strip* ret = d_.createStrip();
+    ret->setChannelIndex(channelIndex_);
+    ret->setStartFrame(startFrame);
+    ret->setLength(length);
+    ret->markAsPlaced();
+    return ret;
 }
 
 void ChannelBase::channelStripSetChanged(ChannelIndex channelIndex)

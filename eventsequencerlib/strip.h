@@ -71,6 +71,7 @@ public:
 
     int length() const;
     void setLength(int length);
+    static bool isValidLength(int length);
 
     QUrl resourceUrl() const;
     void setResourceUrl(QUrl resourceUrl);

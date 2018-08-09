@@ -17,6 +17,8 @@ Window {
     property QtObject sessionAudio
     property string fileResourceDirectory
     property ES.Strip activeCppStrip
+    property var activeCppChannel
+    property int cursorFrame
 
     property bool destroyOnHide: false
     onVisibleChanged: {
@@ -127,35 +129,64 @@ Window {
                     text: fileActionFrame.writtenUrl
                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 }
+                Button {
+                    text: "Send to active strip"
+                    enabled: {
+                        if (activeCppStrip === null) return false
+                        if (activeCppStrip.qmlStrip.channelControl === null) return false
+                        return activeCppStrip.qmlStrip.channelControl.willAcceptResource != null
+                    }
+                    onClicked: {
+                        activeCppStrip.resourceUrl = fileActionFrame.writtenUrl
+                        fileActionFrame.writtenUrl = "" // Clear
+                    }
+                }
                 Row {
                     Button {
-                        text: "Send to active strip"
-                        enabled: {
-                            if (activeCppStrip === null) return false
-                            if (activeCppStrip.qmlStrip.channelControl === null) return false
-                            return activeCppStrip.qmlStrip.channelControl.willAcceptResource != null
-                        }
+                        text: "Send to active channel"
+                        enabled: activeCppChannel != null
                         onClicked: {
-                            activeCppStrip.resourceUrl = fileActionFrame.writtenUrl
-                            fileActionFrame.writtenUrl = "" // Clear
-                        }
-                    }
-                    Button {
-                        MessageDialog {
-                            id: deleteConfirm
-                            text: "Are you sure you want to delete?"
-                            standardButtons: StandardButton.Yes | StandardButton.No
-                            onYes: {
-                                if (managedResources.deleteUrl(fileActionFrame.writtenUrl)) {
-                                    fileActionFrame.writtenUrl = ""
-                                } else {
-                                    console.warn("Deletion failed")
-                                }
+                            var thestrip =
+                                activeCppChannel.createStrip(cursorFrame,
+                                                             sendToActiveChannelLength.text)
+                            if (thestrip != null) {
+                                thestrip.resourceUrl = fileActionFrame.writtenUrl
+                                fileActionFrame.writtenUrl = "" // Clear
+                            } else {
+                                cannotSendToChannel.open()
                             }
                         }
-                        text: "Delete"
-                        onClicked: deleteConfirm.open()
+                        MessageDialog {
+                            id: cannotSendToChannel
+                            text: "Cannot send to active channel"
+                        }
                     }
+                    Label {
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        text: "Length"
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                    TextField {
+                        id: sendToActiveChannelLength
+                        text: "1"
+                    }
+                }
+                Button {
+                    MessageDialog {
+                        id: deleteConfirm
+                        text: "Are you sure you want to delete?"
+                        standardButtons: StandardButton.Yes | StandardButton.No
+                        onYes: {
+                            if (managedResources.deleteUrl(fileActionFrame.writtenUrl)) {
+                                fileActionFrame.writtenUrl = ""
+                            } else {
+                                console.warn("Deletion failed")
+                            }
+                        }
+                    }
+                    text: "Delete"
+                    onClicked: deleteConfirm.open()
                 }
             }
         }

@@ -198,7 +198,9 @@ ApplicationWindow {
                                                    } else {
                                                        return null;
                                                    }
-                                               })
+                                               }),
+                                               activeCppChannel: Qt.binding(function () { return channelPanel.activeCppChannel }),
+                                               cursorFrame: Qt.binding(function () { return cursor.frame })
                                            })
                 }
             }

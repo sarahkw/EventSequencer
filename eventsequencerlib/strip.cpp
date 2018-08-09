@@ -75,6 +75,11 @@ void Strip::setLength(int length)
     }
 }
 
+bool Strip::isValidLength(int length)
+{
+    return length > 0;
+}
+
 QUrl Strip::resourceUrl() const
 {
     return resourceUrl_;
