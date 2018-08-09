@@ -2,8 +2,10 @@
 #define SPANCHANNEL_H
 
 #include "channelbase.h"
+#include "waitfor.h"
 
 #include <QObject>
+#include <memory>
 
 namespace channel {
 
@@ -14,8 +16,13 @@ class SpanChannel : public ChannelBase
     ChannelIndex channelIndex_;
     Document& d_;
 
+    std::vector<std::unique_ptr<WaitFor>> waiters_;
+
     int count_ = 0;
     Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
+
+    void waiterResultChanged(QObject* channel);
+    void waiterResultAboutToUnset(QObject* channel);
 
 public:
     explicit SpanChannel(ChannelIndex channelIndex, Document& d, QObject *parent = nullptr);

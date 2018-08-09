@@ -10,8 +10,9 @@ QObject *WaitFor::result() const
 void WaitFor::setResult(QObject *result)
 {
     if (result_ != result) {
+        emit resultAboutToUnset(result_);
         result_ = result;
-        emit resultChanged();
+        emit resultChanged(result_);
     }
 }
 

@@ -14,6 +14,10 @@ int SpanChannel::count() const
 
 void SpanChannel::setCount(int count)
 {
+    if (channelIndex_.hasSecond()) {
+        // If we're a span inside a span, just stop here. It's not supported.
+        return;
+    }
     if (count < 0) {
         count = 0;
     }
@@ -21,6 +25,28 @@ void SpanChannel::setCount(int count)
         count_ = count;
         emit countChanged();
         emit setSpan(channelIndex_, count);
+
+        if (count_ > waiters_.size()) {
+            for (int i = waiters_.size(); i < count_; ++i) {
+                WaitFor* wf = d_.waitForChannelIndex(
+                            ChannelIndex::make2(channelIndex_.first(), i));
+                QObject::connect(wf, &WaitFor::resultChanged, this, &SpanChannel::waiterResultChanged);
+                QObject::connect(wf, &WaitFor::resultAboutToUnset, this, &SpanChannel::waiterResultAboutToUnset);
+                waiters_.emplace_back(wf);
+                waiterResultChanged(wf->result());
+            }
+        } else if (count_ < waiters_.size()) {
+
+            // We expect the waiters that we're removing are already nullptr,
+            // because decreasing the span should have destroyed them already.
+            for (int i = count_; i < waiters_.size(); ++i) {
+                if (waiters_[i]->result() != nullptr) {
+                    qWarning("SpanChannel expected subchannel to already be one...");
+                }
+            }
+
+            waiters_.resize(count_);
+        }
     }
 }
 
@@ -32,29 +58,45 @@ std::vector<Strip *> SpanChannel::strips()
 std::vector<Strip *> SpanChannel::multiChannelStrips()
 {
     std::vector<Strip*> ret;
-    if (!channelIndex_.hasSecond()) {
-        auto pair = d_.stripsOnChannel().stripsChildOfChannel(channelIndex_.first());
-        for (auto it = pair.first; it != pair.second; ++it) {
-            for (auto& sh : it->second) {
-                ret.push_back(sh.strip);
+
+    for (auto& waiteruptr : waiters_) {
+        ChannelBase* cb = qobject_cast<ChannelBase*>(waiteruptr->result());
+        if (cb != nullptr) {
+            for (Strip* s : cb->strips()) {
+                ret.push_back(s);
             }
         }
     }
+
     return ret;
 }
 
 void SpanChannel::channelStripSetChanged(ChannelIndex channelIndex)
 {
-    if (!channelIndex_.hasSecond()) {
-        if (channelIndex.hasSecond() && channelIndex.first() == channelIndex_.first()) {
-            emit stripsChanged();
-        }
-    }
+    // No-op override
 }
 
 void SpanChannel::channelStripLocationChanged(ChannelIndex channelIndex, Strip *whichStrip)
 {
-    channelStripSetChanged(channelIndex);
+    // No-op override
+}
+
+void SpanChannel::waiterResultChanged(QObject *channel)
+{
+    ChannelBase* castChannel = qobject_cast<ChannelBase*>(channel);
+    if (castChannel != nullptr) {
+        QObject::connect(castChannel, &ChannelBase::stripsChanged,
+                         this, &SpanChannel::stripsChanged);
+
+    }
+    emit stripsChanged();
+}
+
+void SpanChannel::waiterResultAboutToUnset(QObject *channel)
+{
+    if (channel != nullptr) {
+        channel->disconnect(this);
+    }
 }
 
 SpanChannel::SpanChannel(ChannelIndex channelIndex, Document& d, QObject* parent)

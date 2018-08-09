@@ -28,7 +28,8 @@ public:
 
 signals:
 
-    void resultChanged();
+    void resultAboutToUnset(QObject* result);
+    void resultChanged(QObject* result);
 
 };
 
