@@ -34,7 +34,7 @@ public:
     virtual std::vector<Strip*> strips();
     virtual std::vector<Strip*> multiChannelStrips();
 
-    virtual bool canCreateStrip(int startFrame, int length);
+    virtual bool stripWillCollide(int startFrame, int length);
     // Creates a strip on this channel. Returns a pointer to the Strip if it's
     // successful. Otherwise, returns nullptr.
     Q_INVOKABLE virtual Strip* createStrip(int startFrame, int length);

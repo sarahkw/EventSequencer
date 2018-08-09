@@ -31,25 +31,22 @@ std::vector<Strip *> ChannelBase::multiChannelStrips()
     return strips();
 }
 
-bool ChannelBase::canCreateStrip(int startFrame, int length)
+bool ChannelBase::stripWillCollide(int startFrame, int length)
 {
     // I don't think we'll ever have so many strips that O(n) will be a problem.
-    auto* sset = d_.stripsOnChannel().stripsForChannel(channelIndex_);
-    if (sset != nullptr) {
-        for (const DocumentStripsOnChannel::StripHolder& sh : *sset) {
-            if (Collides::startAndLength(startFrame, length,
-                                         sh.strip->startFrame(),
-                                         sh.strip->length())) {
-                return false;
-            }
+    for (Strip* s : strips()) {
+        if (Collides::startAndLength(startFrame, length,
+                                     s->startFrame(),
+                                     s->length())) {
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 Strip *ChannelBase::createStrip(int startFrame, int length)
 {
-    if (!canCreateStrip(startFrame, length)) {
+    if (stripWillCollide(startFrame, length)) {
         return nullptr;
     }
 
