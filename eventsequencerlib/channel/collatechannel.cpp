@@ -4,6 +4,7 @@
 #include <document.h>
 #include <strip.h>
 #include <collides.h>
+#include <channel/spanchannel.h>
 
 #include "collatechannelrefreshevent.h"
 #include "collatenonoverlappingsegments.h"
@@ -107,6 +108,23 @@ std::vector<Strip*> CollateChannel::strips()
     }
 
     return stripSet_;
+}
+
+Strip *CollateChannel::createStrip(int startFrame, int length)
+{
+    if (sourceChannel_ == nullptr) {
+        return nullptr;
+    } else if (SpanChannel* sc = qobject_cast<SpanChannel*>(sourceChannel_)) {
+        // Checking specifically for SpanChannel because since it's the ONLY
+        // channel type that can expose child channels, I don't want to put that
+        // functionality in ChannelBase.
+
+        // TODO!
+
+        return nullptr;
+    } else {
+        return sourceChannel_->createStrip(startFrame, length);
+    }
 }
 
 void CollateChannel::channelWaitForResultChanged()

@@ -87,6 +87,8 @@ public:
 
     std::vector<Strip*> strips() override;
 
+    virtual Strip* createStrip(int startFrame, int length) override;
+
 signals:
 
     void channelChanged();
