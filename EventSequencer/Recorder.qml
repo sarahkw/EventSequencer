@@ -86,7 +86,9 @@ Window {
                                 md.open()
                                 return
                             }
-                            recorderControl.record(managedResources.withSpecifiedName(managedResources.generateResourceName(), ".au"))
+                            recorderControl.record(
+                                        managedResources.withSpecifiedName(
+                                            managedResources.generateResourceName(), ".au"))
                         }
 
                         MessageDialog {
