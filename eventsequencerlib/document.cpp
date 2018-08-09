@@ -429,14 +429,19 @@ void Document::fromPb(const pb::Document &pb)
             channels_[cidx] = addme;
             channelAfterAddOrReplace(cidx, addme, AddOrReplace::Add);
         }
+        return addme;
     };
 
     for (auto& mp1 : pb.channels()) {
         const int topLevelIndex = mp1.first;
         const pb::ChannelData& topLevelPb = mp1.second;
-        addPbChannel(ChannelIndex::make1(topLevelIndex), topLevelPb);
+        auto* addedChannel = addPbChannel(ChannelIndex::make1(topLevelIndex), topLevelPb);
 
-        if (topLevelPb.has_span()) {
+        // Only if adding the channel succeeded do we want to add its contents.
+        if (addedChannel != nullptr &&
+            addedChannel->channelType() == channel::ChannelType::Span &&
+            topLevelPb.has_span()) {
+
             for (auto& mp2 : topLevelPb.span().channels()) {
                 const int childLevelIndex = mp2.first;
                 const pb::ChannelData& childLevelPb = mp2.second;
