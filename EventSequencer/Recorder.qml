@@ -83,7 +83,7 @@ Window {
                         text: "Record"
                         onClicked: {
                             if (managedResources.fileResourceDirectory == "") {
-                                md.open()
+                                resourcesNotReadyDialog.open()
                                 return
                             }
                             recorderControl.record(
@@ -92,7 +92,7 @@ Window {
                         }
 
                         MessageDialog {
-                            id: md
+                            id: resourcesNotReadyDialog
                             text: "Resource directory doesn't exist. Save the file first."
                         }
                     }
