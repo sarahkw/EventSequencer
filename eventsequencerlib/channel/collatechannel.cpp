@@ -115,8 +115,22 @@ channel::ChannelBase* findChannelToAcceptStrip(
     const std::vector<std::unique_ptr<WaitFor>>& waitersForChildChannels,
     int startFrame, int length)
 {
-    // TODO
-    return nullptr;
+    channel::ChannelBase* candidate = nullptr;
+
+    for (auto iter = waitersForChildChannels.rbegin();
+         iter != waitersForChildChannels.rend(); ++iter) {
+
+        auto* ptr = qobject_cast<channel::ChannelBase*>(iter->get()->result());
+        if (ptr != nullptr) { // If it's null, let's not touch it.
+            if (!ptr->stripWillCollide(startFrame, length)) {
+                candidate = ptr;
+            } else {
+                break;
+            }
+        }
+    }
+
+    return candidate;
 }
 } // namespace anonymous
 
