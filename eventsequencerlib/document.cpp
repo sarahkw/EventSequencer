@@ -422,13 +422,25 @@ void Document::fromPb(const pb::Document &pb)
 
     Q_ASSERT(channels_.empty()); // Because channelAfterAddOrReplace will always say Add. Replace not implemented.
 
-    const auto addPbChannel = [this](ChannelIndex cidx, const pb::ChannelData& pb) {
-        // TODO Call createChannel. That way, it can reject invalid channelIndex.
+    const auto addPbChannel = [this](
+        ChannelIndex channelIndex,
+        const pb::ChannelData& pb) -> channel::ChannelBase* {
+
+        // TODO Refactor this to share more code with createChannel() because
+        //      it's mostly doing the same.
+
+        if (!channelPositionManager_.chanIdxIsValid(channelIndex)) {
+            // Write a warning because this really shouldn't happen.
+            qWarning() << "Cannot create channel on invalid index"
+                       << channelIndex.toDebugString();
+            return nullptr;
+        }
+
         channel::ChannelBase* addme =
-                channel::ChannelFactory::Create(pb, cidx, *this, this);
+                channel::ChannelFactory::Create(pb, channelIndex, *this, this);
         if (addme != nullptr) {
-            channels_[cidx] = addme;
-            channelAfterAddOrReplace(cidx, addme, AddOrReplace::Add);
+            channels_[channelIndex] = addme;
+            channelAfterAddOrReplace(channelIndex, addme, AddOrReplace::Add);
         }
         return addme;
     };
@@ -711,7 +723,13 @@ QAbstractListModel *Document::channelsModel()
 
 QObject *Document::createChannel(ChannelIndex channelIndex, channel::ChannelType::Enum type)
 {
-    // TODO: Reject invalid channelIndex
+    if (!channelPositionManager_.chanIdxIsValid(channelIndex)) {
+        // Write a warning because this really shouldn't happen.
+        qWarning() << "Cannot create channel on invalid index"
+                   << channelIndex.toDebugString();
+        return nullptr;
+    }
+
     channel::ChannelBase* chan = channel::ChannelFactory::Create(type, channelIndex, *this, this);
 
     AddOrReplace mode = AddOrReplace::Add;
