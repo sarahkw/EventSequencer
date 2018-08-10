@@ -8,6 +8,7 @@
 #include "collatechannel.h"
 #include "playlistchannel.h"
 #include "spanchannel.h"
+#include "docfillchannel.h"
 
 #include <eventsequencer.pb.h>
 
@@ -45,6 +46,9 @@ channel::ChannelBase *channel::ChannelFactory::Create(const pb::ChannelData &pb,
     case ::pb::ChannelData::kSpan:
         cb = new channel::SpanChannel(channelIndex, d, parent);
         break;
+    case ::pb::ChannelData::kDocFill:
+        cb = new channel::DocFillChannel(channelIndex, d, parent);
+        break;
     case ::pb::ChannelData::CHANNEL_NOT_SET:
         qWarning() << "Unknown channel! Loading file from newer version?";
         break;
@@ -79,6 +83,13 @@ channel::ChannelBase *channel::ChannelFactory::Create(channel::ChannelType::Enum
         return new channel::PlaylistChannel(channelIndex, d, parent);
     case channel::ChannelType::Span:
         return new channel::SpanChannel(channelIndex, d, parent);
+    case channel::ChannelType::DocFill:
+        return new channel::DocFillChannel(channelIndex, d, parent);
+
+    case channel::ChannelType::UNSET:
+        // Don't support creating UNSET types. Shouldn't happen, not worth the
+        // error handling.
+        break;
     }
 
     Q_ASSERT(false);

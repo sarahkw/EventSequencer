@@ -45,6 +45,7 @@ class ChannelData_Audio;
 class ChannelData_BadClock;
 class ChannelData_BadJs;
 class ChannelData_Collate;
+class ChannelData_DocFill;
 class ChannelData_Label;
 class ChannelData_Playlist;
 class ChannelData_Span;
@@ -1594,12 +1595,20 @@ class ChannelData_Span : public ::google::protobuf::Message /* @@protoc_insertio
   ::google::protobuf::Map< ::google::protobuf::int32, ::pb::ChannelData >*
       mutable_channels();
 
+  // optional int32 defaultChannelType = 4;
+  void clear_defaultchanneltype();
+  static const int kDefaultChannelTypeFieldNumber = 4;
+  ::google::protobuf::int32 defaultchanneltype() const;
+  void set_defaultchanneltype(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:pb.ChannelData.Span)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::pb::Strip > strips_;
+  ::google::protobuf::int32 count_;
+  ::google::protobuf::int32 defaultchanneltype_;
   typedef ::google::protobuf::internal::MapEntryLite<
       ::google::protobuf::int32, ::pb::ChannelData,
       ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
@@ -1611,7 +1620,6 @@ class ChannelData_Span : public ::google::protobuf::Message /* @@protoc_insertio
       ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
       ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
       0 > channels_;
-  ::google::protobuf::int32 count_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_eventsequencer_2eproto();
   friend void protobuf_AssignDesc_eventsequencer_2eproto();
@@ -1619,6 +1627,101 @@ class ChannelData_Span : public ::google::protobuf::Message /* @@protoc_insertio
 
   void InitAsDefaultInstance();
   static ChannelData_Span* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ChannelData_DocFill : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelData.DocFill) */ {
+ public:
+  ChannelData_DocFill();
+  virtual ~ChannelData_DocFill();
+
+  ChannelData_DocFill(const ChannelData_DocFill& from);
+
+  inline ChannelData_DocFill& operator=(const ChannelData_DocFill& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChannelData_DocFill& default_instance();
+
+  void Swap(ChannelData_DocFill* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ChannelData_DocFill* New() const { return New(NULL); }
+
+  ChannelData_DocFill* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ChannelData_DocFill& from);
+  void MergeFrom(const ChannelData_DocFill& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(ChannelData_DocFill* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .pb.ChannelIndex textChannel = 1;
+  bool has_textchannel() const;
+  void clear_textchannel();
+  static const int kTextChannelFieldNumber = 1;
+  const ::pb::ChannelIndex& textchannel() const;
+  ::pb::ChannelIndex* mutable_textchannel();
+  ::pb::ChannelIndex* release_textchannel();
+  void set_allocated_textchannel(::pb::ChannelIndex* textchannel);
+
+  // optional .pb.ChannelIndex resourceChannel = 2;
+  bool has_resourcechannel() const;
+  void clear_resourcechannel();
+  static const int kResourceChannelFieldNumber = 2;
+  const ::pb::ChannelIndex& resourcechannel() const;
+  ::pb::ChannelIndex* mutable_resourcechannel();
+  ::pb::ChannelIndex* release_resourcechannel();
+  void set_allocated_resourcechannel(::pb::ChannelIndex* resourcechannel);
+
+  // @@protoc_insertion_point(class_scope:pb.ChannelData.DocFill)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  ::pb::ChannelIndex* textchannel_;
+  ::pb::ChannelIndex* resourcechannel_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_eventsequencer_2eproto();
+  friend void protobuf_AssignDesc_eventsequencer_2eproto();
+  friend void protobuf_ShutdownFile_eventsequencer_2eproto();
+
+  void InitAsDefaultInstance();
+  static ChannelData_DocFill* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -1646,6 +1749,7 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
     kCollate = 15,
     kPlaylist = 16,
     kSpan = 17,
+    kDocFill = 18,
     CHANNEL_NOT_SET = 0,
   };
 
@@ -1700,6 +1804,7 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
   typedef ChannelData_Collate Collate;
   typedef ChannelData_Playlist Playlist;
   typedef ChannelData_Span Span;
+  typedef ChannelData_DocFill DocFill;
 
   // accessors -------------------------------------------------------
 
@@ -1775,6 +1880,15 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::pb::ChannelData_Span* release_span();
   void set_allocated_span(::pb::ChannelData_Span* span);
 
+  // optional .pb.ChannelData.DocFill docFill = 18;
+  bool has_docfill() const;
+  void clear_docfill();
+  static const int kDocFillFieldNumber = 18;
+  const ::pb::ChannelData_DocFill& docfill() const;
+  ::pb::ChannelData_DocFill* mutable_docfill();
+  ::pb::ChannelData_DocFill* release_docfill();
+  void set_allocated_docfill(::pb::ChannelData_DocFill* docfill);
+
   ChannelCase channel_case() const;
   // @@protoc_insertion_point(class_scope:pb.ChannelData)
  private:
@@ -1786,6 +1900,7 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
   inline void set_has_collate();
   inline void set_has_playlist();
   inline void set_has_span();
+  inline void set_has_docfill();
 
   inline bool has_channel() const;
   void clear_channel();
@@ -1803,6 +1918,7 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
     ::pb::ChannelData_Collate* collate_;
     ::pb::ChannelData_Playlist* playlist_;
     ::pb::ChannelData_Span* span_;
+    ::pb::ChannelData_DocFill* docfill_;
   } channel_;
   mutable int _cached_size_;
   ::google::protobuf::uint32 _oneof_case_[1];
@@ -2825,6 +2941,100 @@ ChannelData_Span::mutable_channels() {
   return channels_.MutableMap();
 }
 
+// optional int32 defaultChannelType = 4;
+inline void ChannelData_Span::clear_defaultchanneltype() {
+  defaultchanneltype_ = 0;
+}
+inline ::google::protobuf::int32 ChannelData_Span::defaultchanneltype() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.Span.defaultChannelType)
+  return defaultchanneltype_;
+}
+inline void ChannelData_Span::set_defaultchanneltype(::google::protobuf::int32 value) {
+  
+  defaultchanneltype_ = value;
+  // @@protoc_insertion_point(field_set:pb.ChannelData.Span.defaultChannelType)
+}
+
+// -------------------------------------------------------------------
+
+// ChannelData_DocFill
+
+// optional .pb.ChannelIndex textChannel = 1;
+inline bool ChannelData_DocFill::has_textchannel() const {
+  return !_is_default_instance_ && textchannel_ != NULL;
+}
+inline void ChannelData_DocFill::clear_textchannel() {
+  if (GetArenaNoVirtual() == NULL && textchannel_ != NULL) delete textchannel_;
+  textchannel_ = NULL;
+}
+inline const ::pb::ChannelIndex& ChannelData_DocFill::textchannel() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.DocFill.textChannel)
+  return textchannel_ != NULL ? *textchannel_ : *default_instance_->textchannel_;
+}
+inline ::pb::ChannelIndex* ChannelData_DocFill::mutable_textchannel() {
+  
+  if (textchannel_ == NULL) {
+    textchannel_ = new ::pb::ChannelIndex;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.DocFill.textChannel)
+  return textchannel_;
+}
+inline ::pb::ChannelIndex* ChannelData_DocFill::release_textchannel() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.DocFill.textChannel)
+  
+  ::pb::ChannelIndex* temp = textchannel_;
+  textchannel_ = NULL;
+  return temp;
+}
+inline void ChannelData_DocFill::set_allocated_textchannel(::pb::ChannelIndex* textchannel) {
+  delete textchannel_;
+  textchannel_ = textchannel;
+  if (textchannel) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.DocFill.textChannel)
+}
+
+// optional .pb.ChannelIndex resourceChannel = 2;
+inline bool ChannelData_DocFill::has_resourcechannel() const {
+  return !_is_default_instance_ && resourcechannel_ != NULL;
+}
+inline void ChannelData_DocFill::clear_resourcechannel() {
+  if (GetArenaNoVirtual() == NULL && resourcechannel_ != NULL) delete resourcechannel_;
+  resourcechannel_ = NULL;
+}
+inline const ::pb::ChannelIndex& ChannelData_DocFill::resourcechannel() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.DocFill.resourceChannel)
+  return resourcechannel_ != NULL ? *resourcechannel_ : *default_instance_->resourcechannel_;
+}
+inline ::pb::ChannelIndex* ChannelData_DocFill::mutable_resourcechannel() {
+  
+  if (resourcechannel_ == NULL) {
+    resourcechannel_ = new ::pb::ChannelIndex;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.DocFill.resourceChannel)
+  return resourcechannel_;
+}
+inline ::pb::ChannelIndex* ChannelData_DocFill::release_resourcechannel() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.DocFill.resourceChannel)
+  
+  ::pb::ChannelIndex* temp = resourcechannel_;
+  resourcechannel_ = NULL;
+  return temp;
+}
+inline void ChannelData_DocFill::set_allocated_resourcechannel(::pb::ChannelIndex* resourcechannel) {
+  delete resourcechannel_;
+  resourcechannel_ = resourcechannel;
+  if (resourcechannel) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.DocFill.resourceChannel)
+}
+
 // -------------------------------------------------------------------
 
 // ChannelData
@@ -3213,6 +3423,54 @@ inline void ChannelData::set_allocated_span(::pb::ChannelData_Span* span) {
   // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.span)
 }
 
+// optional .pb.ChannelData.DocFill docFill = 18;
+inline bool ChannelData::has_docfill() const {
+  return channel_case() == kDocFill;
+}
+inline void ChannelData::set_has_docfill() {
+  _oneof_case_[0] = kDocFill;
+}
+inline void ChannelData::clear_docfill() {
+  if (has_docfill()) {
+    delete channel_.docfill_;
+    clear_has_channel();
+  }
+}
+inline  const ::pb::ChannelData_DocFill& ChannelData::docfill() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.docFill)
+  return has_docfill()
+      ? *channel_.docfill_
+      : ::pb::ChannelData_DocFill::default_instance();
+}
+inline ::pb::ChannelData_DocFill* ChannelData::mutable_docfill() {
+  if (!has_docfill()) {
+    clear_channel();
+    set_has_docfill();
+    channel_.docfill_ = new ::pb::ChannelData_DocFill;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.ChannelData.docFill)
+  return channel_.docfill_;
+}
+inline ::pb::ChannelData_DocFill* ChannelData::release_docfill() {
+  // @@protoc_insertion_point(field_release:pb.ChannelData.docFill)
+  if (has_docfill()) {
+    clear_has_channel();
+    ::pb::ChannelData_DocFill* temp = channel_.docfill_;
+    channel_.docfill_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void ChannelData::set_allocated_docfill(::pb::ChannelData_DocFill* docfill) {
+  clear_channel();
+  if (docfill) {
+    set_has_docfill();
+    channel_.docfill_ = docfill;
+  }
+  // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.docFill)
+}
+
 inline bool ChannelData::has_channel() const {
   return channel_case() != CHANNEL_NOT_SET;
 }
@@ -3485,6 +3743,8 @@ inline void File::set_allocated_forkedfromchecksum(::std::string* forkedfromchec
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

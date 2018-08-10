@@ -219,7 +219,7 @@ CollateChannel::CollateChannel(ChannelIndex channelIndex, Document& d, QObject *
 
 void CollateChannel::toPb(pb::ChannelData &pb) const
 {
-    auto mut = pb.mutable_collate();
+    auto* mut = pb.mutable_collate();
     channel().toPb(*mut->mutable_channel());
 }
 

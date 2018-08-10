@@ -21,6 +21,9 @@ class SpanChannel : public ChannelBase
     int count_ = 0;
     Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
 
+    ChannelType::Enum defaultChannelType_ = ChannelType::UNSET;
+    Q_PROPERTY(ChannelType::Enum defaultChannelType READ defaultChannelType WRITE setDefaultChannelType NOTIFY defaultChannelTypeChanged)
+
     void waiterResultChanged(QObject* channel);
     void waiterResultAboutToUnset(QObject* channel);
 
@@ -36,6 +39,9 @@ public:
     int count() const;
     void setCount(int count);
 
+    ChannelType::Enum defaultChannelType() const;
+    void setDefaultChannelType(const ChannelType::Enum &defaultChannelType);
+
     std::vector<Strip*> strips() override;
     std::vector<Strip*> multiChannelStrips() override;
 
@@ -45,6 +51,8 @@ public:
 signals:
 
     void countChanged();
+    void defaultChannelTypeChanged();
+
     void setSpan(ChannelIndex channelIndex, unsigned span);
 
 private slots:

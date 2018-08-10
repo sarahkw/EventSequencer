@@ -50,6 +50,19 @@ void SpanChannel::setCount(int count)
     }
 }
 
+ChannelType::Enum SpanChannel::defaultChannelType() const
+{
+    return defaultChannelType_;
+}
+
+void SpanChannel::setDefaultChannelType(const ChannelType::Enum &defaultChannelType)
+{
+    if (defaultChannelType_ != defaultChannelType) {
+        defaultChannelType_ = defaultChannelType;
+        emit defaultChannelTypeChanged();
+    }
+}
+
 std::vector<Strip *> SpanChannel::strips()
 {
     return {};
@@ -121,12 +134,14 @@ void SpanChannel::toPb(pb::ChannelData &pb) const
 {
     auto mut = pb.mutable_span();
     mut->set_count(count());
+    mut->set_defaultchanneltype(ChannelType::toInt(defaultChannelType_));
 }
 
 void SpanChannel::fromPb(const pb::ChannelData &pb)
 {
     Q_ASSERT(pb.has_span());
     setCount(pb.span().count());
+    setDefaultChannelType(ChannelType::fromInt(pb.span().defaultchanneltype()));
 }
 
 ChannelType::Enum SpanChannel::channelType() const

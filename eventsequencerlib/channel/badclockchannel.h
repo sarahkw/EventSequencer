@@ -1,7 +1,6 @@
 #ifndef BADCLOCKCHANNEL_H
 #define BADCLOCKCHANNEL_H
 
-#include "channeltype.h"
 #include "iclockrole.h"
 #include "channelbase.h"
 

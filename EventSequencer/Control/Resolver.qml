@@ -27,6 +27,9 @@ Item {
     SpanControl {
         id: span
     }
+    DocFillControl {
+        id: docFill
+    }
 
     function resolve(type) {
         switch (type) {
@@ -38,6 +41,7 @@ Item {
         case ES.ChannelType.Collate: return collate
         case ES.ChannelType.Playlist: return playlist
         case ES.ChannelType.Span: return span
+        case ES.ChannelType.DocFill: return docFill
         }
         console.assert(false, "Unable to resolve type")
     }

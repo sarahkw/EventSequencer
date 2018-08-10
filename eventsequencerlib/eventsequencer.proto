@@ -87,6 +87,11 @@ message ChannelData {
     int32 count = 1;
     repeated Strip strips = 2;
     map<int32, ChannelData> channels = 3;
+    int32 defaultChannelType = 4;
+  }
+  message DocFill {
+    ChannelIndex textChannel = 1;
+    ChannelIndex resourceChannel = 2;
   }
 
   oneof channel {
@@ -98,6 +103,7 @@ message ChannelData {
     Collate collate = 15;
     Playlist playlist = 16;
     Span span = 17;
+    DocFill docFill = 18;
   };
 }
 

@@ -3,8 +3,6 @@
 
 #include "channelbase.h"
 
-#include <QObject>
-
 namespace channel {
 
 class LabelChannel : public ChannelBase
