@@ -28,8 +28,13 @@ void SpanChannel::setCount(int count)
 
         if (count_ > waiters_.size()) {
             for (int i = waiters_.size(); i < count_; ++i) {
-                WaitFor* wf = d_.waitForChannelIndex(
-                            ChannelIndex::make2(channelIndex_.first(), i));
+                const ChannelIndex myNewIndex = ChannelIndex::make2(channelIndex_.first(), i);
+
+                if (defaultChannelType() != ChannelType::UNSET) {
+                    d_.createChannel(myNewIndex, defaultChannelType());
+                }
+
+                WaitFor* wf = d_.waitForChannelIndex(myNewIndex);
                 QObject::connect(wf, &WaitFor::resultChanged, this, &SpanChannel::waiterResultChanged);
                 QObject::connect(wf, &WaitFor::resultAboutToUnset, this, &SpanChannel::waiterResultAboutToUnset);
                 waiters_.emplace_back(wf);
