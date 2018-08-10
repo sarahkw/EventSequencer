@@ -233,6 +233,25 @@ ApplicationWindow {
             }
         }
         CustomMenu {
+            title: "Program"
+            CustomMenu {
+                title: "DocFill"
+                Action {
+                    text: "Run"
+                    onTriggered: {
+                        var component = Qt.createComponent("DocFill.qml")
+                        component.createObject(appwin, {
+                                                   visible: true,
+                                                   destroyOnHide: true
+                                               })
+                    }
+                }
+                Action {
+                    text: "Configure"
+                }
+            }
+        }
+        CustomMenu {
             title: "Debug"
             CustomMenuItem {
                 text: "ConstrainedMetricsFontUtil"
