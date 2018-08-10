@@ -21,7 +21,7 @@ public:
     ~Session();
 
     bool wantAudio() const;
-    void setWantAudio(bool wantAudio);
+    void setWantAudio(bool wantAudio, bool skipAudioChangedSignal = false);
     QObject* audioQObject();
     SessionAudio* audio();
 

@@ -10,7 +10,7 @@ bool Session::wantAudio() const
     return wantAudio_;
 }
 
-void Session::setWantAudio(bool wantAudio)
+void Session::setWantAudio(bool wantAudio, bool skipAudioChangedSignal)
 {
     if (wantAudio_ != wantAudio) {
         wantAudio_ = wantAudio;
@@ -28,7 +28,9 @@ void Session::setWantAudio(bool wantAudio)
             sessionAudio_ = nullptr;
         }
 
-        emit audioChanged();
+        if (!skipAudioChangedSignal) {
+            emit audioChanged();
+        }
     }
 }
 
@@ -44,8 +46,8 @@ SessionAudio *Session::audio()
         // Print annoying message just to remind us why the UI freezes.
         QElapsedTimer timer;
         timer.start();
-        setWantAudio(true);
-        qInfo() << "Auto creation of SessionAudio took" << timer.elapsed();
+        setWantAudio(true, true);
+        qInfo() << "Auto creation of SessionAudio took" << timer.elapsed() << "ms";
     }
     return sessionAudio_;
 }
