@@ -1251,23 +1251,13 @@ ApplicationWindow {
                                                         MenuItem {
                                                             text: "From Input"
                                                             onTriggered: {
-                                                                if (session.audio) {
-                                                                    session.audio.inputPreferredFormat(document.audioFormatHolder)
-                                                                } else {
-                                                                    // TODO Show error
-                                                                    console.warn("Session audio not enabled")
-                                                                }
+                                                                session.audio.inputPreferredFormat(document.audioFormatHolder)
                                                             }
                                                         }
                                                         MenuItem {
                                                             text: "From Output"
                                                             onTriggered: {
-                                                                if (session.audio) {
-                                                                    session.audio.outputPreferredFormat(document.audioFormatHolder)
-                                                                } else {
-                                                                    // TODO Show error
-                                                                    console.warn("Session audio not enabled")
-                                                                }
+                                                                session.audio.outputPreferredFormat(document.audioFormatHolder)
                                                             }
                                                         }
                                                     }
@@ -1281,13 +1271,8 @@ ApplicationWindow {
                                                     }
 
                                                     onClicked: {
-                                                        if (session.audio != null && document.audioFormatHolder != null) {
-                                                            md.text = session.audio.testFormatSupport(document.audioFormatHolder)
-                                                            md.open()
-                                                        } else {
-                                                            // TODO Show error
-                                                            console.warn("Session audio not enabled")
-                                                        }
+                                                        md.text = session.audio.testFormatSupport(document.audioFormatHolder)
+                                                        md.open()
                                                     }
                                                 }
                                             }
@@ -1391,8 +1376,8 @@ ApplicationWindow {
 
                                 Loader {
                                     id: sessionAudioControlsLoader
-                                    sourceComponent: session.audio != null ? sessionAudioControls : null
-                                    property var audio: session.audio
+                                    sourceComponent: session.wantAudio ? sessionAudioControls : null
+                                    property var audio: session.wantAudio ? session.audio : null
                                     Component {
                                         id: sessionAudioControls
                                         ObjectModel {

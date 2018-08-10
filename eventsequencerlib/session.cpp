@@ -2,6 +2,9 @@
 
 #include "sessionaudio.h"
 
+#include <QDebug>
+#include <QElapsedTimer>
+
 bool Session::wantAudio() const
 {
     return wantAudio_;
@@ -31,11 +34,19 @@ void Session::setWantAudio(bool wantAudio)
 
 QObject *Session::audioQObject()
 {
-    return sessionAudio_;
+    return audio();
 }
 
 SessionAudio *Session::audio()
 {
+    if (sessionAudio_ == nullptr) {
+        // This might be faster if we don't have to enumerate all the devices.
+        // Print annoying message just to remind us why the UI freezes.
+        QElapsedTimer timer;
+        timer.start();
+        setWantAudio(true);
+        qInfo() << "Auto creation of SessionAudio took" << timer.elapsed();
+    }
     return sessionAudio_;
 }
 
