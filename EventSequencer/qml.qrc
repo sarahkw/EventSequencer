@@ -33,5 +33,6 @@
         <file>Control/SpanControl.qml</file>
         <file>DocFill.qml</file>
         <file>Control/DocFillControl.qml</file>
+        <file>ChannelTypeComboBox.qml</file>
     </qresource>
 </RCC>
