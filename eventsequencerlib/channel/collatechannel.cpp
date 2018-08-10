@@ -146,11 +146,22 @@ Strip *CollateChannel::createStrip(int startFrame, int length)
         channel::ChannelBase* potentialTarget =
                 findChannelToAcceptStrip(sc->waitersForChildChannels(),
                                          startFrame, length);
+
+        // See if we can make one.
+        if (potentialTarget == nullptr) {
+            if (sc->defaultChannelType() != ChannelType::UNSET) {
+                sc->setCount(sc->count() + 1);
+                auto& waiters = sc->waitersForChildChannels();
+                if (!waiters.empty()) {
+                    potentialTarget =
+                            qobject_cast<channel::ChannelBase*>(waiters.rbegin()->get()->result());
+                }
+            }
+        }
+
         if (potentialTarget != nullptr) {
             return potentialTarget->createStrip(startFrame, length);
         }
-
-        // TODO Have SpanChannel make a new child channel just for us!
 
         return nullptr;
     } else {
