@@ -16,6 +16,13 @@ Item {
                 onEsEditingFinished: cppChannel.count = parseInt(text, 10)
                 text: cppChannel.count
             }
+
+            Label { text: "Default Type" }
+            Parent.ChannelTypeComboBox {
+                Layout.fillWidth: true
+                currentChannelType: cppChannel.defaultChannelType
+                onUpdateChannelType: cppChannel.defaultChannelType = newChannelType
+            }
         }
     }
 }

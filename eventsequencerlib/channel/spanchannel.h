@@ -22,7 +22,7 @@ class SpanChannel : public ChannelBase
     Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
 
     ChannelType::Enum defaultChannelType_ = ChannelType::UNSET;
-    Q_PROPERTY(ChannelType::Enum defaultChannelType READ defaultChannelType WRITE setDefaultChannelType NOTIFY defaultChannelTypeChanged)
+    Q_PROPERTY(channel::ChannelType::Enum defaultChannelType READ defaultChannelType WRITE setDefaultChannelType NOTIFY defaultChannelTypeChanged)
 
     void waiterResultChanged(QObject* channel);
     void waiterResultAboutToUnset(QObject* channel);
