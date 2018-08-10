@@ -27,6 +27,10 @@ Window {
         }
     }
 
+    MessageDialog {
+        id: simpleMessageDialog
+    }
+
     ES.ManagedResources {
         id: managedResources
         fileResourceDirectory: recorderWin.fileResourceDirectory
@@ -85,17 +89,13 @@ Window {
                         text: "Record"
                         onClicked: {
                             if (managedResources.fileResourceDirectory == "") {
-                                resourcesNotReadyDialog.open()
+                                simpleMessageDialog.text = "Resource directory doesn't exist. Save the file first."
+                                simpleMessageDialog.open()
                                 return
                             }
                             recorderControl.record(
                                         managedResources.withSpecifiedName(
                                             managedResources.generateResourceName(), ".au"))
-                        }
-
-                        MessageDialog {
-                            id: resourcesNotReadyDialog
-                            text: "Resource directory doesn't exist. Save the file first."
                         }
                     }
                     Button {
@@ -153,12 +153,9 @@ Window {
                                 thestrip.resourceUrl = fileActionFrame.writtenUrl
                                 fileActionFrame.writtenUrl = "" // Clear
                             } else {
-                                cannotSendToChannel.open()
+                                simpleMessageDialog.text = "Cannot send to active channel"
+                                simpleMessageDialog.open()
                             }
-                        }
-                        MessageDialog {
-                            id: cannotSendToChannel
-                            text: "Cannot send to active channel"
                         }
                     }
                     Label {
