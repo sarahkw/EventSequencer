@@ -60,9 +60,9 @@ Rectangle {
                 anchors.right: selectIndicator.left
                 anchors.verticalCenter: parent.verticalCenter
 
-                currentChannelType: cppChannel !== null ? cppChannel.channelType : null
+                currentChannelType: cppChannel !== null ? cppChannel.channelType : ES.ChannelType.UNSET
                 onUpdateChannelType: {
-                    if (newChannelType === null) {
+                    if (newChannelType === ES.ChannelType.UNSET) {
                         if (cppChannel !== null) {
                             doc.deleteChannelByPosition(myPosition)
                         }

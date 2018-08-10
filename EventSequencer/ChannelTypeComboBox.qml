@@ -3,7 +3,7 @@ import QtQuick.Controls 2.2
 import eventsequencer 1.0 as ES
 
 ComboBox {
-    property var currentChannelType
+    property int currentChannelType: ES.ChannelType.UNSET
     signal updateChannelType(var newChannelType)
 
     readonly property var modelUtil: (function () { return {
@@ -21,6 +21,7 @@ ComboBox {
         ],
         enumToIndex: function (v) {
             switch (v) {
+            case ES.ChannelType.UNSET: return 0;
             case ES.ChannelType.BadClock: return 1;
             case ES.ChannelType.BadJs: return 2;
             case ES.ChannelType.Text: return 3;
@@ -34,6 +35,7 @@ ComboBox {
         },
         indexToEnum: function (v) {
             switch (v) {
+            case 0: return ES.ChannelType.UNSET;
             case 1: return ES.ChannelType.BadClock;
             case 2: return ES.ChannelType.BadJs;
             case 3: return ES.ChannelType.Text;
@@ -48,13 +50,7 @@ ComboBox {
     }})()
 
     model: modelUtil.model
-    currentIndex: currentChannelType !== null ? modelUtil.enumToIndex(currentChannelType) : 0
 
-    onActivated: {
-        if (index === 0) {
-            updateChannelType(null)
-        } else {
-            updateChannelType(modelUtil.indexToEnum(index))
-        }
-    }
+    currentIndex: modelUtil.enumToIndex(currentChannelType)
+    onActivated: updateChannelType(modelUtil.indexToEnum(index))
 }
