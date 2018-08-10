@@ -131,6 +131,10 @@ QtObject {
         return Util.trunc(mapDisplayWidthToFrames(displayWidth))
     }
 
+    function resetZoom() {
+        zoomLevel = 0
+    }
+
     function zoom(deltaZoomLevel) {
         if (deltaZoomLevel === 0) return
 

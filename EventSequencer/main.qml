@@ -76,6 +76,11 @@ ApplicationWindow {
             }
             MenuSeparator { }
             Action {
+                text: "Reset Zoom"
+                onTriggered: zoom.resetZoom()
+            }
+            MenuSeparator { }
+            Action {
                 id: showSecondsAction
                 text: "Show Seconds"
                 checkable: true
