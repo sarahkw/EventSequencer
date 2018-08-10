@@ -45,6 +45,11 @@ public:
     std::vector<Strip*> strips() override;
     std::vector<Strip*> multiChannelStrips() override;
 
+    // Don't allow strips to be created on Span. Doesn't make sense, and that
+    // would most likely be a mistake. Span doesn't possess the knowledge of how
+    // new strips should be placed.
+    Strip* createStrip(int startFrame, int length) override;
+
     // For CollateChannel
     const std::vector<std::unique_ptr<WaitFor>>& waitersForChildChannels() const;
 

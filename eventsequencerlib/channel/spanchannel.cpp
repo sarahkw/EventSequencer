@@ -89,6 +89,11 @@ std::vector<Strip *> SpanChannel::multiChannelStrips()
     return ret;
 }
 
+Strip *SpanChannel::createStrip(int startFrame, int length)
+{
+    return nullptr;
+}
+
 const std::vector<std::unique_ptr<WaitFor> > &SpanChannel::waitersForChildChannels() const
 {
     return waiters_;
