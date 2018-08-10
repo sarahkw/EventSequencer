@@ -1,5 +1,6 @@
 #include "managedresources.h"
 
+#include <QFile>
 #include <QDir>
 #include <QUuid>
 #include <QDebug>
@@ -28,38 +29,84 @@ void ManagedResources::setFileResourceDirectory(const QString &fileResourceDirec
     }
 }
 
-QString ManagedResources::generateResourceName()
+QString ManagedResources::generateResourceBaseName()
 {
     return QUuid::createUuid().toString(QUuid::WithoutBraces);
 }
 
-QString ManagedResources::withSpecifiedName(QString name, QString suffix)
+QUrl ManagedResources::generateResourceUrl(QString suffix)
+{
+    return urlForBaseName(generateResourceBaseName(), suffix);
+}
+
+QUrl ManagedResources::urlForFileName(QString fileName)
 {
     mkpathManagedDirectory();
-    return "evseq://managed/" + name + suffix;
+    return "evseq://managed/" + fileName;
+}
+
+QUrl ManagedResources::urlForBaseName(QString baseName, QString suffix)
+{
+    return urlForFileName(baseName + suffix);
+}
+
+QUrl ManagedResources::renameUrlToFileName(QUrl url, QString newFileName)
+{
+    QString fileName;
+    if (!urlConvertToFilePath(url, &fileName)) return {};
+
+    QFile f(fileName);
+    if (f.rename(QFileInfo(fileName).dir().path() + "/" + newFileName)) {
+        if (urlIsManaged(url)) {
+            return urlForFileName(newFileName);
+        } else {
+            return QUrl::fromLocalFile(f.fileName());
+        }
+    } else {
+        return {};
+    }
+}
+
+QUrl ManagedResources::renameUrlToGeneratedFileName(QUrl url, QString suffix)
+{
+    return renameUrlToFileName(url, generateResourceBaseName() + suffix);
 }
 
 bool ManagedResources::deleteUrl(QUrl url)
 {
     QString fileName;
-    if (!convertToFileName(url, &fileName)) return false;
+    if (!urlConvertToFilePath(url, &fileName)) return false;
 
     return QFile::remove(fileName);
 }
 
-bool ManagedResources::convertToFileName(QUrl url, QString *fileName)
+bool ManagedResources::urlIsManaged(QUrl url)
 {
-    Q_ASSERT(fileName != nullptr);
-    if (url.scheme() == "evseq" && url.host() == "managed") {
+    return url.scheme() == "evseq" && url.host() == "managed";
+}
+
+bool ManagedResources::urlConvertToFilePath(QUrl url, QString *filePath)
+{
+    Q_ASSERT(filePath != nullptr);
+    if (urlIsManaged(url)) {
         if (fileResourceDirectory().isEmpty()) {
             return false;
         }
-        *fileName = fileResourceDirectory() + url.path();
+        *filePath = fileResourceDirectory() + url.path();
     } else {
-        *fileName = url.toLocalFile();
+        *filePath = url.toLocalFile();
     }
     return true;
 }
+
+bool ManagedResources::urlFile(QUrl url, QFile *file)
+{
+    QString filePath;
+    if (!urlConvertToFilePath(url, &filePath)) return false;
+    file->setFileName(filePath);
+    return true;
+}
+
 
 ManagedResources::ManagedResources(QObject *parent) : QObject(parent)
 {

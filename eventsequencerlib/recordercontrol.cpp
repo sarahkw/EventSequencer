@@ -24,7 +24,7 @@ void RecorderControl::record(QUrl url)
     }
 
     QString fileName;
-    if (!ManagedResources(fileResourceDirectory()).convertToFileName(url, &fileName)) {
+    if (!ManagedResources(fileResourceDirectory()).urlConvertToFilePath(url, &fileName)) {
         setError("Missing file resource directory");
         return;
     }

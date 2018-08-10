@@ -41,6 +41,7 @@ Window {
         audioFormatHolder: recorderWin.audioFormatHolder
         sessionAudio: recorderWin.sessionAudio
         fileResourceDirectory: recorderWin.fileResourceDirectory
+        allowOverwrite: true
     }
 
     ColumnLayout {
@@ -63,12 +64,6 @@ Window {
                 Label {
                     text: recorderControl.audioInputReadyStatus
                     Layout.fillWidth: true
-                }
-
-                Label { text: "Allow Overwrite" }
-                CheckBox {
-                    checked: recorderControl.allowOverwrite
-                    onCheckedChanged: recorderControl.allowOverwrite = checked
                 }
 
                 Label { text: "Error" }
@@ -94,8 +89,7 @@ Window {
                                 return
                             }
                             recorderControl.record(
-                                        managedResources.withSpecifiedName(
-                                            managedResources.generateResourceName(), ".au"))
+                                        managedResources.urlForBaseName("UNASSIGNED", ".au"))
                         }
                     }
                     Button {
@@ -109,6 +103,18 @@ Window {
         Frame {
             Layout.fillWidth: true
             id: fileActionFrame
+
+            function possiblyAssignUrlToStrip(strip) {
+                var newUrl = managedResources.renameUrlToGeneratedFileName(
+                            fileActionFrame.writtenUrl, ".au")
+                if (newUrl == "") {
+                    simpleMessageDialog.text = "Unable to rename file"
+                    simpleMessageDialog.open()
+                } else {
+                    strip.resourceUrl = newUrl
+                    fileActionFrame.writtenUrl = "" // Clear
+                }
+            }
 
             Connections {
                 target: recorderControl
@@ -129,6 +135,7 @@ Window {
                     text: fileActionFrame.writtenUrl
                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 }
+
                 Button {
                     text: "Send to active strip"
                     enabled: {
@@ -137,8 +144,7 @@ Window {
                         return activeCppStrip.qmlStrip.channelControl.willAcceptResource != null
                     }
                     onClicked: {
-                        activeCppStrip.resourceUrl = fileActionFrame.writtenUrl
-                        fileActionFrame.writtenUrl = "" // Clear
+                        fileActionFrame.possiblyAssignUrlToStrip(activeCppStrip)
                     }
                 }
                 Row {
@@ -150,8 +156,8 @@ Window {
                                 activeCppChannel.createStrip(cursorFrame,
                                                              sendToActiveChannelLength.text)
                             if (thestrip != null) {
-                                thestrip.resourceUrl = fileActionFrame.writtenUrl
-                                fileActionFrame.writtenUrl = "" // Clear
+                                fileActionFrame.possiblyAssignUrlToStrip(thestrip)
+                                // TODO Maybe delete strip if we failed?
                             } else {
                                 simpleMessageDialog.text = "Cannot send to active channel"
                                 simpleMessageDialog.open()

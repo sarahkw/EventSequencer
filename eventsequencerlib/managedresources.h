@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QUrl>
 
+class QFile;
+
 class ManagedResources : public QObject
 {
     Q_OBJECT
@@ -20,12 +22,21 @@ public:
     QString fileResourceDirectory() const;
     void setFileResourceDirectory(const QString &fileResourceDirectory);
 
-    Q_INVOKABLE QString generateResourceName();
-    Q_INVOKABLE QString withSpecifiedName(QString name, QString suffix);
+    Q_INVOKABLE QString generateResourceBaseName();
+    Q_INVOKABLE QUrl generateResourceUrl(QString suffix);
+
+    Q_INVOKABLE QUrl urlForFileName(QString fileName);
+    Q_INVOKABLE QUrl urlForBaseName(QString baseName, QString suffix);
+
+    Q_INVOKABLE QUrl renameUrlToFileName(QUrl url, QString newFileName);
+    Q_INVOKABLE QUrl renameUrlToGeneratedFileName(QUrl url, QString suffix);
 
     Q_INVOKABLE bool deleteUrl(QUrl url);
 
-    bool convertToFileName(QUrl url, QString* fileName);
+    static bool urlIsManaged(QUrl url);
+    bool urlConvertToFilePath(QUrl url, QString* filePath);
+
+    bool urlFile(QUrl url, QFile* file);
 
 signals:
 

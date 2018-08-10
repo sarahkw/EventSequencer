@@ -34,7 +34,7 @@ void PlayerControl::play()
 
     for (const Strip* s : stripsToPlay_) {
         QString fileName;
-        if (!managedResources.convertToFileName(s->resourceUrl(), &fileName)) {
+        if (!managedResources.urlConvertToFilePath(s->resourceUrl(), &fileName)) {
             setError("Missing file resource directory");
             return;
         }
