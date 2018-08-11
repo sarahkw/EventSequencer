@@ -45,19 +45,21 @@ ApplicationWindow {
                 QtObject {
                     id: chanToTextContent
 
-                    property var input
-                    property ES.WaitFor waitFor: input != null ? document.waitForChannelIndex(input) : null
+                    property var inputChannelIndex
+                    
+                    property ES.WaitFor waitFor: inputChannelIndex != null ? document.waitForChannelIndex(inputChannelIndex) : null
                     property var control: waitFor != null && waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
                     property bool providesText: control != null ? control.docViewProvidesText === true : false
-                    property var output: providesText ? waitFor.result.content : null
+                    
+                    property var outputTextContent: providesText ? waitFor.result.content : null
                 }
 
-                text: chanToTextContent.input != null ? chanToTextContent.input.toPathString() : ""
-                onEsEditingFinished: chanToTextContent.input = ES.ChannelIndexFactory.makeFromPathString(text)
+                text: chanToTextContent.inputChannelIndex != null ? chanToTextContent.inputChannelIndex.toPathString() : ""
+                onEsEditingFinished: chanToTextContent.inputChannelIndex = ES.ChannelIndexFactory.makeFromPathString(text)
 
                 states: [
                     State {
-                        when: chanToTextContent.output === null
+                        when: chanToTextContent.outputTextContent === null
                         PropertyChanges {
                             target: txtTextChannel.background
                             color: "red"
@@ -74,18 +76,24 @@ ApplicationWindow {
             }
             ESTextField {
                 id: txtRenderChannel
-                property var chan
-                property ES.WaitFor waitFor: chan != null ? document.waitForChannelIndex(chan) : null
-                property var control: waitFor != null && waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
-                property var renderComponent: control != null ? control.docViewRenderComponent : null
-                property var cppChannel: renderComponent != null ? waitFor.result : null
 
-                text: chan != null ? chan.toPathString() : ""
-                onEsEditingFinished: chan = ES.ChannelIndexFactory.makeFromPathString(text)
+                QtObject {
+                    id: chanToRenderComponent
+                    property var inputChannelIndex
+                    
+                    property ES.WaitFor waitFor: inputChannelIndex != null ? document.waitForChannelIndex(inputChannelIndex) : null
+                    property var control: waitFor != null && waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
+
+                    property var outputRenderComponent: control != null ? control.docViewRenderComponent : null
+                    property var outputCppChannel: outputRenderComponent != null ? waitFor.result : null
+                }
+
+                text: chanToRenderComponent.inputChannelIndex != null ? chanToRenderComponent.inputChannelIndex.toPathString() : ""
+                onEsEditingFinished: chanToRenderComponent.inputChannelIndex = ES.ChannelIndexFactory.makeFromPathString(text)
 
                 states: [
                     State {
-                        when: txtRenderChannel.renderComponent == null
+                        when: chanToRenderComponent.outputRenderComponent == null
                         PropertyChanges {
                             target: txtRenderChannel.background
                             color: "red"
@@ -109,7 +117,7 @@ ApplicationWindow {
         ES.WordWrappedTextTrack {
             id: wwtt
             width: lview.width - cmfu.constrainByWidthValue /*For wrapped space or NewLine*/
-            text: chanToTextContent.output != null ? chanToTextContent.output : ""
+            text: chanToTextContent.outputTextContent != null ? chanToTextContent.outputTextContent : ""
             font: cmfu.builtFont
             cursorFrame: appwin.cursorFrame
         }
@@ -131,8 +139,8 @@ ApplicationWindow {
                         Loader {
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
-                            sourceComponent: txtRenderChannel.control != null ? txtRenderChannel.renderComponent : null
-                            property var cppChannel: txtRenderChannel.cppChannel
+                            sourceComponent: chanToRenderComponent.outputRenderComponent
+                            property var cppChannel: chanToRenderComponent.outputCppChannel
                             property string textData: modelData
                             property int textOffset_: textOffset
                             property int widthPerCharacter: cmfu.constrainByWidthValue
