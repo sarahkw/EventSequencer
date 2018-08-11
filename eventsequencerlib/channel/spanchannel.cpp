@@ -14,13 +14,14 @@ int SpanChannel::count() const
 
 void SpanChannel::setCount(int count)
 {
-    if (channelIndex_.hasSecond()) {
-        // If we're a span inside a span, just stop here. It's not supported.
+    if ((channelIndex_.first() < 0 && count > 0) ||
+            count < 0 ||
+            (channelIndex_.hasSecond() && count > 0)) {
+        qWarning("Count for Span not valid");
+        emit countChanged(); // Tell QML to ignore what the user put in.
         return;
     }
-    if (count < 0) {
-        count = 0;
-    }
+
     if (count_ != count) {
         count_ = count;
         emit countChanged();
