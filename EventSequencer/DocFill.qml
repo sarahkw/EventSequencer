@@ -9,6 +9,8 @@ ApplicationWindow {
     title: qsTr("DocFill")
     flags: Qt.Dialog
 
+    property var cppChannel
+
     property bool destroyOnHide: false
     onVisibleChanged: {
         if (destroyOnHide && visible === false) {

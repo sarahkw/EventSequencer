@@ -234,21 +234,18 @@ ApplicationWindow {
         }
         CustomMenu {
             title: "Program"
-            CustomMenu {
-                title: "DocFill"
-                Action {
-                    text: "Run"
-                    onTriggered: {
-                        var component = Qt.createComponent("DocFill.qml")
-                        component.createObject(appwin, {
-                                                   visible: true,
-                                                   destroyOnHide: true
-                                               })
-                    }
+            Action {
+                text: "Run DocFill"
+                onTriggered: {
+                    var component = Qt.createComponent("DocFill.qml")
+                    component.createObject(appwin, {
+                                               visible: true,
+                                               destroyOnHide: true,
+                                               cppChannel: channelPanel.activeCppChannel
+                                           })
                 }
-                Action {
-                    text: "Configure"
-                }
+                enabled: (channelPanel.activeCppChannel != null &&
+                          channelPanel.activeCppChannel.channelType === ES.ChannelType.DocFill)
             }
         }
         CustomMenu {
