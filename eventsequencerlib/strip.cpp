@@ -62,8 +62,10 @@ int Strip::length() const
 
 void Strip::setLength(int length)
 {
-    if (length < 1) {
-        length = 1;
+    if (!(length >= 1)) {
+        qWarning("Length needs to be >= 1. Ignoring length change.");
+        emit lengthChanged(); // QML to re-read length.
+        return;
     }
     if (length_ != length) {
         auto oldLength = length_;
