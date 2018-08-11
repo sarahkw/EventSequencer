@@ -1,10 +1,12 @@
 #ifndef COUNTCHANNELINDEX_H
 #define COUNTCHANNELINDEX_H
 
-#include <QObject>
-#include <QVariantList>
+#include "channelindex.h"
 
-class CountChannelIndex : public QObject
+#include <QObject>
+#include <QAbstractListModel>
+
+class CountChannelIndex : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -12,14 +14,17 @@ class CountChannelIndex : public QObject
     int startAtPosition_ = 0;
     int count_ = 0;
 
-    QVariantList model_;
-
     Q_PROPERTY(QObject*      document        READ document        WRITE setDocument        NOTIFY documentChanged)
     Q_PROPERTY(int           startAtPosition READ startAtPosition WRITE setStartAtPosition NOTIFY startAtPositionChanged)
     Q_PROPERTY(int           count           READ count           WRITE setCount           NOTIFY countChanged)
-    Q_PROPERTY(QVariantList  model           READ model                                    NOTIFY modelChanged)
     
+    std::vector<ChannelIndex> current_;
+
     void updateModel();
+
+    enum CustomRoles {
+        ModelDataRole = Qt::UserRole + 1
+    };
 
 public:
     CountChannelIndex(QObject* parent = nullptr);
@@ -34,15 +39,15 @@ public:
     int count() const;
     void setCount(int count);
 
-    QVariantList model() const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QHash<int,QByteArray> roleNames() const override;
 
 signals:
 
     void documentChanged();
     void startAtPositionChanged();
     void countChanged();
-
-    void modelChanged();
 };
 
 #endif // COUNTCHANNELINDEX_H

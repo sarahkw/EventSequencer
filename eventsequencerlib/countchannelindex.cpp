@@ -71,29 +71,60 @@ void CountChannelIndex::setCount(int count)
     }
 }
 
-QVariantList CountChannelIndex::model() const
+int CountChannelIndex::rowCount(const QModelIndex &parent) const
 {
-    return model_;
+    Q_UNUSED(parent);
+    return current_.size();
+}
+
+QVariant CountChannelIndex::data(const QModelIndex &index, int role) const
+{
+    if (index.column() == 0 && role == ModelDataRole) {
+        if (index.row() >= 0 && index.row() < current_.size()) {
+            return QVariant::fromValue(current_[index.row()]);
+        }
+    }
+    return {};
+}
+
+QHash<int, QByteArray> CountChannelIndex::roleNames() const
+{
+    return {{ModelDataRole, "modelData"}};
 }
 
 void CountChannelIndex::updateModel()
 {
+    std::vector<ChannelIndex> newItems;
+
     Document* doc = qobject_cast<Document*>(document_);
-    if (doc == nullptr) {
-        return;
+    if (doc != nullptr) {
+        for (int i = 0; i < count(); ++i) {
+            newItems.push_back(
+                        doc->channelPositionManager().visualPositionToChanIdx(
+                            startAtPosition() + i));
+        }
     }
 
-    model_.clear();
-    for (int i = 0; i < count(); ++i) {
-        model_.push_back(QVariant::fromValue(
-            doc->channelPositionManager().visualPositionToChanIdx(
-                startAtPosition() + i)));
+    int numberDataChange = std::min(newItems.size(), current_.size());
+    if (numberDataChange > 0) {
+        std::copy_n(newItems.begin(), numberDataChange, current_.begin());
+        emit dataChanged(createIndex(0, 0), createIndex(numberDataChange - 1, 0));
     }
 
-    emit modelChanged();
+    if (current_.size() > newItems.size()) {
+        beginRemoveRows(QModelIndex(), newItems.size(), current_.size() - 1);
+        current_.resize(newItems.size());
+        endRemoveRows();
+    } else if (current_.size() < newItems.size()) {
+        beginInsertRows(QModelIndex(), current_.size(), newItems.size() - 1);
+        for (unsigned long i = current_.size(); i < newItems.size(); ++i) {
+            current_.push_back(newItems[i]);
+        }
+        endInsertRows();
+    }
 }
 
-CountChannelIndex::CountChannelIndex(QObject* parent) : QObject(parent)
+CountChannelIndex::CountChannelIndex(QObject* parent) : QAbstractListModel(parent)
 {
 
 }

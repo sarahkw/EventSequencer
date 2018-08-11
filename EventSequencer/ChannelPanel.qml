@@ -30,7 +30,7 @@ Rectangle {
     }
 
     Repeater {
-        model: cci.model
+        model: cci
 
         Item {
             property int myPosition: index + sh.initialIndex
