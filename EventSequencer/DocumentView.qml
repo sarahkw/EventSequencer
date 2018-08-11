@@ -41,18 +41,23 @@ ApplicationWindow {
             }
             ESTextField {
                 id: txtTextChannel
-                property var chan
-                property ES.WaitFor waitFor: chan != null ? document.waitForChannelIndex(chan) : null
-                property var control: waitFor != null && waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
-                property bool providesText: control != null ? control.docViewProvidesText === true : false
-                property string textContent: providesText ? waitFor.result.content : ""
+                
+                QtObject {
+                    id: chanToTextContent
 
-                text: chan != null ? chan.toPathString() : ""
-                onEsEditingFinished: chan = ES.ChannelIndexFactory.makeFromPathString(text)
+                    property var input
+                    property ES.WaitFor waitFor: input != null ? document.waitForChannelIndex(input) : null
+                    property var control: waitFor != null && waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
+                    property bool providesText: control != null ? control.docViewProvidesText === true : false
+                    property var output: providesText ? waitFor.result.content : null
+                }
+
+                text: chanToTextContent.input != null ? chanToTextContent.input.toPathString() : ""
+                onEsEditingFinished: chanToTextContent.input = ES.ChannelIndexFactory.makeFromPathString(text)
 
                 states: [
                     State {
-                        when: !txtTextChannel.providesText
+                        when: chanToTextContent.output === null
                         PropertyChanges {
                             target: txtTextChannel.background
                             color: "red"
@@ -100,6 +105,14 @@ ApplicationWindow {
     Rectangle {
         anchors.fill: parent
         color: "white"
+
+        ES.WordWrappedTextTrack {
+            id: wwtt
+            width: lview.width - cmfu.constrainByWidthValue /*For wrapped space or NewLine*/
+            text: chanToTextContent.output != null ? chanToTextContent.output : ""
+            font: cmfu.builtFont
+            cursorFrame: appwin.cursorFrame
+        }
 
         ScrollView {
             id: sview
@@ -160,17 +173,4 @@ ApplicationWindow {
         }
     }
 
-    ES.WordWrappedTextTrack {
-        id: wwtt
-        width: lview.width - cmfu.constrainByWidthValue /*For wrapped space or NewLine*/
-        text: txtTextChannel.textContent
-        font: cmfu.builtFont
-        cursorFrame: appwin.cursorFrame
-    }
-
 }
-
-/*##^## Designer {
-    D{i:8;anchors_height:100;anchors_width:100;anchors_x:5;anchors_y:5}
-}
- ##^##*/
