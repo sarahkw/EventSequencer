@@ -22,8 +22,15 @@ Rectangle {
         currentPosition: yposition
     }
 
+    ES.CountChannelIndex {
+        id: cci
+        document: doc
+        startAtPosition: sh.initialIndex
+        count: sh.itemsToRender
+    }
+
     Repeater {
-        model: sh.itemsToRender
+        model: cci.model
 
         Item {
             property int myPosition: index + sh.initialIndex
@@ -50,7 +57,7 @@ Rectangle {
                 anchors.bottom: parent.bottom
                 verticalAlignment: Text.AlignVCenter
                 font.pointSize: 7
-                text: myPosition
+                text: modelData.toPathString()
             }
 
             ChannelTypeComboBox {

@@ -66,7 +66,8 @@ SOURCES += \
     visualpositionmanager.cpp \
     channelindexfactory.cpp \
     collides.cpp \
-    channel/docfillchannel.cpp
+    channel/docfillchannel.cpp \
+    countchannelindex.cpp
 
 
 HEADERS += \
@@ -113,7 +114,8 @@ HEADERS += \
     visualpositionmanager.h \
     channelindexfactory.h \
     collides.h \
-    channel/docfillchannel.h
+    channel/docfillchannel.h \
+    countchannelindex.h
 
 unix {
     target.path = /usr/lib
