@@ -13,6 +13,11 @@ ApplicationWindow {
     flags: Qt.Dialog
 
     property var cppChannel
+    onCppChannelChanged: {
+        if (cppChannel == null) {
+            root.destroy()
+        }
+    }
 
     property ES.Document document
     property int cursorFrame
