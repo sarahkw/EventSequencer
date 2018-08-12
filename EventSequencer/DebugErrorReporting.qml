@@ -41,25 +41,9 @@ ApplicationWindow {
         anchors.fill: parent
         Repeater {
             model: errorReportingContext.model
-
-            Item {
+            ErrorMessageNagDelegate {
                 Layout.fillWidth: true
-                implicitHeight: chld.height
-                Frame {
-                    id: chld
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.leftMargin: 20
-                    anchors.rightMargin: 20
-                    Component.onCompleted: background.color = "white"
-                    palette.window: "red"
-
-                    Label {
-                        text: modelData
-                    }
-                }
             }
-
         }
         Rectangle {
             Layout.fillHeight: true

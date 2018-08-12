@@ -25,6 +25,10 @@ ApplicationWindow {
         }
     }
 
+    ES.ErrorReportingContext {
+        id: errorReportingContext
+    }
+
     header: TabBar {
         id: tbar
         currentIndex: sview.currentIndex
@@ -37,15 +41,42 @@ ApplicationWindow {
         TabButton { text: "File" }
     }
 
-    DocumentViewControl {
-        id: dvc
+    ColumnLayout {
         anchors.fill: parent
-        document: root.document
-        cursorFrame: root.cursorFrame
-        changeCursorFrame: root.changeCursorFrame
+        spacing: 0
 
-        textChannelIndex: cppChannel.textChannel
-        renderChannelIndex: cppChannel.resourceChannel
+        Repeater {
+            model: errorReportingContext.model
+            ErrorMessageNagDelegate {
+                Layout.fillWidth: true
+            }
+        }
+
+        DocumentViewControl {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            id: dvc
+            document: root.document
+            cursorFrame: root.cursorFrame
+            changeCursorFrame: root.changeCursorFrame
+
+            textChannelIndex: cppChannel.textChannel
+            renderChannelIndex: cppChannel.resourceChannel
+
+            ES.ConditionalError {
+                errorReportingContext: errorReportingContext
+                active: !dvc.textChannelIsValid
+                errorText: "Text Channel is not valid"
+            }
+
+            ES.ConditionalError {
+                errorReportingContext: errorReportingContext
+                active: !dvc.renderChannelIsValid
+                errorText: "Resource Channel is not valid"
+            }
+        }
+
     }
 
     footer: Frame {

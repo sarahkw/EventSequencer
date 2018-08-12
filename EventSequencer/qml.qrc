@@ -36,5 +36,6 @@
         <file>ChannelTypeComboBox.qml</file>
         <file>DocumentViewControl.qml</file>
         <file>DebugErrorReporting.qml</file>
+        <file>ErrorMessageNagDelegate.qml</file>
     </qresource>
 </RCC>
