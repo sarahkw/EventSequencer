@@ -52,6 +52,7 @@ ApplicationWindow {
                     anchors.leftMargin: 20
                     anchors.rightMargin: 20
                     Component.onCompleted: background.color = "white"
+                    palette.window: "red"
 
                     Label {
                         text: modelData
