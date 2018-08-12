@@ -32,12 +32,12 @@ ApplicationWindow {
             ESTextField {
                 id: txtTextChannel
 
-                text: dvc.chanToTextContent.inputChannelIndex != null ? dvc.chanToTextContent.inputChannelIndex.toPathString() : ""
-                onEsEditingFinished: dvc.chanToTextContent.inputChannelIndex = ES.ChannelIndexFactory.makeFromPathString(text)
+                text: dvc.textChannelIndex != null ? dvc.textChannelIndex.toPathString() : ""
+                onEsEditingFinished: dvc.textChannelIndex = ES.ChannelIndexFactory.makeFromPathString(text)
 
                 states: [
                     State {
-                        when: dvc.chanToTextContent.outputTextContent === null
+                        when: !dvc.textChannelIsValid
                         PropertyChanges {
                             target: txtTextChannel.background
                             color: "red"
@@ -55,12 +55,12 @@ ApplicationWindow {
             ESTextField {
                 id: txtRenderChannel
 
-                text: dvc.chanToRenderComponent.inputChannelIndex != null ? dvc.chanToRenderComponent.inputChannelIndex.toPathString() : ""
-                onEsEditingFinished: dvc.chanToRenderComponent.inputChannelIndex = ES.ChannelIndexFactory.makeFromPathString(text)
+                text: dvc.renderChannelIndex != null ? dvc.renderChannelIndex.toPathString() : ""
+                onEsEditingFinished: dvc.renderChannelIndex = ES.ChannelIndexFactory.makeFromPathString(text)
 
                 states: [
                     State {
-                        when: dvc.chanToRenderComponent.outputRenderComponent == null
+                        when: !dvc.renderChannelIsValid
                         PropertyChanges {
                             target: txtRenderChannel.background
                             color: "red"

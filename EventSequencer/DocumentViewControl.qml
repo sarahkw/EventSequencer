@@ -10,6 +10,11 @@ Rectangle {
     property ES.Document document
     property int cursorFrame
     property var changeCursorFrame // Fn
+
+    property var textChannelIndex
+    property bool textChannelIsValid: chanToTextContent.outputTextContent !== null
+    property var renderChannelIndex
+    property bool renderChannelIsValid: chanToRenderComponent.outputRenderComponent != null
     
     color: "white"
 
@@ -30,21 +35,18 @@ Rectangle {
         id: resolver
     }
 
-    property QtObject chanToTextContent: QtObject {
-        property var inputChannelIndex
-        
-        property ES.WaitFor waitFor: inputChannelIndex != null ? document.waitForChannelIndex(inputChannelIndex) : null
+    QtObject {
+        id: chanToTextContent
+        property ES.WaitFor waitFor: root.textChannelIndex != null ? document.waitForChannelIndex(root.textChannelIndex) : null
         property var control: waitFor != null && waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
         property bool providesText: control != null ? control.docViewProvidesText === true : false
         
         property var outputTextContent: providesText ? waitFor.result.content : null
     }
 
-    property QtObject chanToRenderComponent: QtObject {
+    QtObject {
         id: chanToRenderComponent
-        property var inputChannelIndex
-        
-        property ES.WaitFor waitFor: inputChannelIndex != null ? document.waitForChannelIndex(inputChannelIndex) : null
+        property ES.WaitFor waitFor: root.renderChannelIndex != null ? document.waitForChannelIndex(root.renderChannelIndex) : null
         property var control: waitFor != null && waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
 
         property var outputRenderComponent: control != null ? control.docViewRenderComponent : null
