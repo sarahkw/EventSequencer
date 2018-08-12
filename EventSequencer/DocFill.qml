@@ -67,13 +67,13 @@ ApplicationWindow {
             ES.ConditionalError {
                 errorReportingContext: errorReportingContext
                 active: !dvc.textChannelIsValid
-                errorText: "Text Channel is not valid"
+                errorText: "DocFill Text Channel is not valid"
             }
 
             ES.ConditionalError {
                 errorReportingContext: errorReportingContext
                 active: !dvc.renderChannelIsValid
-                errorText: "Resource Channel is not valid"
+                errorText: "DocFill Resource Channel is not valid"
             }
         }
 
