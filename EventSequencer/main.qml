@@ -265,6 +265,13 @@ ApplicationWindow {
                 }
             }
             CustomMenuItem {
+                text: "DebugErrorReporting"
+                onTriggered: {
+                    var component = Qt.createComponent("DebugErrorReporting.qml")
+                    var obj = component.createObject(appwin, {visible: true})
+                }
+            }
+            CustomMenuItem {
                 text: "JS Garbage Collect"
                 onTriggered: gc()
             }

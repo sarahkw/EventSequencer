@@ -20,6 +20,8 @@
 #include "channel/collatechannel.h"
 #include "channelindexfactory.h"
 #include "countchannelindex.h"
+#include "conditionalerror.h"
+#include "errorreportingcontext.h"
 
 #include <QQmlEngine>
 
@@ -53,4 +55,6 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<PlayerControl>("eventsequencer", 1, 0, "PlayerControl");
     qmlRegisterUncreatableType<channel::CollateChannel>("eventsequencer", 1, 0, "CollateChannel", "Only used for enumeration");
     qmlRegisterType<CountChannelIndex>("eventsequencer", 1, 0, "CountChannelIndex");
+    qmlRegisterType<ConditionalError>("eventsequencer", 1, 0, "ConditionalError");
+    qmlRegisterType<ErrorReportingContext>("eventsequencer", 1, 0, "ErrorReportingContext");
 }

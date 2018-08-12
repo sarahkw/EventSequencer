@@ -67,7 +67,9 @@ SOURCES += \
     channelindexfactory.cpp \
     collides.cpp \
     channel/docfillchannel.cpp \
-    countchannelindex.cpp
+    countchannelindex.cpp \
+    errorreportingcontext.cpp \
+    conditionalerror.cpp
 
 
 HEADERS += \
@@ -115,7 +117,9 @@ HEADERS += \
     channelindexfactory.h \
     collides.h \
     channel/docfillchannel.h \
-    countchannelindex.h
+    countchannelindex.h \
+    errorreportingcontext.h \
+    conditionalerror.h
 
 unix {
     target.path = /usr/lib

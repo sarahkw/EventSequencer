@@ -35,5 +35,6 @@
         <file>Control/DocFillControl.qml</file>
         <file>ChannelTypeComboBox.qml</file>
         <file>DocumentViewControl.qml</file>
+        <file>DebugErrorReporting.qml</file>
     </qresource>
 </RCC>
