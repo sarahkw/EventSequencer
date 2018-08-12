@@ -241,7 +241,10 @@ ApplicationWindow {
                     component.createObject(appwin, {
                                                visible: true,
                                                destroyOnHide: true,
-                                               cppChannel: channelPanel.activeCppChannel
+                                               cppChannel: channelPanel.activeCppChannel,
+                                               document: Qt.binding(function () { return document }),
+                                               cursorFrame: Qt.binding(function () { return cursor.frame }),
+                                               changeCursorFrame: function (newFrame) { cursor.showFrame(newFrame) }
                                            })
                 }
                 enabled: (channelPanel.activeCppChannel != null &&

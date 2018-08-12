@@ -2,7 +2,10 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
+import eventsequencer 1.0 as ES
+
 ApplicationWindow {
+    id: root
     visible: true
     width: 600
     height: 800
@@ -10,6 +13,10 @@ ApplicationWindow {
     flags: Qt.Dialog
 
     property var cppChannel
+
+    property ES.Document document
+    property int cursorFrame
+    property var changeCursorFrame // Fn
 
     property bool destroyOnHide: false
     onVisibleChanged: {
@@ -30,9 +37,15 @@ ApplicationWindow {
         TabButton { text: "File" }
     }
 
-    Rectangle {
-        color: "white"
+    DocumentViewControl {
+        id: dvc
         anchors.fill: parent
+        document: root.document
+        cursorFrame: root.cursorFrame
+        changeCursorFrame: root.changeCursorFrame
+
+        textChannelIndex: cppChannel.textChannel
+        renderChannelIndex: cppChannel.resourceChannel
     }
 
     footer: Frame {
