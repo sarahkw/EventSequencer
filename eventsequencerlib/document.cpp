@@ -211,8 +211,13 @@ void Document::channelAfterAddOrReplace(ChannelIndex channelIndex, QObject *chan
     }
 }
 
-void Document::channelBeforeDelete(ChannelIndex channelIndex)
+void Document::channelBeforeDelete(ChannelIndex channelIndex, channel::ChannelBase* channel)
 {
+    {
+        QmlImmediateDestructor immediateDestructor;
+        channel->beforeDelete(&immediateDestructor);
+    }
+
     channelWaitForIndex_.beforeDelete(channelIndex);
     channelWaitForPosition_.beforeDelete(channelPositionManager().chanIdxToVisualPosition(channelIndex));
 
@@ -575,7 +580,7 @@ void Document::reset()
     while (!channels_.empty()) {
         auto it = channels_.begin();
         channel::ChannelBase* chan = it->second;
-        channelBeforeDelete(it->first);
+        channelBeforeDelete(it->first, chan);
         channels_.erase(it);
         delete chan;
     }
@@ -757,13 +762,12 @@ QObject *Document::createChannelByPosition(int position, channel::ChannelType::E
 
 void Document::deleteChannel(ChannelIndex channelIndex)
 {
-    channelBeforeDelete(channelIndex);
-
     auto it = channels_.find(channelIndex);
     if (it != channels_.end()) {
-        QObject* o = it->second;
+        channel::ChannelBase* chan = it->second;
+        channelBeforeDelete(channelIndex, chan);
         channels_.erase(it);
-        delete o;
+        delete chan;
     } else {
         qWarning() << "Nothing removed with id" << channelIndex.toDebugString();
     }

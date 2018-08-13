@@ -69,7 +69,8 @@ SOURCES += \
     channel/docfillchannel.cpp \
     countchannelindex.cpp \
     errorreportingcontext.cpp \
-    conditionalerror.cpp
+    conditionalerror.cpp \
+    qmlimmediatedestructor.cpp
 
 
 HEADERS += \
@@ -119,7 +120,8 @@ HEADERS += \
     channel/docfillchannel.h \
     countchannelindex.h \
     errorreportingcontext.h \
-    conditionalerror.h
+    conditionalerror.h \
+    qmlimmediatedestructor.h
 
 unix {
     target.path = /usr/lib

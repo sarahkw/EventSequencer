@@ -13,9 +13,10 @@ ApplicationWindow {
     flags: Qt.Dialog
 
     property var cppChannel
-    onCppChannelChanged: {
-        if (cppChannel == null) {
-            root.destroy()
+    Connections {
+        target: cppChannel
+        onBeforeDelete: {
+            immediateDestructor.add(root)
         }
     }
 

@@ -190,7 +190,7 @@ private:
         Replace
     };
     void channelAfterAddOrReplace(ChannelIndex channelIndex, QObject* channel, AddOrReplace mode);
-    void channelBeforeDelete(ChannelIndex channelIndex);
+    void channelBeforeDelete(ChannelIndex channelIndex, channel::ChannelBase* channel);
 
     // VisualPositionManager
     void visualPositionChangedAfter(ChannelIndex channelIndex, int delta);

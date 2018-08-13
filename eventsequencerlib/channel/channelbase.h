@@ -6,6 +6,7 @@
 #include "channeltype.h"
 #include "strip.h"
 #include "channelindex.h"
+#include "qmlimmediatedestructor.h"
 
 namespace pb {
 class ChannelData;
@@ -42,6 +43,8 @@ public:
 signals:
 
     void stripsChanged();
+
+    void beforeDelete(QmlImmediateDestructor* immediateDestructor);
 
 private slots:
 
