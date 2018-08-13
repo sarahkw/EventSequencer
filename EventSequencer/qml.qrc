@@ -37,6 +37,6 @@
         <file>DocumentViewControl.qml</file>
         <file>DebugErrorReporting.qml</file>
         <file>ErrorMessageNagDelegate.qml</file>
-        <file>CorraledFileRecorderControl.qml</file>
+        <file>CorraledResourceFile.qml</file>
     </qresource>
 </RCC>

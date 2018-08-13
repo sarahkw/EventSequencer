@@ -27,8 +27,8 @@ Window {
         }
     }
 
-    CorraledFileRecorderControl {
-        id: cfrc
+    CorraledResourceFile {
+        id: corraledResourceFile
         fileResourceDirectory: recorderWin.fileResourceDirectory
         corralFileBase: "UNASSIGNED"
         corralFileSuffix: ".au"
@@ -44,7 +44,7 @@ Window {
         sessionAudio: recorderWin.sessionAudio
         fileResourceDirectory: recorderWin.fileResourceDirectory
         allowOverwrite: true
-        onFileDone: cfrc.done()
+        onFileDone: corraledResourceFile.done()
     }
 
     ColumnLayout {
@@ -86,7 +86,7 @@ Window {
                     Button {
                         text: "Record"
                         onClicked: {
-                            var begin = cfrc.begin()
+                            var begin = corraledResourceFile.begin()
                             if (begin.success) {
                                 recorderControl.record(begin.url)
                             } else {
@@ -108,7 +108,7 @@ Window {
             id: fileActionFrame
 
             function possiblyAssignUrlToStrip(strip) {
-                var take = cfrc.take()
+                var take = corraledResourceFile.take()
                 if (take.success) {
                     strip.resourceUrl = take.newUrl
                 } else {
@@ -117,7 +117,7 @@ Window {
                 }
             }
 
-            visible: cfrc.takeable
+            visible: corraledResourceFile.takeable
 
             Column {
                 anchors.left: parent.left
@@ -176,7 +176,7 @@ Window {
                 }
                 Button {
                     text: "Delete"
-                    onClicked: cfrc.cancel()
+                    onClicked: corraledResourceFile.cancel()
                 }
             }
         }
