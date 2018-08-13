@@ -120,6 +120,16 @@ void PlayerControl::updateAudioState()
         return;
     }
 
+    if (autoStopOnIdle_ &&
+            audioOutput_->state() == QAudio::IdleState &&
+            audioOutput_->error() == QAudio::UnderrunError) {
+        stop();
+
+        // Calling stop() will change state to "stopped". Prevent the idle state
+        // from showing up anywhere.
+        return;
+    }
+
     setAudioState(audioOutput_->state());
     setError(audioOutput_->error());
 }
@@ -301,4 +311,18 @@ bool PlayerControl::audioOutputReady() const
 QString PlayerControl::audioOutputReadyStatus() const
 {
     return audioOutputReadyStatus_;
+}
+
+
+bool PlayerControl::autoStopOnIdle() const
+{
+    return autoStopOnIdle_;
+}
+
+void PlayerControl::setAutoStopOnIdle(bool autoStopOnIdle)
+{
+    if (autoStopOnIdle_ != autoStopOnIdle) {
+        autoStopOnIdle_ = autoStopOnIdle;
+        emit autoStopOnIdleChanged();
+    }
 }

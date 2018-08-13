@@ -18,6 +18,9 @@ class PlayerControl : public AudioControl
     Q_PROPERTY(bool audioOutputReady          READ audioOutputReady       NOTIFY audioOutputReadyStatusChanged)
     Q_PROPERTY(QString audioOutputReadyStatus READ audioOutputReadyStatus NOTIFY audioOutputReadyStatusChanged)
 
+    bool autoStopOnIdle_ = false;
+    Q_PROPERTY(bool autoStopOnIdle READ autoStopOnIdle WRITE setAutoStopOnIdle NOTIFY autoStopOnIdleChanged)
+
     void updateAudioState();
 
 public:
@@ -53,6 +56,9 @@ public:
     bool audioOutputReady() const;
     QString audioOutputReadyStatus() const;
 
+    bool autoStopOnIdle() const;
+    void setAutoStopOnIdle(bool autoStopOnIdle);
+
     Q_INVOKABLE void play();
     Q_INVOKABLE void stop();
 
@@ -75,6 +81,7 @@ public:
 signals:
 
     void audioOutputReadyStatusChanged();
+    void autoStopOnIdleChanged();
 
     void selectionModeChanged();
     void selectedStripChanged();

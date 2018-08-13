@@ -32,6 +32,7 @@ Window {
         audioFormatHolder: playerWin.audioFormatHolder
         sessionAudio: playerWin.sessionAudio
         fileResourceDirectory: playerWin.fileResourceDirectory
+        autoStopOnIdle: true
 
         selectionMode: rdoActiveStrip.checked ? ES.PlayerControl.SelectionMode.Strip : ES.PlayerControl.SelectionMode.Channel
         selectedStrip: activeCppStrip
