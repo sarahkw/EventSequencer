@@ -101,6 +101,7 @@ void PlayerControl::updateAudioObject()
 
         QObject::connect(audioOutput_, &QAudioOutput::stateChanged,
                          this, &PlayerControl::updateAudioState);
+        updateAudioState(); // Initial audio state
 
         if (!sessionAudio_->selectedOutputDevice().isFormatSupported(qaf)) {
             errors.push_back("WARN: Device does not support format");

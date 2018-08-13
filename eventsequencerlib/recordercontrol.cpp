@@ -107,6 +107,7 @@ void RecorderControl::updateAudioObject()
 
         QObject::connect(audioInput_, &QAudioInput::stateChanged,
                          this, &RecorderControl::updateAudioState);
+        updateAudioState(); // Initial audio state
 
         if (!sessionAudio_->selectedInputDevice().isFormatSupported(qaf)) {
             errors.push_back("WARN: Device does not support format");
