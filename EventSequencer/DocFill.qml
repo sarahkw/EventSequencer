@@ -111,11 +111,10 @@ ApplicationWindow {
         id: tbar
         currentIndex: sview.currentIndex
 
-        TabButton { text: "Seek" }
+        TabButton { text: "View" }
         TabButton { text: "Record" }
-        TabButton { text: "Selection" }
-        TabButton { text: "Properties" }
-        TabButton { text: "EVSEQ" }
+        TabButton { text: "Play" }
+        TabButton { text: "Strips" }
         TabButton { text: "File" }
     }
 
@@ -168,8 +167,19 @@ ApplicationWindow {
             // Take implicitHeight from a normal item
             implicitHeight: recordButtons.implicitHeight
 
-            RowLayout {}
+            // View
+            RowLayout {
+                Button {
+                    Layout.fillWidth: true
+                    text: "Font"
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: "Go to Line"
+                }
+            }
 
+            // Record
             RowLayout {
                 id: recordButtons
                 Button {
@@ -252,6 +262,7 @@ ApplicationWindow {
                 }
             }
 
+            // Play
             RowLayout {
                 Button {
                     Layout.fillWidth: true
@@ -266,8 +277,9 @@ ApplicationWindow {
                     text: "Delete"
                 }
             }
+            // Strips
             RowLayout {}
-            RowLayout {}
+            // File
             RowLayout {}
         }
     }
