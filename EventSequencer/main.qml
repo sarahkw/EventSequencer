@@ -1180,7 +1180,13 @@ ApplicationWindow {
                                 Loader {
                                     anchors.left: parent.left
                                     anchors.right: parent.right
-                                    sourceComponent: channelPropsObject.component
+
+                                    // Need to make sure cppChannel is set BEFORE
+                                    // loading the component. Or else, it will try
+                                    // to read from old cppChannel type.
+                                    sourceComponent: (function (ignoreForDependency) {
+                                        return channelPropsObject.component
+                                    })(cppChannel)
 
                                     property var cppChannel: channelPropsObject.cppChannel
                                 }
