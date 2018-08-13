@@ -207,13 +207,22 @@ ApplicationWindow {
                     text: "Stop"
                     onClicked: recorderControl.stop()
 
+                    MessageDialog {
+                        id: msgConfirmDelete
+                        // Confirm because it's easy to press a button too many
+                        // times.
+                        text: "Delete unassigned recording?"
+                        standardButtons: StandardButton.Yes | StandardButton.No
+                        onYes: recorderControl.corraledResourceFile.cancel()
+                    }
+
                     states: [
                         State {
                             when: recorderControl.corraledResourceFile.takeable
                             PropertyChanges {
                                 target: unnamedParent_7c13
                                 text: "Cancel"
-                                onClicked: recorderControl.corraledResourceFile.cancel()
+                                onClicked: msgConfirmDelete.open()
                             }
                         },
                         State {
