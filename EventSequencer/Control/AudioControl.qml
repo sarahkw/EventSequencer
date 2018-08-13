@@ -19,7 +19,7 @@ Item {
             RowLayout {
                 Parent.ESTextField {
                     Layout.fillWidth: true
-                    text: cppStrip.resourceUrl
+                    text: cppStrip !== null ? cppStrip.resourceUrl : ""
                     onEsEditingFinished: cppStrip.resourceUrl = text
                 }
                 Button {
