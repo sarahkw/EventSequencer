@@ -115,7 +115,7 @@ void PlayerControl::updateAudioObject()
 void PlayerControl::updateAudioState()
 {
     if (audioOutput_ == nullptr) {
-        setAudioState(AudioControl::AudioState::Unset);
+        setAudioState(AudioControl::AudioState::Unconfigured);
         setError("");
         return;
     }

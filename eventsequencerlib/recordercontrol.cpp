@@ -134,7 +134,7 @@ void RecorderControl::setAllowOverwrite(bool allowOverwrite)
 void RecorderControl::updateAudioState()
 {
     if (audioInput_ == nullptr) {
-        setAudioState(AudioControl::AudioState::Unset);
+        setAudioState(AudioControl::AudioState::Unconfigured);
         setError("");
         return;
     }

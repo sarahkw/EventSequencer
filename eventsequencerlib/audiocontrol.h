@@ -14,7 +14,7 @@ class AudioControl : public QObject
 
 public:
     enum class AudioState {
-        Unset,
+        Unconfigured,
         Active,
         Suspended,
         Stopped,
@@ -23,7 +23,7 @@ public:
     };
     Q_ENUM(AudioState)
 private:
-    AudioState audioState_ = AudioState::Unset;
+    AudioState audioState_ = AudioState::Unconfigured;
     Q_PROPERTY(QVariant audioState READ audioState NOTIFY audioStateChanged)
 
     QString error_;
