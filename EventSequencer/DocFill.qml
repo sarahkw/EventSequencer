@@ -16,6 +16,11 @@ ApplicationWindow {
     Connections {
         target: cppChannel
         onBeforeDelete: {
+            // If cppChannel goes away, delete ourselves immediately so that
+            // we don't resolve bindings on "cppChannel" which will be null.
+            // Calling "destroy" deletes not soon enough.
+            //
+            // Note: this assumes that DocFill was created dynamically.
             immediateDestructor.add(root)
         }
     }
