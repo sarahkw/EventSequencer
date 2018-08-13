@@ -27,13 +27,15 @@ Window {
         }
     }
 
-    MessageDialog {
-        id: simpleMessageDialog
+    CorraledFileRecorderControl {
+        id: cfrc
+        fileResourceDirectory: recorderWin.fileResourceDirectory
+        corralFileBase: "UNASSIGNED"
+        corralFileSuffix: ".au"
     }
 
-    ES.ManagedResources {
-        id: managedResources
-        fileResourceDirectory: recorderWin.fileResourceDirectory
+    MessageDialog {
+        id: simpleMessageDialog
     }
 
     ES.RecorderControl {
@@ -42,6 +44,7 @@ Window {
         sessionAudio: recorderWin.sessionAudio
         fileResourceDirectory: recorderWin.fileResourceDirectory
         allowOverwrite: true
+        onFileDone: cfrc.done()
     }
 
     ColumnLayout {
@@ -83,13 +86,13 @@ Window {
                     Button {
                         text: "Record"
                         onClicked: {
-                            if (managedResources.fileResourceDirectory == "") {
-                                simpleMessageDialog.text = "Resource directory doesn't exist. Save the file first."
+                            var begin = cfrc.begin()
+                            if (begin.success) {
+                                recorderControl.record(begin.url)
+                            } else {
+                                simpleMessageDialog.text = begin.errorMsg
                                 simpleMessageDialog.open()
-                                return
                             }
-                            recorderControl.record(
-                                        managedResources.urlForBaseName("UNASSIGNED", ".au"))
                         }
                     }
                     Button {
@@ -105,43 +108,27 @@ Window {
             id: fileActionFrame
 
             function possiblyAssignUrlToStrip(strip) {
-                var newUrl = managedResources.renameUrlToGeneratedFileName(
-                            fileActionFrame.writtenUrl, ".au")
-                if (newUrl == "") {
-                    simpleMessageDialog.text = "Unable to rename file"
-                    simpleMessageDialog.open()
+                var take = cfrc.take()
+                if (take.success) {
+                    strip.resourceUrl = take.newUrl
                 } else {
-                    strip.resourceUrl = newUrl
-                    fileActionFrame.writtenUrl = "" // Clear
+                    simpleMessageDialog.text = take.errorMsg
+                    simpleMessageDialog.open()
                 }
             }
 
-            Connections {
-                target: recorderControl
-                onFileDone: {
-                    fileActionFrame.writtenUrl = writtenUrl
-                }
-            }
-
-            property string writtenUrl: ""
-            visible: writtenUrl !== ""
+            visible: cfrc.takeable
 
             Column {
                 anchors.left: parent.left
                 anchors.right: parent.right
-                Text {
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    text: fileActionFrame.writtenUrl
-                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                }
 
                 Button {
                     text: "Send to active strip"
                     enabled: {
                         if (activeCppStrip === null) return false
                         if (activeCppStrip.qmlStrip.channelControl === null) return false
-                        return activeCppStrip.qmlStrip.channelControl.willAcceptResource != null
+                        return !!activeCppStrip.qmlStrip.channelControl.willAcceptResource
                     }
                     onClicked: {
                         fileActionFrame.possiblyAssignUrlToStrip(activeCppStrip)
@@ -150,7 +137,19 @@ Window {
                 Row {
                     Button {
                         text: "Send to active channel"
-                        enabled: activeCppChannel != null
+                        enabled: {
+                            if (activeCppChannel === null) return false;
+                            return true;
+
+                            // Infrastructure does not support this yet. We need
+                            // to be able to send to CollateChannel, which at the
+                            // QML level doesn't take resources, but it proxies
+                            // for some other channel type that does.
+                            /*
+                            if (activeCppChannel.qmlControl == null) return false;
+                            return !!activeCppChannel.qmlControl.willAcceptResource
+                            */
+                        }
                         onClicked: {
                             var thestrip =
                                 activeCppChannel.createStrip(cursorFrame,
@@ -176,20 +175,8 @@ Window {
                     }
                 }
                 Button {
-                    MessageDialog {
-                        id: deleteConfirm
-                        text: "Are you sure you want to delete?"
-                        standardButtons: StandardButton.Yes | StandardButton.No
-                        onYes: {
-                            if (managedResources.deleteUrl(fileActionFrame.writtenUrl)) {
-                                fileActionFrame.writtenUrl = ""
-                            } else {
-                                console.warn("Deletion failed")
-                            }
-                        }
-                    }
                     text: "Delete"
-                    onClicked: deleteConfirm.open()
+                    onClicked: cfrc.cancel()
                 }
             }
         }

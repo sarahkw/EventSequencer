@@ -637,6 +637,7 @@ ApplicationWindow {
                             height: channelPixels
                             property ES.ConstrainedMetricsFontUtil cmfuAlignedFont: body.cmfuAlignedFont
                             property ZoomLogic zoom: appwin.zoom
+                            Component.onCompleted: cppChannel.qmlControl = controlResolver.resolve(cppChannel.channelType)
                         }
                     }
 

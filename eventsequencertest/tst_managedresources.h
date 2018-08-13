@@ -43,7 +43,7 @@ TEST_F(ManagedResourcesTest, RenameManagedResource)
 {
     setTempDirectory();
 
-    QUrl initialUrl = mres_.urlForBaseName("unassigned", ".au");
+    QUrl initialUrl = mres_.urlForFileName("unassigned.au");
     EXPECT_EQ(initialUrl.toString(), "evseq://managed/unassigned.au");
 
     // Make the file so it can be renamed.

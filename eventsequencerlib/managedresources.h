@@ -26,7 +26,6 @@ public:
     Q_INVOKABLE QUrl generateResourceUrl(QString suffix);
 
     Q_INVOKABLE QUrl urlForFileName(QString fileName);
-    Q_INVOKABLE QUrl urlForBaseName(QString baseName, QString suffix);
 
     Q_INVOKABLE QUrl renameUrlToFileName(QUrl url, QString newFileName);
     Q_INVOKABLE QUrl renameUrlToGeneratedFileName(QUrl url, QString suffix);

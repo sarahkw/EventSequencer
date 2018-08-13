@@ -36,18 +36,13 @@ QString ManagedResources::generateResourceBaseName()
 
 QUrl ManagedResources::generateResourceUrl(QString suffix)
 {
-    return urlForBaseName(generateResourceBaseName(), suffix);
+    return urlForFileName(generateResourceBaseName() + suffix);
 }
 
 QUrl ManagedResources::urlForFileName(QString fileName)
 {
     mkpathManagedDirectory();
     return "evseq://managed/" + fileName;
-}
-
-QUrl ManagedResources::urlForBaseName(QString baseName, QString suffix)
-{
-    return urlForFileName(baseName + suffix);
 }
 
 QUrl ManagedResources::renameUrlToFileName(QUrl url, QString newFileName)
