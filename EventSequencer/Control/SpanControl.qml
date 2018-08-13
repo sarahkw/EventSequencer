@@ -14,13 +14,13 @@ Item {
             Parent.ESTextField {
                 Layout.fillWidth: true
                 onEsEditingFinished: cppChannel.count = parseInt(text, 10)
-                text: cppChannel.count
+                text: cppChannel !== null ? cppChannel.count : ""
             }
 
             Label { text: "Default Type" }
             Parent.ChannelTypeComboBox {
                 Layout.fillWidth: true
-                currentChannelType: cppChannel.defaultChannelType
+                currentChannelType: cppChannel !== null ? cppChannel.defaultChannelType : 0
                 onUpdateChannelType: cppChannel.defaultChannelType = newChannelType
             }
         }

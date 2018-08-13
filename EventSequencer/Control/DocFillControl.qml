@@ -15,14 +15,14 @@ Item {
             Parent.ESTextField {
                 Layout.fillWidth: true
                 onEsEditingFinished: cppChannel.textChannel = ES.ChannelIndexFactory.makeFromPathString(text)
-                text: cppChannel.textChannel.toPathString()
+                text: cppChannel !== null ? cppChannel.textChannel.toPathString() : ""
             }
 
             Label { text: "Resource Channel" }
             Parent.ESTextField {
                 Layout.fillWidth: true
                 onEsEditingFinished: cppChannel.resourceChannel = ES.ChannelIndexFactory.makeFromPathString(text)
-                text: cppChannel.resourceChannel.toPathString()
+                text: cppChannel !== null ? cppChannel.resourceChannel.toPathString() : ""
             }
         }
     }

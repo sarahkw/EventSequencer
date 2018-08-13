@@ -29,7 +29,7 @@ Item {
                     height: 200
                     TextArea {
                         onEditingFinished: cppChannel.content = text
-                        text: cppChannel.content
+                        text: cppChannel !== null ? cppChannel.content : ""
                         selectByMouse: true
                     }
                 }

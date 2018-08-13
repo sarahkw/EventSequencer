@@ -16,7 +16,7 @@ Item {
             Parent.ESTextField {
                 Layout.fillWidth: true
                 onEsEditingFinished: cppChannel.channel = ES.ChannelIndexFactory.makeFromPathString(text)
-                text: cppChannel.channel.toPathString()
+                text: cppChannel !== null ? cppChannel.channel.toPathString() : ""
             }
         }
     }
