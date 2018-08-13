@@ -174,7 +174,7 @@ void PlayerControl::updateCurrentStrips()
         if (selectedChannel_ != nullptr) {
             auto strips = selectedChannel_->strips();
             for (auto iter = std::lower_bound(
-                     strips.begin(), strips.end(), onlyStripsAfter_.toInt(),
+                     strips.begin(), strips.end(), cursorFrame_,
                      [](Strip* a, int b) { return a->startFrame() < b; });
                  iter != strips.end(); ++iter) {
                 takeStrip(*iter);
@@ -186,11 +186,11 @@ void PlayerControl::updateCurrentStrips()
             auto strips = selectedChannel_->strips();
             auto iter =
                 std::lower_bound(strips.begin(), strips.end(),
-                                 onlyStripsAfter_.toInt(), [](Strip* a, int b) {
+                                 cursorFrame_, [](Strip* a, int b) {
                                      return a->startFrame() + a->length() <= b;
                                  });
             if (iter != strips.end() &&
-                (*iter)->startFrame() <= onlyStripsAfter_.toInt()) {
+                (*iter)->startFrame() <= cursorFrame_) {
                 takeStrip(*iter);
             }
         }
@@ -301,22 +301,22 @@ void PlayerControl::clearSelectedStrip()
     setSelectedStrip(nullptr);
 }
 
-QVariant PlayerControl::onlyStripsAfter() const
+int PlayerControl::cursorFrame() const
 {
-    return onlyStripsAfter_;
+    return cursorFrame_;
 }
 
-void PlayerControl::setOnlyStripsAfter(const QVariant &onlyStripsAfter)
+void PlayerControl::setCursorFrame(int cursorFrame)
 {
-    if (onlyStripsAfter_ != onlyStripsAfter) {
-        onlyStripsAfter_ = onlyStripsAfter;
-        emit onlyStripsAfterChanged();
+    if (cursorFrame_ != cursorFrame) {
+        cursorFrame_ = cursorFrame;
+        emit cursorFrameChanged();
     }
 }
 
 PlayerControl::PlayerControl(QObject* parent) : AudioControl(parent)
 {
-    QObject::connect(this, &PlayerControl::onlyStripsAfterChanged,
+    QObject::connect(this, &PlayerControl::cursorFrameChanged,
                      this, &PlayerControl::updateCurrentStripsIfSelectionModeIsChannel);
     updateAudioObject(); // Initial update of ready status
 }

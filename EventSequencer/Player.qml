@@ -37,7 +37,7 @@ Window {
         selectionMode: ES.PlayerControl.SelectionMode.Strip
         selectedStrip: activeCppStrip
         selectedChannel: activeCppChannel
-        onlyStripsAfter: cursorFrame
+        cursorFrame: playerWin.cursorFrame
     }
 
     ColumnLayout {

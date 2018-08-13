@@ -35,11 +35,11 @@ private:
     SelectionMode selectionMode_ = SelectionMode::Strip;
     Strip* selectedStrip_ = nullptr;
     channel::ChannelBase* selectedChannel_ = nullptr;
-    QVariant onlyStripsAfter_;
+    int cursorFrame_ = 0;
     Q_PROPERTY(SelectionMode selectionMode READ selectionMode WRITE setSelectionMode NOTIFY selectionModeChanged)
     Q_PROPERTY(Strip* selectedStrip READ selectedStrip WRITE setSelectedStrip NOTIFY selectedStripChanged)
     Q_PROPERTY(channel::ChannelBase* selectedChannel READ selectedChannel WRITE setSelectedChannel NOTIFY selectedChannelChanged)
-    Q_PROPERTY(QVariant onlyStripsAfter READ onlyStripsAfter WRITE setOnlyStripsAfter NOTIFY onlyStripsAfterChanged)
+    Q_PROPERTY(int cursorFrame READ cursorFrame WRITE setCursorFrame NOTIFY cursorFrameChanged)
 
     void updateCurrentStrips();
     void updateCurrentStripsIfSelectionModeIsStrip();
@@ -75,8 +75,8 @@ public:
     void setSelectedChannel(channel::ChannelBase *selectedChannel);
     void clearSelectedChannel();
 
-    QVariant onlyStripsAfter() const;
-    void setOnlyStripsAfter(const QVariant &onlyStripsAfter);
+    int cursorFrame() const;
+    void setCursorFrame(int cursorFrame);
 
     QString currentStripsReport() const;
 
@@ -88,7 +88,7 @@ signals:
     void selectionModeChanged();
     void selectedStripChanged();
     void selectedChannelChanged();
-    void onlyStripsAfterChanged();
+    void cursorFrameChanged();
 
     void currentStripsReportChanged();
 };
