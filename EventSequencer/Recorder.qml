@@ -154,7 +154,7 @@ Window {
                             var thestrip =
                                 activeCppChannel.createStrip(cursorFrame,
                                                              sendToActiveChannelLength.text)
-                            if (thestrip != null) {
+                            if (thestrip !== null) {
                                 fileActionFrame.possiblyAssignUrlToStrip(thestrip)
                                 // TODO Maybe delete strip if we failed?
                             } else {

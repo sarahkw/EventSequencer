@@ -76,6 +76,17 @@ ApplicationWindow {
             fileResourceDirectory: recorderControl.fileResourceDirectory
             corralFileBase: "DOCFILL-UNASSIGNED"
             corralFileSuffix: ".au"
+
+            function possiblyAssignUrlToStrip(strip) {
+                var result = take()
+                if (result.success) {
+                    strip.resourceUrl = result.newUrl
+                    return true
+                } else {
+                    msgbox.msgbox(result.errorMsg)
+                    return false
+                }
+            }
         }
 
         property ES.ConditionalError unnamed1: ES.ConditionalError {
@@ -170,6 +181,21 @@ ApplicationWindow {
                 Button {
                     Layout.fillWidth: true
                     text: "Assign"
+                    enabled: cppResourceChannel !== null &&
+                             recorderControl.corraledResourceFile.takeable
+                    onClicked: {
+                        var thestrip =
+                                cppResourceChannel.createStrip(cursorFrame,
+                                                               1)
+                        if (thestrip !== null) {
+                            var success = recorderControl.corraledResourceFile.possiblyAssignUrlToStrip(thestrip)
+                            if (!success) {
+                                // TODO Delete file
+                            }
+                        } else {
+                            msgbox.msgbox("Cannot assign")
+                        }
+                    }
                 }
                 /*
                 Button {
