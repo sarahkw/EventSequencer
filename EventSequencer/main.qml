@@ -1138,7 +1138,7 @@ ApplicationWindow {
                         anchors.left: parent.left
                         anchors.right: parent.right
 
-                        property var channelPropsObject: (function () {
+                        property var channelPropsObject: {
                             var cppChannel = null
                             var component = null
                             var shouldShow = false
@@ -1159,7 +1159,7 @@ ApplicationWindow {
                                 component: component,
                                 shouldShow: shouldShow
                             }
-                        })()
+                        }
 
                         sourceComponent: ((channelPropsObject.shouldShow &&
                                            selectedCppStrips.every(function (cppStrip) {
