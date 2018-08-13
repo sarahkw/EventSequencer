@@ -92,7 +92,7 @@ Item {
 
             ShowMultipleLinesOnOneLine {
                 id: smlool
-                input: cppChannel.content
+                input: cppChannel !== null ? cppChannel.content : ""
             }
 
             Repeater {

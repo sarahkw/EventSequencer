@@ -23,7 +23,7 @@ Item {
 
     property Component channelTrackComponent: Component {
         Repeater {
-            model: cppChannel.model
+            model: cppChannel !== null ? cppChannel.model : null
             Rectangle {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
