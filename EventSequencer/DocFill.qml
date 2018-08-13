@@ -8,8 +8,8 @@ import eventsequencer 1.0 as ES
 ApplicationWindow {
     id: root
     visible: true
-    width: 600
-    height: 800
+    width: 540
+    height: 720
     title: qsTr("DocFill")
     flags: Qt.Dialog
 
