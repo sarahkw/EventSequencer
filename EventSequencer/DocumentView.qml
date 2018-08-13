@@ -33,7 +33,9 @@ ApplicationWindow {
                 id: txtTextChannel
 
                 text: dvc.textChannelIndex != null ? dvc.textChannelIndex.toPathString() : ""
-                onEsEditingFinished: dvc.textChannelIndex = ES.ChannelIndexFactory.makeFromPathString(text)
+                onEsEditingFinished: {
+                    dvc.assignTextChannelIndex(ES.ChannelIndexFactory.makeFromPathString(text))
+                }
 
                 states: [
                     State {
@@ -56,7 +58,9 @@ ApplicationWindow {
                 id: txtRenderChannel
 
                 text: dvc.renderChannelIndex != null ? dvc.renderChannelIndex.toPathString() : ""
-                onEsEditingFinished: dvc.renderChannelIndex = ES.ChannelIndexFactory.makeFromPathString(text)
+                onEsEditingFinished: {
+                    dvc.assignRenderChannelIndex(ES.ChannelIndexFactory.makeFromPathString(text))
+                }
 
                 states: [
                     State {
@@ -80,8 +84,20 @@ ApplicationWindow {
         id: dvc
         anchors.fill: parent
 
-        document: appwin.document
         cursorFrame: appwin.cursorFrame
         changeCursorFrame: appwin.changeCursorFrame
+
+        function assignTextChannelIndex(channelIndex) {
+            waitForTextChannel = appwin.document.waitForChannelIndex(channelIndex)
+        }
+
+        function assignRenderChannelIndex(channelIndex) {
+            waitForRenderChannel = appwin.document.waitForChannelIndex(channelIndex)
+        }
+
+        property ES.WaitFor waitForTextChannel: null
+        property ES.WaitFor waitForRenderChannel: null
+        cppTextChannel: waitForTextChannel !== null ? waitForTextChannel.result : null
+        cppRenderChannel: waitForRenderChannel !== null ? waitForRenderChannel.result : null
     }
 }

@@ -7,13 +7,13 @@ import "Control/" as Control
 Rectangle {
     id: root
 
-    property ES.Document document
     property int cursorFrame
     property var changeCursorFrame // Fn
 
-    property var textChannelIndex
+    property var cppTextChannel
+    property var cppRenderChannel
+
     property bool textChannelIsValid: chanToTextContent.outputTextContent !== null
-    property var renderChannelIndex
     property bool renderChannelIsValid: chanToRenderComponent.outputRenderComponent != null
     
     color: "white"
@@ -37,20 +37,18 @@ Rectangle {
 
     QtObject {
         id: chanToTextContent
-        property ES.WaitFor waitFor: root.textChannelIndex != null ? document.waitForChannelIndex(root.textChannelIndex) : null
-        property var control: waitFor != null && waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
+        property var control: cppTextChannel !== null ? resolver.resolve(cppTextChannel.channelType) : null
         property bool providesText: control != null ? control.docViewProvidesText === true : false
         
-        property var outputTextContent: providesText ? waitFor.result.content : null
+        property var outputTextContent: providesText ? cppTextChannel.content : null
     }
 
     QtObject {
         id: chanToRenderComponent
-        property ES.WaitFor waitFor: root.renderChannelIndex != null ? document.waitForChannelIndex(root.renderChannelIndex) : null
-        property var control: waitFor != null && waitFor.result != null ? resolver.resolve(waitFor.result.channelType) : null
+        property var control: cppRenderChannel ? resolver.resolve(cppRenderChannel.channelType) : null
 
         property var outputRenderComponent: control != null ? control.docViewRenderComponent : null
-        property var outputCppChannel: outputRenderComponent != null ? waitFor.result : null
+        property var outputCppChannel: outputRenderComponent != null ? cppRenderChannel : null
     }
 
     ScrollView {

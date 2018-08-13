@@ -38,6 +38,11 @@ ApplicationWindow {
         }
     }
 
+    property ES.WaitFor waitForTextChannel: cppChannel.textChannel !== null ? document.waitForChannelIndex(cppChannel.textChannel) : null
+    property ES.WaitFor waitForResourceChannel: cppChannel.resourceChannel !== null ? document.waitForChannelIndex(cppChannel.resourceChannel) : null
+    property var cppTextChannel: waitForTextChannel !== null ? waitForTextChannel.result : null
+    property var cppResourceChannel: waitForResourceChannel !== null ? waitForResourceChannel.result : null
+
     MessageDialog {
         id: msgbox
         function msgbox(msg) {
@@ -119,12 +124,11 @@ ApplicationWindow {
             Layout.fillHeight: true
 
             id: dvc
-            document: root.document
             cursorFrame: root.cursorFrame
             changeCursorFrame: root.changeCursorFrame
 
-            textChannelIndex: cppChannel.textChannel
-            renderChannelIndex: cppChannel.resourceChannel
+            cppTextChannel: root.cppTextChannel
+            cppRenderChannel: root.cppResourceChannel
 
             ES.ConditionalError {
                 errorReportingContext: errorReportingContext
