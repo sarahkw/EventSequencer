@@ -173,23 +173,35 @@ ApplicationWindow {
             RowLayout {
                 id: recordButtons
                 Button {
+                    id: btnRangeStart
+                    property int startFrame
+
                     Layout.fillWidth: true
                     text: "Set Range Start"
+                    checkable: true
+                    onCheckedChanged: {
+                        if (checked) {
+                            startFrame = cursorFrame
+                        }
+                    }
                 }
                 Button {
                     Layout.fillWidth: true
                     text: "Assign to Range"
                     enabled: cppResourceChannel !== null &&
-                             recorderControl.corraledResourceFile.takeable
+                             recorderControl.corraledResourceFile.takeable &&
+                             btnRangeStart.checked
                     onClicked: {
                         var thestrip =
-                                cppResourceChannel.createStrip(cursorFrame,
-                                                               1)
+                                cppResourceChannel.createStrip(btnRangeStart.startFrame,
+                                                               cursorFrame - btnRangeStart.startFrame)
                         if (thestrip !== null) {
                             var success = recorderControl.corraledResourceFile.possiblyAssignUrlToStrip(thestrip)
                             if (!success) {
                                 // TODO Delete file
                             }
+
+                            btnRangeStart.checked = false
                         } else {
                             msgbox.msgbox("Cannot assign")
                         }
