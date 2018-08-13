@@ -34,7 +34,13 @@ Window {
         fileResourceDirectory: playerWin.fileResourceDirectory
         autoStopOnIdle: true
 
-        selectionMode: rdoActiveStrip.checked ? ES.PlayerControl.SelectionMode.Strip : ES.PlayerControl.SelectionMode.Channel
+        selectionMode: {
+            if (rdoActiveStrip.checked) {
+                ES.PlayerControl.SelectionMode.Strip
+            } else {
+                ES.PlayerControl.SelectionMode.Channel
+            }
+        }
         selectedStrip: activeCppStrip
         selectedChannel: activeCppChannel
         onlyStripsAfter: rdoAfterCursor.checked ? cursorFrame : null
