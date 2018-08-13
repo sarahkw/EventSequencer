@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import QtQuick.Dialogs 1.2
 
 import eventsequencer 1.0 as ES
 
@@ -25,6 +26,7 @@ ApplicationWindow {
         }
     }
 
+    property ES.Session session
     property ES.Document document
     property int cursorFrame
     property var changeCursorFrame // Fn
@@ -36,8 +38,57 @@ ApplicationWindow {
         }
     }
 
+    MessageDialog {
+        id: msgbox
+        function msgbox(msg) {
+            text = msg
+            open()
+        }
+    }
+
     ES.ErrorReportingContext {
         id: errorReportingContext
+    }
+
+    ES.RecorderControl {
+        id: recorderControl
+        audioFormatHolder: document.audioFormatHolder
+        sessionAudio: session.audio
+        fileResourceDirectory: document.fileResourceDirectory
+        allowOverwrite: true
+        onFileDone: corraledResourceFile.done()
+
+        function beginRecord() {
+            var begin = corraledResourceFile.begin()
+            if (begin.success) {
+                record(begin.url)
+            } else {
+                msgbox.msgbox(begin.errorMsg)
+            }
+        }
+
+        property CorraledResourceFile corraledResourceFile: CorraledResourceFile {
+            fileResourceDirectory: recorderControl.fileResourceDirectory
+            corralFileBase: "DOCFILL-UNASSIGNED"
+            corralFileSuffix: ".au"
+        }
+
+        property ES.ConditionalError unnamed1: ES.ConditionalError {
+            errorReportingContext: errorReportingContext
+            active: !recorderControl.audioInputReady
+            errorText: "Recorder not ready: %1".arg(recorderControl.audioInputReadyStatus)
+        }
+        property ES.ConditionalError unnamed2: ES.ConditionalError {
+            errorReportingContext: errorReportingContext
+            active: !(recorderControl.audioState + 0 === ES.RecorderControl.Active ||
+                      recorderControl.audioState + 0 === ES.RecorderControl.Stopped)
+            errorText: "Recorder in bad state: %1".arg(recorderControl.audioState)
+        }
+        property ES.ConditionalError unnamed3: ES.ConditionalError {
+            errorReportingContext: errorReportingContext
+            active: recorderControl.error !== ""
+            errorText: "Recorder error: %1".arg(recorderControl.error)
+        }
     }
 
     header: TabBar {
@@ -87,7 +138,6 @@ ApplicationWindow {
                 errorText: "Invalid DocFill Resource Channel"
             }
         }
-
     }
 
     footer: Frame {
@@ -110,6 +160,8 @@ ApplicationWindow {
                 Button {
                     Layout.fillWidth: true
                     text: "Delete"
+                    enabled: recorderControl.corraledResourceFile.takeable
+                    onClicked: recorderControl.corraledResourceFile.cancel()
                 }
                 Button {
                     Layout.fillWidth: true
@@ -121,7 +173,23 @@ ApplicationWindow {
                 }
                 Button {
                     Layout.fillWidth: true
-                    text: "Start/Stop"
+                    id: unnamedParent_7c13
+                    text: "Stop"
+                    onClicked: recorderControl.stop()
+
+                    states: [
+                        State {
+                            when: [
+                                ES.RecorderControl.Stopped,
+                                ES.RecorderControl.Unconfigured // Want to show the "Record" button
+                            ].indexOf(recorderControl.audioState + 0) !== -1
+                            PropertyChanges {
+                                target: unnamedParent_7c13
+                                text: "Record"
+                                onClicked: recorderControl.beginRecord()
+                            }
+                        }
+                    ]
                 }
             }
 

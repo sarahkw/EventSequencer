@@ -15,11 +15,11 @@
 void RecorderControl::record(QUrl url)
 {
     if (audioFormatHolder_ == nullptr || audioInput_ == nullptr) {
-        qWarning() << "Not ready";
+        qWarning() << "RecorderControl Not ready";
         return;
     }
     if (audioInput_->state() != QAudio::StoppedState) {
-        qWarning() << "Not stopped";
+        qWarning() << "RecorderControl Not stopped";
         return;
     }
 

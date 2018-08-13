@@ -247,6 +247,7 @@ ApplicationWindow {
                                                visible: true,
                                                destroyOnHide: true,
                                                cppChannel: channelPanel.activeCppChannel,
+                                               session: Qt.binding(function () { return session } ),
                                                document: Qt.binding(function () { return document }),
                                                cursorFrame: Qt.binding(function () { return cursor.frame }),
                                                changeCursorFrame: function (newFrame) { cursor.showFrame(newFrame) }
