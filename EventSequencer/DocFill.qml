@@ -167,10 +167,12 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     text: "Assign"
                 }
+                /*
                 Button {
                     Layout.fillWidth: true
                     text: "Preview"
                 }
+                */
                 Button {
                     Layout.fillWidth: true
                     id: unnamedParent_7c13
