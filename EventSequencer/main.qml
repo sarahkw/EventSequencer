@@ -152,10 +152,15 @@ ApplicationWindow {
             Action {
                 text: "Delete"
                 onTriggered: {
-                    selectedCppStrips.forEach(function (foo) {
+                    // Clear selectedCppStrips before actually
+                    // deleting selected strips, or else strip
+                    // properties can read a null strip and write
+                    // errors.
+                    var tmp = selectedCppStrips
+                    selectedCppStrips = []
+                    tmp.forEach(function (foo) {
                         document.deleteStrip(foo)
                     })
-                    selectedCppStrips = []
                 }
                 shortcut: "X"
             }
