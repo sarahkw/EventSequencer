@@ -174,13 +174,11 @@ ApplicationWindow {
                 id: recordButtons
                 Button {
                     Layout.fillWidth: true
-                    text: "Delete"
-                    enabled: recorderControl.corraledResourceFile.takeable
-                    onClicked: recorderControl.corraledResourceFile.cancel()
+                    text: "Set Range Start"
                 }
                 Button {
                     Layout.fillWidth: true
-                    text: "Assign"
+                    text: "Assign to Range"
                     enabled: cppResourceChannel !== null &&
                              recorderControl.corraledResourceFile.takeable
                     onClicked: {
@@ -210,6 +208,14 @@ ApplicationWindow {
                     onClicked: recorderControl.stop()
 
                     states: [
+                        State {
+                            when: recorderControl.corraledResourceFile.takeable
+                            PropertyChanges {
+                                target: unnamedParent_7c13
+                                text: "Cancel"
+                                onClicked: recorderControl.corraledResourceFile.cancel()
+                            }
+                        },
                         State {
                             when: [
                                 ES.RecorderControl.Stopped,
