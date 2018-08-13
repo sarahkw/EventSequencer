@@ -34,16 +34,10 @@ Window {
         fileResourceDirectory: playerWin.fileResourceDirectory
         autoStopOnIdle: true
 
-        selectionMode: {
-            if (rdoActiveStrip.checked) {
-                ES.PlayerControl.SelectionMode.Strip
-            } else {
-                ES.PlayerControl.SelectionMode.Channel
-            }
-        }
+        selectionMode: ES.PlayerControl.SelectionMode.Strip
         selectedStrip: activeCppStrip
         selectedChannel: activeCppChannel
-        onlyStripsAfter: rdoAfterCursor.checked ? cursorFrame : null
+        onlyStripsAfter: cursorFrame
     }
 
     ColumnLayout {
@@ -79,20 +73,13 @@ Window {
                 }
 
                 Label { text: "Selection" }
-                Row {
+                Column {
                     Layout.fillWidth: true
-                    RadioButton {
-                        id: rdoActiveStrip
-                        text: qsTr("Strip")
-                        checked: true
-                    }
-                    RadioButton {
-                        text: qsTr("Channel")
-                    }
-                    RadioButton {
-                        id: rdoAfterCursor
-                        text: qsTr("Channel After Cursor")
-                    }
+                    RadioButton { checked: true
+                                  text: "Strip"            ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.Strip } }
+                    RadioButton { text: "ChannelFromBegin" ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.ChannelFromBegin } }
+                    RadioButton { text: "ChannelFromCursor"; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.ChannelFromCursor } }
+                    RadioButton { text: "ChannelAtCursor"  ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.ChannelAtCursor } }
                 }
 
                 Row {

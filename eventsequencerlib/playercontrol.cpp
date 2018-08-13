@@ -150,27 +150,48 @@ void PlayerControl::updateCurrentStrips()
     }
     stripsToPlay_.clear();
 
+    const auto takeStrip = [this, &sl](Strip* s) {
+        QObject::connect(s, &Strip::resourceUrlChanged,
+                         this, &PlayerControl::updateCurrentStrips);
+        stripsToPlay_.push_back(s);
+        sl.push_back(describeStrip(s));
+    };
+
     switch (selectionMode()) {
     case SelectionMode::Strip:
         if (selectedStrip_ != nullptr) {
-            QObject::connect(selectedStrip_, &Strip::resourceUrlChanged,
-                             this, &PlayerControl::updateCurrentStrips);
-            stripsToPlay_.push_back(selectedStrip_);
-            sl.push_back(describeStrip(selectedStrip_));
+            takeStrip(selectedStrip_);
         }
         break;
-    case SelectionMode::Channel:
+    case SelectionMode::ChannelFromBegin:
         if (selectedChannel_ != nullptr) {
             for (Strip* s : selectedChannel_->strips()) {
-                if (!onlyStripsAfter_.isNull()) {
-                    if (s->startFrame() < onlyStripsAfter_.toInt()) {
-                        continue;
-                    }
-                }
-                QObject::connect(s, &Strip::resourceUrlChanged,
-                                 this, &PlayerControl::updateCurrentStrips);
-                stripsToPlay_.push_back(s);
-                sl.push_back(describeStrip(s));
+                takeStrip(s);
+            }
+        }
+        break;
+    case SelectionMode::ChannelFromCursor:
+        if (selectedChannel_ != nullptr) {
+            auto strips = selectedChannel_->strips();
+            for (auto iter = std::lower_bound(
+                     strips.begin(), strips.end(), onlyStripsAfter_.toInt(),
+                     [](Strip* a, int b) { return a->startFrame() < b; });
+                 iter != strips.end(); ++iter) {
+                takeStrip(*iter);
+            }
+        }
+        break;
+    case SelectionMode::ChannelAtCursor:
+        if (selectedChannel_ != nullptr) {
+            auto strips = selectedChannel_->strips();
+            auto iter =
+                std::lower_bound(strips.begin(), strips.end(),
+                                 onlyStripsAfter_.toInt(), [](Strip* a, int b) {
+                                     return a->startFrame() + a->length() <= b;
+                                 });
+            if (iter != strips.end() &&
+                (*iter)->startFrame() <= onlyStripsAfter_.toInt()) {
+                takeStrip(*iter);
             }
         }
         break;
@@ -189,8 +210,14 @@ void PlayerControl::updateCurrentStripsIfSelectionModeIsStrip()
 
 void PlayerControl::updateCurrentStripsIfSelectionModeIsChannel()
 {
-    if (selectionMode() == SelectionMode::Channel) {
+    switch (selectionMode()) {
+    case SelectionMode::ChannelFromBegin:
+    case SelectionMode::ChannelFromCursor:
+    case SelectionMode::ChannelAtCursor:
         updateCurrentStrips();
+        break;
+    case SelectionMode::Strip:
+        break;
     }
 }
 

@@ -26,7 +26,9 @@ class PlayerControl : public AudioControl
 public:
     enum class SelectionMode {
         Strip,
-        Channel
+        ChannelFromBegin,
+        ChannelFromCursor,
+        ChannelAtCursor
     };
     Q_ENUM(SelectionMode)
 private:
