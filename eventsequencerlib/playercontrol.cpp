@@ -181,7 +181,7 @@ void PlayerControl::updateCurrentStrips()
             }
         }
         break;
-    case SelectionMode::ChannelAtCursor:
+    case SelectionMode::ChannelOnCursor:
         if (selectedChannel_ != nullptr) {
             auto strips = selectedChannel_->strips();
             auto iter =
@@ -213,7 +213,7 @@ void PlayerControl::updateCurrentStripsIfSelectionModeIsChannel()
     switch (selectionMode()) {
     case SelectionMode::ChannelFromBegin:
     case SelectionMode::ChannelFromCursor:
-    case SelectionMode::ChannelAtCursor:
+    case SelectionMode::ChannelOnCursor:
         updateCurrentStrips();
         break;
     case SelectionMode::Strip:

@@ -28,7 +28,7 @@ public:
         Strip,
         ChannelFromBegin,
         ChannelFromCursor,
-        ChannelAtCursor
+        ChannelOnCursor
     };
     Q_ENUM(SelectionMode)
 private:

@@ -79,7 +79,7 @@ Window {
                                   text: "Strip"            ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.Strip } }
                     RadioButton { text: "ChannelFromBegin" ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.ChannelFromBegin } }
                     RadioButton { text: "ChannelFromCursor"; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.ChannelFromCursor } }
-                    RadioButton { text: "ChannelAtCursor"  ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.ChannelAtCursor } }
+                    RadioButton { text: "ChannelOnCursor"  ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.ChannelOnCursor } }
                 }
 
                 Row {
