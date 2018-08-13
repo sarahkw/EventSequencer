@@ -107,6 +107,31 @@ ApplicationWindow {
         }
     }
 
+    ES.PlayerControl {
+        id: playerControl
+        audioFormatHolder: document.audioFormatHolder
+        sessionAudio: session.audio
+        fileResourceDirectory: document.fileResourceDirectory
+        autoStopOnIdle: true
+
+        property ES.ConditionalError unnamed1: ES.ConditionalError {
+            errorReportingContext: errorReportingContext
+            active: !playerControl.audioOutputReady
+            errorText: "Player not ready: %1".arg(playerControl.audioOutputReadyStatus)
+        }
+        property ES.ConditionalError unnamed2: ES.ConditionalError {
+            errorReportingContext: errorReportingContext
+            active: !(playerControl.audioState + 0 === ES.PlayerControl.Active ||
+                      playerControl.audioState + 0 === ES.PlayerControl.Stopped)
+            errorText: "Player in bad state: %1".arg(playerControl.audioState)
+        }
+        property ES.ConditionalError unnamed3: ES.ConditionalError {
+            errorReportingContext: errorReportingContext
+            active: playerControl.error !== ""
+            errorText: "Player error: %1".arg(playerControl.error)
+        }
+    }
+
     header: TabBar {
         id: tbar
         currentIndex: sview.currentIndex
