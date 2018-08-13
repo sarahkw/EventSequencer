@@ -1138,21 +1138,36 @@ ApplicationWindow {
                         anchors.left: parent.left
                         anchors.right: parent.right
 
-                        property var cppChannel: channelPanel.activeCppChannel
-                        property var control: cppChannel !== null ? controlResolver.resolve(cppChannel.channelType) : null
-                        property var chanPropComp: (
-                                                       (control !== null && control.channelPropertiesComponent !== undefined) ?
-                                                           control.channelPropertiesComponent :
-                                                           null
-                                                       )
+                        property var channelPropsObject: (function () {
+                            var cppChannel = null
+                            var component = null
+                            var shouldShow = false
 
-                        sourceComponent: ((chanPropComp !== null &&
+                            cppChannel = channelPanel.activeCppChannel
+                            if (cppChannel !== null) {
+                                var control = controlResolver.resolve(cppChannel.channelType)
+                                if (control !== null) {
+                                    if (control.channelPropertiesComponent !== undefined) {
+                                        component = control.channelPropertiesComponent
+                                        shouldShow = true
+                                    }
+                                }
+                            }
+                            
+                            return {
+                                cppChannel: cppChannel,
+                                component: component,
+                                shouldShow: shouldShow
+                            }
+                        })()
+
+                        sourceComponent: ((channelPropsObject.shouldShow &&
                                            selectedCppStrips.every(function (cppStrip) {
                                                return cppStrip.channelPosition === channelPanel.activeChannelPosition
-                                           })) ? channelPropertiesComponent : blankComponent)
+                                           })) ? channelPropsHolder : blankComponent)
 
                         Component {
-                            id: channelPropertiesComponent
+                            id: channelPropsHolder
                             Column {
                                 anchors.left: parent.left
                                 anchors.right: parent.right
@@ -1165,9 +1180,9 @@ ApplicationWindow {
                                 Loader {
                                     anchors.left: parent.left
                                     anchors.right: parent.right
-                                    sourceComponent: chanPropComp
+                                    sourceComponent: channelPropsObject.component
 
-                                    property var cppChannel: channelPanel.activeCppChannel
+                                    property var cppChannel: channelPropsObject.cppChannel
                                 }
                             }
                         }
