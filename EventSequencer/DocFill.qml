@@ -264,17 +264,17 @@ ApplicationWindow {
 
             // Play
             RowLayout {
-                Button {
+                ComboBox {
                     Layout.fillWidth: true
-                    text: "Start to Cursor"
+                    model: [
+                        "At Cursor",
+                        "From Cursor",
+                        "Preview Recording"
+                    ]
                 }
                 Button {
                     Layout.fillWidth: true
-                    text: "End to Cursor"
-                }
-                Button {
-                    Layout.fillWidth: true
-                    text: "Delete"
+                    text: "Play/Stop"
                 }
             }
             // Strips
