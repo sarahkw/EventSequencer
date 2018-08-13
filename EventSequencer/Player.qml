@@ -38,6 +38,7 @@ Window {
         selectedStrip: activeCppStrip
         selectedChannel: activeCppChannel
         cursorFrame: playerWin.cursorFrame
+        singleUrl: txtSingleUrl.text
     }
 
     ColumnLayout {
@@ -80,6 +81,13 @@ Window {
                     RadioButton { text: "ChannelFromBegin" ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.ChannelFromBegin } }
                     RadioButton { text: "ChannelFromCursor"; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.ChannelFromCursor } }
                     RadioButton { text: "ChannelOnCursor"  ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.ChannelOnCursor } }
+                    RadioButton { text: "SingleUrl"        ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.SingleUrl } }
+                }
+
+                Label { text: "SingleUrl" }
+                TextField {
+                    id: txtSingleUrl
+                    Layout.fillWidth: true
                 }
 
                 Row {

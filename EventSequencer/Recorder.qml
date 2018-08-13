@@ -123,6 +123,14 @@ Window {
                 anchors.left: parent.left
                 anchors.right: parent.right
 
+                TextField {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    text: corraledResourceFile.corralUrl
+                    readOnly: true
+                    selectByMouse: true
+                }
+
                 Button {
                     text: "Send to active strip"
                     enabled: {

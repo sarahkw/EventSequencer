@@ -24,35 +24,45 @@ void PlayerControl::play()
         qWarning() << "Not stopped";
         return;
     }
-    if (stripsToPlay_.empty()) {
-        setError("Nothing to play");
-        return;
-    }
 
     ManagedResources managedResources(fileResourceDirectory());
     std::unique_ptr<ConcatIODevice> playingDevice(new ConcatIODevice);
 
-    for (const Strip* s : stripsToPlay_) {
+    const auto appendUrl = [&managedResources, this, &playingDevice](QUrl url) -> bool {
         QString fileName;
-        if (!managedResources.urlConvertToFilePath(s->resourceUrl(), &fileName)) {
+        if (!managedResources.urlConvertToFilePath(url, &fileName)) {
             setError("Missing file resource directory");
-            return;
+            return false;
         }
 
         std::unique_ptr<QFile> muhFile(new QFile(fileName));
         if (!muhFile->open(QFile::ReadOnly)) {
             setError(QString("Cannot open: %1").arg(muhFile->errorString()));
-            return;
+            return false;
         }
 
         AuFileHeader afh;
         if (!afh.loadFileAndSeek(*muhFile)) {
             // TODO Compare the format
             setError("Cannot load AU file and seek");
-            return;
+            return false;
         }
 
         playingDevice->append(muhFile.release());
+        return true;
+    };
+
+    // XXX What a hack!
+    if (selectionMode() == SelectionMode::SingleUrl) {
+        if (!appendUrl(singleUrl_)) {
+            return;
+        }
+    } else {
+        for (const Strip* s : stripsToPlay_) {
+            if (!appendUrl(s->resourceUrl())) {
+                return;
+            }
+        }
     }
 
     playingDevice_ = playingDevice.release();
@@ -195,6 +205,9 @@ void PlayerControl::updateCurrentStrips()
             }
         }
         break;
+    case SelectionMode::SingleUrl:
+        // HACK: Will read the Url directly later.
+        break;
     }
 
     currentStripsReport_ = sl.join("\n");
@@ -217,6 +230,7 @@ void PlayerControl::updateCurrentStripsIfSelectionModeIsChannel()
         updateCurrentStrips();
         break;
     case SelectionMode::Strip:
+    case SelectionMode::SingleUrl:
         break;
     }
 }
@@ -293,6 +307,20 @@ void PlayerControl::setSelectedStrip(Strip *selectedStrip)
         emit selectedStripChanged();
 
         updateCurrentStripsIfSelectionModeIsStrip();
+    }
+}
+
+QString PlayerControl::singleUrl() const
+{
+    return singleUrl_;
+}
+
+void PlayerControl::setSingleUrl(const QString &singleUrl)
+{
+    if (singleUrl_ != singleUrl) {
+        singleUrl_ = singleUrl;
+        emit singleUrlChanged();
+        updateCurrentStrips();
     }
 }
 

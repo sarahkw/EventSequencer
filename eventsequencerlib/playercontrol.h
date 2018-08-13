@@ -28,17 +28,20 @@ public:
         Strip,
         ChannelFromBegin,
         ChannelFromCursor,
-        ChannelOnCursor
+        ChannelOnCursor,
+        SingleUrl
     };
     Q_ENUM(SelectionMode)
 private:
     SelectionMode selectionMode_ = SelectionMode::Strip;
     Strip* selectedStrip_ = nullptr;
     channel::ChannelBase* selectedChannel_ = nullptr;
+    QString singleUrl_;
     int cursorFrame_ = 0;
     Q_PROPERTY(SelectionMode selectionMode READ selectionMode WRITE setSelectionMode NOTIFY selectionModeChanged)
     Q_PROPERTY(Strip* selectedStrip READ selectedStrip WRITE setSelectedStrip NOTIFY selectedStripChanged)
     Q_PROPERTY(channel::ChannelBase* selectedChannel READ selectedChannel WRITE setSelectedChannel NOTIFY selectedChannelChanged)
+    Q_PROPERTY(QString singleUrl READ singleUrl WRITE setSingleUrl NOTIFY singleUrlChanged)
     Q_PROPERTY(int cursorFrame READ cursorFrame WRITE setCursorFrame NOTIFY cursorFrameChanged)
 
     void updateCurrentStrips();
@@ -75,6 +78,9 @@ public:
     void setSelectedChannel(channel::ChannelBase *selectedChannel);
     void clearSelectedChannel();
 
+    QString singleUrl() const;
+    void setSingleUrl(const QString &singleUrl);
+
     int cursorFrame() const;
     void setCursorFrame(int cursorFrame);
 
@@ -88,6 +94,7 @@ signals:
     void selectionModeChanged();
     void selectedStripChanged();
     void selectedChannelChanged();
+    void singleUrlChanged();
     void cursorFrameChanged();
 
     void currentStripsReportChanged();

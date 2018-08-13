@@ -12,6 +12,8 @@ QtObject {
 
     // Output
     property bool takeable: false
+    property string corralFileName: corralFileBase + corralFileSuffix
+    property string corralUrl: managedResources.urlForFileName(corralFileName)
 
     function begin() {
         takeable = false
@@ -56,9 +58,6 @@ QtObject {
     }
 
     /// BEGIN PRIVATE IMPLEMENTAITON
-
-    property string corralFileName: corralFileBase + corralFileSuffix
-    property string corralUrl: managedResources.urlForFileName(corralFileName)
 
     property ES.ManagedResources managedResources : ES.ManagedResources {
         id: managedResources
