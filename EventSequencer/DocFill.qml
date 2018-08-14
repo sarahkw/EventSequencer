@@ -320,6 +320,18 @@ ApplicationWindow {
                     onClicked: playerControl.stop()
                     states: [
                         State {
+                            when: ([
+                                ES.PlayerControl.Stopped,
+                                ES.PlayerControl.Unconfigured // Want to show the "Record" button
+                            ].indexOf(playerControl.audioState + 0) !== -1 && playerControl.error !== "")
+
+                            PropertyChanges {
+                                target: unnamedParent_6bbd
+                                text: "Clear Error"
+                                onClicked: playerControl.stop()
+                            }
+                        },
+                        State {
                             when: [
                                 ES.PlayerControl.Stopped,
                                 ES.PlayerControl.Unconfigured // Want to show the "Record" button

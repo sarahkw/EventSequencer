@@ -100,6 +100,8 @@ void PlayerControl::stop()
     if (audioOutput_->state() != QAudio::StoppedState) {
         audioOutput_->stop();
     }
+
+    setError("");
 }
 
 void PlayerControl::updateAudioObject()
