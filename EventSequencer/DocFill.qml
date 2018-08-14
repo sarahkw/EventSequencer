@@ -247,12 +247,6 @@ ApplicationWindow {
                         }
                     }
                 }
-                /*
-                Button {
-                    Layout.fillWidth: true
-                    text: "Preview"
-                }
-                */
                 Button {
                     Layout.fillWidth: true
                     id: unnamedParent_7c13
@@ -273,7 +267,7 @@ ApplicationWindow {
                             when: recorderControl.corraledResourceFile.takeable
                             PropertyChanges {
                                 target: unnamedParent_7c13
-                                text: "Cancel"
+                                text: "Delete Unassigned"
                                 onClicked: msgConfirmDelete.open()
                             }
                         },
@@ -300,7 +294,7 @@ ApplicationWindow {
                     model: [
                         "At Cursor",
                         "From Cursor",
-                        "Preview Recording"
+                        "Preview Unassigned Recording"
                     ]
                     function currentSelectionMode() {
                         switch (currentIndex) {
@@ -349,7 +343,19 @@ ApplicationWindow {
             // Strips
             RowLayout {}
             // File
-            RowLayout {}
+            RowLayout {
+                Button {
+                    Layout.fillWidth: true
+                    text: "Save"
+                    onClicked: {
+                        if (document.currentUrl === "") {
+                            console.error("Don't have a current URL to save to?")
+                        } else {
+                            document.save(document.currentUrl)
+                        }
+                    }
+                }
+            }
         }
     }
 }
