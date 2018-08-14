@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
+#include <QCommandLineParser>
 
 #include "registerqmltypes.h"
 
@@ -12,10 +13,25 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
+    bool launcherMode = false;
+    {
+        QCommandLineParser parser;
+        parser.addHelpOption();
+        parser.addOptions({{{"l", "launcher"}, "Start program launcher"}});
+        parser.process(app);
+        if (parser.isSet("launcher")) {
+            launcherMode = true;
+        }
+    }
+
     QQuickStyle::setStyle("Fusion");
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    if (launcherMode) {
+        engine.load(QUrl(QStringLiteral("qrc:/LauncherMain.qml")));
+    } else {
+        engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    }
     if (engine.rootObjects().isEmpty())
         return -1;
 
