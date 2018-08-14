@@ -144,7 +144,6 @@ ApplicationWindow {
         TabButton { text: "View" }
         TabButton { text: "Record" }
         TabButton { text: "Play" }
-        TabButton { text: "Strips" }
         TabButton { text: "File" }
     }
 
@@ -340,8 +339,6 @@ ApplicationWindow {
                     ]
                 }
             }
-            // Strips
-            RowLayout {}
             // File
             RowLayout {
                 Button {
