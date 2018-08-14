@@ -9,7 +9,6 @@
 #include <QAudioOutput>
 
 #include <QDebug>
-#include <QBuffer>
 #include <QFile>
 
 #include <memory>
@@ -65,9 +64,25 @@ void PlayerControl::play()
         }
     }
 
+    playingDevice->open(QIODevice::ReadOnly);
+
+    // I have observed that if there are no samples to actually play,
+    // then the audio state stays active and doesn't stop.
+    {
+        // TODO We should really ensure that there is at least enough
+        //      bytes for a sample across all the channels. But we
+        //      don't have a way to read a frame from an I/O device
+        //      based on the audio format yet.
+        char nop;
+        if (playingDevice->peek(&nop, 1) != 1) {
+            setError("No data to play");
+            return;
+        }
+    }
+
     playingDevice_ = playingDevice.release();
-    playingDevice_->open(QIODevice::ReadOnly);
     audioOutput_->start(playingDevice_);
+
     updateAudioState();
 }
 
