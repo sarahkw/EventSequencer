@@ -11,7 +11,6 @@ ApplicationWindow {
     width: 540
     height: 720
     title: qsTr("DocFill")
-    flags: Qt.Dialog
 
     property var cppChannel
     Connections {

@@ -245,6 +245,7 @@ ApplicationWindow {
                     var component = Qt.createComponent("DocFill.qml")
                     component.createObject(appwin, {
                                                visible: true,
+                                               flags: Qt.Dialog,
                                                destroyOnHide: true,
                                                cppChannel: channelPanel.activeCppChannel,
                                                session: Qt.binding(function () { return session } ),
