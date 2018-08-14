@@ -24,7 +24,10 @@ int main(int argc, char *argv[])
         }
     }
 
-    QQuickStyle::setStyle("Fusion");
+    // For now, launcherMode is used to prototype Android app.
+    if (!launcherMode) {
+        QQuickStyle::setStyle("Fusion");
+    }
 
     QQmlApplicationEngine engine;
     if (launcherMode) {
