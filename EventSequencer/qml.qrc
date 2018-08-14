@@ -39,5 +39,6 @@
         <file>ErrorMessageNagDelegate.qml</file>
         <file>CorraledResourceFile.qml</file>
         <file>LauncherMain.qml</file>
+        <file>DocFillPage.qml</file>
     </qresource>
 </RCC>
