@@ -52,3 +52,27 @@ TEST(ConcatIODevice, Long)
 
     EXPECT_THAT(result, testing::ElementsAreArray(compareMe));
 }
+
+TEST(ConcatIODevice, IsPeekOkay)
+{
+    QByteArray hello = QString("").toUtf8();
+    QByteArray world = QString("World").toUtf8();
+
+    std::list<QIODevice*> inputs{new QBuffer(&hello), new QBuffer(&world)};
+
+    for (QIODevice* iod : inputs) {
+        iod->open(QIODevice::ReadOnly);
+    }
+
+    ConcatIODevice ciod(&inputs);
+    ciod.open(QIODevice::ReadOnly);
+
+    {
+        char peekdata{};
+        EXPECT_EQ(ciod.peek(&peekdata, 1), 1);
+        EXPECT_EQ(peekdata, 'W');
+    }
+
+    QString str(ciod.readAll());
+    EXPECT_EQ(str, "World");
+}
