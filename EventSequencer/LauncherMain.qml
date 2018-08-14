@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Window 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.2
+import QtQuick.Dialogs 1.2
 
 Window {
     visible: true
@@ -31,11 +32,35 @@ Window {
         RowLayout {
             Layout.fillWidth: true
             TextField {
+                id: txtOpenUrl
                 Layout.fillWidth: true
+                enabled: !btnLoad.checked
             }
             Button {
                 text: "Browse"
+                onClicked: browseDialog.open()
+                FileDialog {
+                    id: browseDialog
+                    onAccepted: txtOpenUrl.text = fileUrl
+                }
+                enabled: !btnLoad.checked
             }
+            Button {
+                id: btnLoad
+                checkable: true
+                text: "Load"
+            }
+        }
+
+        Text {
+            id: txtErrorMessage
+            Layout.fillWidth: true
+            font.pointSize: 9
+            color: "red"
+            text: "This is an error message"
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.Wrap
+            visible: btnLoad.checked
         }
 
         ColumnLayout {
