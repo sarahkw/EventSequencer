@@ -130,9 +130,10 @@ void PlayerControl::updateAudioState()
         return;
     }
 
-    if (autoStopOnIdle_ &&
-            audioOutput_->state() == QAudio::IdleState &&
-            audioOutput_->error() == QAudio::UnderrunError) {
+    // I used to check for UnderrunError but after reading some src I don't think
+    // it's necessary, and could possibly be deterimental, as android backend
+    // sets state before setting UnderrunError.
+    if (autoStopOnIdle_ && audioOutput_->state() == QAudio::IdleState) {
         stop();
 
         // Calling stop() will change state to "stopped". Prevent the idle state
