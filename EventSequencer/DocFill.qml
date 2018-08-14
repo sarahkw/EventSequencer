@@ -114,6 +114,11 @@ ApplicationWindow {
         fileResourceDirectory: document.fileResourceDirectory
         autoStopOnIdle: true
 
+        selectionMode: cmbSelectionMode.currentSelectionMode()
+        selectedChannel: cppResourceChannel
+        cursorFrame: root.cursorFrame
+        singleUrl: recorderControl.corraledResourceFile.corralUrl
+
         property ES.ConditionalError unnamed1: ES.ConditionalError {
             errorReportingContext: errorReportingContext
             active: !playerControl.audioOutputReady
@@ -290,16 +295,43 @@ ApplicationWindow {
             // Play
             RowLayout {
                 ComboBox {
+                    id: cmbSelectionMode
                     Layout.fillWidth: true
                     model: [
                         "At Cursor",
                         "From Cursor",
                         "Preview Recording"
                     ]
+                    function currentSelectionMode() {
+                        switch (currentIndex) {
+                        case 0: return ES.PlayerControl.ChannelOnCursor
+                        case 1: return ES.PlayerControl.ChannelFromCursor
+                        case -1:
+                        case 2: return ES.PlayerControl.SingleUrl
+                        default:
+                            console.error("Invalid index", currentIndex)
+                        }
+                    }
                 }
                 Button {
+                    id: unnamedParent_6bbd
                     Layout.fillWidth: true
-                    text: "Play/Stop"
+                    text: "Stop"
+                    onClicked: playerControl.stop()
+                    states: [
+                        State {
+                            when: [
+                                ES.PlayerControl.Stopped,
+                                ES.PlayerControl.Unconfigured // Want to show the "Record" button
+                            ].indexOf(playerControl.audioState + 0) !== -1
+
+                            PropertyChanges {
+                                target: unnamedParent_6bbd
+                                text: "Play"
+                                onClicked: playerControl.play()
+                            }
+                        }
+                    ]
                 }
             }
             // Strips
