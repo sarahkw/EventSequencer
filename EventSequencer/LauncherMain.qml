@@ -41,6 +41,8 @@ Window {
         ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            spacing: parent.height / 40
+
             Text {
                 Layout.fillWidth: true
                 text: "Programs"
@@ -52,6 +54,7 @@ Window {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 ListView {
+                    clip: true
                     spacing: 5
                     model: [
                         "DocFill on 0",
@@ -60,6 +63,8 @@ Window {
                     ]
 
                     delegate: Button {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
                         text: modelData
                     }
 
