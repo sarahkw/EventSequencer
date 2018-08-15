@@ -48,7 +48,7 @@ ApplicationWindow {
             }
             Action {
                 text: "Revert"
-                onTriggered: document.loadOrShowError(document.currentUrl)
+                onTriggered: documentLoadOrShowError(document.currentUrl)
                 enabled: document.currentUrl !== ""
             }
             Action {
@@ -324,16 +324,16 @@ ApplicationWindow {
 
     ES.Document {
         id: document
-        function loadOrShowError(url) {
-            var result = load(url)
-            var success = result[0]
-            if (success) {
-                return true
-            } else {
-                var errormsg = result[1]
-                msgbox.msgbox(errormsg, "Load failure")
-                return false
-            }
+    }
+    function documentLoadOrShowError(url) {
+        var result = document.load(url)
+        var success = result[0]
+        if (success) {
+            return true
+        } else {
+            var errormsg = result[1]
+            msgbox.msgbox(errormsg, "Load failure")
+            return false
         }
     }
 
@@ -529,7 +529,7 @@ ApplicationWindow {
         id: openFileDialog
         fileMode: Qlp.FileDialog.OpenFile
         nameFilters: ["Event sequencer files (*.evseq)", "All files (*)"]
-        onAccepted: document.loadOrShowError(file)
+        onAccepted: documentLoadOrShowError(file)
     }
 
     // "needle in haystack" doesn't seem to work for QML elements
