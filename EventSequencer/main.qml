@@ -331,8 +331,8 @@ ApplicationWindow {
         if (success) {
             return true
         } else {
-            var errormsg = result[1]
-            msgbox.msgbox(errormsg, "Load failure")
+            var errorMsg = result[1]
+            msgbox.msgbox(errorMsg, "Load failure")
             return false
         }
     }
