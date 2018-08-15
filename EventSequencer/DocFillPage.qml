@@ -8,6 +8,21 @@ import eventsequencer 1.0 as ES
 Page {
     id: root
 
+    /* Incoming
+
+    // Pass to DocFillPage Begin
+    property var cppChannel
+    property ES.Session session
+    property ES.Document document
+    property int cursorFrame
+    property var changeCursorFrame // Fn
+    // Pass to DocFillPage End
+
+    function closeFn() {
+        stackView.pop()
+    }
+    */
+
     property int rebind_cursorFrame: cursorFrame
     property var rebind_changeCursorFrame: changeCursorFrame
 
@@ -324,6 +339,11 @@ Page {
                             document.save(document.currentUrl)
                         }
                     }
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: "Close"
+                    onClicked: closeFn()
                 }
             }
         }

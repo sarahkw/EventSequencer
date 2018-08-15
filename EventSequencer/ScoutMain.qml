@@ -33,6 +33,10 @@ Window {
             property int cursorFrame
             property var changeCursorFrame // Fn
             // Pass to DocFillPage End
+
+            function closeFn() {
+                stackView.pop()
+            }
         }
     }
 

@@ -39,5 +39,8 @@ Window {
 
     DocFillPage {
         anchors.fill: parent
+        function closeFn() {
+            root.destroy()
+        }
     }
 }
