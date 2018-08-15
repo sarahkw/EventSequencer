@@ -7,111 +7,145 @@ import QtQuick.Dialogs 1.2
 import eventsequencer 1.0 as ES
 
 Window {
+    id: root
     visible: true
     width: 540
     height: 720
-    title: "EvSeq Program Launcher"
+    title: "EvSeq Scout"
+
+    property int cursorFrame: 0
 
     ES.Document {
         id: document
     }
 
-    ColumnLayout {
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.leftMargin: parent.width / 10
-        anchors.rightMargin: parent.width / 10
-        anchors.top: parent.top
-        anchors.topMargin: parent.height / 20
-        anchors.bottom: parent.bottom
-        spacing: parent.height / 20
-        Text {
-            Layout.fillWidth: true
-            text: qsTr("EvSeq Program Launcher")
-            font.family: "Courier"
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.WordWrap
+    ES.Session {
+        id: session
+    }
 
-            font.pointSize: 18
+    Component {
+        id: docFillComponent
+        DocFillPage {
+            // Pass to DocFillPage Begin
+            property var cppChannel
+            property ES.Session session
+            property ES.Document document
+            property int cursorFrame
+            property var changeCursorFrame // Fn
+            // Pass to DocFillPage End
         }
+    }
 
-        RowLayout {
-            Layout.fillWidth: true
-            TextField {
-                id: txtOpenUrl
-                Layout.fillWidth: true
-                enabled: !btnLoad.checked
-            }
-            Button {
-                text: "Browse"
-                onClicked: browseDialog.open()
-                FileDialog {
-                    id: browseDialog
-                    onAccepted: txtOpenUrl.text = fileUrl
-                }
-                enabled: !btnLoad.checked
-            }
-            Button {
-                id: btnLoad
-                checkable: true
-                text: "Load"
-                onToggled: {
-                    txtErrorMessage.visible = false
-                    if (checked) {
-                        var result = document.load(txtOpenUrl.text)
-                        var success = result[0]
-                        if (success) {
-                            lvForModel.model = document.channelsProvidingProgram()
-                        } else {
-                            var errmsg = result[1]
-                            txtErrorMessage.text = errmsg
-                            txtErrorMessage.visible = true
-                        }
-                    } else {
-                        lvForModel.model = null
-                        document.reset()
-                    }
-                }
-            }
-        }
+    StackView {
+        id: stackView
+        anchors.fill: parent
 
-        Text {
-            id: txtErrorMessage
-            Layout.fillWidth: true
-            font.pointSize: 9
-            color: "red"
-            text: "This is an error message"
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.Wrap
-            visible: false
-        }
-
-        ColumnLayout {
-            id: unnamedParent_6834
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            spacing: parent.height / 40
-
+        initialItem: ColumnLayout {
+            id: unnamedParent_7d06
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.leftMargin: parent.width / 10
+            anchors.rightMargin: parent.width / 10
+            anchors.top: parent.top
+            anchors.topMargin: parent.height / 20
+            anchors.bottom: parent.bottom
+            spacing: parent.height / 20
             Text {
                 Layout.fillWidth: true
-                text: "Programs"
+                text: qsTr("EvSeq Program Launcher")
                 font.family: "Courier"
                 horizontalAlignment: Text.AlignHCenter
-                font.pointSize: 12
+                wrapMode: Text.WordWrap
+
+                font.pointSize: 18
             }
-            ScrollView {
+
+            RowLayout {
+                Layout.fillWidth: true
+                TextField {
+                    id: txtOpenUrl
+                    Layout.fillWidth: true
+                    enabled: !btnLoad.checked
+                }
+                Button {
+                    text: "Browse"
+                    onClicked: browseDialog.open()
+                    FileDialog {
+                        id: browseDialog
+                        onAccepted: txtOpenUrl.text = fileUrl
+                    }
+                    enabled: !btnLoad.checked
+                }
+                Button {
+                    id: btnLoad
+                    checkable: true
+                    text: "Load"
+                    onToggled: {
+                        txtErrorMessage.visible = false
+                        if (checked) {
+                            var result = document.load(txtOpenUrl.text)
+                            var success = result[0]
+                            if (success) {
+                                lvForModel.model = document.channelsProvidingProgram()
+                            } else {
+                                var errmsg = result[1]
+                                txtErrorMessage.text = errmsg
+                                txtErrorMessage.visible = true
+                            }
+                        } else {
+                            lvForModel.model = null
+                            document.reset()
+                        }
+                    }
+                }
+            }
+
+            Text {
+                id: txtErrorMessage
+                Layout.fillWidth: true
+                font.pointSize: 9
+                color: "red"
+                text: "This is an error message"
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: Text.Wrap
+                visible: false
+            }
+
+            ColumnLayout {
+                id: unnamedParent_6834
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                ListView {
-                    id: lvForModel
-                    clip: true
-                    spacing: 5
+                spacing: unnamedParent_7d06 / 40
 
-                    delegate: Button {
-                        text: modelData + ""
-                        width: unnamedParent_6834.width
+                Text {
+                    Layout.fillWidth: true
+                    text: "Programs"
+                    font.family: "Courier"
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pointSize: 12
+                }
+                ScrollView {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    ListView {
+                        id: lvForModel
+                        clip: true
+                        spacing: 5
+
+                        delegate: Button {
+                            text: modelData + ""
+                            width: unnamedParent_6834.width
+                            onClicked: {
+                                stackView.push(docFillComponent, {
+                                    cppChannel: modelData,
+                                    session: session,
+                                    document: document,
+                                    cursorFrame: Qt.binding(function () { return root.cursorFrame }),
+                                    changeCursorFrame: function (newFrame) { root.cursorFrame = newFrame }
+                                })
+                            }
+                        }
                     }
-
                 }
             }
         }
