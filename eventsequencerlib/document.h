@@ -155,7 +155,6 @@ public:
     Q_INVOKABLE WaitFor* waitForChannelIndex(ChannelIndex channelIndex);
     Q_INVOKABLE WaitFor* waitForChannelPosition(int channelPosition);
     const VisualPositionManager& channelPositionManager() const;
-    const std::map<ChannelIndex, channel::ChannelBase*>& channels() const;
     
     int framesPerSecond() const;
     void setFramesPerSecond(int framesPerSecond);
@@ -168,6 +167,8 @@ public:
 
     // QVariantList for use as QML model.
     QVariantList channelsProvidingClock() const;
+
+    Q_INVOKABLE QVariantList channelsProvidingProgram() const;
 
     bool audioFormatHolderSet() const;
     void setAudioFormatHolderSet(bool audioFormatHolderSet);

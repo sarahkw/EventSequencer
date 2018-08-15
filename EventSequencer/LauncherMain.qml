@@ -61,13 +61,14 @@ Window {
                         var result = document.load(txtOpenUrl.text)
                         var success = result[0]
                         if (success) {
-
+                            lvForModel.model = document.channelsProvidingProgram()
                         } else {
                             var errmsg = result[1]
                             txtErrorMessage.text = errmsg
                             txtErrorMessage.visible = true
                         }
                     } else {
+                        lvForModel.model = null
                         document.reset()
                     }
                 }
@@ -86,6 +87,7 @@ Window {
         }
 
         ColumnLayout {
+            id: unnamedParent_6834
             Layout.fillWidth: true
             Layout.fillHeight: true
             spacing: parent.height / 40
@@ -101,18 +103,13 @@ Window {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 ListView {
+                    id: lvForModel
                     clip: true
                     spacing: 5
-                    model: [
-                        "DocFill on 0",
-                        "DocFill on 1",
-                        "DocFill on 2"
-                    ]
 
                     delegate: Button {
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        text: modelData
+                        text: modelData + ""
+                        width: unnamedParent_6834.width
                     }
 
                 }

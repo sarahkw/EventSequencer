@@ -153,6 +153,17 @@ QVariantList Document::channelsProvidingClock() const
     return ret;
 }
 
+QVariantList Document::channelsProvidingProgram() const
+{
+    QVariantList ret;
+    for (auto& pair : channels_) {
+        if (pair.second->channelType() == channel::ChannelType::DocFill) {
+            ret.push_back(QVariant::fromValue(pair.second));
+        }
+    }
+    return ret;
+}
+
 bool Document::audioFormatHolderSet() const
 {
     return audioFormatHolder_ != nullptr;
@@ -798,9 +809,4 @@ WaitFor *Document::waitForChannelPosition(int channelPosition)
 const VisualPositionManager &Document::channelPositionManager() const
 {
     return channelPositionManager_;
-}
-
-const std::map<ChannelIndex, channel::ChannelBase *> &Document::channels() const
-{
-    return channels_;
 }
