@@ -678,7 +678,7 @@ void Document::save(const QUrl& url)
     setCurrentUrl(url);
 }
 
-void Document::load(const QUrl &url)
+QVariantList Document::load(const QUrl &url)
 {
     reset();
 
@@ -687,22 +687,18 @@ void Document::load(const QUrl &url)
     // TODO Apparantly Unbuffered doesn't work for QFile on Windows. This will likely prevent
     //      file open from working on Win!
     if (!file.open(QIODevice::ReadOnly | QIODevice::Unbuffered)) {
-        qWarning() << "Cannot open";
-        return;
+        return {false, "Cannot open file"};
     }
     pb::File pbf;
     FileHeader fh;
     if (!fh.readFromFile(file)) {
-        qWarning() << "Invalid file";
-        return;
+        return {false, "Invalid file header"};
     }
     if (fh.version_ != 1) {
-        qWarning() << "Unknown version" << fh.version_;
-        return;
+        return {false, "File was created from unsupported version"};
     }
     if (!pbf.ParseFromFileDescriptor(file.handle())) {
-        qWarning() << "Cannot parse";
-        return;
+        return {false, "Cannot decode file"};
     }
 
     file.close();
@@ -712,6 +708,7 @@ void Document::load(const QUrl &url)
     fromPb(pbf.document());
 
     setCurrentUrl(url);
+    return {true};
 }
 
 void Document::dumpProtobuf() const
@@ -801,4 +798,9 @@ WaitFor *Document::waitForChannelPosition(int channelPosition)
 const VisualPositionManager &Document::channelPositionManager() const
 {
     return channelPositionManager_;
+}
+
+const std::map<ChannelIndex, channel::ChannelBase *> &Document::channels() const
+{
+    return channels_;
 }

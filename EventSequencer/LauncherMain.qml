@@ -4,11 +4,17 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.2
 import QtQuick.Dialogs 1.2
 
+import eventsequencer 1.0 as ES
+
 Window {
     visible: true
     width: 540
     height: 720
     title: "EvSeq Program Launcher"
+
+    ES.Document {
+        id: document
+    }
 
     ColumnLayout {
         anchors.left: parent.left
@@ -49,6 +55,20 @@ Window {
                 id: btnLoad
                 checkable: true
                 text: "Load"
+                onToggled: {
+                    txtErrorMessage.visible = false
+                    if (checked) {
+                        var result = document.load(txtOpenUrl.text)
+                        var success = result[0]
+                        if (success) {
+
+                        } else {
+                            var errmsg = result[1]
+                            txtErrorMessage.text = errmsg
+                            txtErrorMessage.visible = true
+                        }
+                    }
+                }
             }
         }
 
@@ -60,7 +80,7 @@ Window {
             text: "This is an error message"
             horizontalAlignment: Text.AlignHCenter
             wrapMode: Text.Wrap
-            visible: btnLoad.checked
+            visible: false
         }
 
         ColumnLayout {

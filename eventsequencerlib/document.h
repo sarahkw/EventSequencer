@@ -144,7 +144,7 @@ public:
 
     Q_INVOKABLE void reset();
     Q_INVOKABLE void save(const QUrl& url);
-    Q_INVOKABLE void load(const QUrl& url);
+    Q_INVOKABLE QVariantList load(const QUrl& url);
     Q_INVOKABLE void dumpProtobuf() const;
 
     QAbstractListModel* channelsModel();
@@ -155,7 +155,8 @@ public:
     Q_INVOKABLE WaitFor* waitForChannelIndex(ChannelIndex channelIndex);
     Q_INVOKABLE WaitFor* waitForChannelPosition(int channelPosition);
     const VisualPositionManager& channelPositionManager() const;
-
+    const std::map<ChannelIndex, channel::ChannelBase*>& channels() const;
+    
     int framesPerSecond() const;
     void setFramesPerSecond(int framesPerSecond);
 
