@@ -13,25 +13,25 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-    bool launcherMode = false;
+    bool scoutMode = false;
     {
         QCommandLineParser parser;
         parser.addHelpOption();
-        parser.addOptions({{{"l", "launcher"}, "Start program launcher"}});
+        parser.addOptions({{{"s", "scout"}, "Start EvSeq Scout"}});
         parser.process(app);
-        if (parser.isSet("launcher")) {
-            launcherMode = true;
+        if (parser.isSet("scout")) {
+            scoutMode = true;
         }
     }
 
-    // For now, launcherMode is used to prototype Android app.
-    if (!launcherMode) {
+    // For now, scoutMode is used to prototype Android app.
+    if (!scoutMode) {
         QQuickStyle::setStyle("Fusion");
     }
 
     QQmlApplicationEngine engine;
-    if (launcherMode) {
-        engine.load(QUrl(QStringLiteral("qrc:/LauncherMain.qml")));
+    if (scoutMode) {
+        engine.load(QUrl(QStringLiteral("qrc:/ScoutMain.qml")));
     } else {
         engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     }

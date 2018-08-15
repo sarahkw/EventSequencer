@@ -52,7 +52,7 @@ Window {
             spacing: parent.height / 20
             Text {
                 Layout.fillWidth: true
-                text: qsTr("EvSeq Program Launcher")
+                text: root.title
                 font.family: "Courier"
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
