@@ -67,6 +67,8 @@ Window {
                             txtErrorMessage.text = errmsg
                             txtErrorMessage.visible = true
                         }
+                    } else {
+                        document.reset()
                     }
                 }
             }
