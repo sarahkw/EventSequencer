@@ -128,5 +128,8 @@ unix {
     INSTALLS += target
 }
 
-unix: CONFIG += link_pkgconfig
-unix: PKGCONFIG += protobuf
+#unix: CONFIG += link_pkgconfig
+#unix: PKGCONFIG += protobuf
+PROTOBUF_THING = android
+INCLUDEPATH += /home/sarah/protobuf-cross-compile/$$PROTOBUF_THING/include
+LIBS += -L/home/sarah/protobuf-cross-compile/$$PROTOBUF_THING/lib -lprotobuf
