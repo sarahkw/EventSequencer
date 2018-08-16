@@ -13,8 +13,8 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-    bool scoutMode = false;
-    {
+    bool scoutMode = true;
+    if (false) {
         QCommandLineParser parser;
         parser.addHelpOption();
         parser.addOptions({{{"s", "scout"}, "Start EvSeq Scout"}});
