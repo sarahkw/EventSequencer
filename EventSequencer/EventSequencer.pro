@@ -47,3 +47,8 @@ unix:!macx: PRE_TARGETDEPS += $$OUT_PWD/../eventsequencerlib/libeventsequencerli
 PROTOBUF_THING = android
 INCLUDEPATH += /home/sarah/protobuf-cross-compile/$$PROTOBUF_THING/include
 LIBS += -L/home/sarah/protobuf-cross-compile/$$PROTOBUF_THING/lib -lprotobuf
+
+contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
+    ANDROID_EXTRA_LIBS = \
+        $$PWD/../../protobuf-cross-compile/android/lib/libprotobuf.so
+}
