@@ -13,7 +13,12 @@ QtObject {
     // Output
     property bool takeable: false
     property string corralFileName: corralFileBase + corralFileSuffix
-    property string corralUrl: managedResources.urlForFileName(corralFileName)
+    property string corralUrl: {
+        // TODO This is a hack around a bug where corralUrl doesn't get updated
+        //      when root.fileResourceDirectory gets updated.
+        managedResources.fileResourceDirectory = Qt.binding(function () { return root.fileResourceDirectory })
+        managedResources.urlForFileName(corralFileName)
+    }
 
     function begin() {
         takeable = false
