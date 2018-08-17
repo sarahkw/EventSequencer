@@ -21,6 +21,7 @@ qint64 ConcatIODevice::readData(char *data, qint64 maxlen)
     QIODevice* front = inputs_.front();
     qint64 bytesRead = front->read(data, maxlen);
     if (bytesRead == 0) {
+        front->close(); // "If you are in doubt, call close() before destroying the QIODevice."
         delete front;
         inputs_.pop_front();
         return readData(data, maxlen);
