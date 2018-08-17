@@ -130,6 +130,7 @@ unix {
 
 #unix: CONFIG += link_pkgconfig
 #unix: PKGCONFIG += protobuf
-PROTOBUF_THING = android
+android: PROTOBUF_THING = android
+!android: PROTOBUF_THING = desktop
 INCLUDEPATH += /home/sarah/protobuf-cross-compile/$$PROTOBUF_THING/include
 LIBS += -L/home/sarah/protobuf-cross-compile/$$PROTOBUF_THING/lib -lprotobuf
