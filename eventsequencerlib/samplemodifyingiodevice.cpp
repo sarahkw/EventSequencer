@@ -7,16 +7,28 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
 
 qint64 SampleModifyingIODevice::writeData(const char *data, qint64 len)
 {
+    Q_ASSERT(false); // Not impl
     return -1;
 }
 
 bool SampleModifyingIODevice::open(QIODevice::OpenMode mode)
 {
-    return QIODevice::open(mode);
+    if (inferior_->open(mode)) {
+        // Base open never fails. Not worth supporting handling of base failure.
+        QIODevice::open(mode);
+        return true;
+    } else {
+        setErrorString(QString("Inferior device failed to open: %1")
+                           .arg(inferior_->errorString()));
+        return false;
+    }
 }
 
 void SampleModifyingIODevice::close()
 {
+    if (inferior_->isOpen()) {
+        inferior_->close();
+    }
     QIODevice::close();
 }
 

@@ -13,8 +13,9 @@ class SampleModifyingIODevice : public QIODevice
     Q_DISABLE_COPY(SampleModifyingIODevice)
 
 public:
-    // Returns number of units consumed.
-    using ModifierFunction = std::function<unsigned(char* data, unsigned dataUnits, unsigned bytesPerUnit)>;
+    using ModifierFunction = std::function<void(
+        char* data, unsigned dataUnits, unsigned bytesPerUnit)>;
+
 private:
     ModifierFunction modifierFn_;
 
@@ -22,12 +23,15 @@ protected:
 
     qint64 readData(char *data, qint64 maxlen) override;
     qint64 writeData(const char *data, qint64 len) override;
+
+public:
+
     bool open(OpenMode mode) override;
     void close() override;
 
-public:
     // Takes ownership of inferior.
-    SampleModifyingIODevice(QIODevice* inferior, unsigned bytesPerUnit, ModifierFunction modifierFn);
+    SampleModifyingIODevice(QIODevice* inferior, unsigned bytesPerUnit,
+                            ModifierFunction modifierFn);
     ~SampleModifyingIODevice() override;
 };
 
