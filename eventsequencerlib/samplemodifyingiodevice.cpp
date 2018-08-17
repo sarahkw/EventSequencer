@@ -7,13 +7,28 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
 
 qint64 SampleModifyingIODevice::writeData(const char *data, qint64 len)
 {
-    Q_UNUSED(data);
-    Q_UNUSED(len);
     return -1;
 }
 
-SampleModifyingIODevice::SampleModifyingIODevice()
+bool SampleModifyingIODevice::open(QIODevice::OpenMode mode)
 {
-
+    return QIODevice::open(mode);
 }
 
+void SampleModifyingIODevice::close()
+{
+    QIODevice::close();
+}
+
+SampleModifyingIODevice::SampleModifyingIODevice(
+    QIODevice* inferior, unsigned bytesPerUnit,
+    SampleModifyingIODevice::ModifierFunction modifierFn)
+    : inferior_(inferior), bytesPerUnit_(bytesPerUnit), modifierFn_(modifierFn)
+{
+    incompleteBuffer_.resize(bytesPerUnit_);
+}
+
+SampleModifyingIODevice::~SampleModifyingIODevice()
+{
+    delete inferior_;
+}
