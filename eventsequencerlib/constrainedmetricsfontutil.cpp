@@ -204,7 +204,8 @@ ConstrainedMetricsFontUtil::ConstrainedMetricsFontUtil(QObject *parent) : QObjec
 
 QFont ConstrainedMetricsFontUtil::defaultFont()
 {
-    return QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    return {"Droid Sans Mono"};
+    //return QFontDatabase::systemFont(QFontDatabase::FixedFont);
 }
 
 int ConstrainedMetricsFontUtil::fontCharacterWidth(QFont font)
