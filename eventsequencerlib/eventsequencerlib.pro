@@ -128,5 +128,4 @@ unix {
     INSTALLS += target
 }
 
-unix: CONFIG += link_pkgconfig
-unix: PKGCONFIG += protobuf
+include(../protobuf.pri)

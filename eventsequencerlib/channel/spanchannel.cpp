@@ -131,9 +131,11 @@ void SpanChannel::waiterResultAboutToUnset(QObject *channel)
 SpanChannel::SpanChannel(ChannelIndex channelIndex, Document& d, QObject* parent)
     : ChannelBase(channelIndex, d, parent), channelIndex_(channelIndex), d_(d)
 {
+    // As of Qt 5.11.1 we can't use qOverload for Android because the g++ is too
+    // old.
     QObject::connect(this, &SpanChannel::setSpan,
                      &d.channelPositionManager(),
-                     qOverload<ChannelIndex, unsigned>(&VisualPositionManager::setSpan));
+                     QOverload<ChannelIndex, unsigned>{}(&VisualPositionManager::setSpan));
 }
 
 SpanChannel::~SpanChannel()

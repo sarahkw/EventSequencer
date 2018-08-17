@@ -14,6 +14,9 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     bool scoutMode = false;
+#ifdef Q_OS_ANDROID
+    scoutMode = true;
+#else
     {
         QCommandLineParser parser;
         parser.addHelpOption();
@@ -23,8 +26,11 @@ int main(int argc, char *argv[])
             scoutMode = true;
         }
     }
+#endif
 
-    // For now, scoutMode is used to prototype Android app.
+    // Fusion is a desktop-looking theme. Scout mode by nature shouldn't look
+    // like a desktop application, because if you're scouting, you should be
+    // mobile.
     if (!scoutMode) {
         QQuickStyle::setStyle("Fusion");
     }
