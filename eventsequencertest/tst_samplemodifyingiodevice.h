@@ -5,6 +5,11 @@
 
 #include <QBuffer>
 
+inline void PrintTo(const QString& s, ::std::ostream *os)
+{
+    *os << s.toStdString();
+}
+
 TEST(SampleModifyingIODevice, BasicRead)
 {
     QByteArray input = QString("FEEDME").toUtf8();

@@ -2,7 +2,8 @@
 
 qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
 {
-    return -1;
+    // TODO Impl
+    return inferior_->read(data, maxlen);
 }
 
 qint64 SampleModifyingIODevice::writeData(const char *data, qint64 len)
