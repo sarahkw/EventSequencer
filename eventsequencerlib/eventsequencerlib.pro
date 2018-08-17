@@ -70,7 +70,8 @@ SOURCES += \
     countchannelindex.cpp \
     errorreportingcontext.cpp \
     conditionalerror.cpp \
-    qmlimmediatedestructor.cpp
+    qmlimmediatedestructor.cpp \
+    samplemodifyingiodevice.cpp
 
 
 HEADERS += \
@@ -121,7 +122,8 @@ HEADERS += \
     countchannelindex.h \
     errorreportingcontext.h \
     conditionalerror.h \
-    qmlimmediatedestructor.h
+    qmlimmediatedestructor.h \
+    samplemodifyingiodevice.h
 
 unix {
     target.path = /usr/lib

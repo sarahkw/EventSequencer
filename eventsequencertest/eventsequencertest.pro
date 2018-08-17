@@ -14,7 +14,8 @@ HEADERS += \
     tst_visualpositionmanager.h \
     tst_channelindex.h \
     printto_channelindex.h \
-    tst_managedresources.h
+    tst_managedresources.h \
+    tst_samplemodifyingiodevice.h
 
 SOURCES += \
         main.cpp
