@@ -204,8 +204,13 @@ ConstrainedMetricsFontUtil::ConstrainedMetricsFontUtil(QObject *parent) : QObjec
 
 QFont ConstrainedMetricsFontUtil::defaultFont()
 {
+#ifdef Q_OS_ANDROID
+    // I've observed that Android doesn't get a default fixed font. Unfortunately,
+    // hardcode an Android font.
     return {"Droid Sans Mono"};
-    //return QFontDatabase::systemFont(QFontDatabase::FixedFont);
+#else
+    return QFontDatabase::systemFont(QFontDatabase::FixedFont);
+#endif
 }
 
 int ConstrainedMetricsFontUtil::fontCharacterWidth(QFont font)
