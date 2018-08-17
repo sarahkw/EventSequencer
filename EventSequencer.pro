@@ -10,10 +10,12 @@ SUBDIRS += \
 #      SUBDIRS += eventsequencertest
 #  }
 #
-# It feels like I have to try to outsmart qmake.
+# Doing that will include the tests on Android anyway.
 
 EVENTSEQUENCERTEST_STR = "eventsequencertest"
 android {
+    # Couldn't find a way to look at test outputs on Android. If the tests even
+    # run...
     EVENTSEQUENCERTEST_STR = ""
 }
 SUBDIRS += $$EVENTSEQUENCERTEST_STR
