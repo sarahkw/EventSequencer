@@ -14,16 +14,22 @@ TEST(SampleModifyingIODevice, BasicRead)
 {
     QByteArray input = QString("FEEDME").toUtf8();
 
-    const auto modifyFn = [](char* data, unsigned dataUnits, unsigned bytesPerUnit) {
+    const auto modifyFn = [](char* data, unsigned dataUnits,
+                             unsigned bytesPerUnit, char* anExtraUnit) {
+
         for (unsigned i = 0; i < dataUnits; ++i) {
             std::reverse(data + i * bytesPerUnit,
                          data + (i + 1) * bytesPerUnit);
+        }
+
+        if (anExtraUnit != nullptr) {
+            std::reverse(anExtraUnit, anExtraUnit + bytesPerUnit);
         }
     };
 
     SampleModifyingIODevice smiod(new QBuffer(&input), 2, modifyFn);
     ASSERT_TRUE(smiod.open(QIODevice::ReadOnly));
     QString str(smiod.readAll());
-    EXPECT_EQ(str, "EFEDEM");
+    EXPECT_EQ(str, "EFDEEM");
     smiod.close();
 }
