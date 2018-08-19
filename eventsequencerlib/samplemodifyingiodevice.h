@@ -21,9 +21,8 @@ class SampleModifyingIODevice : public QIODevice
     Q_DISABLE_COPY(SampleModifyingIODevice)
 
 public:
-    using ModifierFunction =
-        std::function<void(char* data, unsigned dataUnits,
-                           unsigned bytesPerUnit, char* anExtraUnit)>;
+    using ModifierFunction = std::function<void(char* data, unsigned dataUnits,
+                                                unsigned bytesPerUnit)>;
 
 private:
     ModifierFunction modifierFn_;

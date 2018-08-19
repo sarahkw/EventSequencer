@@ -75,7 +75,8 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
     if (extraUnitReadBytes > 0) {
         Q_ASSERT(extraUnitReadBytes == bytesPerUnit_);
 
-        modifierFn_(data, directReadBytes / bytesPerUnit_, bytesPerUnit_, extraUnit.data());
+        modifierFn_(data, directReadBytes / bytesPerUnit_, bytesPerUnit_);
+        modifierFn_(extraUnit.data(), 1, bytesPerUnit_);
 
         qint64 bytesInside = maxlen - directReadBytes;
         Q_ASSERT(bytesInside > 0);
@@ -90,7 +91,7 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
         return maxlen;
     } else {
         Q_ASSERT(directReadBytes % bytesPerUnit_ == 0);
-        modifierFn_(data, directReadBytes / bytesPerUnit_, bytesPerUnit_, nullptr);
+        modifierFn_(data, directReadBytes / bytesPerUnit_, bytesPerUnit_);
         return directReadBytes;
     }
 }

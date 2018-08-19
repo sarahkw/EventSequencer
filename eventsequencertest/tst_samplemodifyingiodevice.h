@@ -15,15 +15,11 @@ TEST(SampleModifyingIODevice, BasicRead)
     QByteArray input = QString("FEEDME").toUtf8();
 
     const auto modifyFn = [](char* data, unsigned dataUnits,
-                             unsigned bytesPerUnit, char* anExtraUnit) {
+                             unsigned bytesPerUnit) {
 
         for (unsigned i = 0; i < dataUnits; ++i) {
             std::reverse(data + i * bytesPerUnit,
                          data + (i + 1) * bytesPerUnit);
-        }
-
-        if (anExtraUnit != nullptr) {
-            std::reverse(anExtraUnit, anExtraUnit + bytesPerUnit);
         }
     };
 
