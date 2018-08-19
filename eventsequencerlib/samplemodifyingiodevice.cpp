@@ -57,10 +57,10 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
 
     const qint64 unitsRequested = maxlen / bytesPerUnit_;
     const qint64 unitsRequestedLen = unitsRequested * bytesPerUnit_;
-    const bool extraUnitWanted = unitsRequestedLen < maxlen;
+    const qint64 partialLen = maxlen - unitsRequestedLen;
 
     std::vector<char> extraUnit;
-    if (extraUnitWanted) {
+    if (partialLen > 0) {
         extraUnit.resize(bytesPerUnit_);
     }
 
@@ -72,28 +72,29 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
         extraUnit.data(), extraUnit.size(), &extraUnitReadBytes,
                 bytesPerUnit_);
 
-    if (extraUnitReadBytes > 0) {
-        Q_ASSERT(extraUnitReadBytes == bytesPerUnit_);
+    qint64 retBytes = 0;
 
+    {
+        Q_ASSERT(directReadBytes % bytesPerUnit_ == 0);
         modifierFn_(data, directReadBytes / bytesPerUnit_, bytesPerUnit_);
-        modifierFn_(extraUnit.data(), 1, bytesPerUnit_);
+        retBytes += directReadBytes;
+    }
 
-        qint64 bytesInside = maxlen - directReadBytes;
-        Q_ASSERT(bytesInside > 0);
-        Q_ASSERT(bytesInside < bytesPerUnit_);
+    if (extraUnitReadBytes) {
+        Q_ASSERT(extraUnitReadBytes == bytesPerUnit_);
+        modifierFn_(extraUnit.data(), 1, bytesPerUnit_);
 
         Q_ASSERT(buffer_.empty());
 
-        std::copy_n(extraUnit.begin(), bytesInside, data + directReadBytes);
-        std::copy(extraUnit.begin() + bytesInside,
+        std::copy_n(extraUnit.begin(), partialLen, data + unitsRequestedLen);
+        std::copy(extraUnit.begin() + partialLen,
                   extraUnit.end(),
                   std::back_inserter(buffer_));
-        return maxlen;
-    } else {
-        Q_ASSERT(directReadBytes % bytesPerUnit_ == 0);
-        modifierFn_(data, directReadBytes / bytesPerUnit_, bytesPerUnit_);
-        return directReadBytes;
+
+        retBytes += partialLen;
     }
+
+    return retBytes;
 }
 
 qint64 SampleModifyingIODevice::writeData(const char *data, qint64 len)
