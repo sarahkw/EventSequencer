@@ -3,26 +3,40 @@
 #include <cstring>
 #include <QDebug>
 
+namespace {
+struct StartReadingFromBuffer {
+    StartReadingFromBuffer(std::vector<char>& buffer, char* target, qint64 targetBytes)
+    {
+        const qint64 bytesComingFromBuffer = qMin<qint64>(buffer.size(), targetBytes);
+        const qint64 bytesComingFromDevice = targetBytes - bytesComingFromBuffer;
+
+        memcpy(target, buffer.data(), bytesComingFromBuffer);
+        buffer.erase(buffer.begin(), buffer.begin() + bytesComingFromBuffer);
+
+        this->bytesFromBuffer = bytesComingFromBuffer;
+        this->bytesStillNeeded = bytesComingFromDevice;
+    }
+    qint64 bytesFromBuffer;
+    qint64 bytesStillNeeded;
+};
+} // namespace anonymous
+
 qint64 SampleModifyingIODevice::readFromBufferAndIODevice(
     char* output, qint64 outputBytes, qint64 multiplesOf)
 {
     Q_ASSERT(outputBytes % multiplesOf == 0);
 
-    const qint64 bytesComingFromBuffer = qMin<qint64>(buffer_.size(), outputBytes);
-    const qint64 bytesComingFromDevice = outputBytes - bytesComingFromBuffer;
-
-    memcpy(output, buffer_.data(), bytesComingFromBuffer);
-    buffer_.erase(buffer_.begin(), buffer_.begin() + bytesComingFromBuffer);
+    const StartReadingFromBuffer srfb(buffer_, output, outputBytes);
 
     const qint64 readLen =
-        inferior_->read(output + bytesComingFromBuffer, bytesComingFromDevice);
+        inferior_->read(output + srfb.bytesFromBuffer, srfb.bytesStillNeeded);
 
     qint64 bytesWeHaveWritten;
     if (readLen >= 0) {
-        bytesWeHaveWritten = bytesComingFromBuffer + readLen;
+        bytesWeHaveWritten = srfb.bytesFromBuffer + readLen;
     } else {
         inferiorFlaggedError_ = true;
-        bytesWeHaveWritten = bytesComingFromBuffer;
+        bytesWeHaveWritten = srfb.bytesFromBuffer;
     }
 
     const qint64 bytesWeShouldHaveWritten = bytesWeHaveWritten / multiplesOf * multiplesOf;
