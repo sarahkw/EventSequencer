@@ -15,9 +15,11 @@ struct StartReadingFromBuffer {
 
         this->bytesFromBuffer = bytesComingFromBuffer;
         this->bytesStillNeeded = bytesComingFromDevice;
+        this->continueWritingAt = target + bytesComingFromBuffer;
     }
     qint64 bytesFromBuffer;
     qint64 bytesStillNeeded;
+    char* continueWritingAt;
 };
 } // namespace anonymous
 
@@ -26,23 +28,22 @@ qint64 SampleModifyingIODevice::readFromBufferAndIODevice(
 {
     Q_ASSERT(outputBytes % multiplesOf == 0);
 
-    const StartReadingFromBuffer srfb(buffer_, output, outputBytes);
+    qint64 bytesWeHaveWritten = inferior_->read(output, outputBytes);
 
-    const qint64 readLen =
-        inferior_->read(output + srfb.bytesFromBuffer, srfb.bytesStillNeeded);
+    if (bytesWeHaveWritten >= 0) {
+        const qint64 bytesWeShouldHaveWritten = bytesWeHaveWritten / multiplesOf * multiplesOf;
 
-    qint64 bytesWeHaveWritten;
-    if (readLen >= 0) {
-        bytesWeHaveWritten = srfb.bytesFromBuffer + readLen;
+        auto from = std::reverse_iterator<char*>(output + bytesWeHaveWritten);
+        auto to = std::reverse_iterator<char*>(output + bytesWeShouldHaveWritten);
+        for (; from != to; ++from) {
+            inferior_->ungetChar(*from);
+        }
+
+        return bytesWeShouldHaveWritten;
     } else {
         inferiorFlaggedError_ = true;
-        bytesWeHaveWritten = srfb.bytesFromBuffer;
+        return 0;
     }
-
-    const qint64 bytesWeShouldHaveWritten = bytesWeHaveWritten / multiplesOf * multiplesOf;
-    std::copy(output + bytesWeShouldHaveWritten, output + bytesWeHaveWritten,
-              std::back_inserter(buffer_));
-    return bytesWeShouldHaveWritten;
 }
 
 void SampleModifyingIODevice::read2FromBufferAndIODevice(
@@ -69,9 +70,11 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
         return -1;
     }
 
-    const qint64 unitsRequested = maxlen / bytesPerUnit_;
+    const StartReadingFromBuffer srfb(buffer_, data, maxlen);
+
+    const qint64 unitsRequested = srfb.bytesStillNeeded / bytesPerUnit_;
     const qint64 unitsRequestedLen = unitsRequested * bytesPerUnit_;
-    const qint64 partialLen = maxlen - unitsRequestedLen;
+    const qint64 partialLen = srfb.bytesStillNeeded - unitsRequestedLen;
 
     std::vector<char> extraUnit;
     if (partialLen > 0) {
@@ -82,11 +85,11 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
     qint64 extraUnitReadBytes = 0;
 
     read2FromBufferAndIODevice(
-        data, unitsRequestedLen, &directReadBytes,
+        srfb.continueWritingAt, unitsRequestedLen, &directReadBytes,
         extraUnit.data(), extraUnit.size(), &extraUnitReadBytes,
                 bytesPerUnit_);
 
-    qint64 retBytes = 0;
+    qint64 retBytes = srfb.bytesFromBuffer;
 
     {
         Q_ASSERT(directReadBytes % bytesPerUnit_ == 0);
@@ -100,7 +103,7 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
 
         Q_ASSERT(buffer_.empty());
 
-        std::copy_n(extraUnit.begin(), partialLen, data + unitsRequestedLen);
+        std::copy_n(extraUnit.begin(), partialLen, srfb.continueWritingAt + unitsRequestedLen);
         std::copy(extraUnit.begin() + partialLen,
                   extraUnit.end(),
                   std::back_inserter(buffer_));
