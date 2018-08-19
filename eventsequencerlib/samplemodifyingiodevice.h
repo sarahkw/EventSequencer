@@ -12,7 +12,7 @@ class SampleModifyingIODevice : public QIODevice
     std::vector<char> buffer_;
     bool inferiorFlaggedError_ = false;
     qint64 readFromBufferAndIODevice(
-        char* output, qint64 maxlen, qint64 multiplesOf);
+        char* output, qint64 outputBytes, qint64 multiplesOf);
     void read2FromBufferAndIODevice(
         char* output1, qint64 output1len, qint64* output1read,
         char* output2, qint64 output2len, qint64* output2read,

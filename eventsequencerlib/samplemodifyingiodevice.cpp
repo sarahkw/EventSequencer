@@ -4,12 +4,12 @@
 #include <QDebug>
 
 qint64 SampleModifyingIODevice::readFromBufferAndIODevice(
-    char* output, qint64 maxlen, qint64 multiplesOf)
+    char* output, qint64 outputBytes, qint64 multiplesOf)
 {
-    Q_ASSERT(maxlen % multiplesOf == 0);
+    Q_ASSERT(outputBytes % multiplesOf == 0);
 
-    const qint64 bytesComingFromBuffer = qMin<qint64>(buffer_.size(), maxlen);
-    const qint64 bytesComingFromDevice = maxlen - bytesComingFromBuffer;
+    const qint64 bytesComingFromBuffer = qMin<qint64>(buffer_.size(), outputBytes);
+    const qint64 bytesComingFromDevice = outputBytes - bytesComingFromBuffer;
 
     memcpy(output, buffer_.data(), bytesComingFromBuffer);
     buffer_.erase(buffer_.begin(), buffer_.begin() + bytesComingFromBuffer);
@@ -42,9 +42,7 @@ void SampleModifyingIODevice::read2FromBufferAndIODevice(
     if (inferiorFlaggedError_ || *output1read != output1len) {
         // No-op: Can't fill output1, so don't try output2
     } else {
-        if (output2 != nullptr) {
-            *output2read = readFromBufferAndIODevice(output2, output2len, multiplesOf);
-        }
+        *output2read = readFromBufferAndIODevice(output2, output2len, multiplesOf);
     }
 }
 
@@ -57,43 +55,43 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
         return -1;
     }
 
-    const qint64 fullUnitsRequested = maxlen / bytesPerUnit_;
-    const qint64 fullUnitsLen = fullUnitsRequested * bytesPerUnit_;
-    const bool extraUnitWanted = fullUnitsLen < maxlen;
+    const qint64 unitsRequested = maxlen / bytesPerUnit_;
+    const qint64 unitsRequestedLen = unitsRequested * bytesPerUnit_;
+    const bool extraUnitWanted = unitsRequestedLen < maxlen;
 
     std::vector<char> extraUnit;
     if (extraUnitWanted) {
         extraUnit.resize(bytesPerUnit_);
     }
 
-    qint64 fullUnitReadBytes = 0;
+    qint64 directReadBytes = 0;
     qint64 extraUnitReadBytes = 0;
 
     read2FromBufferAndIODevice(
-        data, fullUnitsLen, &fullUnitReadBytes,
+        data, unitsRequestedLen, &directReadBytes,
         extraUnit.data(), extraUnit.size(), &extraUnitReadBytes,
                 bytesPerUnit_);
 
     if (extraUnitReadBytes > 0) {
         Q_ASSERT(extraUnitReadBytes == bytesPerUnit_);
 
-        modifierFn_(data, fullUnitsRequested, bytesPerUnit_, extraUnit.data());
+        modifierFn_(data, directReadBytes / bytesPerUnit_, bytesPerUnit_, extraUnit.data());
 
-        qint64 bytesInside = maxlen - fullUnitsLen;
+        qint64 bytesInside = maxlen - directReadBytes;
         Q_ASSERT(bytesInside > 0);
         Q_ASSERT(bytesInside < bytesPerUnit_);
 
         Q_ASSERT(buffer_.empty());
 
-        std::copy_n(extraUnit.begin(), bytesInside, data + fullUnitsLen);
+        std::copy_n(extraUnit.begin(), bytesInside, data + directReadBytes);
         std::copy(extraUnit.begin() + bytesInside,
                   extraUnit.end(),
                   std::back_inserter(buffer_));
         return maxlen;
     } else {
-        Q_ASSERT(fullUnitReadBytes % bytesPerUnit_ == 0);
-        modifierFn_(data, fullUnitReadBytes / bytesPerUnit_, bytesPerUnit_, nullptr);
-        return fullUnitReadBytes;
+        Q_ASSERT(directReadBytes % bytesPerUnit_ == 0);
+        modifierFn_(data, directReadBytes / bytesPerUnit_, bytesPerUnit_, nullptr);
+        return directReadBytes;
     }
 }
 
