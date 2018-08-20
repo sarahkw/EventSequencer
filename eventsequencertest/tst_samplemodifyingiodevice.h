@@ -209,3 +209,52 @@ TEST(SampleModifyingIODevice, Write_Flush)
 
     EXPECT_EQ(smiod.incompleteByteCount(), 0);
 }
+
+class TestRead : public QBuffer {
+    QByteArray myData_;
+
+    bool error_ = false;
+    qint64 currentBytesToRead_ = 99999;
+public:
+    TestRead(QString s) : QBuffer(&myData_)
+    {
+        myData_ = s.toUtf8();
+    }
+
+    void setLimit(qint64 limit) { currentBytesToRead_ = limit; }
+    void resetLimit() { currentBytesToRead_ = 99999; }
+    void setError() { error_ = true; }
+    void unsetError() { error_ = false; }
+
+    qint64 readData(char *data, qint64 maxlen) override
+    {
+        if (error_) return -1;
+
+        auto readlimit = qMin(maxlen, currentBytesToRead_);
+        auto actualread = QBuffer::readData(data, readlimit);
+        if (actualread > 0) {
+            currentBytesToRead_ -= actualread;
+        }
+        return actualread;
+    }
+    qint64 writeData(const char *data, qint64 len) override { return -1; }
+};
+
+TEST(SampleModifyingIODevice, Read_Mocked_Basic)
+{
+    using testing::StartsWith;
+    using testing::Invoke;
+    using testing::Return;
+    using testing::_;
+
+    auto inferior = std::make_shared<TestRead>("HELLO!");
+    ASSERT_TRUE(inferior->open(QIODevice::ReadOnly));
+
+    SampleModifyingIODevice smiod(inferior, 3, reverseFn);
+    ASSERT_TRUE(smiod.open(QIODevice::ReadOnly));
+
+    inferior->setLimit(4);
+    EXPECT_EQ(smiod.readAll(), QString("LEH"));
+    inferior->resetLimit();
+    EXPECT_EQ(smiod.readAll(), QString("!OL"));
+}
