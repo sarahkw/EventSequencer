@@ -161,3 +161,51 @@ TEST(SampleModifyingIODevice, Write_Mocked_Failures_1)
         EXPECT_TRUE(smiod.flush());
     }
 }
+
+TEST(SampleModifyingIODevice, Write_Flush)
+{
+    using testing::Return;
+    using testing::StartsWith;
+
+    auto output = std::make_shared<MockIODevice>();
+    ASSERT_TRUE(output->open(QIODevice::WriteOnly));
+
+    SampleModifyingIODevice smiod(output, 3, reverseFn);
+    ASSERT_TRUE(smiod.open(QIODevice::WriteOnly));
+
+    {
+        EXPECT_CALL(*output, writeData(StartsWith("LEH!OL"), 6)).WillOnce(Return(-1));
+        QString chunk("HELLO!!");
+        EXPECT_THAT(smiod.write(chunk.toUtf8()), chunk.size());
+    }
+
+    {
+        EXPECT_CALL(*output, writeData(StartsWith("LEH!OL"), 6)).WillOnce(Return(-1));
+        EXPECT_FALSE(smiod.flush());
+    }
+
+    {
+        EXPECT_CALL(*output, writeData(StartsWith("LEH!OL"), 6)).WillOnce(Return(0));
+        EXPECT_FALSE(smiod.flush());
+    }
+
+    {
+        EXPECT_CALL(*output, writeData(StartsWith("LEH!OL"), 6)).WillOnce(Return(1));
+        EXPECT_FALSE(smiod.flush());
+    }
+
+    {
+        EXPECT_CALL(*output, writeData(StartsWith("EH!OL"), 5)).WillOnce(Return(5));
+        EXPECT_TRUE(smiod.flush());
+    }
+
+    EXPECT_EQ(smiod.incompleteByteCount(), 1);
+
+    {
+        EXPECT_CALL(*output, writeData(StartsWith("21!"), 3)).WillOnce(Return(3));
+        QString chunk("12");
+        EXPECT_THAT(smiod.write(chunk.toUtf8()), chunk.size());
+    }
+
+    EXPECT_EQ(smiod.incompleteByteCount(), 0);
+}
