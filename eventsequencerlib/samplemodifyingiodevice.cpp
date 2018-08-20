@@ -193,7 +193,7 @@ qint64 SampleModifyingIODevice::writeData(const char *data, qint64 len)
     COVERAGE_COOKIE_COND(fullUnitsBytes < bytesWritten, "COOKIE-38ca1");
     COVERAGE_COOKIE_COND(fullUnitsBytes == bytesWritten, "COOKIE-38ca2");
 
-    COVERAGE_COOKIE_COND(fullUnitsBytes > modifyBuffer.size(), "COOKIE-34ef5");
+    //not-possible COVERAGE_COOKIE_COND(fullUnitsBytes > modifyBuffer.size(), "COOKI-34ef5");
     COVERAGE_COOKIE_COND(fullUnitsBytes < modifyBuffer.size(), "COOKIE-34ef6");
     COVERAGE_COOKIE_COND(fullUnitsBytes == modifyBuffer.size(), "COOKIE-34ef7");
 

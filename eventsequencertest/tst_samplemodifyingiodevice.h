@@ -29,7 +29,7 @@ TEST(SampleModifyingIODevice, BasicRead)
     smiod.close();
 }
 
-TEST(SampleModifyingIODevice, BasicWrite)
+TEST(SampleModifyingIODevice, Write_2_Basic)
 {
     QByteArray input = QString("AUTUMN").toUtf8();
 
@@ -42,4 +42,36 @@ TEST(SampleModifyingIODevice, BasicWrite)
 
     QString str(output->data());
     EXPECT_EQ(str, "TUANMU");
+}
+
+TEST(SampleModifyingIODevice, Write_2_BiggerFirst)
+{
+    QString input1("AUTU"), input2("MN");
+
+    auto output = std::make_shared<QBuffer>();
+    ASSERT_TRUE(output->open(QIODevice::WriteOnly));
+
+    SampleModifyingIODevice smiod(output, 3, reverseFn);
+    ASSERT_TRUE(smiod.open(QIODevice::WriteOnly));
+
+    EXPECT_THAT(smiod.write(input1.toUtf8()), input1.size());
+    EXPECT_EQ(QString(output->data()), "TUA");
+    EXPECT_THAT(smiod.write(input2.toUtf8()), input2.size());
+    EXPECT_EQ(QString(output->data()), "TUANMU");
+}
+
+TEST(SampleModifyingIODevice, Write_2_SmallerFirst)
+{
+    QString input1("AU"), input2("TUMN");
+
+    auto output = std::make_shared<QBuffer>();
+    ASSERT_TRUE(output->open(QIODevice::WriteOnly));
+
+    SampleModifyingIODevice smiod(output, 3, reverseFn);
+    ASSERT_TRUE(smiod.open(QIODevice::WriteOnly));
+
+    EXPECT_THAT(smiod.write(input1.toUtf8()), input1.size());
+    EXPECT_EQ(QString(output->data()), "");
+    EXPECT_THAT(smiod.write(input2.toUtf8()), input2.size());
+    EXPECT_EQ(QString(output->data()), "TUANMU");
 }
