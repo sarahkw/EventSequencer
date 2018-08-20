@@ -22,7 +22,7 @@ TEST(SampleModifyingIODevice, BasicRead)
         }
     };
 
-    SampleModifyingIODevice smiod(new QBuffer(&input), 2, modifyFn);
+    SampleModifyingIODevice smiod(std::make_shared<QBuffer>(&input), 2, modifyFn);
     ASSERT_TRUE(smiod.open(QIODevice::ReadOnly));
     QString str(smiod.readAll());
     EXPECT_EQ(str, "EFDEEM");

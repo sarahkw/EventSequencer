@@ -3,10 +3,13 @@
 
 #include <QIODevice>
 #include <functional>
+#include <memory>
 
 class SampleModifyingIODevice : public QIODevice
 {
-    QIODevice* inferior_;
+    // Is shared_ptr because if we're a writer, we shouldn't need to take
+    // ownership.
+    std::shared_ptr<QIODevice> inferior_;
     unsigned bytesPerUnit_;
 
     std::vector<char> buffer_;
@@ -42,8 +45,8 @@ public:
     bool flush();
 
     // Takes ownership of inferior.
-    SampleModifyingIODevice(QIODevice* inferior, unsigned bytesPerUnit,
-                            ModifierFunction modifierFn);
+    SampleModifyingIODevice(std::shared_ptr<QIODevice> inferior,
+                            unsigned bytesPerUnit, ModifierFunction modifierFn);
     ~SampleModifyingIODevice() override;
 };
 

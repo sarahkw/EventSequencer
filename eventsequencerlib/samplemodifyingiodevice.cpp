@@ -190,7 +190,7 @@ bool SampleModifyingIODevice::flush()
 }
 
 SampleModifyingIODevice::SampleModifyingIODevice(
-    QIODevice* inferior, unsigned bytesPerUnit,
+    std::shared_ptr<QIODevice> inferior, unsigned bytesPerUnit,
     SampleModifyingIODevice::ModifierFunction modifierFn)
     : inferior_(inferior), bytesPerUnit_(bytesPerUnit), modifierFn_(modifierFn)
 {
@@ -199,5 +199,4 @@ SampleModifyingIODevice::SampleModifyingIODevice(
 
 SampleModifyingIODevice::~SampleModifyingIODevice()
 {
-    delete inferior_;
 }
