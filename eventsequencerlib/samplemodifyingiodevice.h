@@ -11,6 +11,9 @@ class SampleModifyingIODevice : public QIODevice
 
     std::vector<char> buffer_;
     bool inferiorFlaggedError_ = false;
+
+    std::vector<char> incompleteWriteBuffer_;
+
     qint64 readFromBufferAndIODevice(
         char* output, qint64 outputBytes, qint64 multiplesOf);
     void read2FromBufferAndIODevice(
@@ -21,7 +24,7 @@ class SampleModifyingIODevice : public QIODevice
     Q_DISABLE_COPY(SampleModifyingIODevice)
 
 public:
-    using ModifierFunction = std::function<void(char* data, unsigned dataUnits,
+    using ModifierFunction = std::function<void(const char* data, unsigned dataUnits,
                                                 unsigned bytesPerUnit)>;
 
 private:
