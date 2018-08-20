@@ -179,6 +179,16 @@ void SampleModifyingIODevice::close()
     QIODevice::close();
 }
 
+bool SampleModifyingIODevice::flush()
+{
+    if ((openMode() & QIODevice::WriteOnly) == 0) {
+        return true;
+    }
+
+    // TODO Implement!
+    return false;
+}
+
 SampleModifyingIODevice::SampleModifyingIODevice(
     QIODevice* inferior, unsigned bytesPerUnit,
     SampleModifyingIODevice::ModifierFunction modifierFn)

@@ -39,6 +39,7 @@ public:
 
     bool open(OpenMode mode) override;
     void close() override;
+    bool flush();
 
     // Takes ownership of inferior.
     SampleModifyingIODevice(QIODevice* inferior, unsigned bytesPerUnit,
