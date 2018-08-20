@@ -155,6 +155,7 @@ qint64 SampleModifyingIODevice::writeData(const char *data, qint64 len)
         qint64 writtenLen = inferior_->write(incompleteWriteBuffer_.data(),
                                              incompleteWriteBuffer_.size());
         const bool success = writtenLen == incompleteWriteBuffer_.size();
+        COVERAGE_COOKIE_COND(writtenLen > 0 && writtenLen < incompleteWriteBuffer_.size(), "COOKIE-26b5a");
         qint64 bytesWritten = qMax<qint64>(writtenLen, 0);
         incompleteWriteBuffer_.erase(incompleteWriteBuffer_.begin(),
                                      incompleteWriteBuffer_.begin() + bytesWritten);
@@ -251,6 +252,7 @@ bool SampleModifyingIODevice::flush()
 
         COVERAGE_COOKIE_COND(allWritten, "COOKIE-2181d");
         COVERAGE_COOKIE_COND(!allWritten, "COOKIE-2181e");
+        COVERAGE_COOKIE_COND(result > 0 && !allWritten, "COOKIE-1562a");
 
         return allWritten;
     } else {
