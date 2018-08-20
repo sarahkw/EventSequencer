@@ -116,8 +116,7 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
 
 qint64 SampleModifyingIODevice::writeData(const char *data, qint64 len)
 {
-    const qint64 initialLen = len;
-
+    Q_ASSERT(len >= 0);
     if (incompleteWriteBuffer_.size() > 0) {
         qint64 writtenLen = inferior_->write(incompleteWriteBuffer_.data(),
                                              incompleteWriteBuffer_.size());
@@ -132,46 +131,29 @@ qint64 SampleModifyingIODevice::writeData(const char *data, qint64 len)
         }
     }
 
-    Q_ASSERT(buffer_.size() == 0 || buffer_.size() < bytesPerUnit_);
-    if (buffer_.size() > 0) {
-        qint64 bytesToCompleteBuffer = qMin<qint64>(bytesPerUnit_ - buffer_.size(), len);
-        if (bytesToCompleteBuffer > 0) {
+    // We have to make a copy because we can't modify data directly.
+    std::vector<char> modifyBuffer;
+    modifyBuffer.reserve(buffer_.size() + len);
+    std::copy(buffer_.begin(), buffer_.end(), std::back_inserter(modifyBuffer));
+    buffer_.clear();
+    std::copy_n(data, len, std::back_inserter(modifyBuffer));
 
-            // CONSUME bytesToCompleteBuffer from input
-            std::copy_n(data, bytesToCompleteBuffer, std::back_inserter(buffer_));
-            data += bytesToCompleteBuffer;
-            len -= bytesToCompleteBuffer;
-
-            modifierFn_(buffer_.data(), 1, bytesPerUnit_);
-
-            qint64 written = inferior_->write(buffer_.data(), buffer_.size());
-            qint64 bytesWritten = qMin<qint64>(written, 0);
-            const bool success = written == buffer_.size();
-
-            std::copy(buffer_.begin() + bytesWritten, buffer_.end(),
-                      std::back_inserter(incompleteWriteBuffer_));
-            buffer_.clear();
-
-            if (!success) {
-                return bytesToCompleteBuffer;
-            }
-        }
-    }
-
-    const qint64 fullUnits = len / bytesPerUnit_;
+    const qint64 fullUnits = modifyBuffer.size() / bytesPerUnit_;
     const qint64 fullUnitsBytes = fullUnits * bytesPerUnit_;
 
-    modifierFn_(data, fullUnits, bytesPerUnit_);
+    char* writePtr = modifyBuffer.data();
 
-    qint64 written = inferior_->write(data, fullUnitsBytes);
+    modifierFn_(writePtr, fullUnits, bytesPerUnit_);
+
+    qint64 written = inferior_->write(writePtr, fullUnitsBytes);
     qint64 bytesWritten = qMin<qint64>(written, 0);
 
-    std::copy(data + bytesWritten, data + fullUnitsBytes, std::back_inserter(incompleteWriteBuffer_));
-    std::copy(data + fullUnitsBytes, data + len, std::back_inserter(buffer_));
+    std::copy(writePtr + bytesWritten, writePtr + fullUnitsBytes, std::back_inserter(incompleteWriteBuffer_));
+    std::copy(writePtr + fullUnitsBytes, writePtr + modifyBuffer.size(), std::back_inserter(buffer_));
 
     // Unfortunately, we can't really handle errors here, since we have already
     // fed the data to modifierFn_. An error will be handled on next write, I guess.
-    return initialLen;
+    return len;
 }
 
 bool SampleModifyingIODevice::open(QIODevice::OpenMode mode)
