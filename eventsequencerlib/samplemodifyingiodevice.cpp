@@ -190,6 +190,9 @@ qint64 SampleModifyingIODevice::writeData(const char *data, qint64 len)
     qint64 written = inferior_->write(writePtr, fullUnitsBytes);
     qint64 bytesWritten = qMax<qint64>(written, 0);
 
+    COVERAGE_COOKIE_COND(written > 0 && written < fullUnitsBytes, "COOKIE-273d8");
+    COVERAGE_COOKIE_COND(written == -1, "COOKIE-1e042");
+
     COVERAGE_COOKIE_COND(fullUnitsBytes > bytesWritten, "COOKIE-38ca0");
     //not-possible COVERAGE_COOKIE_COND(fullUnitsBytes < bytesWritten, "COOKI-38ca1");
     COVERAGE_COOKIE_COND(fullUnitsBytes == bytesWritten, "COOKIE-38ca2");
