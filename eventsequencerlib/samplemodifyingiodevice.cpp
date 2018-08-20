@@ -171,7 +171,9 @@ bool SampleModifyingIODevice::open(QIODevice::OpenMode mode)
 
 void SampleModifyingIODevice::close()
 {
-    // TODO If we're writing, flush the buffer.
+    if (!flush()) {
+        qWarning("SampleModifyingIODevice flush on close failed");
+    }
 
     if (inferior_->isOpen()) {
         inferior_->close();
@@ -185,8 +187,18 @@ bool SampleModifyingIODevice::flush()
         return true;
     }
 
-    // TODO Implement!
-    return false;
+    if (!incompleteWriteBuffer_.empty()) {
+        return incompleteWriteBuffer_.size() ==
+               inferior_->write(incompleteWriteBuffer_.data(),
+                                incompleteWriteBuffer_.size());
+    } else {
+        return true;
+    }
+}
+
+size_t SampleModifyingIODevice::incompleteByteCount() const
+{
+    return buffer_.size();
 }
 
 SampleModifyingIODevice::SampleModifyingIODevice(
@@ -194,7 +206,6 @@ SampleModifyingIODevice::SampleModifyingIODevice(
     SampleModifyingIODevice::ModifierFunction modifierFn)
     : inferior_(inferior), bytesPerUnit_(bytesPerUnit), modifierFn_(modifierFn)
 {
-    // buffer_.resize(bytesPerUnit_);
 }
 
 SampleModifyingIODevice::~SampleModifyingIODevice()

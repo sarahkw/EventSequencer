@@ -43,6 +43,7 @@ public:
     bool open(OpenMode mode) override;
     void close() override;
     bool flush();
+    size_t incompleteByteCount() const;
 
     // Takes ownership of inferior.
     SampleModifyingIODevice(std::shared_ptr<QIODevice> inferior,
