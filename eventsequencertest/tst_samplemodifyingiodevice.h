@@ -104,3 +104,60 @@ TEST(SampleModifyingIODevice, Write_Mocked_Fail_0)
         EXPECT_THAT(smiod.write(chunk.toUtf8()), chunk.size());
     }
 }
+
+TEST(SampleModifyingIODevice, Write_Mocked_Failures_1)
+{
+    using testing::Return;
+    using testing::StartsWith;
+
+    auto output = std::make_shared<MockIODevice>();
+    ASSERT_TRUE(output->open(QIODevice::WriteOnly));
+
+    SampleModifyingIODevice smiod(output, 3, reverseFn);
+    ASSERT_TRUE(smiod.open(QIODevice::WriteOnly));
+
+    {
+        EXPECT_CALL(*output, writeData(StartsWith("LEH"), 3)).WillOnce(Return(-1));
+        QString chunk("HELLO");
+        EXPECT_THAT(smiod.write(chunk.toUtf8()), chunk.size());
+    }
+
+    {
+        EXPECT_CALL(*output, writeData(StartsWith("LEH"), 3)).WillOnce(Return(-1));
+        QString chunk("!");
+        EXPECT_THAT(smiod.write(chunk.toUtf8()), -1); // Cannot flush old buffer, don't take more
+    }
+
+    {
+        EXPECT_CALL(*output, writeData(StartsWith("LEH"), 3)).WillOnce(Return(0));
+        QString chunk("!");
+        EXPECT_THAT(smiod.write(chunk.toUtf8()), 0); // Don't give -1 unless inferior gives -1
+    }
+
+    {
+        EXPECT_CALL(*output, writeData(StartsWith("LEH"), 3)).WillOnce(Return(1));
+        QString chunk("!");
+        EXPECT_THAT(smiod.write(chunk.toUtf8()), 0); // Only able to write 1 from old buffer
+    }
+
+    {
+        EXPECT_CALL(*output, writeData(StartsWith("EH"), 2)).WillOnce(Return(2));
+        EXPECT_CALL(*output, writeData(StartsWith("!OL"), 3)).WillOnce(Return(2));
+        QString chunk("!");
+        EXPECT_THAT(smiod.write(chunk.toUtf8()), 1);
+    }
+
+    {
+        EXPECT_CALL(*output, writeData(StartsWith("L"), 1)).WillOnce(Return(0));
+        EXPECT_FALSE(smiod.flush());
+    }
+
+    {
+        EXPECT_CALL(*output, writeData(StartsWith("L"), 1)).WillOnce(Return(1));
+        EXPECT_TRUE(smiod.flush());
+    }
+
+    {
+        EXPECT_TRUE(smiod.flush());
+    }
+}
