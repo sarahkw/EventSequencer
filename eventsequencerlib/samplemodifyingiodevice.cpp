@@ -237,9 +237,22 @@ bool SampleModifyingIODevice::flush()
     }
 
     if (!incompleteWriteBuffer_.empty()) {
-        return incompleteWriteBuffer_.size() ==
-               inferior_->write(incompleteWriteBuffer_.data(),
-                                incompleteWriteBuffer_.size());
+        auto result = inferior_->write(incompleteWriteBuffer_.data(),
+                                       incompleteWriteBuffer_.size());
+        const bool allWritten = result == incompleteWriteBuffer_.size();
+        if (result > 0) {
+            incompleteWriteBuffer_.erase(incompleteWriteBuffer_.begin(),
+                                         incompleteWriteBuffer_.begin() + result);
+        }
+
+        COVERAGE_COOKIE_COND(result > 0, "COOKIE-3c3d1");
+        COVERAGE_COOKIE_COND(result < 0, "COOKIE-3c3d2");
+        COVERAGE_COOKIE_COND(result == 0, "COOKIE-3c3d3");
+
+        COVERAGE_COOKIE_COND(allWritten, "COOKIE-2181d");
+        COVERAGE_COOKIE_COND(!allWritten, "COOKIE-2181e");
+
+        return allWritten;
     } else {
         return true;
     }
