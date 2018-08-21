@@ -80,10 +80,13 @@ TEST(SampleModifyingIODevice, Write_2_SmallerFirst)
     EXPECT_EQ(QString(output->data()), "TUANMU");
 }
 
+MATCHER_P(MemEq, s, "") {
+    return memcmp(s, arg, strlen(s)) == 0;
+}
+
 TEST(SampleModifyingIODevice, Write_Mocked_Fail_0)
 {
     using testing::Return;
-    using testing::StartsWith;
 
     auto output = std::make_shared<MockIODevice>();
     ASSERT_TRUE(output->open(QIODevice::WriteOnly));
@@ -92,14 +95,14 @@ TEST(SampleModifyingIODevice, Write_Mocked_Fail_0)
     ASSERT_TRUE(smiod.open(QIODevice::WriteOnly));
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("LEH"), 3)).WillOnce(Return(0));
+        EXPECT_CALL(*output, writeData(MemEq("LEH"), 3)).WillOnce(Return(0));
         QString chunk("HELLO");
         EXPECT_THAT(smiod.write(chunk.toUtf8()), chunk.size());
     }
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("LEH"), 3)).WillOnce(Return(3));
-        EXPECT_CALL(*output, writeData(StartsWith("!OL"), 3)).WillOnce(Return(3));
+        EXPECT_CALL(*output, writeData(MemEq("LEH"), 3)).WillOnce(Return(3));
+        EXPECT_CALL(*output, writeData(MemEq("!OL"), 3)).WillOnce(Return(3));
         QString chunk("!");
         EXPECT_THAT(smiod.write(chunk.toUtf8()), chunk.size());
     }
@@ -108,7 +111,6 @@ TEST(SampleModifyingIODevice, Write_Mocked_Fail_0)
 TEST(SampleModifyingIODevice, Write_Mocked_Failures_1)
 {
     using testing::Return;
-    using testing::StartsWith;
 
     auto output = std::make_shared<MockIODevice>();
     ASSERT_TRUE(output->open(QIODevice::WriteOnly));
@@ -117,43 +119,43 @@ TEST(SampleModifyingIODevice, Write_Mocked_Failures_1)
     ASSERT_TRUE(smiod.open(QIODevice::WriteOnly));
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("LEH"), 3)).WillOnce(Return(-1));
+        EXPECT_CALL(*output, writeData(MemEq("LEH"), 3)).WillOnce(Return(-1));
         QString chunk("HELLO");
         EXPECT_THAT(smiod.write(chunk.toUtf8()), chunk.size());
     }
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("LEH"), 3)).WillOnce(Return(-1));
+        EXPECT_CALL(*output, writeData(MemEq("LEH"), 3)).WillOnce(Return(-1));
         QString chunk("!");
         EXPECT_THAT(smiod.write(chunk.toUtf8()), -1); // Cannot flush old buffer, don't take more
     }
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("LEH"), 3)).WillOnce(Return(0));
+        EXPECT_CALL(*output, writeData(MemEq("LEH"), 3)).WillOnce(Return(0));
         QString chunk("!");
         EXPECT_THAT(smiod.write(chunk.toUtf8()), 0); // Don't give -1 unless inferior gives -1
     }
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("LEH"), 3)).WillOnce(Return(1));
+        EXPECT_CALL(*output, writeData(MemEq("LEH"), 3)).WillOnce(Return(1));
         QString chunk("!");
         EXPECT_THAT(smiod.write(chunk.toUtf8()), 0); // Only able to write 1 from old buffer
     }
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("EH"), 2)).WillOnce(Return(2));
-        EXPECT_CALL(*output, writeData(StartsWith("!OL"), 3)).WillOnce(Return(2));
+        EXPECT_CALL(*output, writeData(MemEq("EH"), 2)).WillOnce(Return(2));
+        EXPECT_CALL(*output, writeData(MemEq("!OL"), 3)).WillOnce(Return(2));
         QString chunk("!");
         EXPECT_THAT(smiod.write(chunk.toUtf8()), 1);
     }
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("L"), 1)).WillOnce(Return(0));
+        EXPECT_CALL(*output, writeData(MemEq("L"), 1)).WillOnce(Return(0));
         EXPECT_FALSE(smiod.flush());
     }
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("L"), 1)).WillOnce(Return(1));
+        EXPECT_CALL(*output, writeData(MemEq("L"), 1)).WillOnce(Return(1));
         EXPECT_TRUE(smiod.flush());
     }
 
@@ -165,7 +167,6 @@ TEST(SampleModifyingIODevice, Write_Mocked_Failures_1)
 TEST(SampleModifyingIODevice, Write_Flush)
 {
     using testing::Return;
-    using testing::StartsWith;
 
     auto output = std::make_shared<MockIODevice>();
     ASSERT_TRUE(output->open(QIODevice::WriteOnly));
@@ -174,35 +175,35 @@ TEST(SampleModifyingIODevice, Write_Flush)
     ASSERT_TRUE(smiod.open(QIODevice::WriteOnly));
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("LEH!OL"), 6)).WillOnce(Return(-1));
+        EXPECT_CALL(*output, writeData(MemEq("LEH!OL"), 6)).WillOnce(Return(-1));
         QString chunk("HELLO!!");
         EXPECT_THAT(smiod.write(chunk.toUtf8()), chunk.size());
     }
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("LEH!OL"), 6)).WillOnce(Return(-1));
+        EXPECT_CALL(*output, writeData(MemEq("LEH!OL"), 6)).WillOnce(Return(-1));
         EXPECT_FALSE(smiod.flush());
     }
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("LEH!OL"), 6)).WillOnce(Return(0));
+        EXPECT_CALL(*output, writeData(MemEq("LEH!OL"), 6)).WillOnce(Return(0));
         EXPECT_FALSE(smiod.flush());
     }
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("LEH!OL"), 6)).WillOnce(Return(1));
+        EXPECT_CALL(*output, writeData(MemEq("LEH!OL"), 6)).WillOnce(Return(1));
         EXPECT_FALSE(smiod.flush());
     }
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("EH!OL"), 5)).WillOnce(Return(5));
+        EXPECT_CALL(*output, writeData(MemEq("EH!OL"), 5)).WillOnce(Return(5));
         EXPECT_TRUE(smiod.flush());
     }
 
     EXPECT_EQ(smiod.incompleteByteCount(), 1);
 
     {
-        EXPECT_CALL(*output, writeData(StartsWith("21!"), 3)).WillOnce(Return(3));
+        EXPECT_CALL(*output, writeData(MemEq("21!"), 3)).WillOnce(Return(3));
         QString chunk("12");
         EXPECT_THAT(smiod.write(chunk.toUtf8()), chunk.size());
     }
@@ -245,7 +246,6 @@ public:
 
 TEST(SampleModifyingIODevice, Read_Mocked_Basic)
 {
-    using testing::StartsWith;
     using testing::Invoke;
     using testing::Return;
     using testing::_;
@@ -264,7 +264,6 @@ TEST(SampleModifyingIODevice, Read_Mocked_Basic)
 
 TEST(SampleModifyingIODevice, Read_Mocked_ExtraUnit)
 {
-    using testing::StartsWith;
     using testing::Invoke;
     using testing::Return;
     using testing::_;
@@ -291,7 +290,6 @@ TEST(SampleModifyingIODevice, Read_Mocked_ExtraUnit)
 
 TEST(SampleModifyingIODevice, Read_Mocked_Starvation)
 {
-    using testing::StartsWith;
     using testing::Invoke;
     using testing::Return;
     using testing::_;
@@ -344,7 +342,6 @@ TEST(SampleModifyingIODevice, Read_Mocked_Starvation)
 
 TEST(SampleModifyingIODevice, Read_Mocked_ImmediateError)
 {
-    using testing::StartsWith;
     using testing::Invoke;
     using testing::Return;
     using testing::_;
@@ -370,7 +367,6 @@ TEST(SampleModifyingIODevice, Read_Mocked_ImmediateError)
 
 TEST(SampleModifyingIODevice, Read_Mocked_ErrorOnExtraUnit)
 {
-    using testing::StartsWith;
     using testing::Invoke;
     using testing::Return;
     using testing::_;
