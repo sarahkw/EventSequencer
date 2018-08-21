@@ -3,12 +3,9 @@
 
 #include <samplemodifyingiodevice.h>
 
-#include <QBuffer>
+#include <printto_qstring.h>
 
-inline void PrintTo(const QString& s, ::std::ostream *os)
-{
-    *os << s.toStdString();
-}
+#include <QBuffer>
 
 struct MockIODevice : public QIODevice {
     MOCK_METHOD2(readData  ,qint64(char *data, qint64 maxlen));

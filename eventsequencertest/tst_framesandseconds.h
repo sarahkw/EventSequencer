@@ -3,16 +3,14 @@
 
 #include <framesandseconds.h>
 
+#include "printto_qstring.h"
+
 using namespace testing;
 
 ////////////////////////////////////////////////////////////////////////////////
 
 // https://stackoverflow.com/a/42597727
 QT_BEGIN_NAMESPACE
-inline void PrintTo(const QString &qString, ::std::ostream *os)
-{
-    *os << qUtf8Printable(qString);
-}
 inline void PrintTo(const QVariant &qVar, ::std::ostream *os)
 {
     // XXX I wrote this without much research/thought.
