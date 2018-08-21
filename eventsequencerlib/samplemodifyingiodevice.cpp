@@ -3,6 +3,7 @@
 #include <cstring>
 #include <QDebug>
 
+#ifdef COVERAGE
 #define COVERAGE_COOKIE(id) qInfo(id)
 #define COVERAGE_COOKIE_COND(cond, id) \
     do {                               \
@@ -10,6 +11,10 @@
             qInfo(id);                 \
         }                              \
     } while (false)
+#else
+#define COVERAGE_COOKIE(id)
+#define COVERAGE_COOKIE_COND(cond, id)
+#endif
 
 namespace {
 struct StartReadingFromBuffer {
