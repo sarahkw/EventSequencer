@@ -214,7 +214,7 @@ class TestRead : public QBuffer {
     QByteArray myData_;
 
     bool error_ = false;
-    qint64 currentBytesToRead_ = 99999;
+    qint64 currentBytesToRead_ = 9999999; // Don't do this in production ;)
 public:
     TestRead(QString s) : QBuffer(&myData_)
     {
@@ -222,7 +222,7 @@ public:
     }
 
     void setLimit(qint64 limit) { currentBytesToRead_ = limit; }
-    void resetLimit() { currentBytesToRead_ = 99999; }
+    void resetLimit() { currentBytesToRead_ = 9999999; }
     void setError() { error_ = true; }
     void unsetError() { error_ = false; }
 
