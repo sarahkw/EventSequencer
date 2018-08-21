@@ -338,3 +338,29 @@ TEST(SampleModifyingIODevice, Read_Mocked_Starvation)
 
     inferior->setLimit(0); EXPECT_EQ(smiod.read(buf, 1), 0);
 }
+
+TEST(SampleModifyingIODevice, Read_Mocked_ImmediateError)
+{
+    using testing::StartsWith;
+    using testing::Invoke;
+    using testing::Return;
+    using testing::_;
+
+    auto inferior = std::make_shared<TestRead>("HELLO!");
+    ASSERT_TRUE(inferior->open(QIODevice::ReadOnly));
+
+    SampleModifyingIODevice smiod(inferior, 3, reverseFn);
+    ASSERT_TRUE(smiod.open(QIODevice::ReadOnly | QIODevice::Unbuffered));
+
+    char buf[1024];
+    memset(buf, 0, sizeof(buf));
+
+    inferior->setError();
+    EXPECT_EQ(smiod.read(buf, 1023), -1);
+
+    inferior->unsetError();
+    // Right now, the implementation stops when there's been an error, even
+    // if the error clears. Preferably, we should retry if the caller retries.
+
+    EXPECT_EQ(smiod.read(buf, 1023), -1);
+}
