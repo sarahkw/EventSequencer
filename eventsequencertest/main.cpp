@@ -1,3 +1,4 @@
+#include "tst_endianmodifyingiodevice.h"
 #include "tst_samplemodifyingiodevice.h"
 #include "tst_channelindex.h"
 #include "tst_visualpositionmanager.h"

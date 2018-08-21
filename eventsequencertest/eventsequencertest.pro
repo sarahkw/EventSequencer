@@ -16,7 +16,8 @@ HEADERS += \
     printto_channelindex.h \
     tst_managedresources.h \
     tst_samplemodifyingiodevice.h \
-    printto_qstring.h
+    printto_qstring.h \
+    tst_endianmodifyingiodevice.h
 
 SOURCES += \
         main.cpp

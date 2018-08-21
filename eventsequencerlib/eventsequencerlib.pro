@@ -71,7 +71,8 @@ SOURCES += \
     errorreportingcontext.cpp \
     conditionalerror.cpp \
     qmlimmediatedestructor.cpp \
-    samplemodifyingiodevice.cpp
+    samplemodifyingiodevice.cpp \
+    endianmodifyingiodevice.cpp
 
 
 HEADERS += \
@@ -123,7 +124,8 @@ HEADERS += \
     errorreportingcontext.h \
     conditionalerror.h \
     qmlimmediatedestructor.h \
-    samplemodifyingiodevice.h
+    samplemodifyingiodevice.h \
+    endianmodifyingiodevice.h
 
 unix {
     target.path = /usr/lib
