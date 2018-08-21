@@ -2,6 +2,9 @@
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
 #include <QCommandLineParser>
+#include <QQmlPropertyMap>
+#include <QQmlContext>
+#include <QUrl>
 
 #include "registerqmltypes.h"
 
@@ -14,6 +17,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     bool scoutMode = false;
+    QQmlPropertyMap commandLine;
 #ifdef Q_OS_ANDROID
     scoutMode = true;
 #else
@@ -21,10 +25,13 @@ int main(int argc, char *argv[])
         QCommandLineParser parser;
         parser.addHelpOption();
         parser.addOptions({{{"s", "scout"}, "Start EvSeq Scout"}});
+        parser.addPositionalArgument("file", "The file to open");
         parser.process(app);
         if (parser.isSet("scout")) {
             scoutMode = true;
         }
+        auto positionalArgs = parser.positionalArguments();
+        commandLine["file"] = positionalArgs.size() > 0 ? QUrl::fromLocalFile(positionalArgs[0]) : QVariant();
     }
 #endif
 
@@ -36,6 +43,7 @@ int main(int argc, char *argv[])
     }
 
     QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("commandLine", &commandLine);
     if (scoutMode) {
         engine.load(QUrl(QStringLiteral("qrc:/ScoutMain.qml")));
     } else {

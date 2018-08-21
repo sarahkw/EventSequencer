@@ -698,7 +698,10 @@ QVariantList Document::load(const QUrl &url)
     // TODO Apparantly Unbuffered doesn't work for QFile on Windows. This will likely prevent
     //      file open from working on Win!
     if (!file.open(QIODevice::ReadOnly | QIODevice::Unbuffered)) {
-        return {false, "Cannot open file"};
+        return {false,
+                QString("Cannot open file: %1: %2")
+                    .arg(tmpFileName)
+                    .arg(file.errorString())};
     }
     pb::File pbf;
     FileHeader fh;

@@ -16,6 +16,13 @@ ApplicationWindow {
     height: 600
     title: "EventSequencer%1".arg(document.currentFileName != "" ? " [%1]".arg(document.currentFileName) : "")
 
+    Component.onCompleted: {
+        if (commandLine.file !== undefined) {
+            documentLoadOrShowError(commandLine.file)
+            commandLine.file = undefined // Good for one use
+        }
+    }
+
     menuBar: MenuBar {
         CustomMenu {
             title: "File"
