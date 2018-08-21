@@ -214,6 +214,7 @@ class TestRead : public QBuffer {
     QByteArray myData_;
 
     bool error_ = false;
+    bool errorAfterLimitReached_ = false;
     qint64 currentBytesToRead_ = 9999999; // Don't do this in production ;)
 public:
     TestRead(QString s) : QBuffer(&myData_)
@@ -225,10 +226,12 @@ public:
     void resetLimit() { currentBytesToRead_ = 9999999; }
     void setError() { error_ = true; }
     void unsetError() { error_ = false; }
+    void setErrorAfterLimitReached() { errorAfterLimitReached_ = true; }
 
     qint64 readData(char *data, qint64 maxlen) override
     {
         if (error_) return -1;
+        if (currentBytesToRead_ == 0 && errorAfterLimitReached_) return -1;
 
         auto readlimit = qMin(maxlen, currentBytesToRead_);
         auto actualread = QBuffer::readData(data, readlimit);
@@ -363,4 +366,30 @@ TEST(SampleModifyingIODevice, Read_Mocked_ImmediateError)
     // if the error clears. Preferably, we should retry if the caller retries.
 
     EXPECT_EQ(smiod.read(buf, 1023), -1);
+}
+
+TEST(SampleModifyingIODevice, Read_Mocked_ErrorOnExtraUnit)
+{
+    using testing::StartsWith;
+    using testing::Invoke;
+    using testing::Return;
+    using testing::_;
+
+    auto inferior = std::make_shared<TestRead>("HELLO!BEN");
+    ASSERT_TRUE(inferior->open(QIODevice::ReadOnly));
+
+    SampleModifyingIODevice smiod(inferior, 3, reverseFn);
+    ASSERT_TRUE(smiod.open(QIODevice::ReadOnly | QIODevice::Unbuffered));
+
+    char buf[1024];
+    memset(buf, 0, sizeof(buf));
+
+    inferior->setErrorAfterLimitReached();
+    inferior->setLimit(6);
+    EXPECT_EQ(smiod.read(buf, 7), 6);
+    EXPECT_EQ(QString(buf), "LEH!OL");
+
+    // The error has already happened, but here is the first place to report it.
+    memset(buf, 0, sizeof(buf));
+    EXPECT_EQ(smiod.read(buf, 7), -1);
 }

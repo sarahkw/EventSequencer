@@ -92,12 +92,12 @@ void SampleModifyingIODevice::read2FromBufferAndIODevice(
 
 qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
 {
-    if (!maxlen) {
-        return 0;
-    }
     if (inferiorFlaggedError_) {
         COVERAGE_COOKIE("COOKIE-3007a");
         return -1;
+    }
+    if (!maxlen) {
+        return 0;
     }
 
     const StartReadingFromBuffer srfb(buffer_, data, maxlen);
