@@ -78,11 +78,15 @@ void SampleModifyingIODevice::read2FromBufferAndIODevice(
 
     if (inferiorFlaggedError_ || *output1read != output1len) {
         COVERAGE_COOKIE_COND(inferiorFlaggedError_, "COOKIE-242f5");
-        COVERAGE_COOKIE_COND(*output1read != output1len, "COOKIE-19c0f");
+        COVERAGE_COOKIE_COND(!inferiorFlaggedError_ && *output1read != output1len, "COOKIE-19c0f");
+        COVERAGE_COOKIE_COND(!inferiorFlaggedError_ && *output1read < output1len, "COOKIE-19c10");
         // No-op: Can't fill output1, so don't try output2
     } else {
         COVERAGE_COOKIE("COOKIE-4f22b");
         *output2read = readFromBufferAndIODevice(output2, output2len, multiplesOf);
+        COVERAGE_COOKIE_COND(inferiorFlaggedError_, "COOKIE-16c18");
+        COVERAGE_COOKIE_COND(!inferiorFlaggedError_ && *output2read != output2len, "COOKIE-16c19");
+        COVERAGE_COOKIE_COND(!inferiorFlaggedError_ && *output2read < output2len, "COOKIE-16c1a");
     }
 }
 
