@@ -20,7 +20,7 @@ namespace {
 struct StartReadingFromBuffer {
     StartReadingFromBuffer(std::vector<char>& buffer, char* target, qint64 targetBytes)
     {
-        const qint64 bytesComingFromBuffer = qMin<qint64>(buffer.size(), targetBytes);
+        const qint64 bytesComingFromBuffer = qMin(qint64(buffer.size()), targetBytes);
         const qint64 bytesComingFromDevice = targetBytes - bytesComingFromBuffer;
 
         COVERAGE_COOKIE_COND((bytesComingFromBuffer > 0) && bytesComingFromDevice == 0, "COOKIE-34e91");
@@ -28,7 +28,7 @@ struct StartReadingFromBuffer {
         COVERAGE_COOKIE_COND((bytesComingFromBuffer > 0) && (bytesComingFromDevice > 0), "COOKIE-34e93");
         // not-possible COVERAGE_COOKIE_COND(bytesComingFromBuffer == 0 && bytesComingFromDevice == 0, "COOKI-34e94");
 
-        memcpy(target, buffer.data(), bytesComingFromBuffer);
+        memcpy(target, buffer.data(), size_t(bytesComingFromBuffer));
         buffer.erase(buffer.begin(), buffer.begin() + bytesComingFromBuffer);
 
         this->bytesFromBuffer = bytesComingFromBuffer;
@@ -122,7 +122,7 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
 
     read2FromBufferAndIODevice(
         srfb.continueWritingAt, unitsRequestedLen, &directReadBytes,
-        extraUnit.data(), extraUnit.size(), &extraUnitReadBytes,
+        extraUnit.data(), qint64(extraUnit.size()), &extraUnitReadBytes,
                 bytesPerUnit_);
 
     qint64 retBytes = srfb.bytesFromBuffer;
@@ -131,7 +131,7 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
         COVERAGE_COOKIE_COND(directReadBytes == 0, "COOKIE-17eb0");
         COVERAGE_COOKIE_COND(directReadBytes > 0, "COOKIE-17eb1");
         Q_ASSERT(directReadBytes % bytesPerUnit_ == 0);
-        modifierFn_(data, directReadBytes / bytesPerUnit_, bytesPerUnit_);
+        modifierFn_(data, unsigned(directReadBytes / bytesPerUnit_), bytesPerUnit_);
         retBytes += directReadBytes;
     }
 
@@ -166,8 +166,8 @@ qint64 SampleModifyingIODevice::writeData(const char *data, qint64 len)
     if (incompleteWriteBuffer_.size() > 0) {
         COVERAGE_COOKIE("COOKIE-20cc3");
         qint64 writtenLen = inferior_->write(incompleteWriteBuffer_.data(),
-                                             incompleteWriteBuffer_.size());
-        const bool success = writtenLen == incompleteWriteBuffer_.size();
+                                             qint64(incompleteWriteBuffer_.size()));
+        const bool success = writtenLen == qint64(incompleteWriteBuffer_.size());
         COVERAGE_COOKIE_COND(writtenLen > 0 && writtenLen < incompleteWriteBuffer_.size(), "COOKIE-26b5a");
         qint64 bytesWritten = qMax<qint64>(writtenLen, 0);
         incompleteWriteBuffer_.erase(incompleteWriteBuffer_.begin(),
@@ -188,17 +188,17 @@ qint64 SampleModifyingIODevice::writeData(const char *data, qint64 len)
 
     // We have to make a copy because we can't modify data directly.
     std::vector<char> modifyBuffer;
-    modifyBuffer.reserve(buffer_.size() + len);
+    modifyBuffer.reserve(buffer_.size() + size_t(len));
     std::copy(buffer_.begin(), buffer_.end(), std::back_inserter(modifyBuffer));
     buffer_.clear();
     std::copy_n(data, len, std::back_inserter(modifyBuffer));
 
-    const qint64 fullUnits = modifyBuffer.size() / bytesPerUnit_;
+    const qint64 fullUnits = qint64(modifyBuffer.size() / bytesPerUnit_);
     const qint64 fullUnitsBytes = fullUnits * bytesPerUnit_;
 
     char* writePtr = modifyBuffer.data();
 
-    modifierFn_(writePtr, fullUnits, bytesPerUnit_);
+    modifierFn_(writePtr, unsigned(fullUnits), bytesPerUnit_);
 
     qint64 written = inferior_->write(writePtr, fullUnitsBytes);
     qint64 bytesWritten = qMax<qint64>(written, 0);
@@ -255,8 +255,8 @@ bool SampleModifyingIODevice::flush()
 
     if (!incompleteWriteBuffer_.empty()) {
         auto result = inferior_->write(incompleteWriteBuffer_.data(),
-                                       incompleteWriteBuffer_.size());
-        const bool allWritten = result == incompleteWriteBuffer_.size();
+                                       qint64(incompleteWriteBuffer_.size()));
+        const bool allWritten = result == qint64(incompleteWriteBuffer_.size());
         if (result > 0) {
             incompleteWriteBuffer_.erase(incompleteWriteBuffer_.begin(),
                                          incompleteWriteBuffer_.begin() + result);
