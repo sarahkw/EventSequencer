@@ -1,5 +1,6 @@
 #include "recordercontrol.h"
 
+#include "endianmodifyingiodevice.h"
 #include "audioformatholder.h"
 #include "sessionaudio.h"
 #include "aufileheader.h"
@@ -29,7 +30,7 @@ void RecorderControl::record(QUrl url)
         return;
     }
 
-    std::unique_ptr<QFile> of(new QFile(fileName));
+    std::shared_ptr<QFile> of(new QFile(fileName));
 
     if (!of->open(allowOverwrite() ? QFile::WriteOnly : QFile::NewOnly)) {
         setError(QString("Cannot open file: %1").arg(of->errorString()));
@@ -39,7 +40,8 @@ void RecorderControl::record(QUrl url)
     writingUrl_ = url;
 
     AuFileHeader afh;
-    if (!afh.loadFormat(audioFormatHolder_->toQAudioFormat())) {
+    auto audioFormat = audioFormatHolder_->toQAudioFormat();
+    if (!afh.loadFormat(audioFormat)) {
         qCritical() << "??? Format was good but now is not?";
         return;
     }
@@ -49,9 +51,17 @@ void RecorderControl::record(QUrl url)
         return;
     }
 
-    outputFile_ = of.release();
+    auto* emiod = new EndianModifyingIODevice(
+        of, unsigned(audioFormat.sampleSize() / 8),
+        audioFormat.byteOrder() == QAudioFormat::BigEndian
+            ? EndianModifyingIODevice::Big
+            : EndianModifyingIODevice::Little,
+        EndianModifyingIODevice::Big);
 
-    audioInput_->start(outputFile_);
+    const bool success = emiod->open(QIODevice::WriteOnly);
+    Q_ASSERT(success); // This can't fail because inferior is already open
+
+    audioInput_->start(emiod);
     updateAudioState();
 }
 

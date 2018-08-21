@@ -1,5 +1,6 @@
 #include "playercontrol.h"
 
+#include "endianmodifyingiodevice.h"
 #include "audioformatholder.h"
 #include "sessionaudio.h"
 #include "aufileheader.h"
@@ -24,17 +25,19 @@ void PlayerControl::play()
         return;
     }
 
+    const auto format = audioOutput_->format();
+
     ManagedResources managedResources(fileResourceDirectory());
     std::unique_ptr<ConcatIODevice> playingDevice(new ConcatIODevice);
 
-    const auto appendUrl = [&managedResources, this, &playingDevice](QUrl url) -> bool {
+    const auto appendUrl = [&format, &managedResources, this, &playingDevice](QUrl url) -> bool {
         QString fileName;
         if (!managedResources.urlConvertToFilePath(url, &fileName)) {
             setError("Missing file resource directory");
             return false;
         }
 
-        std::unique_ptr<QFile> muhFile(new QFile(fileName));
+        std::shared_ptr<QFile> muhFile(new QFile(fileName));
         if (!muhFile->open(QFile::ReadOnly)) {
             setError(QString("Cannot open: %1").arg(muhFile->errorString()));
             return false;
@@ -47,7 +50,17 @@ void PlayerControl::play()
             return false;
         }
 
-        playingDevice->append(muhFile.release());
+        auto* emiod = new EndianModifyingIODevice(
+            muhFile, unsigned(format.sampleSize() / 8),
+            EndianModifyingIODevice::Big,
+            format.byteOrder() == QAudioFormat::BigEndian
+                ? EndianModifyingIODevice::Big
+                : EndianModifyingIODevice::Little);
+
+        const bool success = emiod->open(QIODevice::ReadOnly);
+        Q_ASSERT(success); // This can't fail because inferior is already open
+
+        playingDevice->append(emiod);
         return true;
     };
 

@@ -224,7 +224,7 @@ qint64 SampleModifyingIODevice::writeData(const char *data, qint64 len)
 
 bool SampleModifyingIODevice::open(QIODevice::OpenMode mode)
 {
-    if (inferior_->open(mode)) {
+    if (inferior_->isOpen() || inferior_->open(mode)) {
         // Base open never fails. Not worth supporting handling of base failure.
         QIODevice::open(mode);
         return true;

@@ -120,13 +120,7 @@ QString SessionAudio::testFormatSupport(AudioFormatHolder &af)
         if (afh.loadFormat(qaf)) {
             auSupports = "YES";
         } else {
-            QAudioFormat qafCopy(qaf);
-            qafCopy.setByteOrder(QAudioFormat::BigEndian);
-            if (afh.loadFormat(qafCopy)) {
-                auSupports = "NOT YET (byte order)";
-            } else {
-                auSupports = "NO";
-            }
+            auSupports = "NO";
         }
     }
     ret += QString("AU supports format: %1\n").arg(auSupports);

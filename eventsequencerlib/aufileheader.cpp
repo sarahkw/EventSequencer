@@ -82,9 +82,6 @@ bool AuFileHeader::loadFormat(const QAudioFormat &af)
     if (!toAuEncoding(af, &dummy)) {
         return false;
     }
-    if (af.byteOrder() != QAudioFormat::BigEndian) {
-        return false;
-    }
     if (af.codec() != "audio/pcm") {
         return false;
     }
