@@ -150,6 +150,7 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
         COVERAGE_COOKIE("COOKIE-1dc69");
         return -1;
     }
+    COVERAGE_COOKIE_COND(inferiorFlaggedError_ && retBytes > 0, "COOKIE-b241c");
 
     return retBytes;
 }
