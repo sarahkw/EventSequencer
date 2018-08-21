@@ -18,10 +18,10 @@ struct StartReadingFromBuffer {
         const qint64 bytesComingFromBuffer = qMin<qint64>(buffer.size(), targetBytes);
         const qint64 bytesComingFromDevice = targetBytes - bytesComingFromBuffer;
 
-        COVERAGE_COOKIE_COND((bytesComingFromBuffer > 0) && !(bytesComingFromDevice > 0), "COOKIE-34e91");
-        COVERAGE_COOKIE_COND(!(bytesComingFromBuffer > 0) && (bytesComingFromDevice > 0), "COOKIE-34e92");
+        COVERAGE_COOKIE_COND((bytesComingFromBuffer > 0) && bytesComingFromDevice == 0, "COOKIE-34e91");
+        COVERAGE_COOKIE_COND(bytesComingFromBuffer == 0 && (bytesComingFromDevice > 0), "COOKIE-34e92");
         COVERAGE_COOKIE_COND((bytesComingFromBuffer > 0) && (bytesComingFromDevice > 0), "COOKIE-34e93");
-        COVERAGE_COOKIE_COND(!(bytesComingFromBuffer > 0) && !(bytesComingFromDevice > 0), "COOKIE-34e94");
+        // not-possible COVERAGE_COOKIE_COND(bytesComingFromBuffer == 0 && bytesComingFromDevice == 0, "COOKI-34e94");
 
         memcpy(target, buffer.data(), bytesComingFromBuffer);
         buffer.erase(buffer.begin(), buffer.begin() + bytesComingFromBuffer);
