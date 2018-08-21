@@ -132,9 +132,7 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
         modifierFn_(extraUnit.data(), 1, bytesPerUnit_);
 
         Q_ASSERT(buffer_.empty());
-
-        COVERAGE_COOKIE_COND(partialLen > 0, "COOKIE-1795b");
-        COVERAGE_COOKIE_COND(partialLen == 0, "COOKIE-1795c");
+        Q_ASSERT(partialLen > 0);
 
         std::copy_n(extraUnit.begin(), partialLen, srfb.continueWritingAt + unitsRequestedLen);
         std::copy(extraUnit.begin() + partialLen,
