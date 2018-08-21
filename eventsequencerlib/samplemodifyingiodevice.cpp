@@ -146,6 +146,11 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
         retBytes += partialLen;
     }
 
+    if (retBytes == 0 && inferiorFlaggedError_) {
+        COVERAGE_COOKIE("COOKIE-1dc69");
+        return -1;
+    }
+
     return retBytes;
 }
 
