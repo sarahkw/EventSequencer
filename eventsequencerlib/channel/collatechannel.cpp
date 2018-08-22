@@ -171,11 +171,19 @@ Strip *CollateChannel::createStrip(int startFrame, int length)
 
 int CollateChannel::calculateStartOfNextEmptySegment(int fromPosition) const
 {
-    // O(n)
+    // XXX This sucks but requires no thinking to code. (So does it suck?)
+    std::vector<int> places;
+
     for (const Segment& segment : segments_) {
-        if (segment.segmentType == SegmentType::Empty &&
-                segment.segmentStart > fromPosition) {
-            return segment.segmentStart;
+        if (segment.segmentType == SegmentType::Empty) {
+            places.push_back(segment.segmentStart);
+            places.push_back(segment.segmentStart + segment.segmentLength);
+        }
+    }
+
+    for (int place : places) {
+        if (place > fromPosition) {
+            return place;
         }
     }
     return fromPosition;
@@ -183,12 +191,20 @@ int CollateChannel::calculateStartOfNextEmptySegment(int fromPosition) const
 
 int CollateChannel::calculateStartOfPreviousEmptySegment(int fromPosition) const
 {
-    // O(n)
+    // XXX This sucks but requires no thinking to code. (So does it suck?)
+    std::vector<int> places;
+
     for (auto iter = segments_.rbegin(); iter != segments_.rend(); ++iter) {
         const Segment& segment = *iter;
-        if (segment.segmentType == SegmentType::Empty &&
-                segment.segmentStart < fromPosition) {
-            return segment.segmentStart;
+        if (segment.segmentType == SegmentType::Empty) {
+            places.push_back(segment.segmentStart + segment.segmentLength);
+            places.push_back(segment.segmentStart);
+        }
+    }
+
+    for (int place : places) {
+        if (place < fromPosition) {
+            return place;
         }
     }
     return fromPosition;
