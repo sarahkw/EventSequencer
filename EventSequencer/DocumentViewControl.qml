@@ -56,9 +56,14 @@ Rectangle {
         anchors.fill: parent
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
         clip: true
+
+        Keys.onLeftPressed: root.changeCursorFrame(root.cursorFrame - 1)
+        Keys.onRightPressed: root.changeCursorFrame(root.cursorFrame + 1)
+
         ListView {
             id: lview
             model: wwtt
+
             delegate: Item {
                 height: cmfu.builtFontHeight
                 Item {
@@ -106,6 +111,16 @@ Rectangle {
                 PropertyAction { value: false }
                 PauseAnimation { duration: cursor.blinkDelay }
             }
+        }
+    }
+
+    // Focus for Keys
+    MouseArea {
+        anchors.fill: sview
+        propagateComposedEvents: true
+        onClicked: {
+            sview.focus = true
+            mouse.accepted = false
         }
     }
 }
