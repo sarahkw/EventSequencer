@@ -169,7 +169,7 @@ Strip *CollateChannel::createStrip(int startFrame, int length)
     }
 }
 
-int CollateChannel::calculateStartOfNextEmptySegment(int fromPosition) const
+int CollateChannel::calculateNextEmptyForward(int fromPosition) const
 {
     // XXX This sucks but requires no thinking to code. (So does it suck?)
     std::vector<int> places;
@@ -189,7 +189,7 @@ int CollateChannel::calculateStartOfNextEmptySegment(int fromPosition) const
     return fromPosition;
 }
 
-int CollateChannel::calculateStartOfPreviousEmptySegment(int fromPosition) const
+int CollateChannel::calculateNextEmptyBackward(int fromPosition) const
 {
     // XXX This sucks but requires no thinking to code. (So does it suck?)
     std::vector<int> places;

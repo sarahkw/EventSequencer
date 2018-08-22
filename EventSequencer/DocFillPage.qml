@@ -212,14 +212,14 @@ Page {
                         MenuItem {
                             text: "Previous Unassigned"
                             onTriggered: {
-                                var npos = root.cppResourceChannel.calculateStartOfPreviousEmptySegment(rebind_cursorFrame)
+                                var npos = root.cppResourceChannel.calculateNextEmptyBackward(rebind_cursorFrame)
                                 root.rebind_changeCursorFrame(npos)
                             }
                         }
                         MenuItem {
                             text: "Next Unassigned"
                             onTriggered: {
-                                var npos = root.cppResourceChannel.calculateStartOfNextEmptySegment(rebind_cursorFrame)
+                                var npos = root.cppResourceChannel.calculateNextEmptyForward(rebind_cursorFrame)
                                 root.rebind_changeCursorFrame(npos)
                             }
                         }

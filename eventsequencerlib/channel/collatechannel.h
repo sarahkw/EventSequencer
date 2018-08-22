@@ -90,8 +90,8 @@ public:
     virtual Strip* createStrip(int startFrame, int length) override;
 
     // If there is none, then return the current fromPosition.
-    Q_INVOKABLE int calculateStartOfNextEmptySegment(int fromPosition) const;
-    Q_INVOKABLE int calculateStartOfPreviousEmptySegment(int fromPosition) const;
+    Q_INVOKABLE int calculateNextEmptyForward(int fromPosition) const;
+    Q_INVOKABLE int calculateNextEmptyBackward(int fromPosition) const;
 
 signals:
 
