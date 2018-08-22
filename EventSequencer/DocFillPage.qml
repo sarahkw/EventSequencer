@@ -188,11 +188,36 @@ Page {
             RowLayout {
                 Button {
                     Layout.fillWidth: true
-                    text: "Font"
+                    text: "View"
+                    onClicked: viewMenu.open()
+                    Menu {
+                        id: viewMenu
+                        MenuItem {
+                            text: "Font"
+                        }
+                        MenuItem {
+                            text: "Line Numbers"
+                        }
+                    }
                 }
                 Button {
                     Layout.fillWidth: true
-                    text: "Go to Line"
+                    text: "Go"
+                    onClicked: goToMenu.open()
+                    Menu {
+                        id: goToMenu
+                        MenuItem {
+                            text: "Line"
+                        }
+                        MenuItem {
+                            text: "Next Unassigned"
+                        }
+                    }
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: "Cursor Move"
+                    checkable: true
                 }
             }
 
@@ -254,7 +279,7 @@ Page {
                             when: recorderControl.corraledResourceFile.takeable
                             PropertyChanges {
                                 target: unnamedParent_7c13
-                                text: "Delete Unassigned"
+                                text: "Delete"
                                 onClicked: msgConfirmDelete.open()
                             }
                         },

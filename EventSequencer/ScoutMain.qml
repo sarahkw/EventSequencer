@@ -99,6 +99,10 @@ Window {
                     }
                     Button {
                         Layout.fillWidth: true
+                        text: "Recent"
+                    }
+                    Button {
+                        Layout.fillWidth: true
                         id: btnLoad
                         checkable: true
                         text: "Load"
