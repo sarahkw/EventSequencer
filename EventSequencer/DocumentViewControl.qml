@@ -130,6 +130,11 @@ Rectangle {
 
     // Focus for Keys
     MouseArea {
+
+        // On Android, this prevents scrolling by dragging from working.
+        // TODO Figure out why so we don't need this hack.
+        enabled: Qt.platform.os != "android"
+
         anchors.fill: sview
         propagateComposedEvents: true
         onClicked: {
