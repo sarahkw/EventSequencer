@@ -169,6 +169,18 @@ Strip *CollateChannel::createStrip(int startFrame, int length)
     }
 }
 
+int CollateChannel::calculateStartOfNextEmptySegment(int fromPosition) const
+{
+    // O(n)
+    for (const Segment& segment : segments_) {
+        if (segment.segmentType == SegmentType::Empty &&
+                segment.segmentStart > fromPosition) {
+            return segment.segmentStart;
+        }
+    }
+    return fromPosition;
+}
+
 void CollateChannel::channelWaitForResultChanged()
 {
     if (sourceChannel_ != nullptr) {

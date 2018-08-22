@@ -211,6 +211,10 @@ Page {
                         }
                         MenuItem {
                             text: "Next Unassigned"
+                            onTriggered: {
+                                var npos = root.cppResourceChannel.calculateStartOfNextEmptySegment(rebind_cursorFrame)
+                                root.rebind_changeCursorFrame(npos)
+                            }
                         }
                     }
                 }
