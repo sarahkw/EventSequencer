@@ -116,7 +116,10 @@ Rectangle {
             y: cpos.y * cmfu.builtFontHeight
             z: 10
             readonly property int blinkDelay: 750
-            onCposChanged: saVisible.restart()
+            onCposChanged: {
+                saVisible.restart()
+                makeVisible()
+            }
             SequentialAnimation on visible {
                 id: saVisible
                 loops: Animation.Infinite
@@ -124,6 +127,10 @@ Rectangle {
                 PauseAnimation { duration: cursor.blinkDelay }
                 PropertyAction { value: false }
                 PauseAnimation { duration: cursor.blinkDelay }
+            }
+
+            function makeVisible() {
+                lview.positionViewAtIndex(cpos.y, ListView.Visible)
             }
         }
     }
