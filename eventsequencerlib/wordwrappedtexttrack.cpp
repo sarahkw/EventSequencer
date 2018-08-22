@@ -135,6 +135,42 @@ QPoint WordWrappedTextTrack::cursorPosition() const
     return cursorPosition_;
 }
 
+int WordWrappedTextTrack::calculateCursorPositionClosestTo(QPoint target)
+{
+    if (rows_.empty()) {
+        return 0;
+    }
+
+    int row = target.y();
+    if (row < 0) {
+        return 0;
+    }
+    if (row >= int(rows_.size())) {
+        return calculateMaxCursorPosition();
+    }
+
+    RowData& rd = rows_[size_t(row)];
+
+    int column = target.x();
+    if (column < 0) column = 0;
+    if (rd.text.size() == 0) {
+        column = 0;
+    } else if (column >= rd.text.size()) {
+        column = rd.text.size() - 1;
+    }
+
+    return rd.offset + column;
+}
+
+int WordWrappedTextTrack::calculateMaxCursorPosition()
+{
+    if (rows_.empty()) {
+        return 0;
+    }
+    RowData& lastRow = *rows_.rbegin();
+    return lastRow.offset + qMax(lastRow.text.size() - 1, 0);
+}
+
 int WordWrappedTextTrack::cursorFrame() const
 {
     return cursorFrame_;

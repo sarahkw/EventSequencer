@@ -57,8 +57,22 @@ Rectangle {
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
         clip: true
 
-        Keys.onLeftPressed: root.changeCursorFrame(root.cursorFrame - 1)
-        Keys.onRightPressed: root.changeCursorFrame(root.cursorFrame + 1)
+        Keys.onLeftPressed: {
+            root.changeCursorFrame(Math.max(root.cursorFrame - 1, 0))
+        }
+        Keys.onRightPressed: {
+            root.changeCursorFrame(Math.min(root.cursorFrame + 1, wwtt.calculateMaxCursorPosition()))
+        }
+        Keys.onUpPressed: {
+            var cpos = wwtt.cursorPosition
+            var newcpos = Qt.point(cpos.x, cpos.y - 1)
+            root.changeCursorFrame(wwtt.calculateCursorPositionClosestTo(newcpos))
+        }
+        Keys.onDownPressed: {
+            var cpos = wwtt.cursorPosition
+            var newcpos = Qt.point(cpos.x, cpos.y + 1)
+            root.changeCursorFrame(wwtt.calculateCursorPositionClosestTo(newcpos))
+        }
 
         ListView {
             id: lview

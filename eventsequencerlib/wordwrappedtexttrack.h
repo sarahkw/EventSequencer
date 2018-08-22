@@ -39,6 +39,8 @@ class WordWrappedTextTrack : public QAbstractListModel
 
     void reposition();
 
+    std::pair<bool, int> upDownDesiredColumn_;
+
 public:
     explicit WordWrappedTextTrack(QObject *parent = nullptr);
 
@@ -59,6 +61,9 @@ public:
     void setCursorFrame(int cursorFrame);
 
     QPoint cursorPosition() const;
+
+    Q_INVOKABLE int calculateCursorPositionClosestTo(QPoint target);
+    Q_INVOKABLE int calculateMaxCursorPosition();
 
 signals:
 
