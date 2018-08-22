@@ -181,6 +181,19 @@ int CollateChannel::calculateStartOfNextEmptySegment(int fromPosition) const
     return fromPosition;
 }
 
+int CollateChannel::calculateStartOfPreviousEmptySegment(int fromPosition) const
+{
+    // O(n)
+    for (auto iter = segments_.rbegin(); iter != segments_.rend(); ++iter) {
+        const Segment& segment = *iter;
+        if (segment.segmentType == SegmentType::Empty &&
+                segment.segmentStart < fromPosition) {
+            return segment.segmentStart;
+        }
+    }
+    return fromPosition;
+}
+
 void CollateChannel::channelWaitForResultChanged()
 {
     if (sourceChannel_ != nullptr) {

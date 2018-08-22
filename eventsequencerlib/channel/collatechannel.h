@@ -91,6 +91,7 @@ public:
 
     // If there is none, then return the current fromPosition.
     Q_INVOKABLE int calculateStartOfNextEmptySegment(int fromPosition) const;
+    Q_INVOKABLE int calculateStartOfPreviousEmptySegment(int fromPosition) const;
 
 signals:
 
