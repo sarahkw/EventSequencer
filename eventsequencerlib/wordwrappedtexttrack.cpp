@@ -75,17 +75,19 @@ void WordWrappedTextTrack::relayout()
     }
 
     // Replace rows in between
-    auto numRowsInCommon = qMin(build.size(), rows_.size());
-    if (numRowsInCommon > 0) {
-        for (decltype(numRowsInCommon) i = 0; i < numRowsInCommon; ++i) {
-            rows_[i] = build[i];
+    {
+        auto numRowsInCommon = qMin(build.size(), rows_.size());
+        if (numRowsInCommon > 0) {
+            for (unsigned i = 0; i < numRowsInCommon; ++i) {
+                rows_[i] = build[i];
+            }
+            emit dataChanged(createIndex(0, 0),createIndex(int(numRowsInCommon - 1), 0));
         }
-        emit dataChanged(createIndex(0, 0), createIndex(numRowsInCommon - 1, 0));
     }
 
     // Add new rows
     if (build.size() > rows_.size()) {
-        beginInsertRows(QModelIndex(), rows_.size(), build.size() - 1);
+        beginInsertRows(QModelIndex(), int(rows_.size()), int(build.size() - 1));
         for (auto i = rows_.size(); i < build.size(); ++i) {
             rows_.push_back(build[i]);
         }
@@ -96,7 +98,7 @@ void WordWrappedTextTrack::relayout()
         // I originally wanted to chop off the end before replacing rows in between.
         // But it seems to cause QML ListView to crash.
 
-        beginRemoveRows(QModelIndex(), build.size(), rows_.size() - 1);
+        beginRemoveRows(QModelIndex(), int(build.size()), int(rows_.size() - 1));
         rows_.resize(build.size());
         endRemoveRows();
     }
@@ -111,13 +113,14 @@ void WordWrappedTextTrack::reposition()
 
     QPoint newP(-1, -1);
 
-    auto iter = std::lower_bound(rows_.rbegin(), rows_.rend(), cursorFrame_, [](RowData& rd, int cf) {
-        return cf < rd.offset;
-    });
+    auto iter =
+        std::lower_bound(rows_.rbegin(), rows_.rend(), cursorFrame_,
+                         [](RowData& rd, int cf) { return cf < rd.offset; });
 
     if (iter != rows_.rend()) {
-        if (cursorFrame_ >= iter->offset && cursorFrame_ < iter->offset + iter->text.size()) {
-            newP.setY(std::distance(iter, rows_.rend()) - 1);
+        if (cursorFrame_ >= iter->offset &&
+            cursorFrame_ < iter->offset + iter->text.size()) {
+            newP.setY(int(std::distance(iter, rows_.rend()) - 1));
             newP.setX(cursorFrame_ - iter->offset);
         }
     }
@@ -147,7 +150,8 @@ void WordWrappedTextTrack::setCursorFrame(int cursorFrame)
     }
 }
 
-WordWrappedTextTrack::WordWrappedTextTrack(QObject *parent) : QAbstractListModel(parent), cursorPosition_(-1, -1)
+WordWrappedTextTrack::WordWrappedTextTrack(QObject* parent)
+    : QAbstractListModel(parent), cursorPosition_(-1, -1)
 {
 
 }
@@ -155,21 +159,21 @@ WordWrappedTextTrack::WordWrappedTextTrack(QObject *parent) : QAbstractListModel
 int WordWrappedTextTrack::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return rows_.size();
+    return int(rows_.size());
 }
 
 QVariant WordWrappedTextTrack::data(const QModelIndex &index, int role) const
 {
-    Q_ASSERT(index.isValid()); // ??? Saw this in an example.
-    if (index.column() == 0 &&
-            index.row() >= 0 && static_cast<unsigned>(index.row()) < rows_.size()) {
+    if (index.column() == 0 && index.row() >= 0 &&
+        unsigned(index.row()) < rows_.size()) {
+
         if (role == ModelDataRole) {
-            return rows_[index.row()].text;
+            return rows_[size_t(index.row())].text;
         } else if (role == TextOffsetRole) {
-            return rows_[index.row()].offset;
+            return rows_[size_t(index.row())].offset;
         }
     }
-    return QVariant();
+    return {};
 }
 
 QHash<int, QByteArray> WordWrappedTextTrack::roleNames() const
