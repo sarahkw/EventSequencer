@@ -100,6 +100,7 @@ Window {
                     Button {
                         Layout.fillWidth: true
                         text: "Recent"
+                        enabled: !btnLoad.checked
                     }
                     Button {
                         Layout.fillWidth: true
