@@ -17,7 +17,9 @@ QtObject {
         // TODO This is a hack around a bug where corralUrl doesn't get updated
         //      when root.fileResourceDirectory gets updated.
         managedResources.fileResourceDirectory = Qt.binding(function () { return root.fileResourceDirectory })
-        managedResources.urlForFileName(corralFileName)
+        var ret = managedResources.urlForFileName(corralFileName)
+        takeable = managedResources.existsUrl(ret) // If something's there from last time.
+        return ret
     }
 
     function begin() {

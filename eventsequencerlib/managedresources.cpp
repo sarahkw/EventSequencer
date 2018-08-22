@@ -75,6 +75,14 @@ bool ManagedResources::deleteUrl(QUrl url)
     return QFile::remove(fileName);
 }
 
+bool ManagedResources::existsUrl(QUrl url)
+{
+    QString fileName;
+    if (!urlConvertToFilePath(url, &fileName)) return false;
+
+    return QFile::exists(fileName);
+}
+
 bool ManagedResources::urlIsManaged(QUrl url)
 {
     return url.scheme() == "evseq" && url.host() == "managed";
