@@ -202,12 +202,19 @@ Page {
                 }
                 Button {
                     Layout.fillWidth: true
-                    text: "Go"
+                    text: "Cursor Move"
                     onClicked: goToMenu.open()
                     Menu {
                         id: goToMenu
                         MenuItem {
                             text: "Line"
+                        }
+                        Menu {
+                            title: "Direction"
+                            MenuItem { text: "Up" }
+                            MenuItem { text: "Down" }
+                            MenuItem { text: "Left" }
+                            MenuItem { text: "Right" }
                         }
                         MenuItem {
                             text: "Previous Unassigned"
@@ -224,11 +231,6 @@ Page {
                             }
                         }
                     }
-                }
-                Button {
-                    Layout.fillWidth: true
-                    text: "Cursor Move"
-                    checkable: true
                 }
             }
 
