@@ -15,6 +15,13 @@ Window {
 
     property int cursorFrame: 0
 
+    Component.onCompleted: {
+        if (commandLine.file !== undefined) {
+            txtOpenUrl.text = commandLine.file
+            commandLine.file = undefined // Good for one use
+        }
+    }
+
     ES.Document {
         id: document
     }
