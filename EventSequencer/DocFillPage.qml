@@ -211,10 +211,10 @@ Page {
                         }
                         Menu {
                             title: "Direction"
-                            MenuItem { text: "Up" }
-                            MenuItem { text: "Down" }
-                            MenuItem { text: "Left" }
-                            MenuItem { text: "Right" }
+                            MenuItem { text: "Up"    ; onTriggered: dvc.moveCursorUp() }
+                            MenuItem { text: "Down"  ; onTriggered: dvc.moveCursorDown() }
+                            MenuItem { text: "Left"  ; onTriggered: dvc.moveCursorLeft() }
+                            MenuItem { text: "Right" ; onTriggered: dvc.moveCursorRight() }
                         }
                         MenuItem {
                             text: "Previous Unassigned"

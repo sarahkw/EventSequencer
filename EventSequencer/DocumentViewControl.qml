@@ -51,28 +51,34 @@ Rectangle {
         property var outputCppChannel: outputRenderComponent != null ? cppRenderChannel : null
     }
 
+    function moveCursorLeft() {
+        root.changeCursorFrame(Math.max(root.cursorFrame - 1, 0))
+    }
+    function moveCursorRight() {
+        root.changeCursorFrame(Math.min(root.cursorFrame + 1, wwtt.calculateMaxCursorPosition()))
+    }
+    function moveCursorUp() {
+        var cpos = wwtt.cursorPosition
+        var newcpos = Qt.point(cpos.x, cpos.y - 1)
+        root.changeCursorFrame(wwtt.calculateCursorPositionClosestTo(newcpos))
+    }
+    function moveCursorDown() {
+        var cpos = wwtt.cursorPosition
+        var newcpos = Qt.point(cpos.x, cpos.y + 1)
+        root.changeCursorFrame(wwtt.calculateCursorPositionClosestTo(newcpos))
+    }
+
+
     ScrollView {
         id: sview
         anchors.fill: parent
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
         clip: true
 
-        Keys.onLeftPressed: {
-            root.changeCursorFrame(Math.max(root.cursorFrame - 1, 0))
-        }
-        Keys.onRightPressed: {
-            root.changeCursorFrame(Math.min(root.cursorFrame + 1, wwtt.calculateMaxCursorPosition()))
-        }
-        Keys.onUpPressed: {
-            var cpos = wwtt.cursorPosition
-            var newcpos = Qt.point(cpos.x, cpos.y - 1)
-            root.changeCursorFrame(wwtt.calculateCursorPositionClosestTo(newcpos))
-        }
-        Keys.onDownPressed: {
-            var cpos = wwtt.cursorPosition
-            var newcpos = Qt.point(cpos.x, cpos.y + 1)
-            root.changeCursorFrame(wwtt.calculateCursorPositionClosestTo(newcpos))
-        }
+        Keys.onLeftPressed: moveCursorLeft()
+        Keys.onRightPressed: moveCursorRight()
+        Keys.onUpPressed: moveCursorUp()
+        Keys.onDownPressed: moveCursorDown()
 
         ListView {
             id: lview
