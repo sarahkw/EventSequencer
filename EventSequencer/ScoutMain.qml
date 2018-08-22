@@ -79,7 +79,14 @@ Window {
                         onClicked: browseDialog.open()
                         FileDialog {
                             id: browseDialog
+                            nameFilters: ["Event sequencer files (*.evseq)", "All files (*)"]
+                            defaultSuffix: "evseq"
                             onAccepted: txtOpenUrl.text = fileUrl
+                            Component.onCompleted: {
+                                if (Qt.platform.os == "android") {
+                                    folder = "file:///sdcard"
+                                }
+                            }
                         }
                         enabled: !btnLoad.checked
                     }
