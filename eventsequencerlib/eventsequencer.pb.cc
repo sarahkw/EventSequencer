@@ -623,6 +623,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::ChannelData_DocFill, textchannel_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::ChannelData_DocFill, resourcechannel_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::ChannelData_DocFill, advancedfeaturesenabled_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::ChannelData_DocFill, attemptexpansionofresourcechannel_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::ChannelData, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -686,10 +688,10 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 98, 105, sizeof(::pb::ChannelData_Span_ChannelsEntry_DoNotUse)},
   { 107, -1, sizeof(::pb::ChannelData_Span)},
   { 116, -1, sizeof(::pb::ChannelData_DocFill)},
-  { 123, -1, sizeof(::pb::ChannelData)},
-  { 138, 145, sizeof(::pb::Document_ChannelsEntry_DoNotUse)},
-  { 147, -1, sizeof(::pb::Document)},
-  { 158, -1, sizeof(::pb::File)},
+  { 125, -1, sizeof(::pb::ChannelData)},
+  { 140, 147, sizeof(::pb::Document_ChannelsEntry_DoNotUse)},
+  { 149, -1, sizeof(::pb::Document)},
+  { 160, -1, sizeof(::pb::File)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -757,7 +759,7 @@ void AddDescriptorsImpl() {
       "udioFormat.Endian\"L\n\nSampleType\022\023\n\017Unset"
       "SampleType\020\000\022\r\n\tSignedInt\020\001\022\017\n\013UnSignedI"
       "nt\020\002\022\t\n\005Float\020\003\":\n\006Endian\022\017\n\013UnsetEndian"
-      "\020\000\022\r\n\tBigEndian\020\001\022\020\n\014LittleEndian\020\002\"\264\006\n\013"
+      "\020\000\022\r\n\tBigEndian\020\001\022\020\n\014LittleEndian\020\002\"\201\007\n\013"
       "ChannelData\022,\n\010badClock\030\n \001(\0132\030.pb.Chann"
       "elData.BadClockH\000\022&\n\005badJs\030\013 \001(\0132\025.pb.Ch"
       "annelData.BadJsH\000\022$\n\004text\030\014 \001(\0132\024.pb.Cha"
@@ -775,22 +777,24 @@ void AddDescriptorsImpl() {
       ".Strip\0224\n\010channels\030\003 \003(\0132\".pb.ChannelDat"
       "a.Span.ChannelsEntry\022\032\n\022defaultChannelTy"
       "pe\030\004 \001(\005\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022\036"
-      "\n\005value\030\002 \001(\0132\017.pb.ChannelData:\0028\001\032[\n\007Do"
-      "cFill\022%\n\013textChannel\030\001 \001(\0132\020.pb.ChannelI"
-      "ndex\022)\n\017resourceChannel\030\002 \001(\0132\020.pb.Chann"
-      "elIndexB\t\n\007channel\"\372\001\n\010Document\022\031\n\006strip"
-      "s\030\001 \003(\0132\t.pb.Strip\022\027\n\017framesPerSecond\030\002 "
-      "\001(\005\022\022\n\nstartFrame\030\004 \001(\005\022\020\n\010endFrame\030\005 \001("
-      "\005\022,\n\010channels\030\003 \003(\0132\032.pb.Document.Channe"
-      "lsEntry\022$\n\013audioFormat\030\006 \001(\0132\017.pb.AudioF"
-      "ormat\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022\036\n\005v"
-      "alue\030\002 \001(\0132\017.pb.ChannelData:\0028\001\"T\n\004File\022"
-      "\036\n\010document\030\001 \001(\0132\014.pb.Document\022\020\n\010check"
-      "sum\030\002 \001(\t\022\032\n\022forkedFromChecksum\030\003 \001(\tb\006p"
-      "roto3"
+      "\n\005value\030\002 \001(\0132\017.pb.ChannelData:\0028\001\032\247\001\n\007D"
+      "ocFill\022%\n\013textChannel\030\001 \001(\0132\020.pb.Channel"
+      "Index\022)\n\017resourceChannel\030\002 \001(\0132\020.pb.Chan"
+      "nelIndex\022\037\n\027advancedFeaturesEnabled\030\n \001("
+      "\010\022)\n!attemptExpansionOfResourceChannel\030\013"
+      " \001(\010B\t\n\007channel\"\372\001\n\010Document\022\031\n\006strips\030\001"
+      " \003(\0132\t.pb.Strip\022\027\n\017framesPerSecond\030\002 \001(\005"
+      "\022\022\n\nstartFrame\030\004 \001(\005\022\020\n\010endFrame\030\005 \001(\005\022,"
+      "\n\010channels\030\003 \003(\0132\032.pb.Document.ChannelsE"
+      "ntry\022$\n\013audioFormat\030\006 \001(\0132\017.pb.AudioForm"
+      "at\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022\036\n\005valu"
+      "e\030\002 \001(\0132\017.pb.ChannelData:\0028\001\"T\n\004File\022\036\n\010"
+      "document\030\001 \001(\0132\014.pb.Document\022\020\n\010checksum"
+      "\030\002 \001(\t\022\032\n\022forkedFromChecksum\030\003 \001(\tb\006prot"
+      "o3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1965);
+      descriptor, 2042);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "eventsequencer.proto", &protobuf_RegisterTypes);
 }
@@ -5128,6 +5132,8 @@ void ChannelData_DocFill::InitAsDefaultInstance() {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int ChannelData_DocFill::kTextChannelFieldNumber;
 const int ChannelData_DocFill::kResourceChannelFieldNumber;
+const int ChannelData_DocFill::kAdvancedFeaturesEnabledFieldNumber;
+const int ChannelData_DocFill::kAttemptExpansionOfResourceChannelFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ChannelData_DocFill::ChannelData_DocFill()
@@ -5151,13 +5157,16 @@ ChannelData_DocFill::ChannelData_DocFill(const ChannelData_DocFill& from)
   } else {
     resourcechannel_ = NULL;
   }
+  ::memcpy(&advancedfeaturesenabled_, &from.advancedfeaturesenabled_,
+    static_cast<size_t>(reinterpret_cast<char*>(&attemptexpansionofresourcechannel_) -
+    reinterpret_cast<char*>(&advancedfeaturesenabled_)) + sizeof(attemptexpansionofresourcechannel_));
   // @@protoc_insertion_point(copy_constructor:pb.ChannelData.DocFill)
 }
 
 void ChannelData_DocFill::SharedCtor() {
   ::memset(&textchannel_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&resourcechannel_) -
-      reinterpret_cast<char*>(&textchannel_)) + sizeof(resourcechannel_));
+      reinterpret_cast<char*>(&attemptexpansionofresourcechannel_) -
+      reinterpret_cast<char*>(&textchannel_)) + sizeof(attemptexpansionofresourcechannel_));
 }
 
 ChannelData_DocFill::~ChannelData_DocFill() {
@@ -5198,6 +5207,9 @@ void ChannelData_DocFill::Clear() {
     delete resourcechannel_;
   }
   resourcechannel_ = NULL;
+  ::memset(&advancedfeaturesenabled_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&attemptexpansionofresourcechannel_) -
+      reinterpret_cast<char*>(&advancedfeaturesenabled_)) + sizeof(attemptexpansionofresourcechannel_));
   _internal_metadata_.Clear();
 }
 
@@ -5229,6 +5241,34 @@ bool ChannelData_DocFill::MergePartialFromCodedStream(
             static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
                input, mutable_resourcechannel()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool advancedFeaturesEnabled = 10;
+      case 10: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(80u /* 80 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &advancedfeaturesenabled_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool attemptExpansionOfResourceChannel = 11;
+      case 11: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(88u /* 88 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &attemptexpansionofresourcechannel_)));
         } else {
           goto handle_unusual;
         }
@@ -5273,6 +5313,16 @@ void ChannelData_DocFill::SerializeWithCachedSizes(
       2, this->_internal_resourcechannel(), output);
   }
 
+  // bool advancedFeaturesEnabled = 10;
+  if (this->advancedfeaturesenabled() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(10, this->advancedfeaturesenabled(), output);
+  }
+
+  // bool attemptExpansionOfResourceChannel = 11;
+  if (this->attemptexpansionofresourcechannel() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->attemptexpansionofresourcechannel(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -5299,6 +5349,16 @@ void ChannelData_DocFill::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
         2, this->_internal_resourcechannel(), deterministic, target);
+  }
+
+  // bool advancedFeaturesEnabled = 10;
+  if (this->advancedfeaturesenabled() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(10, this->advancedfeaturesenabled(), target);
+  }
+
+  // bool attemptExpansionOfResourceChannel = 11;
+  if (this->attemptexpansionofresourcechannel() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(11, this->attemptexpansionofresourcechannel(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -5330,6 +5390,16 @@ size_t ChannelData_DocFill::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
         *resourcechannel_);
+  }
+
+  // bool advancedFeaturesEnabled = 10;
+  if (this->advancedfeaturesenabled() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool attemptExpansionOfResourceChannel = 11;
+  if (this->attemptexpansionofresourcechannel() != 0) {
+    total_size += 1 + 1;
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -5365,6 +5435,12 @@ void ChannelData_DocFill::MergeFrom(const ChannelData_DocFill& from) {
   if (from.has_resourcechannel()) {
     mutable_resourcechannel()->::pb::ChannelIndex::MergeFrom(from.resourcechannel());
   }
+  if (from.advancedfeaturesenabled() != 0) {
+    set_advancedfeaturesenabled(from.advancedfeaturesenabled());
+  }
+  if (from.attemptexpansionofresourcechannel() != 0) {
+    set_attemptexpansionofresourcechannel(from.attemptexpansionofresourcechannel());
+  }
 }
 
 void ChannelData_DocFill::CopyFrom(const ::google::protobuf::Message& from) {
@@ -5393,6 +5469,8 @@ void ChannelData_DocFill::InternalSwap(ChannelData_DocFill* other) {
   using std::swap;
   swap(textchannel_, other->textchannel_);
   swap(resourcechannel_, other->resourcechannel_);
+  swap(advancedfeaturesenabled_, other->advancedfeaturesenabled_);
+  swap(attemptexpansionofresourcechannel_, other->attemptexpansionofresourcechannel_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 

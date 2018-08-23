@@ -24,6 +24,34 @@ Item {
                 onEsEditingFinished: cppChannel.resourceChannel = ES.ChannelIndexFactory.makeFromPathString(text)
                 text: cppChannel !== null ? cppChannel.resourceChannel.toPathString() : ""
             }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.columnSpan: 2
+                CheckBox {
+                    checked: cppChannel !== null ? cppChannel.advancedFeaturesEnabled : false
+                    onToggled: cppChannel.advancedFeaturesEnabled = checked
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: "Advanced and Experimental Features Enabled"
+                    wrapMode: Text.WordWrap
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.columnSpan: 2
+                CheckBox {
+                    checked: cppChannel !== null ? cppChannel.attemptExpansionOfResourceChannel : false
+                    onToggled: cppChannel.attemptExpansionOfResourceChannel = checked
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: "Attempt Expansion of Resource Channel"
+                    wrapMode: Text.WordWrap
+                }
+            }
         }
     }
 }

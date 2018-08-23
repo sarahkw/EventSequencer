@@ -2211,12 +2211,26 @@ class ChannelData_DocFill : public ::google::protobuf::Message /* @@protoc_inser
   ::pb::ChannelIndex* mutable_resourcechannel();
   void set_allocated_resourcechannel(::pb::ChannelIndex* resourcechannel);
 
+  // bool advancedFeaturesEnabled = 10;
+  void clear_advancedfeaturesenabled();
+  static const int kAdvancedFeaturesEnabledFieldNumber = 10;
+  bool advancedfeaturesenabled() const;
+  void set_advancedfeaturesenabled(bool value);
+
+  // bool attemptExpansionOfResourceChannel = 11;
+  void clear_attemptexpansionofresourcechannel();
+  static const int kAttemptExpansionOfResourceChannelFieldNumber = 11;
+  bool attemptexpansionofresourcechannel() const;
+  void set_attemptexpansionofresourcechannel(bool value);
+
   // @@protoc_insertion_point(class_scope:pb.ChannelData.DocFill)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::pb::ChannelIndex* textchannel_;
   ::pb::ChannelIndex* resourcechannel_;
+  bool advancedfeaturesenabled_;
+  bool attemptexpansionofresourcechannel_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_eventsequencer_2eproto::TableStruct;
 };
@@ -3826,6 +3840,34 @@ inline void ChannelData_DocFill::set_allocated_resourcechannel(::pb::ChannelInde
   }
   resourcechannel_ = resourcechannel;
   // @@protoc_insertion_point(field_set_allocated:pb.ChannelData.DocFill.resourceChannel)
+}
+
+// bool advancedFeaturesEnabled = 10;
+inline void ChannelData_DocFill::clear_advancedfeaturesenabled() {
+  advancedfeaturesenabled_ = false;
+}
+inline bool ChannelData_DocFill::advancedfeaturesenabled() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.DocFill.advancedFeaturesEnabled)
+  return advancedfeaturesenabled_;
+}
+inline void ChannelData_DocFill::set_advancedfeaturesenabled(bool value) {
+  
+  advancedfeaturesenabled_ = value;
+  // @@protoc_insertion_point(field_set:pb.ChannelData.DocFill.advancedFeaturesEnabled)
+}
+
+// bool attemptExpansionOfResourceChannel = 11;
+inline void ChannelData_DocFill::clear_attemptexpansionofresourcechannel() {
+  attemptexpansionofresourcechannel_ = false;
+}
+inline bool ChannelData_DocFill::attemptexpansionofresourcechannel() const {
+  // @@protoc_insertion_point(field_get:pb.ChannelData.DocFill.attemptExpansionOfResourceChannel)
+  return attemptexpansionofresourcechannel_;
+}
+inline void ChannelData_DocFill::set_attemptexpansionofresourcechannel(bool value) {
+  
+  attemptexpansionofresourcechannel_ = value;
+  // @@protoc_insertion_point(field_set:pb.ChannelData.DocFill.attemptExpansionOfResourceChannel)
 }
 
 // -------------------------------------------------------------------

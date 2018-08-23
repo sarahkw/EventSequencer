@@ -92,6 +92,8 @@ message ChannelData {
   message DocFill {
     ChannelIndex textChannel = 1;
     ChannelIndex resourceChannel = 2;
+    bool advancedFeaturesEnabled = 10;
+    bool attemptExpansionOfResourceChannel = 11;
   }
 
   oneof channel {
