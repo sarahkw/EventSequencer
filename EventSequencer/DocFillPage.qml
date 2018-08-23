@@ -351,7 +351,14 @@ Page {
                     }
                 }
                 Button {
+                    id: btnShow
+                    visible: cmbSelectionMode.currentIndex === 2
                     text: "Show"
+                }
+                TextField {
+                    visible: cmbSelectionMode.currentIndex === 3
+                    placeholderText: "Hz"
+                    implicitWidth: btnShow.implicitWidth
                 }
                 Button {
                     id: unnamedParent_6bbd
@@ -483,14 +490,6 @@ Page {
                                     Layout.fillWidth: true
                                     Layout.columnSpan: 2
                                     text: "Automatically play after record"
-                                }
-                                
-                                CheckBox {
-                                    Layout.fillWidth: true
-                                    text: "Pitch utilities"
-                                }
-                                Button {
-                                    text: "Configure"
                                 }
                             }
                         }
