@@ -72,6 +72,7 @@ Rectangle {
     ScrollView {
         id: sview
         anchors.fill: parent
+        anchors.leftMargin: 5
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
         clip: true
 
