@@ -44,4 +44,30 @@ Item {
             }
         }
     }
+
+    property Component docFillPropertiesComponent: Component {
+        GridLayout {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            columns: 2
+
+            CheckBox {
+                Layout.fillWidth: true
+                Layout.columnSpan: 2
+                text: "Advanced and Experimental Features Enabled"
+                checked: cppChannel !== null ? cppChannel.advancedFeaturesEnabled : false
+                onToggled: cppChannel.advancedFeaturesEnabled = checked
+                Component.onCompleted: contentItem.wrapMode = Text.WordWrap
+            }
+
+            CheckBox {
+                Layout.fillWidth: true
+                Layout.columnSpan: 2
+                text: "Attempt Expansion of Resource Channel"
+                checked: cppChannel !== null ? cppChannel.attemptExpansionOfResourceChannel : false
+                onToggled: cppChannel.attemptExpansionOfResourceChannel = checked
+                Component.onCompleted: contentItem.wrapMode = Text.WordWrap
+            }
+        }
+    }
 }

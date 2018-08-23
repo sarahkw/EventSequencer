@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
+import "Control/" as C
 
 import eventsequencer 1.0 as ES
 
@@ -408,6 +409,35 @@ Page {
                 TabButton { text: "Strips" }
                 TabButton { text: "Resources" }
                 TabButton { text: "Export" }
+            }
+            SwipeView {
+                anchors.fill: parent
+
+                ScrollView {
+                    contentWidth: width // Column will have some width it wants to be. Ignore it.
+                    Column {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.leftMargin: 15
+                        anchors.rightMargin: 15
+                        spacing: 15
+
+                        GroupBox {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            title: "DocFill"
+                            Loader {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                C.DocFillControl {
+                                    id: docFillControl
+                                }
+                                sourceComponent: docFillControl.docFillPropertiesComponent
+                            }
+                        }
+                    }
+                }
+
             }
         }
     }
