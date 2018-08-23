@@ -336,6 +336,7 @@ Page {
                         "Recording",
                         "At Cursor",
                         "From Cursor",
+                        "From Start",
                         "Tone"
                     ]
                     function currentSelectionMode() {
@@ -345,6 +346,7 @@ Page {
                         case 1: return ES.PlayerControl.ChannelOnCursor
                         case 2: return ES.PlayerControl.ChannelFromCursor
                         case 3: return ES.PlayerControl.SingleUrl // XXX Not implemented
+                        case 4: return ES.PlayerControl.SingleUrl // XXX Not implemented
                         default:
                             console.error("Invalid index", currentIndex)
                         }
@@ -359,6 +361,8 @@ Page {
                     visible: cmbSelectionMode.currentIndex === 3
                     placeholderText: "Hz"
                     implicitWidth: btnShow.implicitWidth
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    onEditingFinished: focus = false
                 }
                 Button {
                     id: unnamedParent_6bbd
