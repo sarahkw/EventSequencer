@@ -333,7 +333,7 @@ Page {
                     id: cmbSelectionMode
                     Layout.fillWidth: true
                     model: [
-                        "Preview Unassigned Recording",
+                        "Recording",
                         "At Cursor",
                         "From Cursor"
                     ]
