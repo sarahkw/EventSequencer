@@ -28,7 +28,7 @@ Item {
             CheckBox {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                text: "Advanced and Experimental Features Enabled"
+                text: "Enable advanced and experimental features"
                 checked: cppChannel !== null ? cppChannel.advancedFeaturesEnabled : false
                 onToggled: cppChannel.advancedFeaturesEnabled = checked
                 Component.onCompleted: contentItem.wrapMode = Text.WordWrap
@@ -37,7 +37,7 @@ Item {
             CheckBox {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                text: "Expand Resource Channel for Overlapping Strips"
+                text: "Expand resource channel for overlapping strips"
                 checked: cppChannel !== null ? cppChannel.attemptExpansionOfResourceChannel : false
                 onToggled: cppChannel.attemptExpansionOfResourceChannel = checked
                 Component.onCompleted: contentItem.wrapMode = Text.WordWrap
@@ -54,7 +54,7 @@ Item {
             CheckBox {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                text: "Advanced and Experimental Features Enabled"
+                text: "Enable advanced and experimental features"
                 checked: cppChannel !== null ? cppChannel.advancedFeaturesEnabled : false
                 onToggled: cppChannel.advancedFeaturesEnabled = checked
                 Component.onCompleted: contentItem.wrapMode = Text.WordWrap
@@ -63,7 +63,7 @@ Item {
             CheckBox {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                text: "Expand Resource Channel for Overlapping Strips"
+                text: "Expand resource channel for overlapping strips"
                 checked: cppChannel !== null ? cppChannel.attemptExpansionOfResourceChannel : false
                 onToggled: cppChannel.attemptExpansionOfResourceChannel = checked
                 Component.onCompleted: contentItem.wrapMode = Text.WordWrap

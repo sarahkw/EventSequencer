@@ -335,7 +335,8 @@ Page {
                     model: [
                         "Recording",
                         "At Cursor",
-                        "From Cursor"
+                        "From Cursor",
+                        "Tone"
                     ]
                     function currentSelectionMode() {
                         switch (currentIndex) {
@@ -343,6 +344,7 @@ Page {
                         case 0: return ES.PlayerControl.SingleUrl
                         case 1: return ES.PlayerControl.ChannelOnCursor
                         case 2: return ES.PlayerControl.ChannelFromCursor
+                        case 3: return ES.PlayerControl.SingleUrl // XXX Not implemented
                         default:
                             console.error("Invalid index", currentIndex)
                         }
@@ -481,6 +483,14 @@ Page {
                                     Layout.fillWidth: true
                                     Layout.columnSpan: 2
                                     text: "Automatically play after record"
+                                }
+                                
+                                CheckBox {
+                                    Layout.fillWidth: true
+                                    text: "Pitch utilities"
+                                }
+                                Button {
+                                    text: "Configure"
                                 }
                             }
                         }
