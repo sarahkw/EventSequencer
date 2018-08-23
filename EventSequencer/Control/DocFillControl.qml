@@ -37,7 +37,7 @@ Item {
             CheckBox {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                text: "Attempt Expansion of Resource Channel"
+                text: "Expand Resource Channel for Overlapping Strips"
                 checked: cppChannel !== null ? cppChannel.attemptExpansionOfResourceChannel : false
                 onToggled: cppChannel.attemptExpansionOfResourceChannel = checked
                 Component.onCompleted: contentItem.wrapMode = Text.WordWrap
@@ -63,7 +63,7 @@ Item {
             CheckBox {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                text: "Attempt Expansion of Resource Channel"
+                text: "Expand Resource Channel for Overlapping Strips"
                 checked: cppChannel !== null ? cppChannel.attemptExpansionOfResourceChannel : false
                 onToggled: cppChannel.attemptExpansionOfResourceChannel = checked
                 Component.onCompleted: contentItem.wrapMode = Text.WordWrap

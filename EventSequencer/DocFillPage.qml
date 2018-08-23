@@ -484,6 +484,27 @@ Page {
                                 }
                             }
                         }
+
+                        GroupBox {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            title: "Raw Properties"
+                            ComboBox {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                model: [
+                                    "",
+                                    "Selected Strip via Strips View",
+                                    "Selected Strip via Text View",
+                                    "Docfill Channel",
+                                    "Text Channel",
+                                    "Specific Channel",
+                                    "Document",
+                                    "File",
+                                    "Session",
+                                ]
+                            }
+                        }
                     }
                 }
 
