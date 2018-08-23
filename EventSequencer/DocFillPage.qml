@@ -317,16 +317,16 @@ Page {
                     id: cmbSelectionMode
                     Layout.fillWidth: true
                     model: [
+                        "Preview Unassigned Recording",
                         "At Cursor",
-                        "From Cursor",
-                        "Preview Unassigned Recording"
+                        "From Cursor"
                     ]
                     function currentSelectionMode() {
                         switch (currentIndex) {
-                        case 0: return ES.PlayerControl.ChannelOnCursor
-                        case 1: return ES.PlayerControl.ChannelFromCursor
                         case -1:
-                        case 2: return ES.PlayerControl.SingleUrl
+                        case 0: return ES.PlayerControl.SingleUrl
+                        case 1: return ES.PlayerControl.ChannelOnCursor
+                        case 2: return ES.PlayerControl.ChannelFromCursor
                         default:
                             console.error("Invalid index", currentIndex)
                         }
