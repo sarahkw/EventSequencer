@@ -194,10 +194,16 @@ Page {
                     Menu {
                         id: viewMenu
                         MenuItem {
-                            text: "Font"
+                            text: "Font..."
                         }
-                        MenuItem {
-                            text: "Line Numbers"
+                        Menu {
+                            title: "Show"
+                            MenuItem {
+                                text: "Line"
+                            }
+                            MenuItem {
+                                text: "Position"
+                            }
                         }
                     }
                 }
@@ -208,7 +214,10 @@ Page {
                     Menu {
                         id: goToMenu
                         MenuItem {
-                            text: "Line"
+                            text: "Line..."
+                        }
+                        MenuItem {
+                            text: "Position..."
                         }
                         Menu {
                             title: "Direction"
@@ -230,6 +239,12 @@ Page {
                                 var npos = root.cppResourceChannel.calculateNextEmptyForward(rebind_cursorFrame)
                                 root.rebind_changeCursorFrame(npos)
                             }
+                        }
+                        MenuItem {
+                            text: "Previous Segment"
+                        }
+                        MenuItem {
+                            text: "Next Segment"
                         }
                     }
                 }
@@ -332,6 +347,9 @@ Page {
                             console.error("Invalid index", currentIndex)
                         }
                     }
+                }
+                Button {
+                    text: "Show"
                 }
                 Button {
                     id: unnamedParent_6bbd
