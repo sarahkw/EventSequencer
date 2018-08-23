@@ -404,14 +404,21 @@ Page {
 
         Page {
             anchors.fill: parent
+            clip: true
             header: TabBar {
-                TabButton { text: "Properties" }
+                id: fileDrawerTabBar
+                currentIndex: fileDrawerSwipeView.currentIndex
                 TabButton { text: "Strips" }
+                TabButton { text: "Properties" }
                 TabButton { text: "Resources" }
                 TabButton { text: "Export" }
             }
             SwipeView {
+                id: fileDrawerSwipeView
                 anchors.fill: parent
+                currentIndex: fileDrawerTabBar.currentIndex
+
+                Item { }
 
                 ScrollView {
                     contentWidth: width // Column will have some width it wants to be. Ignore it.
@@ -440,6 +447,9 @@ Page {
                     }
                 }
 
+                Item { }
+
+                Item { }
             }
         }
     }
