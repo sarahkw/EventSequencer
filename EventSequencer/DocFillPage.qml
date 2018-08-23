@@ -334,7 +334,7 @@ Page {
                 }
                 Button {
                     id: unnamedParent_6bbd
-                    Layout.fillWidth: true
+                    //Layout.fillWidth: true
                     text: "Stop"
                     onClicked: playerControl.stop()
                     states: [
@@ -367,6 +367,7 @@ Page {
             }
             // File
             RowLayout {
+                id: fileFooterItem
                 Button {
                     Layout.fillWidth: true
                     text: "Save"
@@ -381,8 +382,32 @@ Page {
                 Button {
                     Layout.fillWidth: true
                     text: "Close"
-                    onClicked: closeFn()
+                    onClicked: {
+                        fileDrawer.visible = false // If I don't do this it looks weird
+                        closeFn()
+                    }
                 }
+            }
+        }
+    }
+
+    Drawer {
+        id: fileDrawer
+        parent: root.contentItem
+        height: root.contentItem.height
+        width: 0.95 * root.contentItem.width
+        edge: Qt.RightEdge
+
+        interactive: false
+        visible: fileFooterItem.SwipeView.isCurrentItem
+
+        Page {
+            anchors.fill: parent
+            header: TabBar {
+                TabButton { text: "Properties" }
+                TabButton { text: "Strips" }
+                TabButton { text: "Resources" }
+                TabButton { text: "Export" }
             }
         }
     }
