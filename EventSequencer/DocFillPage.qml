@@ -475,6 +475,11 @@ Page {
                                 CheckBox {
                                     Layout.fillWidth: true
                                     Layout.columnSpan: 2
+                                    text: "Automatically start range on record"
+                                }
+                                CheckBox {
+                                    Layout.fillWidth: true
+                                    Layout.columnSpan: 2
                                     text: "Automatically play after record"
                                 }
                             }
