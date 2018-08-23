@@ -25,32 +25,22 @@ Item {
                 text: cppChannel !== null ? cppChannel.resourceChannel.toPathString() : ""
             }
 
-            RowLayout {
+            CheckBox {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                CheckBox {
-                    checked: cppChannel !== null ? cppChannel.advancedFeaturesEnabled : false
-                    onToggled: cppChannel.advancedFeaturesEnabled = checked
-                }
-                Label {
-                    Layout.fillWidth: true
-                    text: "Advanced and Experimental Features Enabled"
-                    wrapMode: Text.WordWrap
-                }
+                text: "Advanced and Experimental Features Enabled"
+                checked: cppChannel !== null ? cppChannel.advancedFeaturesEnabled : false
+                onToggled: cppChannel.advancedFeaturesEnabled = checked
+                Component.onCompleted: contentItem.wrapMode = Text.WordWrap
             }
 
-            RowLayout {
+            CheckBox {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                CheckBox {
-                    checked: cppChannel !== null ? cppChannel.attemptExpansionOfResourceChannel : false
-                    onToggled: cppChannel.attemptExpansionOfResourceChannel = checked
-                }
-                Label {
-                    Layout.fillWidth: true
-                    text: "Attempt Expansion of Resource Channel"
-                    wrapMode: Text.WordWrap
-                }
+                text: "Attempt Expansion of Resource Channel"
+                checked: cppChannel !== null ? cppChannel.attemptExpansionOfResourceChannel : false
+                onToggled: cppChannel.attemptExpansionOfResourceChannel = checked
+                Component.onCompleted: contentItem.wrapMode = Text.WordWrap
             }
         }
     }
