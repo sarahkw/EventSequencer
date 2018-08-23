@@ -462,6 +462,23 @@ Page {
                                 sourceComponent: docFillControl.docFillPropertiesComponent
                             }
                         }
+
+                        GroupBox {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            title: "Application"
+                            GridLayout {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                columns: 2
+
+                                CheckBox {
+                                    Layout.fillWidth: true
+                                    Layout.columnSpan: 2
+                                    text: "Automatically play after record"
+                                }
+                            }
+                        }
                     }
                 }
 
