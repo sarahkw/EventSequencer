@@ -416,8 +416,10 @@ Page {
                 ScrollView {
                     contentWidth: width // Column will have some width it wants to be. Ignore it.
                     Column {
+                        anchors.top: parent.top
                         anchors.left: parent.left
                         anchors.right: parent.right
+                        anchors.topMargin: 15
                         anchors.leftMargin: 15
                         anchors.rightMargin: 15
                         spacing: 15
