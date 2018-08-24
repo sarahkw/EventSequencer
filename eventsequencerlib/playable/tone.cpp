@@ -91,6 +91,12 @@ QIODevice *Tone::createPlayableDevice(const QAudioFormat &outputFormat)
         return nullptr;
     }
 
+    if (!outputFormat.isValid()) {
+        setError("Audio format is not valid");
+        return nullptr;
+    }
+    Q_ASSERT(outputFormat.channelCount() >= 0);
+
     if (outputFormat.byteOrder() != QAudioFormat::LittleEndian) {
         setError("Only little endian is supported");
         return nullptr;
