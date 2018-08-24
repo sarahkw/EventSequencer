@@ -481,7 +481,35 @@ Page {
                 anchors.fill: parent
                 currentIndex: fileDrawerTabBar.currentIndex
 
-                Item { }
+                Item {
+                    ColumnLayout {
+                        anchors.fill: parent
+                        anchors.margins: 15
+                        GroupBox {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            title: "View"
+                            Rectangle {
+                                anchors.fill: parent
+                                color: "white"
+                            }
+                        }
+                        GroupBox {
+                            Layout.fillWidth: true
+                            title: "Selection"
+                            RowLayout {
+                                Button {
+                                    Layout.fillWidth: true
+                                    text: "Delete"
+                                }
+                                Button {
+                                    Layout.fillWidth: true
+                                    text: "Delete and Reclaim Resource"
+                                }
+                            }
+                        }
+                    }
+                }
 
                 ScrollView {
                     contentWidth: width // Column will have some width it wants to be. Ignore it.
