@@ -169,13 +169,14 @@ Strip *CollateChannel::createStrip(int startFrame, int length)
     }
 }
 
-int CollateChannel::calculateNextEmptyForward(int fromPosition) const
+int CollateChannel::calculateNextForward(
+        int fromPosition, std::function<bool (CollateChannel::SegmentType)> selector) const
 {
     // XXX This sucks but requires no thinking to code. (So does it suck?)
     std::vector<int> places;
 
     for (const Segment& segment : segments_) {
-        if (segment.segmentType == SegmentType::Empty) {
+        if (selector(segment.segmentType)) {
             places.push_back(segment.segmentStart);
             places.push_back(segment.segmentStart + segment.segmentLength);
         }
@@ -189,14 +190,15 @@ int CollateChannel::calculateNextEmptyForward(int fromPosition) const
     return fromPosition;
 }
 
-int CollateChannel::calculateNextEmptyBackward(int fromPosition) const
+int CollateChannel::calculateNextBackward(
+        int fromPosition, std::function<bool (CollateChannel::SegmentType)> selector) const
 {
     // XXX This sucks but requires no thinking to code. (So does it suck?)
     std::vector<int> places;
 
     for (auto iter = segments_.rbegin(); iter != segments_.rend(); ++iter) {
         const Segment& segment = *iter;
-        if (segment.segmentType == SegmentType::Empty) {
+        if (selector(segment.segmentType)) {
             places.push_back(segment.segmentStart + segment.segmentLength);
             places.push_back(segment.segmentStart);
         }
@@ -208,6 +210,18 @@ int CollateChannel::calculateNextEmptyBackward(int fromPosition) const
         }
     }
     return fromPosition;
+}
+
+int CollateChannel::calculateNextEmptyForward(int fromPosition) const
+{
+    return calculateNextForward(fromPosition,
+                                [](SegmentType v) { return v == SegmentType::Empty; });
+}
+
+int CollateChannel::calculateNextEmptyBackward(int fromPosition) const
+{
+    return calculateNextBackward(fromPosition,
+                                 [](SegmentType v) { return v == SegmentType::Empty; });
 }
 
 void CollateChannel::channelWaitForResultChanged()

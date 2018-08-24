@@ -90,6 +90,10 @@ public:
     virtual Strip* createStrip(int startFrame, int length) override;
 
     // If there is none, then return the current fromPosition.
+private:
+    int calculateNextForward(int fromPosition, std::function<bool(SegmentType)> selector) const;
+    int calculateNextBackward(int fromPosition, std::function<bool(SegmentType)> selector) const;
+public:
     Q_INVOKABLE int calculateNextEmptyForward(int fromPosition) const;
     Q_INVOKABLE int calculateNextEmptyBackward(int fromPosition) const;
 
