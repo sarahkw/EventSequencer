@@ -81,13 +81,23 @@ Item {
 
     property Component docFillStripsTrackComponent: Component {
         Text {
-            property int charactersToShow: width / cmfuAlignedFont.builtFontWidth
+
+            // Alignment: x=0, the character should be at number cursorFrame.
+
+            property int charactersToShow: spaceToTakeUp / cmfuAlignedFont.builtFontWidth
             font: cmfuAlignedFont.builtFont
             text: smlool2.output
+            color: "grey"
 
             ShowMultipleLinesOnOneLine {
                 id: smlool2
-                input: cppChannel !== null ? cppChannel.content.substr(0, charactersToShow) : ""
+                input: {
+                    if (cppChannel !== null && cursorFrame >= 0) {
+                        return cppChannel.content.substr(cursorFrame, charactersToShow)
+                    } else {
+                        return ""
+                    }
+                }
             }
         }
     }

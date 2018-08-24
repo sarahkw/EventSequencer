@@ -487,8 +487,10 @@ Page {
                                 id: stripsBody
                                 anchors.fill: parent
                                 color: "white"
+                                clip: true
 
                                 Cursor {
+                                    id: cursorObj
                                     anchors.top: parent.top
                                     anchors.bottom: parent.bottom
                                     anchors.horizontalCenter: parent.horizontalCenter
@@ -497,12 +499,12 @@ Page {
                                 }
 
                                 Loader {
-                                    anchors.left: parent.left
-                                    anchors.right: parent.right
+                                    anchors.left: cursorObj.left
 
                                     property var cmfuAlignedFont: ES.ConstrainedMetricsFontUtil {
                                         constrainByWidthEnabled: false
                                     }
+                                    property int spaceToTakeUp: parent.width
 
                                     C.TextControl {
                                         id: textControl
