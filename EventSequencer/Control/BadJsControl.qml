@@ -23,7 +23,10 @@ Item {
     }
 
     function playFrame(cppStrip, frame) {
+        /*
         var script = Util.nvlobjprop(cppStrip.badJs, "script", "")
         eval(script);
+        */
+        print("DISABLED FOR SECURITY REASONS. GO UNCOMMENT OUT THE LINES IN THE CODE TO USE.")
     }
 }
