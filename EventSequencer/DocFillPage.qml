@@ -485,10 +485,9 @@ Page {
                     ColumnLayout {
                         anchors.fill: parent
                         anchors.margins: 15
-                        GroupBox {
+                        Frame {
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            title: "View"
                             Rectangle {
                                 anchors.fill: parent
                                 color: "white"
@@ -501,19 +500,14 @@ Page {
                                 }
                             }
                         }
-                        GroupBox {
+                        RowLayout {
                             Layout.fillWidth: true
-                            title: "Selection"
-                            RowLayout {
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                Button {
-                                    Layout.fillWidth: true
-                                    text: "Delete"
-                                }
-                                CheckBox {
-                                    text: "Reclaim resource"
-                                }
+                            Button {
+                                Layout.fillWidth: true
+                                text: "Delete"
+                            }
+                            CheckBox {
+                                text: "Reclaim resource"
                             }
                         }
                     }
@@ -575,8 +569,7 @@ Page {
                                 anchors.right: parent.right
                                 model: [
                                     "",
-                                    "Selected Strip via Strips View",
-                                    "Selected Strip via Text View",
+                                    "Selected Strip",
                                     "Docfill Channel",
                                     "Text Channel",
                                     "Specific Channel",
