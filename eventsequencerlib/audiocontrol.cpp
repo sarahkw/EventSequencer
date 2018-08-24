@@ -126,17 +126,3 @@ void AudioControl::clearSessionAudio()
 {
     setSessionAudio(nullptr);
 }
-
-
-QString AudioControl::fileResourceDirectory() const
-{
-    return fileResourceDirectory_;
-}
-
-void AudioControl::setFileResourceDirectory(const QString &fileResourceDirectory)
-{
-    if (fileResourceDirectory_ != fileResourceDirectory) {
-        fileResourceDirectory_ = fileResourceDirectory;
-        emit fileResourceDirectoryChanged();
-    }
-}

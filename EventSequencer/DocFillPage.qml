@@ -5,6 +5,7 @@ import QtQuick.Dialogs 1.2
 import "Control/" as C
 
 import eventsequencer 1.0 as ES
+import eventsequencer.playable 1.0 as ESPlayable
 
 Page {
     id: root
@@ -96,17 +97,27 @@ Page {
         }
     }
 
+    ESPlayable.SingleUrl {
+        id: playableSingleUrl
+        fileResourceDirectory: document.fileResourceDirectory
+        singleUrl: recorderControl.corraledResourceFile.corralUrl
+    }
+
+    ESPlayable.StripsList {
+        id: playableStripsList
+        fileResourceDirectory: document.fileResourceDirectory
+        selectionMode: cmbSelectionMode.currentSelectionMode()
+        selectedChannel: cppResourceChannel
+        cursorFrame: rebind_cursorFrame
+    }
+
     ES.PlayerControl {
         id: playerControl
         audioFormatHolder: document.audioFormatHolder
         sessionAudio: session.audio
-        fileResourceDirectory: document.fileResourceDirectory
         autoStopOnIdle: true
 
-        selectionMode: cmbSelectionMode.currentSelectionMode()
-        selectedChannel: cppResourceChannel
-        cursorFrame: rebind_cursorFrame
-        singleUrl: recorderControl.corraledResourceFile.corralUrl
+        playable: cmbSelectionMode.currentPlayable()
 
         property ES.ConditionalError unnamed1: ES.ConditionalError {
             errorReportingContext: errorReportingContext
@@ -339,14 +350,26 @@ Page {
                         "From Start",
                         "Tone"
                     ]
+                    function currentPlayable() {
+                        switch (currentIndex) {
+                        case -1:
+                        case 0: return playableSingleUrl
+                        case 1: return playableStripsList
+                        case 2: return playableStripsList
+                        case 3: return playableStripsList
+                        case 4: return playableStripsList
+                        default:
+                            console.error("Invalid index", currentIndex)
+                        }
+                    }
                     function currentSelectionMode() {
                         switch (currentIndex) {
                         case -1:
-                        case 0: return ES.PlayerControl.SingleUrl
-                        case 1: return ES.PlayerControl.ChannelOnCursor
-                        case 2: return ES.PlayerControl.ChannelFromCursor
-                        case 3: return ES.PlayerControl.SingleUrl // XXX Not implemented
-                        case 4: return ES.PlayerControl.SingleUrl // XXX Not implemented
+                        case 0: return ESPlayable.StripsList.UNSET
+                        case 1: return ESPlayable.StripsList.ChannelOnCursor
+                        case 2: return ESPlayable.StripsList.ChannelFromCursor
+                        case 3: return ESPlayable.StripsList.UNSET
+                        case 4: return ESPlayable.StripsList.UNSET
                         default:
                             console.error("Invalid index", currentIndex)
                         }

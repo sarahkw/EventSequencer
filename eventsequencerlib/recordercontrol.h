@@ -12,6 +12,9 @@ class RecorderControl : public AudioControl
 {
     Q_OBJECT
 
+    QString fileResourceDirectory_;
+    Q_PROPERTY(QString fileResourceDirectory READ fileResourceDirectory WRITE setFileResourceDirectory NOTIFY fileResourceDirectoryChanged)
+
     QAudioInput* audioInput_ = nullptr;
     QString audioInputReadyStatus_;
     void updateAudioObject() override;
@@ -29,6 +32,9 @@ public:
     explicit RecorderControl(QObject *parent = nullptr);
     ~RecorderControl() override;
 
+    QString fileResourceDirectory() const;
+    void setFileResourceDirectory(const QString &fileResourceDirectory);
+
     bool audioInputReady() const;
     QString audioInputReadyStatus() const;
 
@@ -43,6 +49,8 @@ public:
     void setAllowOverwrite(bool allowOverwrite);
 
 signals:
+
+    void fileResourceDirectoryChanged();
 
     void audioInputReadyStatusChanged();
 

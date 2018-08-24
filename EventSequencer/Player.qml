@@ -5,6 +5,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Dialogs 1.2
 
 import eventsequencer 1.0 as ES
+import eventsequencer.playable 1.0 as ESPlayable
 
 Window {
     id: playerWin
@@ -27,18 +28,27 @@ Window {
         }
     }
 
+    ESPlayable.SingleUrl {
+        id: playableSingleUrl
+        fileResourceDirectory: playerWin.fileResourceDirectory
+        singleUrl: txtSingleUrl.text
+    }
+
+    ESPlayable.StripsList {
+        id: playableStripsList
+        fileResourceDirectory: playerWin.fileResourceDirectory
+        selectionMode: ESPlayable.StripsList.SelectionMode.Strip // Initial thing on UI
+        selectedStrip: activeCppStrip
+        selectedChannel: activeCppChannel
+        cursorFrame: playerWin.cursorFrame
+    }
+
     ES.PlayerControl {
         id: playerControl
         audioFormatHolder: playerWin.audioFormatHolder
         sessionAudio: playerWin.sessionAudio
-        fileResourceDirectory: playerWin.fileResourceDirectory
         autoStopOnIdle: true
-
-        selectionMode: ES.PlayerControl.SelectionMode.Strip
-        selectedStrip: activeCppStrip
-        selectedChannel: activeCppChannel
-        cursorFrame: playerWin.cursorFrame
-        singleUrl: txtSingleUrl.text
+        playable: playableStripsList // Initial thing on UI
     }
 
     ColumnLayout {
@@ -77,11 +87,11 @@ Window {
                 Column {
                     Layout.fillWidth: true
                     RadioButton { checked: true
-                                  text: "Strip"            ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.Strip } }
-                    RadioButton { text: "ChannelFromBegin" ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.ChannelFromBegin } }
-                    RadioButton { text: "ChannelFromCursor"; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.ChannelFromCursor } }
-                    RadioButton { text: "ChannelOnCursor"  ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.ChannelOnCursor } }
-                    RadioButton { text: "SingleUrl"        ; onToggled: { if (checked) playerControl.selectionMode = ES.PlayerControl.SelectionMode.SingleUrl } }
+                                  text: "Strip"            ; onToggled: { if (checked) { playerControl.playable = playableStripsList; playableStripsList.selectionMode = ESPlayable.StripsList.SelectionMode.Strip             } } }
+                    RadioButton { text: "ChannelFromBegin" ; onToggled: { if (checked) { playerControl.playable = playableStripsList; playableStripsList.selectionMode = ESPlayable.StripsList.SelectionMode.ChannelFromBegin  } } }
+                    RadioButton { text: "ChannelFromCursor"; onToggled: { if (checked) { playerControl.playable = playableStripsList; playableStripsList.selectionMode = ESPlayable.StripsList.SelectionMode.ChannelFromCursor } } }
+                    RadioButton { text: "ChannelOnCursor"  ; onToggled: { if (checked) { playerControl.playable = playableStripsList; playableStripsList.selectionMode = ESPlayable.StripsList.SelectionMode.ChannelOnCursor   } } }
+                    RadioButton { text: "SingleUrl"        ; onToggled: { if (checked) { playerControl.playable = playableSingleUrl; } } }
                 }
 
                 Label { text: "SingleUrl" }
@@ -104,10 +114,16 @@ Window {
             }
         }
 
-        ScrollView {
+        GroupBox {
             Layout.fillHeight: true
-            TextEdit {
-                text: playerControl.currentStripsReport
+            Layout.fillWidth: true
+            title: "Strips Report"
+            ScrollView {
+                anchors.fill: parent
+                visible: playerControl.playable == playableStripsList
+                TextEdit {
+                    text: playableStripsList.currentStripsReport
+                }
             }
         }
     }

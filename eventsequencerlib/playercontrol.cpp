@@ -1,16 +1,12 @@
 #include "playercontrol.h"
 
-#include "endianmodifyingiodevice.h"
 #include "audioformatholder.h"
 #include "sessionaudio.h"
-#include "aufileheader.h"
 #include "managedresources.h"
-#include "concatiodevice.h"
 
 #include <QAudioOutput>
 
 #include <QDebug>
-#include <QFile>
 
 #include <memory>
 
@@ -25,56 +21,17 @@ void PlayerControl::play()
         return;
     }
 
+    if (playable_ == nullptr) {
+        setError("Nothing to play");
+        return;
+    }
+
     const auto format = audioOutput_->format();
 
-    ManagedResources managedResources(fileResourceDirectory());
-    std::unique_ptr<ConcatIODevice> playingDevice(new ConcatIODevice);
-
-    const auto appendUrl = [&format, &managedResources, this, &playingDevice](QUrl url) -> bool {
-        QString fileName;
-        if (!managedResources.urlConvertToFilePath(url, &fileName)) {
-            setError("Missing file resource directory");
-            return false;
-        }
-
-        std::shared_ptr<QFile> muhFile(new QFile(fileName));
-        if (!muhFile->open(QFile::ReadOnly)) {
-            setError(QString("Cannot open: %1").arg(muhFile->errorString()));
-            return false;
-        }
-
-        AuFileHeader afh;
-        if (!afh.loadFileAndSeek(*muhFile)) {
-            // TODO Compare the format
-            setError("Cannot load AU file and seek");
-            return false;
-        }
-
-        auto* emiod = new EndianModifyingIODevice(
-            muhFile, unsigned(format.sampleSize() / 8),
-            EndianModifyingIODevice::Big,
-            format.byteOrder() == QAudioFormat::BigEndian
-                ? EndianModifyingIODevice::Big
-                : EndianModifyingIODevice::Little);
-
-        const bool success = emiod->open(QIODevice::ReadOnly);
-        Q_ASSERT(success); // This can't fail because inferior is already open
-
-        playingDevice->append(emiod);
-        return true;
-    };
-
-    // XXX What a hack!
-    if (selectionMode() == SelectionMode::SingleUrl) {
-        if (!appendUrl(singleUrl_)) {
-            return;
-        }
-    } else {
-        for (const Strip* s : stripsToPlay_) {
-            if (!appendUrl(s->resourceUrl())) {
-                return;
-            }
-        }
+    std::unique_ptr<QIODevice> playingDevice(playable_->createPlayableDevice(format));
+    if (!playingDevice) {
+        setError(playable_->error());
+        return;
     }
 
     playingDevice->open(QIODevice::ReadOnly);
@@ -105,13 +62,13 @@ void PlayerControl::stop()
         return;
     }
 
+    if (audioOutput_->state() != QAudio::StoppedState) {
+        audioOutput_->stop();
+    }
+
     if (playingDevice_ != nullptr) {
         delete playingDevice_;
         playingDevice_ = nullptr;
-    }
-
-    if (audioOutput_->state() != QAudio::StoppedState) {
-        audioOutput_->stop();
     }
 
     setError("");
@@ -175,208 +132,46 @@ void PlayerControl::updateAudioState()
     setError(audioOutput_->error());
 }
 
-namespace {
-QString describeStrip(const Strip* s)
+QObject *PlayerControl::playable() const
 {
-    return QString("%1 - %2").arg(s->startFrame()).arg(s->resourceUrl().toString());
-}
+    return playable_;
 }
 
-void PlayerControl::updateCurrentStrips()
+void PlayerControl::setPlayable(QObject *playable)
 {
-    QStringList sl;
+    playable::PlayableBase* playableBase = qobject_cast<playable::PlayableBase*>(playable);
+    if (playable_ != playableBase) {
 
-    for (const Strip* s : stripsToPlay_) {
-        s->disconnect(this);
-    }
-    stripsToPlay_.clear();
+        stop();
 
-    const auto takeStrip = [this, &sl](Strip* s) {
-        QObject::connect(s, &Strip::resourceUrlChanged,
-                         this, &PlayerControl::updateCurrentStrips);
-        stripsToPlay_.push_back(s);
-        sl.push_back(describeStrip(s));
-    };
-
-    switch (selectionMode()) {
-    case SelectionMode::Strip:
-        if (selectedStrip_ != nullptr) {
-            takeStrip(selectedStrip_);
-        }
-        break;
-    case SelectionMode::ChannelFromBegin:
-        if (selectedChannel_ != nullptr) {
-            for (Strip* s : selectedChannel_->strips()) {
-                takeStrip(s);
-            }
-        }
-        break;
-    case SelectionMode::ChannelFromCursor:
-        if (selectedChannel_ != nullptr) {
-            auto strips = selectedChannel_->strips();
-            for (auto iter = std::lower_bound(
-                     strips.begin(), strips.end(), cursorFrame_,
-                     [](Strip* a, int b) { return a->startFrame() < b; });
-                 iter != strips.end(); ++iter) {
-                takeStrip(*iter);
-            }
-        }
-        break;
-    case SelectionMode::ChannelOnCursor:
-        if (selectedChannel_ != nullptr) {
-            auto strips = selectedChannel_->strips();
-            auto iter =
-                std::lower_bound(strips.begin(), strips.end(),
-                                 cursorFrame_, [](Strip* a, int b) {
-                                     return a->startFrame() + a->length() <= b;
-                                 });
-            if (iter != strips.end() &&
-                (*iter)->startFrame() <= cursorFrame_) {
-                takeStrip(*iter);
-            }
-        }
-        break;
-    case SelectionMode::SingleUrl:
-        // HACK: Will read the Url directly later.
-        break;
-    }
-
-    currentStripsReport_ = sl.join("\n");
-    emit currentStripsReportChanged();
-}
-
-void PlayerControl::updateCurrentStripsIfSelectionModeIsStrip()
-{
-    if (selectionMode() == SelectionMode::Strip) {
-        updateCurrentStrips();
-    }
-}
-
-void PlayerControl::updateCurrentStripsIfSelectionModeIsChannel()
-{
-    switch (selectionMode()) {
-    case SelectionMode::ChannelFromBegin:
-    case SelectionMode::ChannelFromCursor:
-    case SelectionMode::ChannelOnCursor:
-        updateCurrentStrips();
-        break;
-    case SelectionMode::Strip:
-    case SelectionMode::SingleUrl:
-        break;
-    }
-}
-
-QString PlayerControl::currentStripsReport() const
-{
-    return currentStripsReport_;
-}
-
-PlayerControl::SelectionMode PlayerControl::selectionMode() const
-{
-    return selectionMode_;
-}
-
-void PlayerControl::setSelectionMode(const SelectionMode &selectionMode)
-{
-    if (selectionMode_ != selectionMode) {
-        selectionMode_ = selectionMode;
-        emit selectionModeChanged();
-        updateCurrentStrips();
-    }
-}
-
-channel::ChannelBase *PlayerControl::selectedChannel() const
-{
-    return selectedChannel_;
-}
-
-void PlayerControl::setSelectedChannel(channel::ChannelBase *selectedChannel)
-{
-    if (selectedChannel_ != selectedChannel) {
-
-        if (selectedChannel_ != nullptr) {
-            selectedChannel_->disconnect(this);
+        if (playable_ != nullptr) {
+            playable_->disconnect(this);
         }
 
-        if (selectedChannel != nullptr) {
-            QObject::connect(selectedChannel, &channel::ChannelBase::destroyed,
-                             this, &PlayerControl::clearSelectedChannel);
+        playable_ = playableBase;
 
-            QObject::connect(selectedChannel, &channel::ChannelBase::stripsChanged,
-                             this, &PlayerControl::updateCurrentStripsIfSelectionModeIsChannel);
+        if (playable_ != nullptr) {
+            QObject::connect(playable_, &QObject::destroyed,
+                             this, &PlayerControl::clearPlayable);
         }
 
-        selectedChannel_ = selectedChannel;
-        emit selectedChannelChanged();
-
-        updateCurrentStripsIfSelectionModeIsChannel();
+        emit playableChanged();
+    }
+    if (playable != nullptr && playableBase == nullptr) {
+        qWarning("PlayerControl: playable is of wrong type");
+        emit playableChanged(); // Make QML re-read to see that it's nullptr.
     }
 }
 
-void PlayerControl::clearSelectedChannel()
+void PlayerControl::clearPlayable()
 {
-    setSelectedChannel(nullptr);
-}
-
-Strip *PlayerControl::selectedStrip() const
-{
-    return selectedStrip_;
-}
-
-void PlayerControl::setSelectedStrip(Strip *selectedStrip)
-{
-    if (selectedStrip_ != selectedStrip) {
-        if (selectedStrip_ != nullptr) {
-            selectedStrip_->disconnect(this);
-        }
-        if (selectedStrip != nullptr) {
-            QObject::connect(selectedStrip, &Strip::destroyed,
-                             this, &PlayerControl::clearSelectedStrip);
-        }
-
-        selectedStrip_ = selectedStrip;
-        emit selectedStripChanged();
-
-        updateCurrentStripsIfSelectionModeIsStrip();
-    }
-}
-
-QString PlayerControl::singleUrl() const
-{
-    return singleUrl_;
-}
-
-void PlayerControl::setSingleUrl(const QString &singleUrl)
-{
-    if (singleUrl_ != singleUrl) {
-        singleUrl_ = singleUrl;
-        emit singleUrlChanged();
-        updateCurrentStrips();
-    }
-}
-
-void PlayerControl::clearSelectedStrip()
-{
-    setSelectedStrip(nullptr);
-}
-
-int PlayerControl::cursorFrame() const
-{
-    return cursorFrame_;
-}
-
-void PlayerControl::setCursorFrame(int cursorFrame)
-{
-    if (cursorFrame_ != cursorFrame) {
-        cursorFrame_ = cursorFrame;
-        emit cursorFrameChanged();
-    }
+    stop();
+    playable_ = nullptr;
+    emit playableChanged();
 }
 
 PlayerControl::PlayerControl(QObject* parent) : AudioControl(parent)
 {
-    QObject::connect(this, &PlayerControl::cursorFrameChanged,
-                     this, &PlayerControl::updateCurrentStripsIfSelectionModeIsChannel);
     updateAudioObject(); // Initial update of ready status
 }
 

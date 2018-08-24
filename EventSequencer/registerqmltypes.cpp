@@ -22,6 +22,8 @@
 #include "countchannelindex.h"
 #include "conditionalerror.h"
 #include "errorreportingcontext.h"
+#include "playable/stripslist.h"
+#include "playable/singleurl.h"
 
 #include <QQmlEngine>
 
@@ -57,4 +59,6 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<CountChannelIndex>("eventsequencer", 1, 0, "CountChannelIndex");
     qmlRegisterType<ConditionalError>("eventsequencer", 1, 0, "ConditionalError");
     qmlRegisterType<ErrorReportingContext>("eventsequencer", 1, 0, "ErrorReportingContext");
+    qmlRegisterType<playable::StripsList>("eventsequencer.playable", 1, 0, "StripsList");
+    qmlRegisterType<playable::SingleUrl>("eventsequencer.playable", 1, 0, "SingleUrl");
 }

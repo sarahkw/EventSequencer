@@ -13,6 +13,19 @@
 
 #include <memory>
 
+QString RecorderControl::fileResourceDirectory() const
+{
+    return fileResourceDirectory_;
+}
+
+void RecorderControl::setFileResourceDirectory(const QString &fileResourceDirectory)
+{
+    if (fileResourceDirectory_ != fileResourceDirectory) {
+        fileResourceDirectory_ = fileResourceDirectory;
+        emit fileResourceDirectoryChanged();
+    }
+}
+
 void RecorderControl::record(QUrl url)
 {
     if (audioFormatHolder_ == nullptr || audioInput_ == nullptr) {

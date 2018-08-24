@@ -72,7 +72,11 @@ SOURCES += \
     conditionalerror.cpp \
     qmlimmediatedestructor.cpp \
     samplemodifyingiodevice.cpp \
-    endianmodifyingiodevice.cpp
+    endianmodifyingiodevice.cpp \
+    playable/stripslist.cpp \
+    playable/singleurl.cpp \
+    playable/tone.cpp \
+    playable/playablebase.cpp
 
 
 HEADERS += \
@@ -125,7 +129,11 @@ HEADERS += \
     conditionalerror.h \
     qmlimmediatedestructor.h \
     samplemodifyingiodevice.h \
-    endianmodifyingiodevice.h
+    endianmodifyingiodevice.h \
+    playable/stripslist.h \
+    playable/singleurl.h \
+    playable/tone.h \
+    playable/playablebase.h
 
 unix {
     target.path = /usr/lib
