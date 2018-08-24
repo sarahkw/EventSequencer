@@ -212,14 +212,9 @@ Page {
                         MenuItem {
                             text: "Font..."
                         }
-                        Menu {
-                            title: "Show"
-                            MenuItem {
-                                text: "Line"
-                            }
-                            MenuItem {
-                                text: "Position"
-                            }
+                        MenuItem {
+                            text: "Line Numbers"
+                            checkable: true
                         }
                     }
                 }
@@ -497,6 +492,7 @@ Page {
                                     anchors.bottom: parent.bottom
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     text: cursorFrame
+                                    width: 1
                                 }
                             }
                         }
