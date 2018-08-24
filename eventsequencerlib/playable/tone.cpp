@@ -111,7 +111,7 @@ QIODevice *Tone::createPlayableDevice(const QAudioFormat &outputFormat)
         return nullptr;
     }
 
-    const float amplitude = 0.4f; // TODO Hard-coding sucks
+    const float amplitude = 0.2f; // TODO Hard-coding sucks
     const int sampleRate = outputFormat.sampleRate(); // Samples per second
     const double periodInSamples = 1.0 / frequency_ * sampleRate;
     const unsigned periodInSamplesInteger = unsigned(periodInSamples);
