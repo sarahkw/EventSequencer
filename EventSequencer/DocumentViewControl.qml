@@ -109,6 +109,7 @@ Rectangle {
                 }
                 Text {
                     text: modelData
+                    textFormat: Text.PlainText
                     font: cmfu.builtFont
                 }
             }

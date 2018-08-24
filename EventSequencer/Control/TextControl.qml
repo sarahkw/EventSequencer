@@ -83,6 +83,7 @@ Item {
         Text {
             id: txtChannelTrack
             text: smlool.output
+            textFormat: Text.PlainText
             font: cmfuAlignedFont.builtFont
             anchors.top: parent.top
             anchors.bottom: parent.bottom
