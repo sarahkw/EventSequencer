@@ -547,6 +547,11 @@ Page {
                                 CheckBox {
                                     Layout.fillWidth: true
                                     Layout.columnSpan: 2
+                                    text: "Play tone before record"
+                                }
+                                CheckBox {
+                                    Layout.fillWidth: true
+                                    Layout.columnSpan: 2
                                     text: "Automatically start range on record"
                                 }
                                 CheckBox {
