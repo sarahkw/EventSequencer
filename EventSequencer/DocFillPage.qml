@@ -505,13 +505,14 @@ Page {
                             Layout.fillWidth: true
                             title: "Selection"
                             RowLayout {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
                                 Button {
                                     Layout.fillWidth: true
                                     text: "Delete"
                                 }
-                                Button {
-                                    Layout.fillWidth: true
-                                    text: "Delete and Reclaim Resource"
+                                CheckBox {
+                                    text: "Reclaim resource"
                                 }
                             }
                         }
