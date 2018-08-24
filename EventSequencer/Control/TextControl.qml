@@ -79,6 +79,19 @@ Item {
         }
     }
 
+    property Component docFillStripsTrackComponent: Component {
+        Text {
+            property int charactersToShow: width / cmfuAlignedFont.builtFontWidth
+            font: cmfuAlignedFont.builtFont
+            text: smlool2.output
+
+            ShowMultipleLinesOnOneLine {
+                id: smlool2
+                input: cppChannel !== null ? cppChannel.content.substr(0, charactersToShow) : ""
+            }
+        }
+    }
+
     property Component channelTrackComponent: Component {
         Text {
             id: txtChannelTrack

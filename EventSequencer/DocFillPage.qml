@@ -484,6 +484,7 @@ Page {
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             Rectangle {
+                                id: stripsBody
                                 anchors.fill: parent
                                 color: "white"
 
@@ -493,6 +494,21 @@ Page {
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     text: cursorFrame
                                     width: 1
+                                }
+
+                                Loader {
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+
+                                    property var cmfuAlignedFont: ES.ConstrainedMetricsFontUtil {
+                                        constrainByWidthEnabled: false
+                                    }
+
+                                    C.TextControl {
+                                        id: textControl
+                                        property var cppChannel: root.cppTextChannel
+                                    }
+                                    sourceComponent: textControl.docFillStripsTrackComponent
                                 }
                             }
                         }
