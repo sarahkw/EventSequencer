@@ -45,10 +45,8 @@ public:
     bool flush();
     size_t incompleteByteCount() const;
 
-    // Takes ownership of inferior.
     SampleModifyingIODevice(std::shared_ptr<QIODevice> inferior,
                             unsigned bytesPerUnit, ModifierFunction modifierFn);
-    ~SampleModifyingIODevice() override;
 };
 
 #endif // SAMPLEMODIFYINGIODEVICE_H

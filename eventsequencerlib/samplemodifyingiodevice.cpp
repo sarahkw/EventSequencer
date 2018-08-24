@@ -287,7 +287,3 @@ SampleModifyingIODevice::SampleModifyingIODevice(
     : inferior_(inferior), bytesPerUnit_(bytesPerUnit), modifierFn_(modifierFn)
 {
 }
-
-SampleModifyingIODevice::~SampleModifyingIODevice()
-{
-}
