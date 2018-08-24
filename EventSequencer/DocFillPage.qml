@@ -492,6 +492,13 @@ Page {
                             Rectangle {
                                 anchors.fill: parent
                                 color: "white"
+
+                                Cursor {
+                                    anchors.top: parent.top
+                                    anchors.bottom: parent.bottom
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    text: cursorFrame
+                                }
                             }
                         }
                         GroupBox {

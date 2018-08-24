@@ -40,5 +40,6 @@
         <file>CorraledResourceFile.qml</file>
         <file>ScoutMain.qml</file>
         <file>DocFillPage.qml</file>
+        <file>Cursor.qml</file>
     </qresource>
 </RCC>

@@ -613,41 +613,19 @@ ApplicationWindow {
                     color: "white"
                 }
 
-                Rectangle {
+                Cursor {
                     property int frame: 0
                     id: cursor
-                    width: 2
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    color: "lime"
                     x: body.x + zoom.mapFrameToDisplayX(frame) - 1
                     z: 1
+                    text: displayFrameNumber(cursor.frame)
 
                     function showFrame(newFrame) {
                         var newX = body.x + zoom.mapFrameToDisplayX(newFrame) - 1
                         body.x -= newX - bodyView.width + bodyView.width * 0.9
                         frame = newFrame
-                    }
-
-                    Rectangle {
-                        color: cursor.color
-                        anchors.left: cursor.right
-                        anchors.top: cursorText.top
-                        anchors.bottom: cursorText.bottom
-                        anchors.right: cursorText.right
-                        anchors.rightMargin: -10
-                        anchors.topMargin: -2
-                        anchors.bottomMargin: -2
-                    }
-
-                    Text {
-                        id: cursorText
-                        anchors.left: cursor.right
-                        anchors.bottom: cursor.bottom
-                        anchors.leftMargin: 10
-                        anchors.bottomMargin: 10
-                        text: displayFrameNumber(cursor.frame)
-                        font.pixelSize: 12
                     }
                 }
 
