@@ -24,6 +24,7 @@
 #include "errorreportingcontext.h"
 #include "playable/stripslist.h"
 #include "playable/singleurl.h"
+#include "playable/tone.h"
 
 #include <QQmlEngine>
 
@@ -61,4 +62,5 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<ErrorReportingContext>("eventsequencer", 1, 0, "ErrorReportingContext");
     qmlRegisterType<playable::StripsList>("eventsequencer.playable", 1, 0, "StripsList");
     qmlRegisterType<playable::SingleUrl>("eventsequencer.playable", 1, 0, "SingleUrl");
+    qmlRegisterType<playable::Tone>("eventsequencer.playable", 1, 0, "Tone");
 }

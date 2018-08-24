@@ -1,10 +1,138 @@
 #include "tone.h"
 
+#include <QAudioFormat>
+#include <QIODevice>
+
+namespace {
+
+class LoopedSamplesIODevice : public QIODevice {
+    std::vector<char> source_;
+    size_t position_ = 0;
+public:
+    LoopedSamplesIODevice(std::vector<char>&& source) : source_(std::move(source)) {}
+
+protected:
+    qint64 readData(char *data, qint64 maxlen) override
+    {
+        qint64 left = maxlen;
+        while (left > 0) {
+            auto toCopy = qMin(size_t(left), source_.size() - position_);
+            memcpy(data, source_.data() + position_, toCopy);
+            data += toCopy;
+            left -= toCopy;
+            position_ = (position_ + toCopy) % source_.size();
+        }
+        return maxlen;
+    }
+    qint64 writeData(const char *, qint64) override
+    {
+        return -1;
+    }
+};
+
+} // namespace anonymous
+
 namespace playable {
 
-Tone::Tone()
+int Tone::frequency() const
+{
+    return frequency_;
+}
+
+void Tone::setFrequency(int frequency)
+{
+    if (frequency < 0) { // I guess 0 is the "null" value
+        emit frequencyChanged();
+        return;
+    }
+
+    if (frequency_ != frequency) {
+        frequency_ = frequency;
+        emit frequencyChanged();
+    }
+}
+
+Tone::Tone(QObject *parent) : PlayableBase(parent)
 {
 
+}
+
+namespace {
+
+template <typename SampleType>
+void writeSquareWaveData(double amplitude, SampleType minVal, SampleType maxVal,
+                         size_t periodLength, size_t channelCount,
+                         std::vector<char>& output)
+{
+    std::vector<SampleType> samples(periodLength * channelCount);
+
+    for (unsigned frame = 0; frame < periodLength; ++frame) {
+        for (unsigned channel = 0; channel < channelCount; ++channel) {
+            if (frame < periodLength / 2) {
+                samples[frame * channelCount + channel] = minVal * amplitude;
+            } else {
+                samples[frame * channelCount + channel] = maxVal * amplitude;
+            }
+        }
+    }
+
+    output.resize(samples.size() * sizeof(SampleType));
+    memcpy(output.data(), samples.data(), output.size());
+}
+
+} // namespace anonymous
+
+QIODevice *Tone::createPlayableDevice(const QAudioFormat &outputFormat)
+{
+    setError("");
+
+    if (frequency_ <= 0) {
+        setError("Invalid frequency");
+        return nullptr;
+    }
+
+    if (outputFormat.byteOrder() != QAudioFormat::LittleEndian) {
+        setError("Only little endian is supported");
+        return nullptr;
+    }
+
+    const double amplitude = 0.6;
+    const int sampleRate = outputFormat.sampleRate(); // Samples per second
+    const double periodInSamples = 1.0 / frequency_ * sampleRate;
+    const unsigned periodInSamplesInteger = unsigned(periodInSamples);
+
+    std::vector<char> samples;
+
+    // These are the common ones, I think.
+    if (outputFormat.sampleType() == QAudioFormat::Float) {
+        if (outputFormat.sampleSize() == 32) {
+            writeSquareWaveData<float>(amplitude, -1, 1, periodInSamplesInteger,
+                                outputFormat.channelCount(), samples);
+        } else {
+            setError("Only 32 bits supported for float");
+            return nullptr;
+        }
+    } else if (outputFormat.sampleType() == QAudioFormat::SignedInt) {
+        if (outputFormat.sampleSize() == 16) {
+            writeSquareWaveData<short>(amplitude, std::numeric_limits<short>::min(),
+                                std::numeric_limits<short>::max(),
+                                periodInSamplesInteger,
+                                outputFormat.channelCount(), samples);
+        } else if (outputFormat.sampleSize() == 32) {
+            writeSquareWaveData<int>(amplitude, std::numeric_limits<int>::min(),
+                              std::numeric_limits<int>::max(),
+                              periodInSamplesInteger,
+                              outputFormat.channelCount(), samples);
+        } else {
+            setError("Only 16 or 32 bits supported for signed int");
+            return nullptr;
+        }
+    } else {
+        setError("Only signed int and float are supported");
+        return nullptr;
+    }
+
+    return new LoopedSamplesIODevice(std::move(samples));
 }
 
 } // namespace playable

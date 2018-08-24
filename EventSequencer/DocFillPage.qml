@@ -111,6 +111,11 @@ Page {
         cursorFrame: rebind_cursorFrame
     }
 
+    ESPlayable.Tone {
+        id: playableTone
+        //frequency: 220
+    }
+
     ES.PlayerControl {
         id: playerControl
         audioFormatHolder: document.audioFormatHolder
@@ -357,7 +362,7 @@ Page {
                         case 1: return playableStripsList
                         case 2: return playableStripsList
                         case 3: return playableStripsList
-                        case 4: return playableStripsList
+                        case 4: return playableTone
                         default:
                             console.error("Invalid index", currentIndex)
                         }
@@ -383,9 +388,13 @@ Page {
                 TextField {
                     visible: cmbSelectionMode.currentIndex === 4
                     placeholderText: "Hz"
+                    text: playableTone.frequency !== 0 ? playableTone.frequency : null
                     implicitWidth: btnShow.implicitWidth
                     inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: focus = false
+                    onEditingFinished: {
+                        playableTone.frequency = parseInt(text, 10)
+                        focus = false
+                    }
                 }
                 Button {
                     id: unnamedParent_6bbd

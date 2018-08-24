@@ -1,14 +1,31 @@
 #ifndef PLAYABLE_TONE_H
 #define PLAYABLE_TONE_H
 
+#include "playablebase.h"
+
 #include <QObject>
 
 namespace playable {
 
-class Tone
+class Tone : public PlayableBase
 {
+    Q_OBJECT
+
+    int frequency_ = 0;
+    Q_PROPERTY(int frequency READ frequency WRITE setFrequency NOTIFY frequencyChanged)
+
 public:
-    Tone();
+    explicit Tone(QObject *parent = nullptr);
+
+    QIODevice* createPlayableDevice(const QAudioFormat& outputFormat) override;
+
+    int frequency() const;
+    void setFrequency(int frequency);
+
+signals:
+
+    void frequencyChanged();
+
 };
 
 } // namespace playable
