@@ -75,6 +75,7 @@ Window {
 
             ConstrainedMetricsFontUtil {
                 id: mfAuto
+                constrainByWidthEnabled: ctrl_constrainByWidthEnabled.checked
                 constrainByWidthValue: ctrl_constrainByWidthValue.value
                 addLetterSpacingToMatchWidth: ctrl_addLetterSpacingToMatchWidth.checked
                 constrainByHeightEnabled: ctrl_constrainByHeightEnabled.checked
@@ -94,6 +95,12 @@ Window {
                     spacing: 5
                     columns: 2
                     verticalItemAlignment: Grid.AlignVCenter
+                    Label {
+                        text: "constrainByWidthEnabled"
+                    }
+                    CheckBox {
+                        id: ctrl_constrainByWidthEnabled
+                    }
                     Label {
                         text: "constrainByWidthValue"
                     }
@@ -136,6 +143,12 @@ Window {
                     }
                     Label {
                         text: mfAuto.builtFontAddedSpacing
+                    }
+                    Label {
+                        text: "builtFontWidth"
+                    }
+                    Label {
+                        text: mfAuto.builtFontWidth
                     }
                 }
             }

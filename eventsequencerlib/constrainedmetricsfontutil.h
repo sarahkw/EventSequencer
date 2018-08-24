@@ -8,6 +8,7 @@ class ConstrainedMetricsFontUtil : public QObject
 {
     Q_OBJECT
 
+    bool constrainByWidthEnabled_ = true; // Allowing this to be false was added later.
     int constrainByWidthValue_ = 0;
 
     bool constrainByHeightEnabled_ = false;
@@ -24,6 +25,7 @@ class ConstrainedMetricsFontUtil : public QObject
 
     QFont builtFont_;
 
+    Q_PROPERTY(bool  constrainByWidthEnabled          READ constrainByWidthEnabled          WRITE setConstrainByWidthEnabled          NOTIFY constrainByWidthEnabledChanged)
     Q_PROPERTY(int   constrainByWidthValue            READ constrainByWidthValue            WRITE setConstrainByWidthValue            NOTIFY constrainByWidthValueChanged)
     Q_PROPERTY(bool  constrainByHeightEnabled         READ constrainByHeightEnabled         WRITE setconstrainByHeightEnabled         NOTIFY constrainByHeightEnabledChanged)
     Q_PROPERTY(int   constrainByHeightValue           READ constrainByHeightValue           WRITE setConstrainByHeightValue           NOTIFY constrainByHeightValueChanged)
@@ -44,6 +46,9 @@ public:
     Q_INVOKABLE static int fontCharacterWidth(QFont font);
     Q_INVOKABLE static int fontHeight(QFont font);
     Q_INVOKABLE static QFont makeUniformPixelWidth(QFont input);
+
+    bool constrainByWidthEnabled() const;
+    void setConstrainByWidthEnabled(bool constrainByWidthEnabled);
 
     int constrainByWidthValue() const;
     void setConstrainByWidthValue(int constrainByWidthValue);
@@ -88,6 +93,7 @@ public:
 
 signals:
 
+    void constrainByWidthEnabledChanged();
     void constrainByWidthValueChanged();
     void constrainByHeightEnabledChanged();
     void constrainByHeightValueChanged();
