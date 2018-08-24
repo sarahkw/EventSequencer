@@ -500,10 +500,11 @@ Page {
                             Layout.fillWidth: true
                             Button {
                                 Layout.fillWidth: true
-                                text: "Delete"
+                                text: "Delete..."
                             }
-                            CheckBox {
-                                text: "Reclaim resource"
+                            Button {
+                                Layout.fillWidth: true
+                                text: "Play"
                             }
                         }
                     }
