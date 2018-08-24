@@ -68,6 +68,12 @@ void writeSquareWaveData(float amplitude, SampleType minVal, SampleType maxVal,
                          std::vector<char>& output)
 {
     std::vector<SampleType> samples(periodLength * channelCount);
+    const size_t sampleSizeInBytes = samples.size() * sizeof(SampleType);
+    const size_t MB_16{1024 * 1024 * 16};
+    if (sampleSizeInBytes > MB_16) {
+        qWarning("Square wave samples length way larger than expected");
+        return;
+    }
 
     for (unsigned frame = 0; frame < periodLength; ++frame) {
         for (unsigned channel = 0; channel < channelCount; ++channel) {
@@ -79,7 +85,7 @@ void writeSquareWaveData(float amplitude, SampleType minVal, SampleType maxVal,
         }
     }
 
-    output.resize(samples.size() * sizeof(SampleType));
+    output.resize(sampleSizeInBytes);
     memcpy(output.data(), samples.data(), output.size());
 }
 
