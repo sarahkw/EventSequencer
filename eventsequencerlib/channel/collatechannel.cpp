@@ -224,6 +224,16 @@ int CollateChannel::calculateNextEmptyBackward(int fromPosition) const
                                  [](SegmentType v) { return v == SegmentType::Empty; });
 }
 
+int CollateChannel::calculateNextSegmentForward(int fromPosition) const
+{
+    return calculateNextForward(fromPosition, [](SegmentType v) { return true; });
+}
+
+int CollateChannel::calculateNextSegmentBackward(int fromPosition) const
+{
+    return calculateNextBackward(fromPosition, [](SegmentType v) { return true; });
+}
+
 void CollateChannel::channelWaitForResultChanged()
 {
     if (sourceChannel_ != nullptr) {

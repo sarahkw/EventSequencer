@@ -96,6 +96,8 @@ private:
 public:
     Q_INVOKABLE int calculateNextEmptyForward(int fromPosition) const;
     Q_INVOKABLE int calculateNextEmptyBackward(int fromPosition) const;
+    Q_INVOKABLE int calculateNextSegmentForward(int fromPosition) const;
+    Q_INVOKABLE int calculateNextSegmentBackward(int fromPosition) const;
 
 signals:
 

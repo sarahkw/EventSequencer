@@ -253,9 +253,17 @@ Page {
                         }
                         MenuItem {
                             text: "Previous Segment"
+                            onTriggered: {
+                                var npos = root.cppResourceChannel.calculateNextSegmentBackward(rebind_cursorFrame)
+                                root.rebind_changeCursorFrame(npos)
+                            }
                         }
                         MenuItem {
                             text: "Next Segment"
+                            onTriggered: {
+                                var npos = root.cppResourceChannel.calculateNextSegmentForward(rebind_cursorFrame)
+                                root.rebind_changeCursorFrame(npos)
+                            }
                         }
                     }
                 }
