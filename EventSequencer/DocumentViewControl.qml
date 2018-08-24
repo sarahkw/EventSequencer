@@ -20,7 +20,7 @@ Rectangle {
 
     ES.WordWrappedTextTrack {
         id: wwtt
-        width: lview.width - cmfu.constrainByWidthValue /*For wrapped space or NewLine*/
+        width: lview.width - cmfu.builtFontWidth /*For wrapped space or NewLine*/
         text: chanToTextContent.outputTextContent != null ? chanToTextContent.outputTextContent : ""
         font: cmfu.builtFont
         cursorFrame: root.cursorFrame
@@ -28,7 +28,9 @@ Rectangle {
 
     ES.ConstrainedMetricsFontUtil {
         id: cmfu
-        constrainByWidthValue: 8
+        constrainByWidthEnabled: false
+        //baseFont.pointSize: 24
+        //constrainByWidthValue: 8
     }
 
     Control.Resolver {
@@ -89,7 +91,7 @@ Rectangle {
                 height: cmfu.builtFontHeight
                 Item {
                     height: cmfu.builtFontHeight
-                    width: modelData.length * cmfu.constrainByWidthValue
+                    width: modelData.length * cmfu.builtFontWidth
                     clip: true
                     Loader {
                         anchors.top: parent.top
@@ -98,12 +100,12 @@ Rectangle {
                         property var cppChannel: chanToRenderComponent.outputCppChannel
                         property string textData: modelData
                         property int textOffset_: textOffset
-                        property int widthPerCharacter: cmfu.constrainByWidthValue
+                        property int widthPerCharacter: cmfu.builtFontWidth
                     }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            root.changeCursorFrame(textOffset + Math.floor(mouse.x / cmfu.constrainByWidthValue))
+                            root.changeCursorFrame(textOffset + Math.floor(mouse.x / cmfu.builtFontWidth))
                         }
                     }
                 }
@@ -120,7 +122,7 @@ Rectangle {
             height: cmfu.builtFontHeight
             color: "black"
             property alias cpos: wwtt.cursorPosition
-            x: cpos.x * cmfu.constrainByWidthValue
+            x: cpos.x * cmfu.builtFontWidth
             y: cpos.y * cmfu.builtFontHeight
             z: 10
             readonly property int blinkDelay: 750
