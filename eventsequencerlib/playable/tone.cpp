@@ -14,6 +14,9 @@ public:
 protected:
     qint64 readData(char *data, qint64 maxlen) override
     {
+        if (source_.size() == 0) {
+            return -1; // No infinite loop, please.
+        }
         qint64 left = maxlen;
         while (left > 0) {
             auto toCopy = qMin(size_t(left), source_.size() - position_);
@@ -60,7 +63,7 @@ Tone::Tone(QObject *parent) : PlayableBase(parent)
 namespace {
 
 template <typename SampleType>
-void writeSquareWaveData(double amplitude, SampleType minVal, SampleType maxVal,
+void writeSquareWaveData(float amplitude, SampleType minVal, SampleType maxVal,
                          size_t periodLength, size_t channelCount,
                          std::vector<char>& output)
 {
@@ -102,7 +105,7 @@ QIODevice *Tone::createPlayableDevice(const QAudioFormat &outputFormat)
         return nullptr;
     }
 
-    const double amplitude = 0.4; // TODO Hard-coding sucks
+    const float amplitude = 0.4f; // TODO Hard-coding sucks
     const int sampleRate = outputFormat.sampleRate(); // Samples per second
     const double periodInSamples = 1.0 / frequency_ * sampleRate;
     const unsigned periodInSamplesInteger = unsigned(periodInSamples);
