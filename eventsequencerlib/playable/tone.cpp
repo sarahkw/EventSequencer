@@ -5,11 +5,11 @@
 
 namespace {
 
-class LoopedSamplesIODevice : public QIODevice {
+class LoopedBytesIODevice : public QIODevice {
     std::vector<char> source_;
     size_t position_ = 0;
 public:
-    LoopedSamplesIODevice(std::vector<char>&& source) : source_(std::move(source)) {}
+    LoopedBytesIODevice(std::vector<char>&& source) : source_(std::move(source)) {}
 
 protected:
     qint64 readData(char *data, qint64 maxlen) override
@@ -116,13 +116,13 @@ QIODevice *Tone::createPlayableDevice(const QAudioFormat &outputFormat)
     const double periodInSamples = 1.0 / frequency_ * sampleRate;
     const unsigned periodInSamplesInteger = unsigned(periodInSamples);
 
-    std::vector<char> samples;
+    std::vector<char> sampleBytes;
 
     // These are the common ones, I think.
     if (outputFormat.sampleType() == QAudioFormat::Float) {
         if (outputFormat.sampleSize() == 32) {
             writeSquareWaveData<float>(amplitude, -1, 1, periodInSamplesInteger,
-                                outputFormat.channelCount(), samples);
+                                outputFormat.channelCount(), sampleBytes);
         } else {
             setError("Only 32 bits supported for float");
             return nullptr;
@@ -132,12 +132,12 @@ QIODevice *Tone::createPlayableDevice(const QAudioFormat &outputFormat)
             writeSquareWaveData<short>(amplitude, std::numeric_limits<short>::min(),
                                 std::numeric_limits<short>::max(),
                                 periodInSamplesInteger,
-                                outputFormat.channelCount(), samples);
+                                outputFormat.channelCount(), sampleBytes);
         } else if (outputFormat.sampleSize() == 32) {
             writeSquareWaveData<int>(amplitude, std::numeric_limits<int>::min(),
                               std::numeric_limits<int>::max(),
                               periodInSamplesInteger,
-                              outputFormat.channelCount(), samples);
+                              outputFormat.channelCount(), sampleBytes);
         } else {
             setError("Only 16 or 32 bits supported for signed int");
             return nullptr;
@@ -147,7 +147,7 @@ QIODevice *Tone::createPlayableDevice(const QAudioFormat &outputFormat)
         return nullptr;
     }
 
-    return new LoopedSamplesIODevice(std::move(samples));
+    return new LoopedBytesIODevice(std::move(sampleBytes));
 }
 
 } // namespace playable
