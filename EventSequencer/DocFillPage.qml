@@ -530,6 +530,15 @@ Page {
                                     sourceComponent: textControl.docFillStripsTrackComponent
                                 }
 
+                                Cursor {
+                                    id: cursorObj
+                                    anchors.top: parent.top
+                                    anchors.bottom: parent.bottom
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    text: cursorFrame
+                                    width: 1
+                                }
+
                                 Item {
                                     anchors.left: cursorObj.left
                                     anchors.top: textLoader.bottom
@@ -551,21 +560,12 @@ Page {
                                                 height: stripsBody.cmfuAlignedFont.builtFontHeight * 1.5
                                                 palette.button: "pink"
                                                 Component.onCompleted: {
-                                                    background.border.width = 2
+                                                    background.border.width = 1
                                                     background.border.color = "black"
                                                 }
                                             }
                                         }
                                     }
-                                }
-
-                                Cursor {
-                                    id: cursorObj
-                                    anchors.top: parent.top
-                                    anchors.bottom: parent.bottom
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    text: cursorFrame
-                                    width: 1
                                 }
                             }
                         }
