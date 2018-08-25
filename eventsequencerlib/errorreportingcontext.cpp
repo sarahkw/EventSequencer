@@ -11,6 +11,7 @@ QStringList ErrorReportingContext::model() const
     QStringList ret;
 #ifdef DEMO
     ret.push_back("AD If you find this software enjoyable or useful, please consider purchasing it. Thanks!");
+    // TODO Scramble the string a little bit
 #endif
     for (ConditionalError* cerror : activeConditionalErrors_) {
         ret.push_back(QString("ERROR %1").arg(cerror->errorText()));
