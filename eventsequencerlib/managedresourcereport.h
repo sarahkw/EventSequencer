@@ -30,6 +30,18 @@ class ManagedResourceReport : public QObject
 public:
     explicit ManagedResourceReport(QObject *parent = nullptr);
 
+    Q_INVOKABLE void generateReport(Document* document)
+    {
+    }
+
+    Q_INVOKABLE void clearReport()
+    {
+    }
+
+    Q_INVOKABLE void deleteFiles(QStringList files)
+    {
+    }
+
 signals:
 
 public slots:
