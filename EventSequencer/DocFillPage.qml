@@ -188,6 +188,57 @@ Page {
         }
     }
 
+    // This is a Component because it is used in multiple
+    // places. Calling .open() from different buttons doesn't
+    // work. Calling .popup() works but makes the menu show up
+    // differently than calling .open().
+    Component {
+        id: goToMenuComponent
+        Menu {
+            MenuItem {
+                text: "Line..."
+            }
+            MenuItem {
+                text: "Position..."
+            }
+            Menu {
+                title: "Direction"
+                MenuItem { text: "Up"    ; onTriggered: dvc.moveCursorUp() }
+                MenuItem { text: "Down"  ; onTriggered: dvc.moveCursorDown() }
+                MenuItem { text: "Left"  ; onTriggered: dvc.moveCursorLeft() }
+                MenuItem { text: "Right" ; onTriggered: dvc.moveCursorRight() }
+            }
+            MenuItem {
+                text: "Previous Unassigned"
+                onTriggered: {
+                    var npos = root.cppResourceChannel.calculateNextEmptyBackward(rebind_cursorFrame)
+                    root.rebind_changeCursorFrame(npos)
+                }
+            }
+            MenuItem {
+                text: "Next Unassigned"
+                onTriggered: {
+                    var npos = root.cppResourceChannel.calculateNextEmptyForward(rebind_cursorFrame)
+                    root.rebind_changeCursorFrame(npos)
+                }
+            }
+            MenuItem {
+                text: "Previous Segment"
+                onTriggered: {
+                    var npos = root.cppResourceChannel.calculateNextSegmentBackward(rebind_cursorFrame)
+                    root.rebind_changeCursorFrame(npos)
+                }
+            }
+            MenuItem {
+                text: "Next Segment"
+                onTriggered: {
+                    var npos = root.cppResourceChannel.calculateNextSegmentForward(rebind_cursorFrame)
+                    root.rebind_changeCursorFrame(npos)
+                }
+            }
+        }
+    }
+
     footer: Frame {
         anchors.left: parent.left
         anchors.right: parent.right
@@ -221,50 +272,10 @@ Page {
                 Button {
                     Layout.fillWidth: true
                     text: "Cursor Move"
-                    onClicked: goToMenu.open()
-                    Menu {
+                    onClicked: goToMenu.item.open()
+                    Loader {
                         id: goToMenu
-                        MenuItem {
-                            text: "Line..."
-                        }
-                        MenuItem {
-                            text: "Position..."
-                        }
-                        Menu {
-                            title: "Direction"
-                            MenuItem { text: "Up"    ; onTriggered: dvc.moveCursorUp() }
-                            MenuItem { text: "Down"  ; onTriggered: dvc.moveCursorDown() }
-                            MenuItem { text: "Left"  ; onTriggered: dvc.moveCursorLeft() }
-                            MenuItem { text: "Right" ; onTriggered: dvc.moveCursorRight() }
-                        }
-                        MenuItem {
-                            text: "Previous Unassigned"
-                            onTriggered: {
-                                var npos = root.cppResourceChannel.calculateNextEmptyBackward(rebind_cursorFrame)
-                                root.rebind_changeCursorFrame(npos)
-                            }
-                        }
-                        MenuItem {
-                            text: "Next Unassigned"
-                            onTriggered: {
-                                var npos = root.cppResourceChannel.calculateNextEmptyForward(rebind_cursorFrame)
-                                root.rebind_changeCursorFrame(npos)
-                            }
-                        }
-                        MenuItem {
-                            text: "Previous Segment"
-                            onTriggered: {
-                                var npos = root.cppResourceChannel.calculateNextSegmentBackward(rebind_cursorFrame)
-                                root.rebind_changeCursorFrame(npos)
-                            }
-                        }
-                        MenuItem {
-                            text: "Next Segment"
-                            onTriggered: {
-                                var npos = root.cppResourceChannel.calculateNextSegmentForward(rebind_cursorFrame)
-                                root.rebind_changeCursorFrame(npos)
-                            }
-                        }
+                        sourceComponent: goToMenuComponent
                     }
                 }
             }
@@ -448,7 +459,7 @@ Page {
                 }
                 Button {
                     Layout.fillWidth: true
-                    text: "Close"
+                    text: "Close File"
                     onClicked: {
                         fileDrawer.visible = false // If I don't do this it looks weird
                         closeFn()
@@ -540,7 +551,7 @@ Page {
                                                 height: stripsBody.cmfuAlignedFont.builtFontHeight * 1.5
                                                 palette.button: "pink"
                                                 Component.onCompleted: {
-                                                    background.border.width = 1
+                                                    background.border.width = 2
                                                     background.border.color = "black"
                                                 }
                                             }
@@ -567,6 +578,17 @@ Page {
                             Button {
                                 Layout.fillWidth: true
                                 text: "Play"
+                            }
+                            Button {
+                                id: goButton
+                                Layout.fillWidth: true
+                                text: "Go"
+                                onClicked: goToMenu2.item.open()
+                                Loader {
+                                    id: goToMenu2
+                                    sourceComponent: goToMenuComponent
+                                }
+
                             }
                         }
                     }
