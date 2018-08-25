@@ -504,15 +504,6 @@ Page {
                                 property int charactersToShow: spaceToTakeUp / cmfuAlignedFont.builtFontWidth + 2 /*Rounding, I guess. Can't hurt*/
                                 property int charactersShifted: charactersToShow / 2
 
-                                Cursor {
-                                    id: cursorObj
-                                    anchors.top: parent.top
-                                    anchors.bottom: parent.bottom
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    text: cursorFrame
-                                    width: 1
-                                }
-
                                 Loader {
                                     id: textLoader
                                     anchors.left: cursorObj.left
@@ -529,23 +520,41 @@ Page {
                                 }
 
                                 Item {
-                                    anchors.left: parent.left
-                                    anchors.right: parent.right
+                                    anchors.left: cursorObj.left
                                     anchors.top: textLoader.bottom
+                                    anchors.topMargin: 5
                                     ES.WatchForStripsIntersectingRange {
                                         id: wfsir
                                         channel: root.cppResourceChannel.sourceChannel
                                         startFrame: cursorFrame - stripsBody.charactersShifted
                                         length: stripsBody.charactersToShow
                                     }
-                                    Column {
+                                    Item {
                                         Repeater {
                                             model: wfsir.strips
-                                            Text {
-                                                text: modelData + ""
+                                            Button {
+                                                x: (modelData.startFrame - cursorFrame) * stripsBody.cmfuAlignedFont.builtFontWidth
+                                                width: modelData.length * stripsBody.cmfuAlignedFont.builtFontWidth
+                                                y: (height + 5) * modelData.channelIndex.second
+                                                checkable: true
+                                                height: stripsBody.cmfuAlignedFont.builtFontHeight * 1.5
+                                                palette.button: "pink"
+                                                Component.onCompleted: {
+                                                    background.border.width = 1
+                                                    background.border.color = "black"
+                                                }
                                             }
                                         }
                                     }
+                                }
+
+                                Cursor {
+                                    id: cursorObj
+                                    anchors.top: parent.top
+                                    anchors.bottom: parent.bottom
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    text: cursorFrame
+                                    width: 1
                                 }
                             }
                         }
