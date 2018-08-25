@@ -82,9 +82,8 @@ Item {
     property Component docFillStripsTrackComponent: Component {
         Text {
             // Alignment: x=0, the character should be at number cursorFrame.
-            property int charactersShifted: charactersToShow / 2
             x: -charactersShifted * cmfuAlignedFont.builtFontWidth
-            property int charactersToShow: spaceToTakeUp / cmfuAlignedFont.builtFontWidth + 2 /*Rounding, I guess. Can't hurt*/
+
             font: cmfuAlignedFont.builtFont
             text: smlool2.output
             color: "grey"

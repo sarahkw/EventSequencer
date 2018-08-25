@@ -76,7 +76,8 @@ SOURCES += \
     playable/stripslist.cpp \
     playable/singleurl.cpp \
     playable/tone.cpp \
-    playable/playablebase.cpp
+    playable/playablebase.cpp \
+    watchforstripsintersectingrange.cpp
 
 
 HEADERS += \
@@ -133,7 +134,8 @@ HEADERS += \
     playable/stripslist.h \
     playable/singleurl.h \
     playable/tone.h \
-    playable/playablebase.h
+    playable/playablebase.h \
+    watchforstripsintersectingrange.h
 
 unix {
     target.path = /usr/lib

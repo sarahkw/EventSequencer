@@ -59,6 +59,7 @@ private:
     Q_PROPERTY(ChannelIndex channel READ channel WRITE setChannel NOTIFY channelChanged)
     std::unique_ptr<WaitFor> waitForChannel_;
     channel::ChannelBase* sourceChannel_ = nullptr;
+    Q_PROPERTY(QObject* sourceChannel READ sourceChannel NOTIFY sourceChannelChanged)
 
     struct Segment {
         int segmentStart;
@@ -83,6 +84,8 @@ public:
     ChannelIndex channel() const;
     void setChannel(const ChannelIndex &channel);
 
+    QObject* sourceChannel() const;
+
     bool event(QEvent *event) override;
 
     std::vector<Strip*> strips() override;
@@ -102,6 +105,7 @@ public:
 signals:
 
     void channelChanged();
+    void sourceChannelChanged();
 
 private slots:
 

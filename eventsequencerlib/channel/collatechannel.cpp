@@ -88,6 +88,11 @@ void CollateChannel::setChannel(const ChannelIndex &channel)
     }
 }
 
+QObject *CollateChannel::sourceChannel() const
+{
+    return sourceChannel_;
+}
+
 bool CollateChannel::event(QEvent *event)
 {
     if (event->type() == CollateChannelRefreshEvent::s_CustomType) {
@@ -250,6 +255,7 @@ void CollateChannel::channelWaitForResultChanged()
                          this, &CollateChannel::channelWaitForStripsChanged);
     }
     channelWaitForStripsChanged();
+    emit sourceChannelChanged();
 }
 
 void CollateChannel::channelWaitForStripsChanged()

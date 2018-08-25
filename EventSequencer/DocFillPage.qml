@@ -497,6 +497,13 @@ Page {
                                 color: "white"
                                 clip: true
 
+                                property int spaceToTakeUp: parent.width
+                                property var cmfuAlignedFont: ES.ConstrainedMetricsFontUtil {
+                                    constrainByWidthEnabled: false
+                                }
+                                property int charactersToShow: spaceToTakeUp / cmfuAlignedFont.builtFontWidth + 2 /*Rounding, I guess. Can't hurt*/
+                                property int charactersShifted: charactersToShow / 2
+
                                 Cursor {
                                     id: cursorObj
                                     anchors.top: parent.top
@@ -507,18 +514,38 @@ Page {
                                 }
 
                                 Loader {
+                                    id: textLoader
                                     anchors.left: cursorObj.left
 
-                                    property var cmfuAlignedFont: ES.ConstrainedMetricsFontUtil {
-                                        constrainByWidthEnabled: false
-                                    }
-                                    property int spaceToTakeUp: parent.width
+                                    property alias charactersToShow: stripsBody.charactersToShow
+                                    property alias charactersShifted: stripsBody.charactersShifted
+                                    property alias cmfuAlignedFont: stripsBody.cmfuAlignedFont
 
                                     C.TextControl {
                                         id: textControl
                                         property var cppChannel: root.cppTextChannel
                                     }
                                     sourceComponent: textControl.docFillStripsTrackComponent
+                                }
+
+                                Item {
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    anchors.top: textLoader.bottom
+                                    ES.WatchForStripsIntersectingRange {
+                                        id: wfsir
+                                        channel: root.cppResourceChannel.sourceChannel
+                                        startFrame: cursorFrame - stripsBody.charactersShifted
+                                        length: stripsBody.charactersToShow
+                                    }
+                                    Column {
+                                        Repeater {
+                                            model: wfsir.strips
+                                            Text {
+                                                text: modelData + ""
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
