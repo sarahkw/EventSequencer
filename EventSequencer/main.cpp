@@ -14,20 +14,20 @@ int main(int argc, char *argv[])
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-    // Trying to hunt down a bug that happens intermittently. At this
-    // point I don't have a custom AndroidManifest.xml in order to add
-    // this option there.
-#ifdef Q_OS_ANDROID
-#ifndef QT_DEBUG
-#error "Debugging hack should only be in debug builds"
-#endif
-    argc = 2;
-    static const char* hacked_argv[] = {
-        "org.qtproject.example.EventSequencer",
-        "-qmljsdebugger=port:9991,host:127.0.0.1"
-    };
-    argv = const_cast<char**>(&hacked_argv[0]);
-#endif
+//    // Trying to hunt down a bug that happens intermittently. At this
+//    // point I don't have a custom AndroidManifest.xml in order to add
+//    // this option there.
+//#ifdef Q_OS_ANDROID
+//#ifndef QT_DEBUG
+//#error "Debugging hack should only be in debug builds"
+//#endif
+//    argc = 2;
+//    static const char* hacked_argv[] = {
+//        "org.qtproject.example.EventSequencer",
+//        "-qmljsdebugger=port:9991,host:127.0.0.1"
+//    };
+//    argv = const_cast<char**>(&hacked_argv[0]);
+//#endif
 
     QApplication app(argc, argv);
 
