@@ -629,7 +629,7 @@ struct FileHeader {
 constexpr char FileHeader::MAGIC[];
 }
 
-void Document::save(const QUrl& url)
+QVariantList Document::save(const QUrl& url)
 {
     // TODO Error handling! Need to do more than just write to stdout.
 
@@ -662,29 +662,28 @@ void Document::save(const QUrl& url)
     QFile& file = sfr.file();
 
     if (!file.open(QIODevice::WriteOnly)) {
-        qWarning() << "Cannot open" << file.fileName();
-        return;
+        return {false,
+                QString("Cannot open file: %1: %2")
+                    .arg(file.fileName())
+                    .arg(file.errorString())};
     }
     FileHeader fh;
     fh.version_ = 1;
     if (!(fh.writeToFile(file) && file.flush())) {
-        qWarning() << "Cannot write file header";
-        return;
+        return {false, "Cannot write file header"};
     }
     if (!pbf.SerializeToFileDescriptor(file.handle())) {
-        qWarning() << "Cannot serialize";
-        return;
+        return {false, "Cannot serialize document to file"};
     }
     // flush not needed again because SerializeToFileDescriptor writes directly to fd.
     file.close();
 
     if (!sfr.commit()) {
-        qWarning() << "Error finalizing file.";
-        return;
+        return {false, "Error replacing old file with new file"};
     }
 
     if (sfr.backupResult() == sfr.BackupResult::Failure) {
-        qWarning() << "Failure making backup (Save was OK)";
+        return {false, "Failure making backup (Save was OK)"};
     }
 
     setFileForkEditFlag(ForkEditFlag::None);

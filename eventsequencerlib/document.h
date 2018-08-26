@@ -143,7 +143,7 @@ public:
     const std::vector<Strip*>& strips() const;
 
     Q_INVOKABLE void reset();
-    Q_INVOKABLE void save(const QUrl& url);
+    Q_INVOKABLE QVariantList save(const QUrl& url);
     Q_INVOKABLE QVariantList load(const QUrl& url);
     Q_INVOKABLE void dumpProtobuf() const;
 

@@ -44,7 +44,7 @@ ApplicationWindow {
                     if (document.currentUrl == "") {
                         saveFileDialog.open()
                     } else {
-                        document.save(document.currentUrl)
+                        documentSaveOrShowError(document.currentUrl)
                     }
                 }
                 shortcut: "Ctrl+S"
@@ -343,6 +343,17 @@ ApplicationWindow {
             return false
         }
     }
+    function documentSaveOrShowError(url) {
+        var result = document.save(url)
+        var success = result[0]
+        if (success) {
+            return true
+        } else {
+            var errorMsg = result[1]
+            msgbox.msgbox(errorMsg, "Save failure")
+            return false
+        }
+    }
 
     Ctrl.Resolver {
         id: controlResolver
@@ -529,7 +540,7 @@ ApplicationWindow {
         defaultSuffix: "evseq"
 
         onAccepted: {
-            document.save(file)
+            documentSaveOrShowError(file)
         }
     }
     Qlp.FileDialog {
