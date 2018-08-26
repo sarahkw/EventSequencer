@@ -30,6 +30,13 @@ Item {
                 x: zoom.mapFrameToDisplayX(segmentStart)
                 width: zoom.mapLengthToDisplayWidth(segmentLength)
                 color: segmentTypeToColor(segmentType)[0]
+                border.width: 1
+                onWidthChanged: {
+                    if (segmentLength === 0) {
+                        // TODO Remove this once we're sure
+                        console.warn("Segment length of 0 shouldn't happen!")
+                    }
+                }
             }
         }
     }
