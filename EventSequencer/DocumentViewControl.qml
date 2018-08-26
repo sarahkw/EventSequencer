@@ -122,8 +122,11 @@ Rectangle {
             height: cmfu.builtFontHeight
             color: "black"
             property alias cpos: wwtt.cursorPosition
-            x: cpos.x * cmfu.builtFontWidth
-            y: cpos.y * cmfu.builtFontHeight
+            // The .originX and .originY are required or else sometimes the
+            // flickable doesn't start at (0, 0) and we lose the cursor. Thanks,
+            // Qt, I guess.
+            x: cpos.x * cmfu.builtFontWidth + lview.originX
+            y: cpos.y * cmfu.builtFontHeight + lview.originY
             z: 10
             readonly property int blinkDelay: 750
             onCposChanged: {
