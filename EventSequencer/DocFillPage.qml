@@ -223,14 +223,14 @@ Page {
                 }
             }
             MenuItem {
-                text: "Previous POI"
+                text: "Previous Interesting"
                 onTriggered: {
                     var npos = root.cppResourceChannel.calculateNextSegmentBackward(rebind_cursorFrame)
                     root.rebind_changeCursorFrame(npos)
                 }
             }
             MenuItem {
-                text: "Next POI"
+                text: "Next Interesting"
                 onTriggered: {
                     var npos = root.cppResourceChannel.calculateNextSegmentForward(rebind_cursorFrame)
                     root.rebind_changeCursorFrame(npos)
@@ -271,7 +271,7 @@ Page {
                 }
                 Button {
                     Layout.fillWidth: true
-                    text: "Cursor Move"
+                    text: "Go"
                     onClicked: goToMenu.item.open()
                     Loader {
                         id: goToMenu
@@ -446,6 +446,11 @@ Page {
             // File
             RowLayout {
                 id: fileFooterItem
+                Button {
+                    Layout.fillWidth: true
+                    text: "Auto Save"
+                    checkable: true
+                }
                 Button {
                     Layout.fillWidth: true
                     text: "Save"
