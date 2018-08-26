@@ -606,9 +606,9 @@ void Document::reset()
 namespace {
 struct FileHeader {
     static constexpr char MAGIC[] = "EVSEQ";
-    static constexpr int MAGIC_LEN = 5;
-    static constexpr int VERSION_LEN = 1;
-    static constexpr int HEADER_LEN = MAGIC_LEN + VERSION_LEN;
+    static constexpr unsigned MAGIC_LEN = 5;
+    static constexpr unsigned VERSION_LEN = 1;
+    static constexpr unsigned HEADER_LEN = MAGIC_LEN + VERSION_LEN;
 
     unsigned char version_ = 0;
 
@@ -617,7 +617,7 @@ struct FileHeader {
         QByteArray data = dev.read(HEADER_LEN);
         if (data.size() != HEADER_LEN) return false;
         if (!data.startsWith(MAGIC)) return false;
-        version_ = data.at(MAGIC_LEN);
+        version_ = static_cast<unsigned char>(data.at(MAGIC_LEN));
         return true;
     }
     bool writeToFile(QIODevice& dev)

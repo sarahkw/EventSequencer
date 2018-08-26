@@ -90,6 +90,21 @@ bool AuFileHeader::loadFormat(const QAudioFormat &af)
     return true;
 }
 
+namespace {
+struct AnnotationHeader {
+    static constexpr char MAGIC[] = "EVRES";
+    static constexpr unsigned MAGIC_LEN = 5;
+    static constexpr unsigned VERSION_LEN = 1;
+    static constexpr unsigned SIZE_LEN = 4;
+    static constexpr unsigned HEADER_LEN = MAGIC_LEN + VERSION_LEN + SIZE_LEN;
+
+    unsigned char version_ = 0;
+    quint32 size_ = 0;
+
+};
+constexpr char AnnotationHeader::MAGIC[];
+}
+
 bool AuFileHeader::loadFileAndSeek(QIODevice &device)
 {
     AuHeader auh;
