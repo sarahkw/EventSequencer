@@ -33,11 +33,19 @@ Page {
     property var cppTextChannel: waitForTextChannel !== null ? waitForTextChannel.result : null
     property var cppResourceChannel: waitForResourceChannel !== null ? waitForResourceChannel.result : null
 
-    MessageDialog {
+    MsgBox  {
         id: msgbox
-        function msgbox(msg) {
-            text = msg
-            open()
+    }
+
+    function documentSaveOrShowError(url) {
+        var result = document.save(url)
+        var success = result[0]
+        if (success) {
+            return true
+        } else {
+            var errorMsg = result[1]
+            msgbox.msgbox(errorMsg, "Save failure")
+            return false
         }
     }
 
@@ -444,7 +452,7 @@ Page {
                         if (document.currentUrl === "") {
                             console.error("Don't have a current URL to save to?")
                         } else {
-                            document.save(document.currentUrl)
+                            documentSaveOrShowError(document.currentUrl)
                         }
                     }
                 }

@@ -41,5 +41,6 @@
         <file>ScoutMain.qml</file>
         <file>DocFillPage.qml</file>
         <file>Cursor.qml</file>
+        <file>MsgBox.qml</file>
     </qresource>
 </RCC>
