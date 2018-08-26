@@ -688,6 +688,7 @@ QVariantList Document::save(const QUrl& url)
 
     setFileForkEditFlag(ForkEditFlag::None);
     setCurrentUrl(url);
+    return {true};
 }
 
 QVariantList Document::load(const QUrl &url)
