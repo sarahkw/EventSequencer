@@ -196,9 +196,6 @@ Page {
         id: goToMenuComponent
         Menu {
             MenuItem {
-                text: "Line..."
-            }
-            MenuItem {
                 text: "Position..."
             }
             Menu {
@@ -256,18 +253,7 @@ Page {
             RowLayout {
                 Button {
                     Layout.fillWidth: true
-                    text: "View"
-                    onClicked: viewMenu.open()
-                    Menu {
-                        id: viewMenu
-                        MenuItem {
-                            text: "Font..."
-                        }
-                        MenuItem {
-                            text: "Line Numbers"
-                            checkable: true
-                        }
-                    }
+                    text: "Font"
                 }
                 Button {
                     Layout.fillWidth: true
@@ -363,7 +349,7 @@ Page {
                     id: cmbSelectionMode
                     Layout.fillWidth: true
                     model: [
-                        "Recording",
+                        "Preview Unassigned Recording",
                         "At Cursor",
                         "From Cursor",
                         "From Start",
