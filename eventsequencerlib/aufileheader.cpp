@@ -92,15 +92,27 @@ bool AuFileHeader::loadFormat(const QAudioFormat &af)
 
 namespace {
 struct AnnotationHeader {
-    static constexpr char MAGIC[] = "EVRES";
-    static constexpr unsigned MAGIC_LEN = 5;
-    static constexpr unsigned VERSION_LEN = 1;
-    static constexpr unsigned SIZE_LEN = 4;
-    static constexpr unsigned HEADER_LEN = MAGIC_LEN + VERSION_LEN + SIZE_LEN;
+    // Baking the version number into the MAGIC string because it
+    // seems like .au intends on the variable length annotation to be
+    // text-y because the wikipedia article says it should end with a
+    // null byte. So let's avoid binary data. Maybe other .au
+    // applications can show this data to the user? I don't have time
+    // to research more, I need to release.
+    static constexpr char MAGIC[] = "EVRES0";
+    static constexpr unsigned MAGIC_LEN = 6;
+    static constexpr unsigned HEADER_LEN = MAGIC_LEN;
 
-    unsigned char version_ = 0;
-    quint32 size_ = 0;
+    // annotation is a null terminated string
+    bool readFromFile(QIODevice& dev, qint64 maxSize, std::string* annotation)
+    {
+        return false;
+    }
 
+    // annotation is a null terminated string
+    bool writeToFile(QIODevice& dev, std::string& annotation)
+    {
+        return false;
+    }
 };
 constexpr char AnnotationHeader::MAGIC[];
 }
