@@ -150,7 +150,8 @@ Rectangle {
 
         // On Android, this prevents scrolling by dragging from working.
         // TODO Figure out why so we don't need this hack.
-        enabled: Qt.platform.os != "android"
+        //enabled: Qt.platform.os != "android"
+        enabled: false // TODO On Desktop, this prevents dragging the scrollbar from working
 
         anchors.fill: sview
         propagateComposedEvents: true
