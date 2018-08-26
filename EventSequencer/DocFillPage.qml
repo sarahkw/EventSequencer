@@ -357,7 +357,7 @@ Page {
                     id: cmbSelectionMode
                     Layout.fillWidth: true
                     model: [
-                        "Preview Unassigned Recording",
+                        "Review Unassigned Recording",
                         "At Cursor",
                         "From Cursor",
                         "From Start",
@@ -485,7 +485,7 @@ Page {
                 id: fileDrawerTabBar
                 currentIndex: fileDrawerSwipeView.currentIndex
                 TabButton { text: "Strips" }
-                TabButton { text: "Resources" }
+                TabButton { text: "Storage" }
                 TabButton { text: "Export" }
                 TabButton { text: "Settings" }
             }
@@ -612,20 +612,6 @@ Page {
                         GroupBox {
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            title: "Document"
-                            Loader {
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                C.DocFillControl {
-                                    id: docFillControl
-                                }
-                                sourceComponent: docFillControl.docFillPropertiesComponent
-                            }
-                        }
-
-                        GroupBox {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
                             title: "Application"
                             GridLayout {
                                 anchors.left: parent.left
@@ -635,18 +621,32 @@ Page {
                                 CheckBox {
                                     Layout.fillWidth: true
                                     Layout.columnSpan: 2
+                                    text: "Automatically play review after record"
+                                }
+                                CheckBox {
+                                    Layout.fillWidth: true
+                                    Layout.columnSpan: 2
+                                    text: "Automatically set range start on record"
+                                }
+                                CheckBox {
+                                    Layout.fillWidth: true
+                                    Layout.columnSpan: 2
                                     text: "Play tone before record"
                                 }
-                                CheckBox {
-                                    Layout.fillWidth: true
-                                    Layout.columnSpan: 2
-                                    text: "Automatically start range on record"
+                            }
+                        }
+
+                        GroupBox {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            title: "Document"
+                            Loader {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                C.DocFillControl {
+                                    id: docFillControl
                                 }
-                                CheckBox {
-                                    Layout.fillWidth: true
-                                    Layout.columnSpan: 2
-                                    text: "Automatically play after record"
-                                }
+                                sourceComponent: docFillControl.docFillPropertiesComponent
                             }
                         }
 
