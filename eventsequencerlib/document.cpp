@@ -8,6 +8,8 @@
 #include "saferfilereplacement.h"
 #include "audioformatholder.h"
 
+#include <google/protobuf/util/json_util.h> // XXX REMOVE ME FOR TESTING ONLY
+
 #include <QDebug>
 #include <QFile>
 #include <QCryptographicHash>
@@ -729,7 +731,17 @@ void Document::dumpProtobuf() const
 {
     pb::Document doc;
     toPb(doc);
-    qInfo() << doc.DebugString().data(); // .data() so qInfo doesn't quote it.
+
+    //qInfo() << doc.DebugString().data(); // .data() so qInfo doesn't quote it.
+
+    std::string output;
+    auto status = google::protobuf::util::MessageToJsonString(doc, &output);
+    if (status.ok()) {
+        qInfo() << output.data();
+    } else {
+        qInfo() << "Error";
+    }
+
 }
 
 QAbstractListModel *Document::channelsModel()
