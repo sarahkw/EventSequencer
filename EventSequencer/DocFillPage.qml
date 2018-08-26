@@ -298,7 +298,7 @@ Page {
                 }
                 Button {
                     Layout.fillWidth: true
-                    text: "Assign to Range"
+                    text: "Assign"
                     enabled: cppResourceChannel !== null &&
                              recorderControl.corraledResourceFile.takeable &&
                              btnRangeStart.checked
@@ -338,7 +338,7 @@ Page {
                             when: recorderControl.corraledResourceFile.takeable
                             PropertyChanges {
                                 target: unnamedParent_7c13
-                                text: "Delete"
+                                text: "Delete Unassigned"
                                 onClicked: msgConfirmDelete.open()
                             }
                         },
