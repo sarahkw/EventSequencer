@@ -697,8 +697,10 @@ QVariantList Document::load(const QUrl &url)
 
     QString tmpFileName = url.toLocalFile();
     QFile file(tmpFileName);
-    // TODO Apparantly Unbuffered doesn't work for QFile on Windows. This will likely prevent
-    //      file open from working on Win!
+    // TODO Apparantly Unbuffered doesn't work for QFile on Windows. I'm not sure
+    //      what the details are, but I'm guessing it's not relevant because
+    //      all we need is for Qt's QFile to not eat the protobuf data before
+    //      sending the file handle to protobuf.
     if (!file.open(QIODevice::ReadOnly | QIODevice::Unbuffered)) {
         return {false,
                 QString("Cannot open file: %1: %2")
