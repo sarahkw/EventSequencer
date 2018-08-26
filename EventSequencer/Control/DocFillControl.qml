@@ -28,7 +28,7 @@ Item {
             CheckBox {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                text: "Enable advanced and experimental features"
+                text: "Enable developer mode"
                 checked: cppChannel !== null ? cppChannel.advancedFeaturesEnabled : false
                 onToggled: cppChannel.advancedFeaturesEnabled = checked
                 Component.onCompleted: contentItem.wrapMode = Text.WordWrap
@@ -54,7 +54,7 @@ Item {
             CheckBox {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                text: "Enable advanced and experimental features"
+                text: "Enable developer mode"
                 checked: cppChannel !== null ? cppChannel.advancedFeaturesEnabled : false
                 onToggled: cppChannel.advancedFeaturesEnabled = checked
                 Component.onCompleted: contentItem.wrapMode = Text.WordWrap

@@ -485,9 +485,9 @@ Page {
                 id: fileDrawerTabBar
                 currentIndex: fileDrawerSwipeView.currentIndex
                 TabButton { text: "Strips" }
-                TabButton { text: "Properties" }
                 TabButton { text: "Resources" }
                 TabButton { text: "Export" }
+                TabButton { text: "Settings" }
             }
             SwipeView {
                 id: fileDrawerSwipeView
@@ -593,6 +593,11 @@ Page {
                     }
                 }
 
+                Item { }
+
+                Item { }
+
+                // Settings
                 ScrollView {
                     contentWidth: width // Column will have some width it wants to be. Ignore it.
                     Column {
@@ -607,7 +612,7 @@ Page {
                         GroupBox {
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            title: "DocFill"
+                            title: "Document"
                             Loader {
                                 anchors.left: parent.left
                                 anchors.right: parent.right
@@ -666,10 +671,6 @@ Page {
                         }
                     }
                 }
-
-                Item { }
-
-                Item { }
             }
         }
     }
