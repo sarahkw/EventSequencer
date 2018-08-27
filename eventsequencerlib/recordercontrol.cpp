@@ -59,7 +59,7 @@ void RecorderControl::record(QUrl url)
         return;
     }
 
-    if (!afh.writeFile(*of)) {
+    if (!afh.writeFile(*of, "Hello World!")) {
         setError(QString("Cannot write header: %1").arg(of->errorString()));
         return;
     }
