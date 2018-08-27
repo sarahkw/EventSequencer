@@ -202,9 +202,9 @@ bool AuFileHeader::writeFile(QIODevice &device, const std::string& annotation)
             qWarning("AuFileHeader failed writing annotation");
             return false;
         }
-    } else {
-        return true;
     }
+
+    return true;
 }
 
 const QAudioFormat &AuFileHeader::audioFormat()
