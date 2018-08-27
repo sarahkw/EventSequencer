@@ -447,7 +447,7 @@ Page {
                 }
                 Button {
                     Layout.fillWidth: true
-                    text: "Save"
+                    text: "Save File"
                     onClicked: {
                         if (document.currentUrl === "") {
                             console.error("Don't have a current URL to save to?")
