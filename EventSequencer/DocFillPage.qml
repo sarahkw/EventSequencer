@@ -633,40 +633,41 @@ Page {
                                     Layout.columnSpan: 2
                                     text: "Play tone before record"
                                 }
-                            }
-                        }
-
-                        GroupBox {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            title: "Document"
-                            Loader {
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                C.DocFillControl {
-                                    id: docFillControl
+                                CheckBox {
+                                    id: chkDeveloperOptions
+                                    Layout.fillWidth: true
+                                    Layout.columnSpan: 2
+                                    text: "Enable developer options"
                                 }
-                                sourceComponent: docFillControl.docFillPropertiesComponent
                             }
                         }
 
                         GroupBox {
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            title: "Raw Properties"
-                            ComboBox {
+                            title: "Developer Options"
+                            visible: chkDeveloperOptions.checked
+                            ColumnLayout {
                                 anchors.left: parent.left
                                 anchors.right: parent.right
-                                model: [
-                                    "",
-                                    "Selected Strip",
-                                    "Docfill Channel",
-                                    "Text Channel",
-                                    "Specific Channel",
-                                    "Document",
-                                    "File",
-                                    "Session",
-                                ]
+                                Text {
+                                    Layout.fillWidth: true
+                                    wrapMode: Text.Wrap
+                                    text: "<b>WARNING</b> These options will allow you to make changes that cause malfunction, whether it happen now or in future versions of the application. If you wish to experiment, make a test file."
+                                }
+                                ComboBox {
+                                    Layout.fillWidth: true
+                                    model: [
+                                        "",
+                                        "Selected Strip",
+                                        "Program Channel",
+                                        "Text Channel",
+                                        "Channel",
+                                        "Document",
+                                        "File",
+                                        "Session",
+                                    ]
+                                }
                             }
                         }
                     }

@@ -44,30 +44,4 @@ Item {
             }
         }
     }
-
-    property Component docFillPropertiesComponent: Component {
-        GridLayout {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            columns: 2
-
-            CheckBox {
-                Layout.fillWidth: true
-                Layout.columnSpan: 2
-                text: "Enable developer mode"
-                checked: cppChannel !== null ? cppChannel.advancedFeaturesEnabled : false
-                onToggled: cppChannel.advancedFeaturesEnabled = checked
-                Component.onCompleted: contentItem.wrapMode = Text.WordWrap
-            }
-
-            CheckBox {
-                Layout.fillWidth: true
-                Layout.columnSpan: 2
-                text: "Expand resource channel for overlapping strips"
-                checked: cppChannel !== null ? cppChannel.attemptExpansionOfResourceChannel : false
-                onToggled: cppChannel.attemptExpansionOfResourceChannel = checked
-                Component.onCompleted: contentItem.wrapMode = Text.WordWrap
-            }
-        }
-    }
 }
