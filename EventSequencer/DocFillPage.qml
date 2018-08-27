@@ -428,16 +428,11 @@ Page {
                         }
                     }
                 }
-                Button {
-                    id: btnShow
-                    visible: cmbSelectionMode.currentIndex === 2 || cmbSelectionMode.currentIndex === 3
-                    text: "Show"
-                }
                 TextField {
                     visible: cmbSelectionMode.currentIndex === 4
                     placeholderText: "Hz"
                     text: playableTone.frequency !== 0 ? playableTone.frequency : null
-                    implicitWidth: btnShow.implicitWidth
+                    implicitWidth: 80
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
                         playableTone.frequency = parseInt(text, 10)
