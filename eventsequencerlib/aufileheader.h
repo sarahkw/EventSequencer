@@ -18,7 +18,7 @@ public:
     unsigned int dataSize();
     void setDataSize(unsigned int dataSize);
 
-    bool writeFile(QIODevice& device);
+    bool writeFile(QIODevice& device, const std::string& annotation=std::string());
     const QAudioFormat& audioFormat();
 
 };

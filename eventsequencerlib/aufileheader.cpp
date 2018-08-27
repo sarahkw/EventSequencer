@@ -102,6 +102,18 @@ struct AnnotationHeader {
     static constexpr unsigned MAGIC_LEN = 6;
     static constexpr unsigned HEADER_LEN = MAGIC_LEN;
 
+    // Au says the annotation must be a multiple of 8 bytes. It also must
+    // be null terminated.
+    static size_t writtenSizeOfAnnotation(const std::string& annotation)
+    {
+        const size_t null_terminated = 1;
+        size_t sz = annotation.size() + null_terminated;
+        if (sz % 8 != 0) {
+            sz = (sz / 8 + 1) * 8;
+        }
+        return sz;
+    }
+
     // annotation is a null terminated string
     bool readFromFile(QIODevice& dev, qint64 maxSize, std::string* annotation)
     {
@@ -109,9 +121,25 @@ struct AnnotationHeader {
     }
 
     // annotation is a null terminated string
-    bool writeToFile(QIODevice& dev, std::string& annotation)
+    static bool writeToFile(QIODevice& dev, const std::string& annotation)
     {
-        return false;
+        Q_ASSERT(!annotation.empty());
+        if (dev.write(MAGIC, MAGIC_LEN) != MAGIC_LEN) {
+            return false;
+        }
+        if (dev.write(annotation.data(), annotation.size()) != annotation.size()) {
+            return false;
+        }
+        // "greater than" because we need to write the null terminator!
+        Q_ASSERT(writtenSizeOfAnnotation(annotation) > annotation.size());
+        const auto zeroPaddingCount = writtenSizeOfAnnotation(annotation) - annotation.size();
+
+        std::vector<char> zeroes(zeroPaddingCount);
+        if (dev.write(zeroes.data(), zeroes.size()) != zeroes.size()) {
+            return false;
+        }
+
+        return true;
     }
 };
 constexpr char AnnotationHeader::MAGIC[];
@@ -150,9 +178,10 @@ void AuFileHeader::setDataSize(unsigned int dataSize)
     dataSize_ = dataSize;
 }
 
-bool AuFileHeader::writeFile(QIODevice &device)
+bool AuFileHeader::writeFile(QIODevice &device, const std::string& annotation)
 {
     AuHeader auh;
+    auh.data_offset += AnnotationHeader::writtenSizeOfAnnotation(annotation);
     auh.data_size = dataSize_;
     {
         bool success = toAuEncoding(audioFormat_, &auh.encoding);
@@ -164,8 +193,18 @@ bool AuFileHeader::writeFile(QIODevice &device)
 
     auh.toBigEndian();
     // For files, .write() should write it all unless there's an error.
-    auto written = device.write(reinterpret_cast<const char*>(&auh), sizeof(auh));
-    return written == sizeof(auh);
+    if (sizeof(auh) != device.write(reinterpret_cast<const char*>(&auh), sizeof(auh))) {
+        qWarning("AuFileHeader failed writing header");
+        return false;
+    }
+    if (!annotation.empty()) {
+        if (!AnnotationHeader::writeToFile(device, annotation)) {
+            qWarning("AuFileHeader failed writing annotation");
+            return false;
+        }
+    } else {
+        return true;
+    }
 }
 
 const QAudioFormat &AuFileHeader::audioFormat()
