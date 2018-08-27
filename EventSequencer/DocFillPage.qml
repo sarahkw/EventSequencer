@@ -555,6 +555,31 @@ Page {
                                         text: ">"
                                         font.pixelSize: parent.height / 2
                                     }
+
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        property real initialX: 0
+                                        preventStealing: true // don't swipe to next page
+                                        onPressed: initialX = mouseX
+                                        onPositionChanged: {
+                                            var xdiff = mouse.x - initialX
+                                            var fontWidth = stripsBody.cmfuAlignedFont.builtFontWidth
+                                            var fullFrames
+                                            if (xdiff > 0) {
+                                                fullFrames = Math.floor(xdiff / fontWidth)
+                                                if (fullFrames > 0) {
+                                                    initialX += fullFrames * fontWidth
+                                                    root.rebind_changeCursorFrame(rebind_cursorFrame - fullFrames)
+                                                }
+                                            } else if (xdiff < 0) {
+                                                fullFrames = -Math.ceil(xdiff / fontWidth)
+                                                if (fullFrames > 0) {
+                                                    initialX -= fullFrames * fontWidth
+                                                    root.rebind_changeCursorFrame(rebind_cursorFrame + fullFrames)
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
 
                                 Cursor {
