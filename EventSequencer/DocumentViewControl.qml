@@ -90,9 +90,12 @@ Rectangle {
             model: wwtt
 
             delegate: Item {
+                anchors.left: parent.left
+                anchors.right: parent.right
                 height: cmfu.builtFontHeight
                 Item {
-                    height: cmfu.builtFontHeight
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
                     width: modelData.length * cmfu.builtFontWidth
                     clip: true
                     Loader {
@@ -104,11 +107,18 @@ Rectangle {
                         property int textOffset_: textOffset
                         property int widthPerCharacter: cmfu.builtFontWidth
                     }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            root.changeCursorFrame(textOffset + Math.floor(mouse.x / cmfu.builtFontWidth))
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        var frameInside = Math.floor(mouse.x / cmfu.builtFontWidth)
+                        if (frameInside >= modelData.length) {
+                            frameInside = modelData.length - 1
+                            if (frameInside < 0) {
+                                frameInside = 0
+                            }
                         }
+                        root.changeCursorFrame(textOffset + frameInside)
                     }
                 }
                 Text {
