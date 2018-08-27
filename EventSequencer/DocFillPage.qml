@@ -4,6 +4,9 @@ import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 import "Control/" as C
 
+// Don't know why but "Dialog" is the native one otherwise.
+import QtQuick.Controls 2.2 as Controls2
+
 import eventsequencer 1.0 as ES
 import eventsequencer.playable 1.0 as ESPlayable
 
@@ -205,6 +208,22 @@ Page {
         Menu {
             MenuItem {
                 text: "Position..."
+                Controls2.Dialog {
+                    id: positionDialog
+                    title: "Change Cursor Position"
+                    standardButtons: Controls2.Dialog.Ok | Controls2.Dialog.Cancel
+                    TextField {
+                        id: positionDialogTextField
+                        anchors.centerIn: parent
+                        implicitWidth: 100
+                        inputMethodHints: Qt.ImhDigitsOnly
+                        text: cursorFrame
+                    }
+                    onAccepted: changeCursorFrame(positionDialogTextField.text)
+                }
+                onTriggered: {
+                    positionDialog.open()
+                }
             }
             Menu {
                 title: "Direction"
