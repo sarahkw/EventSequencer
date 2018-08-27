@@ -483,11 +483,6 @@ Page {
                 id: fileFooterItem
                 Button {
                     Layout.fillWidth: true
-                    text: "Auto Save"
-                    checkable: true
-                }
-                Button {
-                    Layout.fillWidth: true
                     text: "Save File"
                     onClicked: {
                         if (document.currentUrl === "") {
@@ -496,6 +491,11 @@ Page {
                             documentSaveOrShowError(document.currentUrl)
                         }
                     }
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: "Auto Save"
+                    checkable: true
                 }
                 Button {
                     Layout.fillWidth: true
