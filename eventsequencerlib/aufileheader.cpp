@@ -122,7 +122,8 @@ struct AnnotationHeader {
             asr.writtenToDiskSize = asr.actualDataSize;
         }
 
-        asr.endPaddingSize = asr.writtenToDiskSize - asr.actualDataSize;
+        // The end padding size will cause the null termination
+        asr.endPaddingSize = asr.writtenToDiskSize - annotation.size() - HEADER_LEN;
         return asr;
     }
 
