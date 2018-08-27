@@ -123,8 +123,7 @@ struct AnnotationHeader {
             asr.writtenToDiskSize = asr.actualDataSize;
         }
 
-        // The end padding size will cause the null termination
-        asr.endPaddingSize = asr.writtenToDiskSize - annotation.size() - HEADER_LEN;
+        asr.endPaddingSize = asr.writtenToDiskSize - asr.actualDataSize + null_terminated;
         return asr;
     }
 
@@ -200,6 +199,10 @@ bool AuFileHeader::loadFileAndSeek(QIODevice &device, std::string* annotation)
     audioFormat_.setChannelCount(static_cast<int>(auh.channels));
     audioFormat_.setByteOrder(QAudioFormat::BigEndian);
     audioFormat_.setCodec("audio/pcm");
+
+    if (seekTo < AU_MIN_DATA_OFFSET) {
+        return false;
+    }
 
     // We are currently at AU_MIN_DATA_OFFSET
     if (annotation != nullptr && seekTo > AU_MIN_DATA_OFFSET) {
