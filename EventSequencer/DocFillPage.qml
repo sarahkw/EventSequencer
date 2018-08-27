@@ -668,10 +668,6 @@ Page {
                                 text: "Delete..."
                             }
                             Button {
-                                Layout.fillWidth: true
-                                text: "Play"
-                            }
-                            Button {
                                 id: goButton
                                 Layout.fillWidth: true
                                 text: "Go"
@@ -680,7 +676,6 @@ Page {
                                     id: goToMenu2
                                     sourceComponent: goToMenuComponent
                                 }
-
                             }
                         }
                     }
