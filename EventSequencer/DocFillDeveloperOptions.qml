@@ -24,8 +24,6 @@ GroupBox {
             model: [
                 "",
                 "Selected Strip",
-                "Program Channel",
-                "Text Channel",
                 "Channel",
                 "Document",
                 "File",
@@ -37,7 +35,7 @@ GroupBox {
             id: propertiesLoader
             source: {
                 switch (cboxType.currentIndex) {
-                case 5: return "PropertiesDocument.qml"
+                case 3: return "PropertiesDocument.qml"
                 }
                 return ""
             }
