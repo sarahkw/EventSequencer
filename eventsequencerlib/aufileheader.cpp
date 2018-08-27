@@ -104,14 +104,24 @@ struct AnnotationHeader {
 
     // Au says the annotation must be a multiple of 8 bytes. It also must
     // be null terminated.
-    static size_t writtenSizeOfAnnotation(const std::string& annotation)
+    struct AnnotationSizeResult {
+        size_t writtenToDiskSize;
+        size_t actualDataSize;
+        size_t endPaddingSize;
+    };
+    static AnnotationSizeResult writtenSizeOfAnnotation(const std::string& annotation)
     {
+        AnnotationSizeResult asr{};
+
         const size_t null_terminated = 1;
-        size_t sz = annotation.size() + null_terminated + HEADER_LEN;
-        if (sz % 8 != 0) {
-            sz = (sz / 8 + 1) * 8;
+        asr.actualDataSize = annotation.size() + null_terminated + HEADER_LEN;
+
+        if (asr.actualDataSize % 8 != 0) {
+            asr.writtenToDiskSize = (asr.actualDataSize / 8 + 1) * 8;
         }
-        return sz;
+
+        asr.endPaddingSize = asr.writtenToDiskSize - asr.actualDataSize;
+        return asr;
     }
 
     // annotation is a null terminated string
@@ -130,11 +140,8 @@ struct AnnotationHeader {
         if (dev.write(annotation.data(), annotation.size()) != annotation.size()) {
             return false;
         }
-        // "greater than" because we need to write the null terminator!
-        Q_ASSERT(writtenSizeOfAnnotation(annotation) > annotation.size());
-        const auto zeroPaddingCount = writtenSizeOfAnnotation(annotation) - annotation.size();
 
-        std::vector<char> zeroes(zeroPaddingCount);
+        std::vector<char> zeroes(writtenSizeOfAnnotation(annotation).endPaddingSize);
         if (dev.write(zeroes.data(), zeroes.size()) != zeroes.size()) {
             return false;
         }
@@ -181,7 +188,7 @@ void AuFileHeader::setDataSize(unsigned int dataSize)
 bool AuFileHeader::writeFile(QIODevice &device, const std::string& annotation)
 {
     AuHeader auh;
-    auh.data_offset += AnnotationHeader::writtenSizeOfAnnotation(annotation);
+    auh.data_offset += AnnotationHeader::writtenSizeOfAnnotation(annotation).writtenToDiskSize;
     auh.data_size = dataSize_;
     {
         bool success = toAuEncoding(audioFormat_, &auh.encoding);
