@@ -191,7 +191,9 @@ void AuFileHeader::setDataSize(unsigned int dataSize)
 bool AuFileHeader::writeFile(QIODevice &device, const std::string& annotation)
 {
     AuHeader auh;
-    auh.data_offset += AnnotationHeader::writtenSizeOfAnnotation(annotation).writtenToDiskSize;
+    if (!annotation.empty()) {
+        auh.data_offset += AnnotationHeader::writtenSizeOfAnnotation(annotation).writtenToDiskSize;
+    }
     auh.data_size = dataSize_;
     {
         bool success = toAuEncoding(audioFormat_, &auh.encoding);
