@@ -37,6 +37,7 @@ GroupBox {
                 switch (cboxType.currentIndex) {
                 case 3: return "PropertiesDocument.qml"
                 case 4: return "PropertiesFile.qml"
+                case 5: return "PropertiesSession.qml"
                 }
                 return ""
             }

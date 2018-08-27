@@ -1247,19 +1247,16 @@ ApplicationWindow {
                         anchors.left: parent.left
                         anchors.right: parent.right
                         spacing: 15
-
                         Label {
                             text: "File"
                             font.pixelSize: 16
                             font.bold: true
                         }
-
                         PropertiesFile {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             property var document: document
                         }
-
                     } // file properties
 
                     // session properties
@@ -1267,59 +1264,13 @@ ApplicationWindow {
                         anchors.left: parent.left
                         anchors.right: parent.right
                         spacing: 15
-
                         Label {
                             text: "Session"
                             font.pixelSize: 16
                             font.bold: true
                         }
-
-                        GridLayout {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-
-                            columns: 2
-
-                            Label {
-                                text: "Audio"
-                            }
-                            CheckBox {
-                                Layout.fillWidth: true
-                                text: "Set"
-
-                                checked: session.wantAudio
-                                onCheckedChanged: session.wantAudio = checked
-
-                                Loader {
-                                    id: sessionAudioControlsLoader
-                                    sourceComponent: session.wantAudio ? sessionAudioControls : null
-                                    property var audio: session.wantAudio ? session.audio : null
-                                    Component {
-                                        id: sessionAudioControls
-                                        ObjectModel {
-                                            Label { text: "\u2514 Input" }
-                                            ComboBox {
-                                                Layout.fillWidth: true
-                                                model: audio && audio.inputDevicesModel
-                                                currentIndex: audio ? audio.selectedInputIndex : -1
-                                                onActivated: audio.selectedInputIndex = index
-                                            }
-                                            Label { text: "\u2514 Output" }
-                                            ComboBox {
-                                                Layout.fillWidth: true
-                                                model: audio && audio.outputDevicesModel
-                                                currentIndex: audio ? audio.selectedOutputIndex : -1
-                                                onActivated: audio.selectedOutputIndex = index
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            Repeater {
-                                model: sessionAudioControlsLoader.item
-                            }
-
+                        PropertiesSession {
+                            property var session: session
                         }
                     } // session properties
 
