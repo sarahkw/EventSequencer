@@ -43,5 +43,6 @@
         <file>Cursor.qml</file>
         <file>MsgBox.qml</file>
         <file>DocFillDeveloperOptions.qml</file>
+        <file>PropertiesDocument.qml</file>
     </qresource>
 </RCC>

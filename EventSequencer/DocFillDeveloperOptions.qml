@@ -3,8 +3,11 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
 GroupBox {
+    id: root
     anchors.left: parent.left
     anchors.right: parent.right
+
+    signal msgbox(string message)
 
     title: "Developer Options (no auto-save)"
     ColumnLayout {
@@ -17,6 +20,7 @@ GroupBox {
         }
         ComboBox {
             Layout.fillWidth: true
+            id: cboxType
             model: [
                 "",
                 "Selected Strip",
@@ -27,6 +31,20 @@ GroupBox {
                 "File",
                 "Session",
             ]
+        }
+        Loader {
+            Layout.fillWidth: true
+            id: propertiesLoader
+            source: {
+                switch (cboxType.currentIndex) {
+                case 5: return "PropertiesDocument.qml"
+                }
+                return ""
+            }
+        }
+        Connections {
+            target: propertiesLoader.item
+            onMsgbox: msgbox(message)
         }
     }
 }

@@ -736,9 +736,14 @@ Page {
                         }
 
                         Loader {
+                            id: devOptionsLoader
                             anchors.left: parent.left
                             anchors.right: parent.right
                             source: chkDeveloperOptions.checked ? "DocFillDeveloperOptions.qml" : ""
+                        }
+                        Connections {
+                            target: devOptionsLoader.item
+                            onMsgbox: msgbox.msgbox(message)
                         }
                     }
                 }
