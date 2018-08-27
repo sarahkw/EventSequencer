@@ -118,6 +118,8 @@ struct AnnotationHeader {
 
         if (asr.actualDataSize % 8 != 0) {
             asr.writtenToDiskSize = (asr.actualDataSize / 8 + 1) * 8;
+        } else {
+            asr.writtenToDiskSize = asr.actualDataSize;
         }
 
         asr.endPaddingSize = asr.writtenToDiskSize - asr.actualDataSize;
