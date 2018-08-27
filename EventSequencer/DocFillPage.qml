@@ -735,33 +735,10 @@ Page {
                             }
                         }
 
-                        GroupBox {
+                        Loader {
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            title: "Developer Options (no auto-save)"
-                            visible: chkDeveloperOptions.checked
-                            ColumnLayout {
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                Text {
-                                    Layout.fillWidth: true
-                                    wrapMode: Text.Wrap
-                                    text: "<b>WARNING</b> These options will allow you to make changes that cause malfunction, whether it happen now or in future versions of the application. If you wish to experiment, make a test file."
-                                }
-                                ComboBox {
-                                    Layout.fillWidth: true
-                                    model: [
-                                        "",
-                                        "Selected Strip",
-                                        "Program Channel",
-                                        "Text Channel",
-                                        "Channel",
-                                        "Document",
-                                        "File",
-                                        "Session",
-                                    ]
-                                }
-                            }
+                            source: chkDeveloperOptions.checked ? "DocFillDeveloperOptions.qml" : ""
                         }
                     }
                 }

@@ -42,5 +42,6 @@
         <file>DocFillPage.qml</file>
         <file>Cursor.qml</file>
         <file>MsgBox.qml</file>
+        <file>DocFillDeveloperOptions.qml</file>
     </qresource>
 </RCC>
