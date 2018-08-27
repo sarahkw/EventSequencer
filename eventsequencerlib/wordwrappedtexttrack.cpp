@@ -122,8 +122,14 @@ void WordWrappedTextTrack::reposition()
             cursorFrame_ < iter->offset + iter->text.size()) {
             newP.setY(int(std::distance(iter, rows_.rend()) - 1));
             newP.setX(cursorFrame_ - iter->offset);
+        } else if (cursorFrame_ == iter->offset + iter->text.size() &&
+                   iter == rows_.rbegin()) {
+            // This lets us show the cursor *at* the last frame.
+            newP.setY(int(std::distance(iter, rows_.rend()) - 1));
+            newP.setX(cursorFrame_ - iter->offset);
         }
     }
+
     if (cursorPosition_ != newP) {
         cursorPosition_ = newP;
         emit cursorPositionChanged();
