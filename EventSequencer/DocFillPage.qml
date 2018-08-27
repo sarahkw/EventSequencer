@@ -530,6 +530,33 @@ Page {
                                     sourceComponent: textControl.docFillStripsTrackComponent
                                 }
 
+                                Rectangle {
+                                    id: dragArea
+                                    color: "whitesmoke"
+                                    radius: 5
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    anchors.bottom: parent.bottom
+                                    height: cursorObj.draggableSectionHeight
+
+                                    Text {
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        anchors.left: parent.left
+                                        anchors.leftMargin: 10
+                                        color: "lightgrey"
+                                        text: "<"
+                                        font.pixelSize: parent.height / 2
+                                    }
+                                    Text {
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        anchors.right: parent.right
+                                        anchors.rightMargin: 10
+                                        color: "lightgrey"
+                                        text: ">"
+                                        font.pixelSize: parent.height / 2
+                                    }
+                                }
+
                                 Cursor {
                                     id: cursorObj
                                     anchors.top: parent.top

@@ -5,8 +5,10 @@ Rectangle {
     width: 2
     color: "lime"
     property alias text: cursorText.text
+    readonly property int draggableSectionHeight: height - cursorText.y + 10
 
     Rectangle {
+        id: cursorBackground
         color: root.color
         anchors.left: root.right
         anchors.top: cursorText.top
