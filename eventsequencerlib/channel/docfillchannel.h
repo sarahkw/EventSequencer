@@ -15,13 +15,7 @@ class DocFillChannel : public ChannelBase
     Q_PROPERTY(ChannelIndex textChannel READ textChannel WRITE setTextChannel NOTIFY textChannelChanged)
     Q_PROPERTY(ChannelIndex resourceChannel READ resourceChannel WRITE setResourceChannel NOTIFY resourceChannelChanged)
 
-    bool advancedFeaturesEnabled_ = false;
     bool attemptExpansionOfResourceChannel_ = false;
-
-    Q_PROPERTY(bool advancedFeaturesEnabled
-               READ advancedFeaturesEnabled
-               WRITE setAdvancedFeaturesEnabled
-               NOTIFY advancedFeaturesEnabledChanged)
     Q_PROPERTY(bool attemptExpansionOfResourceChannel
                READ attemptExpansionOfResourceChannel
                WRITE setAttemptExpansionOfResourceChannel
@@ -41,9 +35,6 @@ public:
     ChannelIndex resourceChannel() const;
     void setResourceChannel(const ChannelIndex &resourceChannel);
 
-    bool advancedFeaturesEnabled() const;
-    void setAdvancedFeaturesEnabled(bool advancedFeaturesEnabled);
-
     bool attemptExpansionOfResourceChannel() const;
     void setAttemptExpansionOfResourceChannel(bool attemptExpansionOfResourceChannel);
 
@@ -51,7 +42,6 @@ signals:
 
     void textChannelChanged();
     void resourceChannelChanged();
-    void advancedFeaturesEnabledChanged();
     void attemptExpansionOfResourceChannelChanged();
 
 public slots:

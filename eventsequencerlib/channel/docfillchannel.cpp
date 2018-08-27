@@ -30,19 +30,6 @@ void DocFillChannel::setResourceChannel(const ChannelIndex &resourceChannel)
     }
 }
 
-bool DocFillChannel::advancedFeaturesEnabled() const
-{
-    return advancedFeaturesEnabled_;
-}
-
-void DocFillChannel::setAdvancedFeaturesEnabled(bool advancedFeaturesEnabled)
-{
-    if (advancedFeaturesEnabled_ != advancedFeaturesEnabled) {
-        advancedFeaturesEnabled_ = advancedFeaturesEnabled;
-        emit advancedFeaturesEnabledChanged();
-    }
-}
-
 bool DocFillChannel::attemptExpansionOfResourceChannel() const
 {
     return attemptExpansionOfResourceChannel_;
@@ -67,7 +54,6 @@ void DocFillChannel::toPb(pb::ChannelData &pb) const
     auto* mut = pb.mutable_docfill();
     textChannel().toPb(*mut->mutable_textchannel());
     resourceChannel().toPb(*mut->mutable_resourcechannel());
-    mut->set_advancedfeaturesenabled(advancedFeaturesEnabled());
     mut->set_attemptexpansionofresourcechannel(attemptExpansionOfResourceChannel());
 }
 
@@ -76,7 +62,6 @@ void DocFillChannel::fromPb(const pb::ChannelData &pb)
     Q_ASSERT(pb.has_docfill());
     setTextChannel(ChannelIndex::makeFromPb(pb.docfill().textchannel()));
     setResourceChannel(ChannelIndex::makeFromPb(pb.docfill().resourcechannel()));
-    setAdvancedFeaturesEnabled(pb.docfill().advancedfeaturesenabled());
     setAttemptExpansionOfResourceChannel(pb.docfill().attemptexpansionofresourcechannel());
 }
 
