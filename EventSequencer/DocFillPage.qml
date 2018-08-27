@@ -210,6 +210,11 @@ Page {
                 text: "Position..."
                 Controls2.Dialog {
                     id: positionDialog
+
+                    parent: ApplicationWindow.overlay
+                    x: (parent.width - width) / 2
+                    y: (parent.height - height) / 2
+
                     title: "Change Cursor Position"
                     standardButtons: Controls2.Dialog.Ok | Controls2.Dialog.Cancel
                     TextField {
@@ -274,6 +279,29 @@ Page {
                 Button {
                     Layout.fillWidth: true
                     text: "Font"
+                    Controls2.Dialog {
+                        id: fontDialog
+
+                        parent: ApplicationWindow.overlay
+                        x: (parent.width - width) / 2
+                        y: (parent.height - height) / 2
+
+                        title: "Change Font Size"
+                        standardButtons: Controls2.Dialog.Ok
+                        SpinBox {
+                            id: fontDialogTextField
+                            anchors.centerIn: parent
+                            from: 1
+                            to: 72
+                            editable: true
+                            value: dvc.font.pointSize
+                            onValueModified: {
+                                dvc.font.pointSize = value
+                                focus = false
+                            }
+                        }
+                    }
+                    onClicked: fontDialog.open()
                 }
                 Button {
                     Layout.fillWidth: true

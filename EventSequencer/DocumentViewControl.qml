@@ -15,6 +15,8 @@ Rectangle {
 
     property bool textChannelIsValid: chanToTextContent.outputTextContent !== null
     property bool renderChannelIsValid: chanToRenderComponent.outputRenderComponent != null
+
+    property alias font: cmfu.baseFont
     
     color: "white"
 

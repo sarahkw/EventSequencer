@@ -1,9 +1,9 @@
 import QtQuick 2.9
-import QtQuick.Window 2.3
+import QtQuick.Controls 2.2
 
 import eventsequencer 1.0 as ES
 
-Window {
+ApplicationWindow { // Use ApplicationWindow to support popup overlay
     id: root
     visible: true
     width: 540

@@ -6,7 +6,7 @@ import QtQuick.Dialogs 1.2
 
 import eventsequencer 1.0 as ES
 
-Window {
+ApplicationWindow { // Use ApplicationWindow to support popup overlay
     id: root
     visible: true
 
