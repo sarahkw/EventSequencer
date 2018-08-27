@@ -6,7 +6,11 @@ import QtQml.Models 2.3
 GridLayout {
     id: root
 
+    property bool shouldShowTime: false
+
     signal msgbox(string message)
+
+    readonly property var document_rebind: document
 
     columns: 2
     Label {
@@ -16,10 +20,31 @@ GridLayout {
         Layout.fillWidth: true
         text: document.framesPerSecond
         validator: IntValidator { }
-        onEsEditingFinished: {
-            document.framesPerSecond = parseInt(text, 10)
-        }
+        onEsEditingFinished: document.framesPerSecond = parseInt(text, 10)
     }
+
+    Label {
+        text: "Start Frame"
+    }
+    FrameTextField {
+        Layout.fillWidth: true
+        document: document_rebind
+        shouldShowTime: root.shouldShowTime
+        frame: document_rebind.startFrame
+        onFrameEditingFinished: document_rebind.startFrame = frame
+    }
+
+    Label {
+        text: "End Frame"
+    }
+    FrameTextField {
+        Layout.fillWidth: true
+        document: document_rebind
+        shouldShowTime: root.shouldShowTime
+        frame: document_rebind.endFrame
+        onFrameEditingFinished: document_rebind.endFrame = frame
+    }
+
     Label {
         text: "Audio Format"
     }

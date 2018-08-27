@@ -1126,6 +1126,7 @@ ApplicationWindow {
                                         text: "End"
                                     }
                                     FrameTextField {
+                                        // TODO Need to also reset when c++ rejects
                                         document: dokument
                                         shouldShowTime: showSecondsAction.checked
                                         frame: selectedCppStrip.startFrame + selectedCppStrip.length
@@ -1231,6 +1232,8 @@ ApplicationWindow {
 
                             property var document: document
                             property var session: session
+
+                            shouldShowTime: showSecondsAction.checked
 
                             onMsgbox: {
                                 msgbox.msgbox(message, "Result")
