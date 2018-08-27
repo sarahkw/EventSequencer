@@ -18,17 +18,25 @@ GroupBox {
             wrapMode: Text.Wrap
             text: "<b>WARNING</b> These options will allow you to make changes that cause malfunction, whether it happens now or in future versions of the application. If you wish to experiment, make a test file."
         }
-        ComboBox {
+        RowLayout {
             Layout.fillWidth: true
-            id: cboxType
-            model: [
-                "",
-                "Selected Strip",
-                "Channel",
-                "Document",
-                "File",
-                "Session",
-            ]
+            ComboBox {
+                Layout.fillWidth: true
+                id: cboxType
+                model: [
+                    "",
+                    "Selected Strip",
+                    "Channel",
+                    "Document",
+                    "File",
+                    "Session",
+                ]
+            }
+            TextField {
+                visible: cboxType.currentIndex === 2
+                inputMethodHints: Qt.ImhDigitsOnly
+                implicitWidth: 75
+            }
         }
         Loader {
             Layout.fillWidth: true
