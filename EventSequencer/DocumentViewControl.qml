@@ -17,6 +17,9 @@ Rectangle {
     property bool renderChannelIsValid: chanToRenderComponent.outputRenderComponent != null
 
     property alias font: cmfu.baseFont
+    function showCursor() {
+        cursor.makeVisible()
+    }
     
     color: "white"
 

@@ -207,6 +207,12 @@ Page {
         id: goToMenuComponent
         Menu {
             MenuItem {
+                text: "Scroll to Cursor"
+                onTriggered: {
+                    dvc.showCursor()
+                }
+            }
+            MenuItem {
                 text: "Position..."
                 Controls2.Dialog {
                     id: positionDialog
@@ -231,20 +237,6 @@ Page {
                 }
             }
             MenuItem {
-                text: "Previous Unassigned"
-                onTriggered: {
-                    var npos = root.cppResourceChannel.calculateNextEmptyBackward(rebind_cursorFrame)
-                    root.rebind_changeCursorFrame(npos)
-                }
-            }
-            MenuItem {
-                text: "Next Unassigned"
-                onTriggered: {
-                    var npos = root.cppResourceChannel.calculateNextEmptyForward(rebind_cursorFrame)
-                    root.rebind_changeCursorFrame(npos)
-                }
-            }
-            MenuItem {
                 text: "Previous Interesting"
                 onTriggered: {
                     var npos = root.cppResourceChannel.calculateNextSegmentBackward(rebind_cursorFrame)
@@ -255,6 +247,20 @@ Page {
                 text: "Next Interesting"
                 onTriggered: {
                     var npos = root.cppResourceChannel.calculateNextSegmentForward(rebind_cursorFrame)
+                    root.rebind_changeCursorFrame(npos)
+                }
+            }
+            MenuItem {
+                text: "Previous Unassigned"
+                onTriggered: {
+                    var npos = root.cppResourceChannel.calculateNextEmptyBackward(rebind_cursorFrame)
+                    root.rebind_changeCursorFrame(npos)
+                }
+            }
+            MenuItem {
+                text: "Next Unassigned"
+                onTriggered: {
+                    var npos = root.cppResourceChannel.calculateNextEmptyForward(rebind_cursorFrame)
                     root.rebind_changeCursorFrame(npos)
                 }
             }
