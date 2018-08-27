@@ -1,5 +1,6 @@
 #include "aufileheader.h"
 
+#include <cstring>
 #include <QtEndian>
 
 namespace {
@@ -128,9 +129,33 @@ struct AnnotationHeader {
     }
 
     // annotation is a null terminated string
-    bool readFromFile(QIODevice& dev, qint64 maxSize, std::string* annotation)
+    static bool readFromFile(QIODevice& dev, qint64 len, std::string* annotation)
     {
-        return false;
+        Q_ASSERT(len > 0);
+
+        char magic[MAGIC_LEN];
+        if (MAGIC_LEN != dev.read(magic, MAGIC_LEN)) {
+            return false;
+        }
+        if (std::memcmp(magic, MAGIC, MAGIC_LEN) != 0) {
+            return false;
+        }
+
+        len -= MAGIC_LEN;
+
+        constexpr auto MB_1 = 1024 * 1024;
+        if (len > MB_1) {
+            qWarning("Annotation too large");
+            return false;
+        }
+
+        std::vector<char> tmp(len + 1); // Force null terminator at the end
+        if (len != dev.read(tmp.data(), len)) {
+            return false;
+        }
+
+        *annotation = std::string(tmp.data(), strlen(tmp.data()));
+        return true;
     }
 
     // annotation is a null terminated string
@@ -155,7 +180,7 @@ struct AnnotationHeader {
 constexpr char AnnotationHeader::MAGIC[];
 }
 
-bool AuFileHeader::loadFileAndSeek(QIODevice &device)
+bool AuFileHeader::loadFileAndSeek(QIODevice &device, std::string* annotation)
 {
     AuHeader auh;
     // For files, .read() should read it all unless there's an error.
@@ -175,6 +200,15 @@ bool AuFileHeader::loadFileAndSeek(QIODevice &device)
     audioFormat_.setChannelCount(static_cast<int>(auh.channels));
     audioFormat_.setByteOrder(QAudioFormat::BigEndian);
     audioFormat_.setCodec("audio/pcm");
+
+    // We are currently at AU_MIN_DATA_OFFSET
+    if (annotation != nullptr && seekTo > AU_MIN_DATA_OFFSET) {
+        if (!AnnotationHeader::readFromFile(
+                    device, seekTo - AU_MIN_DATA_OFFSET, annotation)) {
+            qWarning("Unable to process annotation; ignoring.");
+        }
+    }
+
     return device.seek(seekTo);
 }
 
