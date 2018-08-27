@@ -44,5 +44,6 @@
         <file>MsgBox.qml</file>
         <file>DocFillDeveloperOptions.qml</file>
         <file>PropertiesDocument.qml</file>
+        <file>PropertiesFile.qml</file>
     </qresource>
 </RCC>

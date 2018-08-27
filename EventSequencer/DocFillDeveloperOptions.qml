@@ -36,12 +36,14 @@ GroupBox {
             source: {
                 switch (cboxType.currentIndex) {
                 case 3: return "PropertiesDocument.qml"
+                case 4: return "PropertiesFile.qml"
                 }
                 return ""
             }
         }
         Connections {
             target: propertiesLoader.item
+            ignoreUnknownSignals: true
             onMsgbox: msgbox(message)
         }
     }
