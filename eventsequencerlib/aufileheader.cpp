@@ -107,7 +107,7 @@ struct AnnotationHeader {
     static size_t writtenSizeOfAnnotation(const std::string& annotation)
     {
         const size_t null_terminated = 1;
-        size_t sz = annotation.size() + null_terminated;
+        size_t sz = annotation.size() + null_terminated + HEADER_LEN;
         if (sz % 8 != 0) {
             sz = (sz / 8 + 1) * 8;
         }
