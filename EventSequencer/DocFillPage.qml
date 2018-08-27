@@ -738,7 +738,7 @@ Page {
                         GroupBox {
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            title: "Developer Options"
+                            title: "Developer Options (no auto-save)"
                             visible: chkDeveloperOptions.checked
                             ColumnLayout {
                                 anchors.left: parent.left
