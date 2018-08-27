@@ -494,6 +494,7 @@ Page {
                 anchors.fill: parent
                 currentIndex: fileDrawerTabBar.currentIndex
 
+                // Strips
                 Item {
                     ColumnLayout {
                         anchors.fill: parent
