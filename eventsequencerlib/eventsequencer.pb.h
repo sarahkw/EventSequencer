@@ -34,6 +34,7 @@
 #include <google/protobuf/map_field_inl.h>
 #include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
+#include <google/protobuf/timestamp.pb.h>
 // @@protoc_insertion_point(includes)
 #define PROTOBUF_INTERNAL_EXPORT_protobuf_eventsequencer_2eproto 
 
@@ -42,7 +43,7 @@ namespace protobuf_eventsequencer_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[22];
+  static const ::google::protobuf::internal::ParseTable schema[23];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -98,6 +99,9 @@ extern Document_ChannelsEntry_DoNotUseDefaultTypeInternal _Document_ChannelsEntr
 class File;
 class FileDefaultTypeInternal;
 extern FileDefaultTypeInternal _File_default_instance_;
+class ResourceMetaData;
+class ResourceMetaDataDefaultTypeInternal;
+extern ResourceMetaDataDefaultTypeInternal _ResourceMetaData_default_instance_;
 class Strip;
 class StripDefaultTypeInternal;
 extern StripDefaultTypeInternal _Strip_default_instance_;
@@ -135,6 +139,7 @@ template<> ::pb::ChannelIndex* Arena::CreateMaybeMessage<::pb::ChannelIndex>(Are
 template<> ::pb::Document* Arena::CreateMaybeMessage<::pb::Document>(Arena*);
 template<> ::pb::Document_ChannelsEntry_DoNotUse* Arena::CreateMaybeMessage<::pb::Document_ChannelsEntry_DoNotUse>(Arena*);
 template<> ::pb::File* Arena::CreateMaybeMessage<::pb::File>(Arena*);
+template<> ::pb::ResourceMetaData* Arena::CreateMaybeMessage<::pb::ResourceMetaData>(Arena*);
 template<> ::pb::Strip* Arena::CreateMaybeMessage<::pb::Strip>(Arena*);
 template<> ::pb::Strip_Audio* Arena::CreateMaybeMessage<::pb::Strip_Audio>(Arena*);
 template<> ::pb::Strip_BadJs* Arena::CreateMaybeMessage<::pb::Strip_BadJs>(Arena*);
@@ -192,6 +197,115 @@ inline bool AudioFormat_Endian_Parse(
 }
 // ===================================================================
 
+class ResourceMetaData : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ResourceMetaData) */ {
+ public:
+  ResourceMetaData();
+  virtual ~ResourceMetaData();
+
+  ResourceMetaData(const ResourceMetaData& from);
+
+  inline ResourceMetaData& operator=(const ResourceMetaData& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ResourceMetaData(ResourceMetaData&& from) noexcept
+    : ResourceMetaData() {
+    *this = ::std::move(from);
+  }
+
+  inline ResourceMetaData& operator=(ResourceMetaData&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ResourceMetaData& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ResourceMetaData* internal_default_instance() {
+    return reinterpret_cast<const ResourceMetaData*>(
+               &_ResourceMetaData_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  void Swap(ResourceMetaData* other);
+  friend void swap(ResourceMetaData& a, ResourceMetaData& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ResourceMetaData* New() const final {
+    return CreateMaybeMessage<ResourceMetaData>(NULL);
+  }
+
+  ResourceMetaData* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ResourceMetaData>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const ResourceMetaData& from);
+  void MergeFrom(const ResourceMetaData& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ResourceMetaData* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .google.protobuf.Timestamp createTime = 1;
+  bool has_createtime() const;
+  void clear_createtime();
+  static const int kCreateTimeFieldNumber = 1;
+  private:
+  const ::google::protobuf::Timestamp& _internal_createtime() const;
+  public:
+  const ::google::protobuf::Timestamp& createtime() const;
+  ::google::protobuf::Timestamp* release_createtime();
+  ::google::protobuf::Timestamp* mutable_createtime();
+  void set_allocated_createtime(::google::protobuf::Timestamp* createtime);
+
+  // @@protoc_insertion_point(class_scope:pb.ResourceMetaData)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::Timestamp* createtime_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_eventsequencer_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class ChannelIndex : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pb.ChannelIndex) */ {
  public:
   ChannelIndex();
@@ -227,7 +341,7 @@ class ChannelIndex : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_ChannelIndex_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    0;
+    1;
 
   void Swap(ChannelIndex* other);
   friend void swap(ChannelIndex& a, ChannelIndex& b) {
@@ -337,7 +451,7 @@ class Strip_BadJs : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_Strip_BadJs_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    2;
 
   void Swap(Strip_BadJs* other);
   friend void swap(Strip_BadJs& a, Strip_BadJs& b) {
@@ -448,7 +562,7 @@ class Strip_Audio : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_Strip_Audio_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   void Swap(Strip_Audio* other);
   friend void swap(Strip_Audio& a, Strip_Audio& b) {
@@ -551,7 +665,7 @@ class Strip_Text : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_Strip_Text_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   void Swap(Strip_Text* other);
   friend void swap(Strip_Text& a, Strip_Text& b) {
@@ -662,7 +776,7 @@ class Strip_Label : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_Strip_Label_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   void Swap(Strip_Label* other);
   friend void swap(Strip_Label& a, Strip_Label& b) {
@@ -773,7 +887,7 @@ class Strip_Playlist : public ::google::protobuf::Message /* @@protoc_insertion_
                &_Strip_Playlist_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   void Swap(Strip_Playlist* other);
   friend void swap(Strip_Playlist& a, Strip_Playlist& b) {
@@ -883,7 +997,7 @@ class Strip : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
                &_Strip_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   void Swap(Strip* other);
   friend void swap(Strip& a, Strip& b) {
@@ -1086,7 +1200,7 @@ class AudioFormat : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_AudioFormat_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   void Swap(AudioFormat* other);
   friend void swap(AudioFormat& a, AudioFormat& b) {
@@ -1275,7 +1389,7 @@ class ChannelData_BadClock : public ::google::protobuf::Message /* @@protoc_inse
                &_ChannelData_BadClock_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   void Swap(ChannelData_BadClock* other);
   friend void swap(ChannelData_BadClock& a, ChannelData_BadClock& b) {
@@ -1371,7 +1485,7 @@ class ChannelData_BadJs : public ::google::protobuf::Message /* @@protoc_inserti
                &_ChannelData_BadJs_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   void Swap(ChannelData_BadJs* other);
   friend void swap(ChannelData_BadJs& a, ChannelData_BadJs& b) {
@@ -1467,7 +1581,7 @@ class ChannelData_Text : public ::google::protobuf::Message /* @@protoc_insertio
                &_ChannelData_Text_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   void Swap(ChannelData_Text* other);
   friend void swap(ChannelData_Text& a, ChannelData_Text& b) {
@@ -1578,7 +1692,7 @@ class ChannelData_Audio : public ::google::protobuf::Message /* @@protoc_inserti
                &_ChannelData_Audio_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   void Swap(ChannelData_Audio* other);
   friend void swap(ChannelData_Audio& a, ChannelData_Audio& b) {
@@ -1674,7 +1788,7 @@ class ChannelData_Label : public ::google::protobuf::Message /* @@protoc_inserti
                &_ChannelData_Label_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    13;
 
   void Swap(ChannelData_Label* other);
   friend void swap(ChannelData_Label& a, ChannelData_Label& b) {
@@ -1770,7 +1884,7 @@ class ChannelData_Collate : public ::google::protobuf::Message /* @@protoc_inser
                &_ChannelData_Collate_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    14;
 
   void Swap(ChannelData_Collate* other);
   friend void swap(ChannelData_Collate& a, ChannelData_Collate& b) {
@@ -1879,7 +1993,7 @@ class ChannelData_Playlist : public ::google::protobuf::Message /* @@protoc_inse
                &_ChannelData_Playlist_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    15;
 
   void Swap(ChannelData_Playlist* other);
   friend void swap(ChannelData_Playlist& a, ChannelData_Playlist& b) {
@@ -1996,7 +2110,7 @@ class ChannelData_Span : public ::google::protobuf::Message /* @@protoc_insertio
                &_ChannelData_Span_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    17;
 
   void Swap(ChannelData_Span* other);
   friend void swap(ChannelData_Span& a, ChannelData_Span& b) {
@@ -2135,7 +2249,7 @@ class ChannelData_DocFill : public ::google::protobuf::Message /* @@protoc_inser
                &_ChannelData_DocFill_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    18;
 
   void Swap(ChannelData_DocFill* other);
   friend void swap(ChannelData_DocFill& a, ChannelData_DocFill& b) {
@@ -2277,7 +2391,7 @@ class ChannelData : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_ChannelData_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    19;
 
   void Swap(ChannelData* other);
   friend void swap(ChannelData& a, ChannelData& b) {
@@ -2540,7 +2654,7 @@ class Document : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_Document_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    21;
 
   void Swap(Document* other);
   friend void swap(Document& a, Document& b) {
@@ -2699,7 +2813,7 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
                &_File_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    22;
 
   void Swap(File* other);
   friend void swap(File& a, File& b) {
@@ -2810,6 +2924,59 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// ResourceMetaData
+
+// .google.protobuf.Timestamp createTime = 1;
+inline bool ResourceMetaData::has_createtime() const {
+  return this != internal_default_instance() && createtime_ != NULL;
+}
+inline const ::google::protobuf::Timestamp& ResourceMetaData::_internal_createtime() const {
+  return *createtime_;
+}
+inline const ::google::protobuf::Timestamp& ResourceMetaData::createtime() const {
+  const ::google::protobuf::Timestamp* p = createtime_;
+  // @@protoc_insertion_point(field_get:pb.ResourceMetaData.createTime)
+  return p != NULL ? *p : *reinterpret_cast<const ::google::protobuf::Timestamp*>(
+      &::google::protobuf::_Timestamp_default_instance_);
+}
+inline ::google::protobuf::Timestamp* ResourceMetaData::release_createtime() {
+  // @@protoc_insertion_point(field_release:pb.ResourceMetaData.createTime)
+  
+  ::google::protobuf::Timestamp* temp = createtime_;
+  createtime_ = NULL;
+  return temp;
+}
+inline ::google::protobuf::Timestamp* ResourceMetaData::mutable_createtime() {
+  
+  if (createtime_ == NULL) {
+    auto* p = CreateMaybeMessage<::google::protobuf::Timestamp>(GetArenaNoVirtual());
+    createtime_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:pb.ResourceMetaData.createTime)
+  return createtime_;
+}
+inline void ResourceMetaData::set_allocated_createtime(::google::protobuf::Timestamp* createtime) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(createtime_);
+  }
+  if (createtime) {
+    ::google::protobuf::Arena* submessage_arena =
+      reinterpret_cast<::google::protobuf::MessageLite*>(createtime)->GetArena();
+    if (message_arena != submessage_arena) {
+      createtime = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, createtime, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  createtime_ = createtime;
+  // @@protoc_insertion_point(field_set_allocated:pb.ResourceMetaData.createTime)
+}
+
+// -------------------------------------------------------------------
+
 // ChannelIndex
 
 // repeated int32 idx = 1;
@@ -4575,6 +4742,8 @@ inline void File::set_allocated_forkedfromchecksum(::std::string* forkedfromchec
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

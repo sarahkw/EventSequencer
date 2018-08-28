@@ -5,6 +5,7 @@
 #include "sessionaudio.h"
 #include "aufileheader.h"
 #include "managedresources.h"
+#include "resourcemetadata.h"
 
 #include <QDebug>
 #include <QAudioInput>
@@ -59,7 +60,7 @@ void RecorderControl::record(QUrl url)
         return;
     }
 
-    if (!afh.writeFile(*of)) {
+    if (!afh.writeFile(*of, ResourceMetaData::createFromNow())) {
         setError(QString("Cannot write header: %1").arg(of->errorString()));
         return;
     }

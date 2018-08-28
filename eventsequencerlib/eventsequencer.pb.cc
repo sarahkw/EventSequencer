@@ -40,7 +40,15 @@ extern PROTOBUF_INTERNAL_EXPORT_protobuf_eventsequencer_2eproto ::google::protob
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_eventsequencer_2eproto ::google::protobuf::internal::SCCInfo<5> scc_info_Strip;
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_eventsequencer_2eproto ::google::protobuf::internal::SCCInfo<9> scc_info_ChannelData;
 }  // namespace protobuf_eventsequencer_2eproto
+namespace protobuf_google_2fprotobuf_2ftimestamp_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_google_2fprotobuf_2ftimestamp_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Timestamp;
+}  // namespace protobuf_google_2fprotobuf_2ftimestamp_2eproto
 namespace pb {
+class ResourceMetaDataDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<ResourceMetaData>
+      _instance;
+} _ResourceMetaData_default_instance_;
 class ChannelIndexDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<ChannelIndex>
@@ -162,6 +170,21 @@ class FileDefaultTypeInternal {
 } _File_default_instance_;
 }  // namespace pb
 namespace protobuf_eventsequencer_2eproto {
+static void InitDefaultsResourceMetaData() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::pb::_ResourceMetaData_default_instance_;
+    new (ptr) ::pb::ResourceMetaData();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pb::ResourceMetaData::InitAsDefaultInstance();
+}
+
+::google::protobuf::internal::SCCInfo<1> scc_info_ResourceMetaData =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsResourceMetaData}, {
+      &protobuf_google_2fprotobuf_2ftimestamp_2eproto::scc_info_Timestamp.base,}};
+
 static void InitDefaultsChannelIndex() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -474,6 +497,7 @@ static void InitDefaultsFile() {
       &protobuf_eventsequencer_2eproto::scc_info_Document.base,}};
 
 void InitDefaults() {
+  ::google::protobuf::internal::InitSCC(&scc_info_ResourceMetaData.base);
   ::google::protobuf::internal::InitSCC(&scc_info_ChannelIndex.base);
   ::google::protobuf::internal::InitSCC(&scc_info_Strip_BadJs.base);
   ::google::protobuf::internal::InitSCC(&scc_info_Strip_Audio.base);
@@ -496,10 +520,16 @@ void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_File.base);
 }
 
-::google::protobuf::Metadata file_level_metadata[22];
+::google::protobuf::Metadata file_level_metadata[23];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[2];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::ResourceMetaData, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::ResourceMetaData, createtime_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::ChannelIndex, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -669,31 +699,33 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pb::File, forkedfromchecksum_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::pb::ChannelIndex)},
-  { 6, -1, sizeof(::pb::Strip_BadJs)},
-  { 12, -1, sizeof(::pb::Strip_Audio)},
-  { 18, -1, sizeof(::pb::Strip_Text)},
-  { 24, -1, sizeof(::pb::Strip_Label)},
-  { 30, -1, sizeof(::pb::Strip_Playlist)},
-  { 37, -1, sizeof(::pb::Strip)},
-  { 51, -1, sizeof(::pb::AudioFormat)},
-  { 61, -1, sizeof(::pb::ChannelData_BadClock)},
-  { 66, -1, sizeof(::pb::ChannelData_BadJs)},
-  { 71, -1, sizeof(::pb::ChannelData_Text)},
-  { 77, -1, sizeof(::pb::ChannelData_Audio)},
-  { 82, -1, sizeof(::pb::ChannelData_Label)},
-  { 87, -1, sizeof(::pb::ChannelData_Collate)},
-  { 93, -1, sizeof(::pb::ChannelData_Playlist)},
-  { 98, 105, sizeof(::pb::ChannelData_Span_ChannelsEntry_DoNotUse)},
-  { 107, -1, sizeof(::pb::ChannelData_Span)},
-  { 116, -1, sizeof(::pb::ChannelData_DocFill)},
-  { 124, -1, sizeof(::pb::ChannelData)},
-  { 139, 146, sizeof(::pb::Document_ChannelsEntry_DoNotUse)},
-  { 148, -1, sizeof(::pb::Document)},
-  { 159, -1, sizeof(::pb::File)},
+  { 0, -1, sizeof(::pb::ResourceMetaData)},
+  { 6, -1, sizeof(::pb::ChannelIndex)},
+  { 12, -1, sizeof(::pb::Strip_BadJs)},
+  { 18, -1, sizeof(::pb::Strip_Audio)},
+  { 24, -1, sizeof(::pb::Strip_Text)},
+  { 30, -1, sizeof(::pb::Strip_Label)},
+  { 36, -1, sizeof(::pb::Strip_Playlist)},
+  { 43, -1, sizeof(::pb::Strip)},
+  { 57, -1, sizeof(::pb::AudioFormat)},
+  { 67, -1, sizeof(::pb::ChannelData_BadClock)},
+  { 72, -1, sizeof(::pb::ChannelData_BadJs)},
+  { 77, -1, sizeof(::pb::ChannelData_Text)},
+  { 83, -1, sizeof(::pb::ChannelData_Audio)},
+  { 88, -1, sizeof(::pb::ChannelData_Label)},
+  { 93, -1, sizeof(::pb::ChannelData_Collate)},
+  { 99, -1, sizeof(::pb::ChannelData_Playlist)},
+  { 104, 111, sizeof(::pb::ChannelData_Span_ChannelsEntry_DoNotUse)},
+  { 113, -1, sizeof(::pb::ChannelData_Span)},
+  { 122, -1, sizeof(::pb::ChannelData_DocFill)},
+  { 130, -1, sizeof(::pb::ChannelData)},
+  { 145, 152, sizeof(::pb::Document_ChannelsEntry_DoNotUse)},
+  { 154, -1, sizeof(::pb::Document)},
+  { 165, -1, sizeof(::pb::File)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_ResourceMetaData_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_ChannelIndex_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_Strip_BadJs_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::pb::_Strip_Audio_default_instance_),
@@ -733,68 +765,71 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 22);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 23);
 }
 
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\024eventsequencer.proto\022\002pb\"\033\n\014ChannelInd"
-      "ex\022\013\n\003idx\030\001 \003(\005\"\261\003\n\005Strip\022\017\n\007channel\030\001 \001"
-      "(\005\022\022\n\nstartFrame\030\002 \001(\005\022\016\n\006length\030\003 \001(\005\022\023"
-      "\n\013resourceUrl\030\006 \001(\t\022\036\n\005badJs\030\n \001(\0132\017.pb."
-      "Strip.BadJs\022\036\n\005audio\030\013 \001(\0132\017.pb.Strip.Au"
-      "dio\022\034\n\004text\030\014 \001(\0132\016.pb.Strip.Text\022\036\n\005lab"
-      "el\030\r \001(\0132\017.pb.Strip.Label\022$\n\010playlist\030\016 "
-      "\001(\0132\022.pb.Strip.Playlist\032\027\n\005BadJs\022\016\n\006scri"
-      "pt\030\001 \001(\t\032*\n\005Audio\022\033\n\023mediaFrameSkipBegin"
-      "\030\002 \001(\rJ\004\010\001\020\002\032\027\n\004Text\022\017\n\007content\030\001 \001(\t\032\030\n"
-      "\005Label\022\017\n\007content\030\001 \001(\t\032B\n\010Playlist\022\033\n\023m"
-      "ediaFrameSkipBegin\030\002 \001(\r\022\031\n\021mediaFrameSk"
-      "ipEnd\030\003 \001(\r\"\255\002\n\013AudioFormat\022\022\n\nsampleRat"
-      "e\030\001 \001(\005\022\022\n\nsampleSize\030\002 \001(\005\022\024\n\014channelCo"
-      "unt\030\003 \001(\005\022.\n\nsampleType\030\004 \001(\0162\032.pb.Audio"
-      "Format.SampleType\022&\n\006endian\030\005 \001(\0162\026.pb.A"
-      "udioFormat.Endian\"L\n\nSampleType\022\023\n\017Unset"
-      "SampleType\020\000\022\r\n\tSignedInt\020\001\022\017\n\013UnSignedI"
-      "nt\020\002\022\t\n\005Float\020\003\":\n\006Endian\022\017\n\013UnsetEndian"
-      "\020\000\022\r\n\tBigEndian\020\001\022\020\n\014LittleEndian\020\002\"\340\006\n\013"
-      "ChannelData\022,\n\010badClock\030\n \001(\0132\030.pb.Chann"
-      "elData.BadClockH\000\022&\n\005badJs\030\013 \001(\0132\025.pb.Ch"
-      "annelData.BadJsH\000\022$\n\004text\030\014 \001(\0132\024.pb.Cha"
-      "nnelData.TextH\000\022&\n\005audio\030\r \001(\0132\025.pb.Chan"
-      "nelData.AudioH\000\022&\n\005label\030\016 \001(\0132\025.pb.Chan"
-      "nelData.LabelH\000\022*\n\007collate\030\017 \001(\0132\027.pb.Ch"
-      "annelData.CollateH\000\022,\n\010playlist\030\020 \001(\0132\030."
-      "pb.ChannelData.PlaylistH\000\022$\n\004span\030\021 \001(\0132"
-      "\024.pb.ChannelData.SpanH\000\022*\n\007docFill\030\022 \001(\013"
-      "2\027.pb.ChannelData.DocFillH\000\032\n\n\010BadClock\032"
-      "\007\n\005BadJs\032\035\n\004Text\022\017\n\007content\030\002 \001(\tJ\004\010\001\020\002\032"
-      "\007\n\005Audio\032\007\n\005Label\032,\n\007Collate\022!\n\007channel\030"
-      "\014 \001(\0132\020.pb.ChannelIndex\032\n\n\010Playlist\032\304\001\n\004"
-      "Span\022\r\n\005count\030\001 \001(\005\022\031\n\006strips\030\002 \003(\0132\t.pb"
-      ".Strip\0224\n\010channels\030\003 \003(\0132\".pb.ChannelDat"
-      "a.Span.ChannelsEntry\022\032\n\022defaultChannelTy"
-      "pe\030\004 \001(\005\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022\036"
-      "\n\005value\030\002 \001(\0132\017.pb.ChannelData:\0028\001\032\206\001\n\007D"
-      "ocFill\022%\n\013textChannel\030\001 \001(\0132\020.pb.Channel"
-      "Index\022)\n\017resourceChannel\030\002 \001(\0132\020.pb.Chan"
-      "nelIndex\022)\n!attemptExpansionOfResourceCh"
-      "annel\030\013 \001(\010B\t\n\007channel\"\372\001\n\010Document\022\031\n\006s"
-      "trips\030\001 \003(\0132\t.pb.Strip\022\027\n\017framesPerSecon"
-      "d\030\002 \001(\005\022\022\n\nstartFrame\030\004 \001(\005\022\020\n\010endFrame\030"
-      "\005 \001(\005\022,\n\010channels\030\003 \003(\0132\032.pb.Document.Ch"
-      "annelsEntry\022$\n\013audioFormat\030\006 \001(\0132\017.pb.Au"
-      "dioFormat\032@\n\rChannelsEntry\022\013\n\003key\030\001 \001(\005\022"
-      "\036\n\005value\030\002 \001(\0132\017.pb.ChannelData:\0028\001\"T\n\004F"
-      "ile\022\036\n\010document\030\001 \001(\0132\014.pb.Document\022\020\n\010c"
-      "hecksum\030\002 \001(\t\022\032\n\022forkedFromChecksum\030\003 \001("
-      "\tb\006proto3"
+      "\n\024eventsequencer.proto\022\002pb\032\037google/proto"
+      "buf/timestamp.proto\"B\n\020ResourceMetaData\022"
+      ".\n\ncreateTime\030\001 \001(\0132\032.google.protobuf.Ti"
+      "mestamp\"\033\n\014ChannelIndex\022\013\n\003idx\030\001 \003(\005\"\261\003\n"
+      "\005Strip\022\017\n\007channel\030\001 \001(\005\022\022\n\nstartFrame\030\002 "
+      "\001(\005\022\016\n\006length\030\003 \001(\005\022\023\n\013resourceUrl\030\006 \001(\t"
+      "\022\036\n\005badJs\030\n \001(\0132\017.pb.Strip.BadJs\022\036\n\005audi"
+      "o\030\013 \001(\0132\017.pb.Strip.Audio\022\034\n\004text\030\014 \001(\0132\016"
+      ".pb.Strip.Text\022\036\n\005label\030\r \001(\0132\017.pb.Strip"
+      ".Label\022$\n\010playlist\030\016 \001(\0132\022.pb.Strip.Play"
+      "list\032\027\n\005BadJs\022\016\n\006script\030\001 \001(\t\032*\n\005Audio\022\033"
+      "\n\023mediaFrameSkipBegin\030\002 \001(\rJ\004\010\001\020\002\032\027\n\004Tex"
+      "t\022\017\n\007content\030\001 \001(\t\032\030\n\005Label\022\017\n\007content\030\001"
+      " \001(\t\032B\n\010Playlist\022\033\n\023mediaFrameSkipBegin\030"
+      "\002 \001(\r\022\031\n\021mediaFrameSkipEnd\030\003 \001(\r\"\255\002\n\013Aud"
+      "ioFormat\022\022\n\nsampleRate\030\001 \001(\005\022\022\n\nsampleSi"
+      "ze\030\002 \001(\005\022\024\n\014channelCount\030\003 \001(\005\022.\n\nsample"
+      "Type\030\004 \001(\0162\032.pb.AudioFormat.SampleType\022&"
+      "\n\006endian\030\005 \001(\0162\026.pb.AudioFormat.Endian\"L"
+      "\n\nSampleType\022\023\n\017UnsetSampleType\020\000\022\r\n\tSig"
+      "nedInt\020\001\022\017\n\013UnSignedInt\020\002\022\t\n\005Float\020\003\":\n\006"
+      "Endian\022\017\n\013UnsetEndian\020\000\022\r\n\tBigEndian\020\001\022\020"
+      "\n\014LittleEndian\020\002\"\340\006\n\013ChannelData\022,\n\010badC"
+      "lock\030\n \001(\0132\030.pb.ChannelData.BadClockH\000\022&"
+      "\n\005badJs\030\013 \001(\0132\025.pb.ChannelData.BadJsH\000\022$"
+      "\n\004text\030\014 \001(\0132\024.pb.ChannelData.TextH\000\022&\n\005"
+      "audio\030\r \001(\0132\025.pb.ChannelData.AudioH\000\022&\n\005"
+      "label\030\016 \001(\0132\025.pb.ChannelData.LabelH\000\022*\n\007"
+      "collate\030\017 \001(\0132\027.pb.ChannelData.CollateH\000"
+      "\022,\n\010playlist\030\020 \001(\0132\030.pb.ChannelData.Play"
+      "listH\000\022$\n\004span\030\021 \001(\0132\024.pb.ChannelData.Sp"
+      "anH\000\022*\n\007docFill\030\022 \001(\0132\027.pb.ChannelData.D"
+      "ocFillH\000\032\n\n\010BadClock\032\007\n\005BadJs\032\035\n\004Text\022\017\n"
+      "\007content\030\002 \001(\tJ\004\010\001\020\002\032\007\n\005Audio\032\007\n\005Label\032,"
+      "\n\007Collate\022!\n\007channel\030\014 \001(\0132\020.pb.ChannelI"
+      "ndex\032\n\n\010Playlist\032\304\001\n\004Span\022\r\n\005count\030\001 \001(\005"
+      "\022\031\n\006strips\030\002 \003(\0132\t.pb.Strip\0224\n\010channels\030"
+      "\003 \003(\0132\".pb.ChannelData.Span.ChannelsEntr"
+      "y\022\032\n\022defaultChannelType\030\004 \001(\005\032@\n\rChannel"
+      "sEntry\022\013\n\003key\030\001 \001(\005\022\036\n\005value\030\002 \001(\0132\017.pb."
+      "ChannelData:\0028\001\032\206\001\n\007DocFill\022%\n\013textChann"
+      "el\030\001 \001(\0132\020.pb.ChannelIndex\022)\n\017resourceCh"
+      "annel\030\002 \001(\0132\020.pb.ChannelIndex\022)\n!attempt"
+      "ExpansionOfResourceChannel\030\013 \001(\010B\t\n\007chan"
+      "nel\"\372\001\n\010Document\022\031\n\006strips\030\001 \003(\0132\t.pb.St"
+      "rip\022\027\n\017framesPerSecond\030\002 \001(\005\022\022\n\nstartFra"
+      "me\030\004 \001(\005\022\020\n\010endFrame\030\005 \001(\005\022,\n\010channels\030\003"
+      " \003(\0132\032.pb.Document.ChannelsEntry\022$\n\013audi"
+      "oFormat\030\006 \001(\0132\017.pb.AudioFormat\032@\n\rChanne"
+      "lsEntry\022\013\n\003key\030\001 \001(\005\022\036\n\005value\030\002 \001(\0132\017.pb"
+      ".ChannelData:\0028\001\"T\n\004File\022\036\n\010document\030\001 \001"
+      "(\0132\014.pb.Document\022\020\n\010checksum\030\002 \001(\t\022\032\n\022fo"
+      "rkedFromChecksum\030\003 \001(\tb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 2009);
+      descriptor, 2110);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "eventsequencer.proto", &protobuf_RegisterTypes);
+  ::protobuf_google_2fprotobuf_2ftimestamp_2eproto::AddDescriptors();
 }
 
 void AddDescriptors() {
@@ -857,6 +892,246 @@ const AudioFormat_Endian AudioFormat::Endian_MIN;
 const AudioFormat_Endian AudioFormat::Endian_MAX;
 const int AudioFormat::Endian_ARRAYSIZE;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+// ===================================================================
+
+void ResourceMetaData::InitAsDefaultInstance() {
+  ::pb::_ResourceMetaData_default_instance_._instance.get_mutable()->createtime_ = const_cast< ::google::protobuf::Timestamp*>(
+      ::google::protobuf::Timestamp::internal_default_instance());
+}
+void ResourceMetaData::clear_createtime() {
+  if (GetArenaNoVirtual() == NULL && createtime_ != NULL) {
+    delete createtime_;
+  }
+  createtime_ = NULL;
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ResourceMetaData::kCreateTimeFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ResourceMetaData::ResourceMetaData()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  ::google::protobuf::internal::InitSCC(
+      &protobuf_eventsequencer_2eproto::scc_info_ResourceMetaData.base);
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pb.ResourceMetaData)
+}
+ResourceMetaData::ResourceMetaData(const ResourceMetaData& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_createtime()) {
+    createtime_ = new ::google::protobuf::Timestamp(*from.createtime_);
+  } else {
+    createtime_ = NULL;
+  }
+  // @@protoc_insertion_point(copy_constructor:pb.ResourceMetaData)
+}
+
+void ResourceMetaData::SharedCtor() {
+  createtime_ = NULL;
+}
+
+ResourceMetaData::~ResourceMetaData() {
+  // @@protoc_insertion_point(destructor:pb.ResourceMetaData)
+  SharedDtor();
+}
+
+void ResourceMetaData::SharedDtor() {
+  if (this != internal_default_instance()) delete createtime_;
+}
+
+void ResourceMetaData::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const ::google::protobuf::Descriptor* ResourceMetaData::descriptor() {
+  ::protobuf_eventsequencer_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_eventsequencer_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const ResourceMetaData& ResourceMetaData::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_eventsequencer_2eproto::scc_info_ResourceMetaData.base);
+  return *internal_default_instance();
+}
+
+
+void ResourceMetaData::Clear() {
+// @@protoc_insertion_point(message_clear_start:pb.ResourceMetaData)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaNoVirtual() == NULL && createtime_ != NULL) {
+    delete createtime_;
+  }
+  createtime_ = NULL;
+  _internal_metadata_.Clear();
+}
+
+bool ResourceMetaData::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pb.ResourceMetaData)
+  for (;;) {
+    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .google.protobuf.Timestamp createTime = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_createtime()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pb.ResourceMetaData)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pb.ResourceMetaData)
+  return false;
+#undef DO_
+}
+
+void ResourceMetaData::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pb.ResourceMetaData)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .google.protobuf.Timestamp createTime = 1;
+  if (this->has_createtime()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->_internal_createtime(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:pb.ResourceMetaData)
+}
+
+::google::protobuf::uint8* ResourceMetaData::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:pb.ResourceMetaData)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .google.protobuf.Timestamp createTime = 1;
+  if (this->has_createtime()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->_internal_createtime(), deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pb.ResourceMetaData)
+  return target;
+}
+
+size_t ResourceMetaData::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pb.ResourceMetaData)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // .google.protobuf.Timestamp createTime = 1;
+  if (this->has_createtime()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *createtime_);
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void ResourceMetaData::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pb.ResourceMetaData)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ResourceMetaData* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ResourceMetaData>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pb.ResourceMetaData)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pb.ResourceMetaData)
+    MergeFrom(*source);
+  }
+}
+
+void ResourceMetaData::MergeFrom(const ResourceMetaData& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pb.ResourceMetaData)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_createtime()) {
+    mutable_createtime()->::google::protobuf::Timestamp::MergeFrom(from.createtime());
+  }
+}
+
+void ResourceMetaData::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pb.ResourceMetaData)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ResourceMetaData::CopyFrom(const ResourceMetaData& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pb.ResourceMetaData)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ResourceMetaData::IsInitialized() const {
+  return true;
+}
+
+void ResourceMetaData::Swap(ResourceMetaData* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ResourceMetaData::InternalSwap(ResourceMetaData* other) {
+  using std::swap;
+  swap(createtime_, other->createtime_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+}
+
+::google::protobuf::Metadata ResourceMetaData::GetMetadata() const {
+  protobuf_eventsequencer_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_eventsequencer_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
 
 // ===================================================================
 
@@ -4681,7 +4956,7 @@ void ChannelData_Span_ChannelsEntry_DoNotUse::MergeFrom(const ChannelData_Span_C
 }
 ::google::protobuf::Metadata ChannelData_Span_ChannelsEntry_DoNotUse::GetMetadata() const {
   ::protobuf_eventsequencer_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_eventsequencer_2eproto::file_level_metadata[15];
+  return ::protobuf_eventsequencer_2eproto::file_level_metadata[16];
 }
 void ChannelData_Span_ChannelsEntry_DoNotUse::MergeFrom(
     const ::google::protobuf::Message& other) {
@@ -6216,7 +6491,7 @@ void Document_ChannelsEntry_DoNotUse::MergeFrom(const Document_ChannelsEntry_DoN
 }
 ::google::protobuf::Metadata Document_ChannelsEntry_DoNotUse::GetMetadata() const {
   ::protobuf_eventsequencer_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_eventsequencer_2eproto::file_level_metadata[19];
+  return ::protobuf_eventsequencer_2eproto::file_level_metadata[20];
 }
 void Document_ChannelsEntry_DoNotUse::MergeFrom(
     const ::google::protobuf::Message& other) {
@@ -7093,6 +7368,9 @@ void File::InternalSwap(File* other) {
 }  // namespace pb
 namespace google {
 namespace protobuf {
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::pb::ResourceMetaData* Arena::CreateMaybeMessage< ::pb::ResourceMetaData >(Arena* arena) {
+  return Arena::CreateInternal< ::pb::ResourceMetaData >(arena);
+}
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::pb::ChannelIndex* Arena::CreateMaybeMessage< ::pb::ChannelIndex >(Arena* arena) {
   return Arena::CreateInternal< ::pb::ChannelIndex >(arena);
 }

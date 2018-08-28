@@ -78,7 +78,8 @@ SOURCES += \
     playable/tone.cpp \
     playable/playablebase.cpp \
     watchforstripsintersectingrange.cpp \
-    managedresourcereport.cpp
+    managedresourcereport.cpp \
+    resourcemetadata.cpp
 
 
 HEADERS += \
@@ -137,7 +138,8 @@ HEADERS += \
     playable/tone.h \
     playable/playablebase.h \
     watchforstripsintersectingrange.h \
-    managedresourcereport.h
+    managedresourcereport.h \
+    resourcemetadata.h
 
 unix {
     target.path = /usr/lib

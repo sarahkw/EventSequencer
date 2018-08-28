@@ -1,6 +1,12 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 package pb;
+
+message ResourceMetaData {
+  google.protobuf.Timestamp createTime = 1;
+}
 
 //message Resource {
 //  oneof reference {
