@@ -50,10 +50,13 @@ GroupBox {
             id: propertiesLoader
             source: {
                 switch (cboxType.currentIndex) {
-                case 1: return "PropertiesStrip.qml"
                 case 3: return "PropertiesDocument.qml"
                 case 4: return "PropertiesFile.qml"
                 case 5: return "PropertiesSession.qml"
+                }
+                if (cboxType.currentIndex === 1 &&
+                        selectedCppStrip !== null) {
+                    return "PropertiesStrip.qml"
                 }
                 return ""
             }
