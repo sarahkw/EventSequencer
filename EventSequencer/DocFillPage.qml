@@ -427,7 +427,7 @@ Page {
                         case 0: return ESPlayable.StripsList.UNSET
                         case 1: return ESPlayable.StripsList.ChannelOnCursor
                         case 2: return ESPlayable.StripsList.ChannelFromCursor
-                        case 3: return ESPlayable.StripsList.UNSET
+                        case 3: return ESPlayable.StripsList.ChannelFromBegin
                         case 4: return ESPlayable.StripsList.UNSET
                         default:
                             console.error("Invalid index", currentIndex)
