@@ -346,7 +346,7 @@ Page {
                             when: btnRangeStart.checked
                             PropertyChanges {
                                 target: btnRangeStart
-                                text: "Range (%1)".arg(Math.abs(cursorFrame - startFrame))
+                                text: "Range (%1)".arg(cursorFrame - startFrame)
                             }
                         }
                     ]
