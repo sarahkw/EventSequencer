@@ -335,6 +335,15 @@ Page {
                             startFrame = cursorFrame
                         }
                     }
+                    states: [
+                        State {
+                            when: btnRangeStart.checked
+                            PropertyChanges {
+                                target: btnRangeStart
+                                text: "Range (%1)".arg(Math.abs(cursorFrame - startFrame))
+                            }
+                        }
+                    ]
                 }
                 Button {
                     Layout.fillWidth: true
@@ -343,15 +352,24 @@ Page {
                              recorderControl.corraledResourceFile.takeable &&
                              btnRangeStart.checked
                     onClicked: {
+
+                        var start
+                        var length
+                        if (btnRangeStart.startFrame < cursorFrame) {
+                            start = btnRangeStart.startFrame
+                            length = cursorFrame - start
+                        } else {
+                            start = cursorFrame
+                            length = btnRangeStart.startFrame - start
+                        }
+
                         var thestrip =
-                                cppResourceChannel.createStrip(btnRangeStart.startFrame,
-                                                               cursorFrame - btnRangeStart.startFrame)
+                                cppResourceChannel.createStrip(start, length)
                         if (thestrip !== null) {
                             var success = recorderControl.corraledResourceFile.possiblyAssignUrlToStrip(thestrip)
                             if (!success) {
                                 // TODO Delete file
                             }
-
                             btnRangeStart.checked = false
                         } else {
                             msgbox.msgbox("Cannot assign")
