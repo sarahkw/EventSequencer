@@ -1,6 +1,6 @@
 #include "concatiodevice.h"
 
-#include "concatiodevicenotifyevent.h"
+#include "concatiodevicecallbackevent.h"
 
 #include <QCoreApplication>
 
@@ -24,7 +24,7 @@ qint64 ConcatIODevice::readData(char *data, qint64 maxlen)
     Child& child = inputs_.front();
     if (!child.called) {
         if (!!child.callback) {
-            QCoreApplication::postEvent(this, new ConcatIODeviceNotifyEvent(child.callback));
+            QCoreApplication::postEvent(this, new ConcatIODeviceCallbackEvent(child.callback));
         }
         child.called = true;
     }
@@ -62,9 +62,9 @@ ConcatIODevice::~ConcatIODevice()
 
 bool ConcatIODevice::event(QEvent *event)
 {
-    if (event->type() == ConcatIODeviceNotifyEvent::s_CustomType) {
-        auto* ciodne = static_cast<ConcatIODeviceNotifyEvent*>(event);
-        ciodne->call();
+    if (event->type() == ConcatIODeviceCallbackEvent::s_CustomType) {
+        auto* ciodce = static_cast<ConcatIODeviceCallbackEvent*>(event);
+        ciodce->call();
         return true;
     }
     return QIODevice::event(event);
