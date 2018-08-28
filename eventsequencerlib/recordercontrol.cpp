@@ -65,18 +65,17 @@ void RecorderControl::record(QUrl url)
         return;
     }
 
-    // TODO MEMORY LEAK MEMORY LEAK MEMORY LEAK MEMORY LEAK MEMORY LEAK MEMORY LEAK MEMORY LEAK MEMORY LEAK MEMORY LEAK MEMORY LEAK MEMORY LEAK MEMORY LEAK
-    auto* emiod = new EndianModifyingIODevice(
+    outputFile_ = new EndianModifyingIODevice(
         of, unsigned(audioFormat.sampleSize() / 8),
         audioFormat.byteOrder() == QAudioFormat::BigEndian
             ? EndianModifyingIODevice::Big
             : EndianModifyingIODevice::Little,
         EndianModifyingIODevice::Big);
 
-    const bool success = emiod->open(QIODevice::WriteOnly);
+    const bool success = outputFile_->open(QIODevice::WriteOnly);
     Q_ASSERT(success); // This can't fail because inferior is already open
 
-    audioInput_->start(emiod);
+    audioInput_->start(outputFile_);
     updateAudioState();
 }
 

@@ -6,7 +6,7 @@
 #include <QUrl>
 
 class QAudioInput;
-class QFile;
+class QIODevice;
 
 class RecorderControl : public AudioControl
 {
@@ -21,7 +21,7 @@ class RecorderControl : public AudioControl
     Q_PROPERTY(bool audioInputReady          READ audioInputReady       NOTIFY audioInputReadyStatusChanged)
     Q_PROPERTY(QString audioInputReadyStatus READ audioInputReadyStatus NOTIFY audioInputReadyStatusChanged)
 
-    QFile* outputFile_ = nullptr;
+    QIODevice* outputFile_ = nullptr;
 
     bool allowOverwrite_ = false;
     Q_PROPERTY(bool allowOverwrite READ allowOverwrite WRITE setAllowOverwrite NOTIFY allowOverwriteChanged)
