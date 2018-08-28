@@ -38,6 +38,32 @@ GroupBox {
                     "File",
                     "Session",
                 ]
+
+                Component {
+                    id: blankComponent
+                    Item { }
+                }
+                onCurrentIndexChanged: {
+                    propertiesLoader.sourceComponent = undefined
+                    switch (currentIndex) {
+                    case 3: propertiesLoader.source = "PropertiesDocument.qml"; return
+                    case 4: propertiesLoader.source = "PropertiesFile.qml"; return
+                    case 5: propertiesLoader.source = "PropertiesSession.qml"; return
+                    }
+                    if (currentIndex === 1 &&
+                            selectedCppStrip !== null) {
+                        propertiesLoader.source = "PropertiesStrip.qml"
+                        return
+                    }
+                    propertiesLoader.source = ""
+                    propertiesLoader.sourceComponent = blankComponent
+                }
+                property var waitForChange: selectedCppStrip
+                onWaitForChangeChanged: {
+                    if (currentIndex == 1) {
+                        onCurrentIndexChanged()
+                    }
+                }
             }
             TextField {
                 visible: cboxType.currentIndex === 2
@@ -45,21 +71,10 @@ GroupBox {
                 implicitWidth: 75
             }
         }
+
         Loader {
             Layout.fillWidth: true
             id: propertiesLoader
-            source: {
-                switch (cboxType.currentIndex) {
-                case 3: return "PropertiesDocument.qml"
-                case 4: return "PropertiesFile.qml"
-                case 5: return "PropertiesSession.qml"
-                }
-                if (cboxType.currentIndex === 1 &&
-                        selectedCppStrip !== null) {
-                    return "PropertiesStrip.qml"
-                }
-                return ""
-            }
         }
         Connections {
             target: propertiesLoader.item
