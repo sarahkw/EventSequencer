@@ -30,7 +30,7 @@ Rectangle {
 
     ES.WordWrappedTextTrack {
         id: wwtt
-        width: lview.width - cmfu.builtFontWidth /*For wrapped space or NewLine*/
+        width: lview.width - lview.leftMargin - cmfu.builtFontWidth /*For wrapped space or NewLine*/
         text: chanToTextContent.outputTextContent != null ? chanToTextContent.outputTextContent : ""
         font: cmfu.builtFont
         cursorFrame: root.cursorFrame
@@ -84,7 +84,6 @@ Rectangle {
     ScrollView {
         id: sview
         anchors.fill: parent
-        anchors.leftMargin: 5
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
         clip: true
 
@@ -96,8 +95,10 @@ Rectangle {
         ListView {
             id: lview
             model: wwtt
+            property int leftMargin: 5 // Margin so you can easily click on the first char. Common use case!
 
             delegate: Item {
+                anchors.leftMargin: lview.leftMargin
                 anchors.left: parent.left
                 anchors.right: parent.right
                 height: cmfu.builtFontHeight
@@ -118,9 +119,13 @@ Rectangle {
                 }
                 MouseArea {
                     anchors.fill: parent
+                    anchors.leftMargin: -lview.leftMargin
                     onClicked: {
-                        var frameInside = Math.floor(mouse.x / cmfu.builtFontWidth)
-                        if (frameInside >= modelData.length) {
+                        
+                        var frameInside = Math.floor((mouse.x - lview.leftMargin) / cmfu.builtFontWidth)
+                        if (frameInside < 0) {
+                            frameInside = 0
+                        } else if (frameInside >= modelData.length) {
                             frameInside = modelData.length - 1
                             if (frameInside < 0) {
                                 frameInside = 0
@@ -145,7 +150,7 @@ Rectangle {
             // The .originX and .originY are required or else sometimes the
             // flickable doesn't start at (0, 0) and we lose the cursor. Thanks,
             // Qt, I guess.
-            x: cpos.x * cmfu.builtFontWidth + lview.originX
+            x: cpos.x * cmfu.builtFontWidth + lview.originX + lview.leftMargin
             y: cpos.y * cmfu.builtFontHeight + lview.originY
             z: 10
             readonly property int blinkDelay: 750
