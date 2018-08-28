@@ -120,6 +120,12 @@ Page {
         selectionMode: cmbSelectionMode.currentSelectionMode()
         selectedChannel: cppResourceChannel
         cursorFrame: rebind_cursorFrame
+
+        onPlayingFrame: {
+            dvc.positionMode = ListView.Center
+            rebind_changeCursorFrame(frameNumber)
+            dvc.resetPositionMode()
+        }
     }
 
     ESPlayable.Tone {

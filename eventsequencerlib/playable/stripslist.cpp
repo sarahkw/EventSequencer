@@ -16,7 +16,15 @@ QIODevice *StripsList::createPlayableDevice(const QAudioFormat& outputFormat)
 {
     std::unique_ptr<ConcatIODevice> playingDevice(new ConcatIODevice);
     for (const Strip* s : stripsToPlay_) {
-        if (!appendUrlToConcatIODevice(*playingDevice, s->resourceUrl(), outputFormat)) {
+
+        auto helper = std::make_shared<StripsListCallback>(s->startFrame());
+        QObject::connect(helper.get(), &StripsListCallback::playingFrame,
+                         this, &StripsList::playingFrame);
+        auto callback = [helper]() {
+            helper->playing();
+        };
+
+        if (!appendUrlToConcatIODevice(*playingDevice, s->resourceUrl(), outputFormat, callback)) {
             return nullptr;
         }
     }

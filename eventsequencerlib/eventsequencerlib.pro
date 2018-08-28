@@ -79,7 +79,8 @@ SOURCES += \
     playable/playablebase.cpp \
     watchforstripsintersectingrange.cpp \
     managedresourcereport.cpp \
-    resourcemetadata.cpp
+    resourcemetadata.cpp \
+    concatiodevicenotifyevent.cpp
 
 
 HEADERS += \
@@ -139,7 +140,8 @@ HEADERS += \
     playable/playablebase.h \
     watchforstripsintersectingrange.h \
     managedresourcereport.h \
-    resourcemetadata.h
+    resourcemetadata.h \
+    concatiodevicenotifyevent.h
 
 unix {
     target.path = /usr/lib

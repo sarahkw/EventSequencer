@@ -3,11 +3,16 @@
 
 #include <QIODevice>
 #include <list>
+#include <functional>
 
 class ConcatIODevice : public QIODevice
 {
-    // We'll take ownership and delete when the device is exhausted.
-    std::list<QIODevice*> inputs_;
+    struct Child {
+        QIODevice* iod;
+        std::function<void()> callback;
+        bool called;
+    };
+    std::list<Child> inputs_;
 
     bool errorCondition_ = false;
 
@@ -18,10 +23,12 @@ protected:
 
 public:
     ConcatIODevice();
-    ConcatIODevice(std::list<QIODevice*>* inputs);
     ~ConcatIODevice() override;
 
-    void append(QIODevice* iod);
+    bool event(QEvent *event) override;
+
+    // We'll take ownership of iod and delete as needed
+    void append(QIODevice* iod, std::function<void()> callback=std::function<void()>());
 };
 
 #endif // CONCATIODEVICE_H

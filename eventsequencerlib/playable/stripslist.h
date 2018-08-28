@@ -10,6 +10,20 @@
 
 namespace playable {
 
+class StripsListCallback : public QObject
+{
+    Q_OBJECT
+    int frameNumber_ = 0;
+public:
+    StripsListCallback(int frameNumber) : frameNumber_(frameNumber) { }
+    void playing()
+    {
+        emit playingFrame(frameNumber_);
+    }
+signals:
+    void playingFrame(int frameNumber);
+};
+
 class StripsList : public PlayableBase
 {
     Q_OBJECT
@@ -71,6 +85,8 @@ signals:
     void cursorFrameChanged();
 
     void currentStripsReportChanged();
+
+    void playingFrame(int frameNumber);
 
 public slots:
 };

@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QUrl>
 
+#include <functional>
+
 class QIODevice;
 class QAudioFormat;
 class ConcatIODevice;
@@ -37,7 +39,8 @@ public:
 protected:
     // Return false on error, setting errorMessage().
     bool appendUrlToConcatIODevice(ConcatIODevice& ciod, QUrl url,
-                                   const QAudioFormat& outputFormat);
+                                   const QAudioFormat& outputFormat,
+                                   std::function<void()> callback=std::function<void()>());
 
 signals:
 

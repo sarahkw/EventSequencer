@@ -1,5 +1,8 @@
 #include "concatiodevice.h"
 
+#include "concatiodevicenotifyevent.h"
+
+#include <QCoreApplication>
 
 qint64 ConcatIODevice::readData(char *data, qint64 maxlen)
 {
@@ -18,11 +21,17 @@ qint64 ConcatIODevice::readData(char *data, qint64 maxlen)
     //      to return the amount of data that was asked
     //      for. Currently, we don't do the same in the case where we
     //      exhaust a stream and are waiting for the next one.
-    QIODevice* front = inputs_.front();
-    qint64 bytesRead = front->read(data, maxlen);
+    Child& child = inputs_.front();
+    if (!child.called) {
+        if (!!child.callback) {
+            QCoreApplication::postEvent(this, new ConcatIODeviceNotifyEvent(child.callback));
+        }
+        child.called = true;
+    }
+    qint64 bytesRead = child.iod->read(data, maxlen);
     if (bytesRead == 0) {
-        front->close(); // "If you are in doubt, call close() before destroying the QIODevice."
-        delete front;
+        child.iod->close(); // "If you are in doubt, call close() before destroying the QIODevice."
+        delete child.iod;
         inputs_.pop_front();
         return readData(data, maxlen);
     } else if (bytesRead == -1) {
@@ -44,19 +53,24 @@ ConcatIODevice::ConcatIODevice()
 {
 }
 
-ConcatIODevice::ConcatIODevice(std::list<QIODevice *> *inputs)
-{
-    inputs_.swap(*inputs);
-}
-
 ConcatIODevice::~ConcatIODevice()
 {
-    for (QIODevice* iod : inputs_) {
-        delete iod;
+    for (Child& child : inputs_) {
+        delete child.iod;
     }
 }
 
-void ConcatIODevice::append(QIODevice *iod)
+bool ConcatIODevice::event(QEvent *event)
 {
-    inputs_.push_back(iod);
+    if (event->type() == ConcatIODeviceNotifyEvent::s_CustomType) {
+        auto* ciodne = static_cast<ConcatIODeviceNotifyEvent*>(event);
+        ciodne->call();
+        return true;
+    }
+    return QIODevice::event(event);
+}
+
+void ConcatIODevice::append(QIODevice *iod, std::function<void ()> callback)
+{
+    inputs_.push_back({iod, callback, false});
 }

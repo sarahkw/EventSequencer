@@ -41,7 +41,8 @@ void PlayableBase::setFileResourceDirectory(const QString &fileResourceDirectory
 
 bool PlayableBase::appendUrlToConcatIODevice(ConcatIODevice& playingDevice,
                                              QUrl url,
-                                             const QAudioFormat& outputFormat)
+                                             const QAudioFormat& outputFormat,
+                                             std::function<void()> callback)
 {
     setError("");
 
@@ -76,7 +77,7 @@ bool PlayableBase::appendUrlToConcatIODevice(ConcatIODevice& playingDevice,
     const bool success = emiod->open(QIODevice::ReadOnly);
     Q_ASSERT(success); // This can't fail because inferior is already open
 
-    playingDevice.append(emiod);
+    playingDevice.append(emiod, callback);
     return true;
 }
 

@@ -12,12 +12,13 @@ TEST(ConcatIODevice, Simple)
     QByteArray world = QString("World").toUtf8();
 
     std::list<QIODevice*> inputs{new QBuffer(&hello), new QBuffer(&world)};
+    ConcatIODevice ciod;
 
     for (QIODevice* iod : inputs) {
         iod->open(QIODevice::ReadOnly);
+        ciod.append(iod);
     }
 
-    ConcatIODevice ciod(&inputs);
     ciod.open(QIODevice::ReadOnly);
 
     QString str(ciod.readAll());
@@ -32,12 +33,13 @@ TEST(ConcatIODevice, Long)
     QByteArray zeroes(CHUNK_SIZE, '0');
 
     std::list<QIODevice*> inputs{new QBuffer(&ones), new QBuffer(&zeroes)};
+    ConcatIODevice ciod;
 
     for (QIODevice* iod : inputs) {
         iod->open(QIODevice::ReadOnly);
+        ciod.append(iod);
     }
 
-    ConcatIODevice ciod(&inputs);
     ciod.open(QIODevice::ReadOnly);
 
     QByteArray result = ciod.readAll();
@@ -59,12 +61,13 @@ TEST(ConcatIODevice, IsPeekOkay)
     QByteArray world = QString("World").toUtf8();
 
     std::list<QIODevice*> inputs{new QBuffer(&hello), new QBuffer(&world)};
+    ConcatIODevice ciod;
 
     for (QIODevice* iod : inputs) {
         iod->open(QIODevice::ReadOnly);
+        ciod.append(iod);
     }
 
-    ConcatIODevice ciod(&inputs);
     ciod.open(QIODevice::ReadOnly);
 
     {

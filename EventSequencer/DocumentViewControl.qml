@@ -13,6 +13,11 @@ Rectangle {
     property var cppTextChannel
     property var cppRenderChannel
 
+    property int positionMode: ListView.Visible
+    function resetPositionMode() {
+        positionMode = ListView.Visible
+    }
+
     property bool textChannelIsValid: chanToTextContent.outputTextContent !== null
     property bool renderChannelIsValid: chanToRenderComponent.outputRenderComponent != null
 
@@ -158,7 +163,7 @@ Rectangle {
             }
 
             function makeVisible() {
-                lview.positionViewAtIndex(cpos.y, ListView.Visible)
+                lview.positionViewAtIndex(cpos.y, root.positionMode)
             }
         }
     }
