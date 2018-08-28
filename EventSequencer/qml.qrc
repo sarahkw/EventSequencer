@@ -46,5 +46,6 @@
         <file>PropertiesDocument.qml</file>
         <file>PropertiesFile.qml</file>
         <file>PropertiesSession.qml</file>
+        <file>PropertiesStrip.qml</file>
     </qresource>
 </RCC>

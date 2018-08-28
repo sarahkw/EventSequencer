@@ -2,6 +2,8 @@ import QtQuick 2.0
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
+import "Control/" as Ctrl
+
 GroupBox {
     id: root
     anchors.left: parent.left
@@ -13,6 +15,11 @@ GroupBox {
     ColumnLayout {
         anchors.left: parent.left
         anchors.right: parent.right
+
+        Ctrl.Resolver {
+            id: controlResolver
+        }
+
         Text {
             Layout.fillWidth: true
             wrapMode: Text.Wrap
@@ -43,6 +50,7 @@ GroupBox {
             id: propertiesLoader
             source: {
                 switch (cboxType.currentIndex) {
+                case 1: return "PropertiesStrip.qml"
                 case 3: return "PropertiesDocument.qml"
                 case 4: return "PropertiesFile.qml"
                 case 5: return "PropertiesSession.qml"

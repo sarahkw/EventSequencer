@@ -782,6 +782,7 @@ Page {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             source: chkDeveloperOptions.checked ? "DocFillDeveloperOptions.qml" : ""
+                            property alias selectedCppStrip: stripsHolderItem.selectedStrip
                         }
                         Connections {
                             target: devOptionsLoader.item
