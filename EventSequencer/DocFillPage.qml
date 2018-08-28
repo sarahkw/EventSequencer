@@ -667,6 +667,19 @@ Page {
                                         length: stripsBody.charactersToShow
                                     }
                                     Item {
+                                        id: stripsHolderItem
+
+                                        property QtObject selectedStrip: null
+                                        Connections {
+                                            target: wfsir
+                                            onStripsChanged: {
+                                                if (stripsHolderItem.selectedStrip !== null &&
+                                                        !wfsir.isStripInView(stripsHolderItem.selectedStrip)) {
+                                                    stripsHolderItem.selectedStrip = null
+                                                }
+                                            }
+                                        }
+
                                         Repeater {
                                             model: wfsir.strips
                                             Button {
@@ -679,6 +692,14 @@ Page {
                                                 Component.onCompleted: {
                                                     background.border.width = 1
                                                     background.border.color = "black"
+                                                }
+                                                checked: stripsHolderItem.selectedStrip === modelData
+                                                onToggled: {
+                                                    if (checked) {
+                                                        stripsHolderItem.selectedStrip = modelData
+                                                    } else {
+                                                        stripsHolderItem.selectedStrip = null
+                                                    }
                                                 }
                                             }
                                         }

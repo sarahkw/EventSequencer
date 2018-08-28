@@ -38,6 +38,8 @@ public:
 
     QVariantList strips() const;
 
+    Q_INVOKABLE bool isStripInView(Strip* s) const;
+
 signals:
 
     void channelChanged();

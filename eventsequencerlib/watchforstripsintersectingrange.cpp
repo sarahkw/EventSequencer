@@ -65,6 +65,19 @@ QVariantList WatchForStripsIntersectingRange::strips() const
     return strips_;
 }
 
+bool WatchForStripsIntersectingRange::isStripInView(Strip *s) const
+{
+    for (const QVariant& v : strips_) {
+        Strip* foo = v.value<Strip*>();
+        if (foo != nullptr) {
+            if (foo == s) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void WatchForStripsIntersectingRange::updateStrips()
 {
     // XXX This sucks but I have to ship.
