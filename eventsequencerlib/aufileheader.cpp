@@ -208,7 +208,7 @@ bool AuFileHeader::loadFileAndSeek(QIODevice &device, std::string* annotation)
     if (annotation != nullptr && seekTo > AU_MIN_DATA_OFFSET) {
         if (!AnnotationHeader::readFromFile(
                     device, seekTo - AU_MIN_DATA_OFFSET, annotation)) {
-            qWarning("Unable to process annotation; ignoring.");
+            qDebug("Unable to process annotation; ignoring.");
         }
     }
 
