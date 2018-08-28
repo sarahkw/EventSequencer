@@ -39,6 +39,14 @@ void StripsList::updateCurrentStrips()
     }
     stripsToPlay_.clear();
 
+    const auto lowerBoundOnCursor = [this](std::vector<Strip*>& strips) {
+        return
+            std::lower_bound(strips.begin(), strips.end(),
+                             cursorFrame_, [](Strip* a, int b) {
+                                 return a->startFrame() + a->length() <= b;
+                             });
+    };
+
     const auto takeStrip = [this, &sl](Strip* s) {
         QObject::connect(s, &Strip::resourceUrlChanged,
                          this, &StripsList::updateCurrentStrips);
@@ -64,9 +72,7 @@ void StripsList::updateCurrentStrips()
     case SelectionMode::ChannelFromCursor:
         if (selectedChannel_ != nullptr) {
             auto strips = selectedChannel_->strips();
-            for (auto iter = std::lower_bound(
-                     strips.begin(), strips.end(), cursorFrame_,
-                     [](Strip* a, int b) { return a->startFrame() < b; });
+            for (auto iter = lowerBoundOnCursor(strips);
                  iter != strips.end(); ++iter) {
                 takeStrip(*iter);
             }
@@ -75,13 +81,8 @@ void StripsList::updateCurrentStrips()
     case SelectionMode::ChannelOnCursor:
         if (selectedChannel_ != nullptr) {
             auto strips = selectedChannel_->strips();
-            auto iter =
-                std::lower_bound(strips.begin(), strips.end(),
-                                 cursorFrame_, [](Strip* a, int b) {
-                                     return a->startFrame() + a->length() <= b;
-                                 });
-            if (iter != strips.end() &&
-                (*iter)->startFrame() <= cursorFrame_) {
+            auto iter = lowerBoundOnCursor(strips);
+            if (iter != strips.end() && (*iter)->startFrame() <= cursorFrame_) {
                 takeStrip(*iter);
             }
         }
