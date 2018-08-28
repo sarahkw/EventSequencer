@@ -10,12 +10,15 @@
 
 namespace playable {
 
-class StripsListCallback : public QObject
+// Use signals/slots to let ConcatIODevice let us know when frames are
+// being played. The auto-disconnect feature will prevent calls after
+// destruction.
+class StripsListCallbackHelper : public QObject
 {
     Q_OBJECT
     int frameNumber_ = 0;
 public:
-    StripsListCallback(int frameNumber) : frameNumber_(frameNumber) { }
+    StripsListCallbackHelper(int frameNumber) : frameNumber_(frameNumber) { }
     void playing()
     {
         emit playingFrame(frameNumber_);
