@@ -712,6 +712,7 @@ Page {
                             Button {
                                 Layout.fillWidth: true
                                 text: "Delete..."
+                                enabled: stripsHolderItem.selectedStrip !== null
                             }
                             Button {
                                 id: goButton
