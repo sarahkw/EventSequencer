@@ -60,15 +60,10 @@ bool PlayableBase::appendUrlToConcatIODevice(ConcatIODevice& playingDevice,
     }
 
     AuFileHeader afh;
-    std::string annotation;
-    if (!afh.loadFileAndSeek(*muhFile, &annotation)) {
+    if (!afh.loadFileAndSeek(*muhFile)) {
         // TODO Compare the format
         setError("Cannot load AU file and seek");
         return false;
-    }
-    if (!annotation.empty()) {
-        // TODO Remove this trace
-        qWarning("Annotation %s", annotation.data());
     }
 
     auto* emiod = new EndianModifyingIODevice(
