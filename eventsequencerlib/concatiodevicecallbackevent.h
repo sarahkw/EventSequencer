@@ -4,6 +4,8 @@
 #include <QEvent>
 #include <functional>
 
+// This will be on the event loop to avoid possibly long operations on
+// the hot path.
 class ConcatIODeviceCallbackEvent : public QEvent
 {
     std::function<void()> callback_;
