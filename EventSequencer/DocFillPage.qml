@@ -328,7 +328,7 @@ Page {
                     property int startFrame
 
                     Layout.fillWidth: true
-                    text: "Set Range Start"
+                    text: "Range"
                     checkable: true
                     onCheckedChanged: {
                         if (checked) {
