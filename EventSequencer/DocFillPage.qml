@@ -733,60 +733,64 @@ Page {
                 Item { }
 
                 // Settings
-                ScrollView {
-                    contentWidth: width // Column will have some width it wants to be. Ignore it.
-                    Column {
-                        anchors.top: parent.top
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.topMargin: 15
-                        anchors.leftMargin: 15
-                        anchors.rightMargin: 15
-                        spacing: 15
-
-                        GroupBox {
+                Item {
+                    ScrollView {
+                        anchors.fill: parent
+                        anchors.bottomMargin: 15 // TODO HACK: I don't know why this is necessary else bottom gets cut.
+                        contentWidth: width // Column will have some width it wants to be. Ignore it.
+                        Column {
+                            anchors.top: parent.top
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            title: "Application"
-                            GridLayout {
+                            anchors.topMargin: 15
+                            anchors.leftMargin: 15
+                            anchors.rightMargin: 15
+                            spacing: 15
+
+                            GroupBox {
                                 anchors.left: parent.left
                                 anchors.right: parent.right
-                                columns: 2
+                                title: "Application"
+                                GridLayout {
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    columns: 2
 
-                                CheckBox {
-                                    Layout.fillWidth: true
-                                    Layout.columnSpan: 2
-                                    text: "Automatically play review after record"
-                                }
-                                CheckBox {
-                                    Layout.fillWidth: true
-                                    Layout.columnSpan: 2
-                                    text: "Automatically set range start on record"
-                                }
-                                CheckBox {
-                                    Layout.fillWidth: true
-                                    Layout.columnSpan: 2
-                                    text: "Play tone before record"
-                                }
-                                CheckBox {
-                                    id: chkDeveloperOptions
-                                    Layout.fillWidth: true
-                                    Layout.columnSpan: 2
-                                    text: "Enable developer options"
+                                    CheckBox {
+                                        Layout.fillWidth: true
+                                        Layout.columnSpan: 2
+                                        text: "Automatically play review after record"
+                                    }
+                                    CheckBox {
+                                        Layout.fillWidth: true
+                                        Layout.columnSpan: 2
+                                        text: "Automatically set range start on record"
+                                    }
+                                    CheckBox {
+                                        Layout.fillWidth: true
+                                        Layout.columnSpan: 2
+                                        text: "Play tone before record"
+                                    }
+                                    CheckBox {
+                                        id: chkDeveloperOptions
+                                        Layout.fillWidth: true
+                                        Layout.columnSpan: 2
+                                        text: "Enable developer options"
+                                    }
                                 }
                             }
-                        }
 
-                        Loader {
-                            id: devOptionsLoader
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            source: chkDeveloperOptions.checked ? "DocFillDeveloperOptions.qml" : ""
-                            property alias selectedCppStrip: stripsHolderItem.selectedStrip
-                        }
-                        Connections {
-                            target: devOptionsLoader.item
-                            onMsgbox: msgbox.msgbox(message)
+                            Loader {
+                                id: devOptionsLoader
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                source: chkDeveloperOptions.checked ? "DocFillDeveloperOptions.qml" : ""
+                                property alias selectedCppStrip: stripsHolderItem.selectedStrip
+                            }
+                            Connections {
+                                target: devOptionsLoader.item
+                                onMsgbox: msgbox.msgbox(message)
+                            }
                         }
                     }
                 }
