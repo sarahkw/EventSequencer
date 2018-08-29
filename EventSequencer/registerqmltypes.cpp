@@ -26,6 +26,7 @@
 #include "playable/singleurl.h"
 #include "playable/tone.h"
 #include "watchforstripsintersectingrange.h"
+#include "docfillsettings.h"
 
 #include <QQmlEngine>
 
@@ -65,4 +66,5 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<playable::SingleUrl>("eventsequencer.playable", 1, 0, "SingleUrl");
     qmlRegisterType<playable::Tone>("eventsequencer.playable", 1, 0, "Tone");
     qmlRegisterType<WatchForStripsIntersectingRange>("eventsequencer", 1, 0, "WatchForStripsIntersectingRange");
+    qmlRegisterType<DocFillSettings>("eventsequencer", 1, 0, "DocFillSettings");
 }

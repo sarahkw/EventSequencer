@@ -80,7 +80,8 @@ SOURCES += \
     watchforstripsintersectingrange.cpp \
     managedresourcereport.cpp \
     resourcemetadata.cpp \
-    concatiodevicecallbackevent.cpp
+    concatiodevicecallbackevent.cpp \
+    docfillsettings.cpp
 
 
 HEADERS += \
@@ -141,7 +142,8 @@ HEADERS += \
     watchforstripsintersectingrange.h \
     managedresourcereport.h \
     resourcemetadata.h \
-    concatiodevicecallbackevent.h
+    concatiodevicecallbackevent.h \
+    docfillsettings.h
 
 unix {
     target.path = /usr/lib
