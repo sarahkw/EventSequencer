@@ -82,7 +82,8 @@ SOURCES += \
     resourcemetadata.cpp \
     concatiodevicecallbackevent.cpp \
     docfillsettings.cpp \
-    documentmanager.cpp
+    documentmanager.cpp \
+    qmlobjectdestroyednotifier.cpp
 
 
 HEADERS += \
@@ -145,7 +146,8 @@ HEADERS += \
     resourcemetadata.h \
     concatiodevicecallbackevent.h \
     docfillsettings.h \
-    documentmanager.h
+    documentmanager.h \
+    qmlobjectdestroyednotifier.h
 
 unix {
     target.path = /usr/lib

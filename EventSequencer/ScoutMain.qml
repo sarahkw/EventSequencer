@@ -59,11 +59,23 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
             property var changeCursorFrame // Fn
             // Pass to DocFillPage End
 
+            id: docFillComponentItem
+
             function closeFn() {
                 stackView.pop()
-                document.reset()
-                root.cursorFrame = 0
             }
+
+            Component.onCompleted: qodn.target = docFillComponentItem
+        }
+    }
+
+    // Don't reset document until the item is actually gone, because otherwise,
+    // we're swiping the rug from beneath it and it starts writing errors.
+    ES.QmlObjectDestroyedNotifier {
+        id: qodn
+        onTargetDestroyed: {
+            document.reset()
+            root.cursorFrame = 0
         }
     }
 
