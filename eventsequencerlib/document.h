@@ -145,6 +145,7 @@ public:
     Q_INVOKABLE void reset();
     Q_INVOKABLE QVariantList save(const QUrl& url);
     Q_INVOKABLE QVariantList load(const QUrl& url);
+    Q_INVOKABLE QVariantList loadFilePath(const QString& filePath);
     Q_INVOKABLE void dumpProtobuf() const;
 
     QAbstractListModel* channelsModel();
@@ -168,7 +169,7 @@ public:
     // QVariantList for use as QML model.
     QVariantList channelsProvidingClock() const;
 
-    Q_INVOKABLE QVariantList channelsProvidingProgram() const;
+    Q_INVOKABLE channel::ChannelBase* defaultProgramChannel() const;
 
     bool audioFormatHolderSet() const;
     void setAudioFormatHolderSet(bool audioFormatHolderSet);

@@ -2,7 +2,6 @@ import QtQuick 2.0
 import QtQuick.Window 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.2
-import QtQuick.Dialogs 1.2
 
 import eventsequencer 1.0 as ES
 
@@ -31,13 +30,6 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
     title: "EvSeq Scout"
 
     property int cursorFrame: 0
-
-    Component.onCompleted: {
-        if (commandLine.file !== undefined) {
-            txtOpenUrl.text = commandLine.file
-            commandLine.file = undefined // Good for one use
-        }
-    }
 
     ES.DocFillSettings {
         id: applicationSettings
@@ -68,6 +60,7 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
             // Pass to DocFillPage End
 
             function closeFn() {
+                document.reset()
                 stackView.pop()
             }
         }
@@ -102,63 +95,32 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                 model: documentManager.items
                 Button {
                     text: modelData.displayName
-                    onClicked: print(modelData.filePath)
-                }
-            }
+                    onClicked: {
+                        txtErrorMessage.visible = false
 
-            ColumnLayout {
-                Layout.fillWidth: true
-                TextField {
-                    Layout.fillWidth: true
-                    id: txtOpenUrl
-                    enabled: !btnLoad.checked
-                }
-                RowLayout {
-                    Layout.fillWidth: true
-                    Button {
-                        Layout.fillWidth: true
-                        text: "Browse"
-                        onClicked: browseDialog.open()
-                        FileDialog {
-                            id: browseDialog
-                            nameFilters: ["Event sequencer files (*.evseq)", "All files (*)"]
-                            defaultSuffix: "evseq"
-                            onAccepted: txtOpenUrl.text = fileUrl
-                            Component.onCompleted: {
-                                if (Qt.platform.os == "android") {
-                                    folder = "file:///sdcard"
-                                }
-                            }
+                        var result = document.loadFilePath(modelData.filePath)
+                        var success = result[0]
+                        if (!success) {
+                            var errmsg = result[1]
+                            txtErrorMessage.text = errmsg
+                            txtErrorMessage.visible = true
+                            return
                         }
-                        enabled: !btnLoad.checked
-                    }
-                    Button {
-                        Layout.fillWidth: true
-                        text: "Recent"
-                        enabled: !btnLoad.checked
-                    }
-                    Button {
-                        Layout.fillWidth: true
-                        id: btnLoad
-                        checkable: true
-                        text: "Load"
-                        onToggled: {
-                            txtErrorMessage.visible = false
-                            if (checked) {
-                                var result = document.load(txtOpenUrl.text)
-                                var success = result[0]
-                                if (success) {
-                                    lvForModel.model = document.channelsProvidingProgram()
-                                } else {
-                                    var errmsg = result[1]
-                                    txtErrorMessage.text = errmsg
-                                    txtErrorMessage.visible = true
-                                }
-                            } else {
-                                lvForModel.model = null
-                                document.reset()
-                            }
+
+                        var programChannel = document.defaultProgramChannel()
+                        if (programChannel === null) {
+                            txtErrorMessage.text = "Program not found on index 0"
+                            txtErrorMessage.visible = true
+                            return
                         }
+
+                        stackView.push(docFillComponent, {
+                            cppChannel: programChannel,
+                            session: session,
+                            document: document,
+                            cursorFrame: Qt.binding(function () { return root.cursorFrame }),
+                            changeCursorFrame: function (newFrame) { root.cursorFrame = newFrame }
+                        })
                     }
                 }
             }
@@ -172,44 +134,6 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.Wrap
                 visible: false
-            }
-
-            ColumnLayout {
-                id: unnamedParent_6834
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                spacing: unnamedParent_7d06 / 40
-
-                Text {
-                    Layout.fillWidth: true
-                    text: "Programs"
-                    font.family: "Courier"
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pointSize: 12
-                }
-                ScrollView {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    ListView {
-                        id: lvForModel
-                        clip: true
-                        spacing: 5
-
-                        delegate: Button {
-                            text: modelData + ""
-                            width: unnamedParent_6834.width
-                            onClicked: {
-                                stackView.push(docFillComponent, {
-                                    cppChannel: modelData,
-                                    session: session,
-                                    document: document,
-                                    cursorFrame: Qt.binding(function () { return root.cursorFrame }),
-                                    changeCursorFrame: function (newFrame) { root.cursorFrame = newFrame }
-                                })
-                            }
-                        }
-                    }
-                }
             }
         }
     }

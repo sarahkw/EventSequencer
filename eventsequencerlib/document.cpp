@@ -153,15 +153,15 @@ QVariantList Document::channelsProvidingClock() const
     return ret;
 }
 
-QVariantList Document::channelsProvidingProgram() const
+channel::ChannelBase* Document::defaultProgramChannel() const
 {
-    QVariantList ret;
-    for (auto& pair : channels_) {
-        if (pair.second->channelType() == channel::ChannelType::DocFill) {
-            ret.push_back(QVariant::fromValue(pair.second));
-        }
+    auto iter = channels_.find(ChannelIndex::make1(0));
+    if (iter != channels_.end() &&
+            iter->second->channelType() == channel::ChannelType::DocFill) {
+        Q_ASSERT(iter->second->parent() != nullptr); // No GC, please.
+        return iter->second;
     }
-    return ret;
+    return nullptr;
 }
 
 bool Document::audioFormatHolderSet() const
@@ -728,6 +728,11 @@ QVariantList Document::load(const QUrl &url)
 
     setCurrentUrl(url);
     return {true};
+}
+
+QVariantList Document::loadFilePath(const QString &filePath)
+{
+    return load(QUrl::fromLocalFile(filePath));
 }
 
 void Document::dumpProtobuf() const
