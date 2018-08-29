@@ -129,7 +129,7 @@ void Strip::setAudio(stripext::AudioStripExt *audio)
     }
 }
 
-stripext::AudioStripExt *Strip::mutableAudio()
+stripext::AudioStripExt* Strip::mutableAudio()
 {
     if (audio() == nullptr) {
         setAudio(new stripext::AudioStripExt(this));
@@ -150,7 +150,7 @@ void Strip::setText(stripext::TextStripExt *text)
     }
 }
 
-stripext::TextStripExt *Strip::mutableText()
+stripext::TextStripExt* Strip::mutableText()
 {
     if (text() == nullptr) {
         setText(new stripext::TextStripExt(this));
@@ -171,7 +171,7 @@ void Strip::setLabel(stripext::LabelStripExt *label)
     }
 }
 
-stripext::LabelStripExt *Strip::mutableLabel()
+stripext::LabelStripExt* Strip::mutableLabel()
 {
     if (label() == nullptr) {
         setLabel(new stripext::LabelStripExt(this));
@@ -192,7 +192,7 @@ void Strip::setPlaylist(stripext::PlaylistStripExt *playlist)
     }
 }
 
-stripext::PlaylistStripExt *Strip::mutablePlaylist()
+stripext::PlaylistStripExt* Strip::mutablePlaylist()
 {
     if (playlist() == nullptr) {
         setPlaylist(new stripext::PlaylistStripExt(this));

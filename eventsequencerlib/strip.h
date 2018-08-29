@@ -82,7 +82,7 @@ public:
 
     stripext::AudioStripExt *audio() const;
     void setAudio(stripext::AudioStripExt *audio);
-    Q_INVOKABLE stripext::AudioStripExt *mutableAudio();
+    Q_INVOKABLE stripext::AudioStripExt* mutableAudio();
 
     stripext::TextStripExt *text() const;
     void setText(stripext::TextStripExt *text);
@@ -94,7 +94,7 @@ public:
 
     stripext::PlaylistStripExt *playlist() const;
     void setPlaylist(stripext::PlaylistStripExt *playlist);
-    Q_INVOKABLE stripext::PlaylistStripExt *mutablePlaylist();
+    Q_INVOKABLE stripext::PlaylistStripExt* mutablePlaylist();
 
 signals:
 
