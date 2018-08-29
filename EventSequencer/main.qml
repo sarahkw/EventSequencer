@@ -1095,30 +1095,10 @@ ApplicationWindow {
                             font.pixelSize: 16
                             font.bold: true
                         }
-                        Loader {
-                            id: channelPropsLoader
+                        PropertiesChannel {
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            property var sourceCppChannel: channelPanel.activeCppChannel
-                            property var cppChannel
-                            onSourceCppChannelChanged: {
-                                var needBlank = true
-                                sourceComponent = null
-                                cppChannel = null
-                                if (sourceCppChannel !== null) {
-                                    var control = controlResolver.resolve(sourceCppChannel.channelType)
-                                    if (control !== null) {
-                                        if (control.channelPropertiesComponent !== undefined) {
-                                            cppChannel = sourceCppChannel
-                                            sourceComponent = control.channelPropertiesComponent
-                                            needBlank = false
-                                        }
-                                    }
-                                }
-                                if (needBlank) {
-                                    sourceComponent = blankComponent
-                                }
-                            }
+                            sourceCppChannel: channelPanel.activeCppChannel
                         }
                     } // channel properties
 
