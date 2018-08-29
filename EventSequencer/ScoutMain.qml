@@ -27,7 +27,7 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
     width: widthAndHeight[0]
     height: widthAndHeight[1]
 
-    title: "EvSeq Scout"
+    title: "DocFill"
 
     property int cursorFrame: 0
 
@@ -104,40 +104,6 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                 font.pointSize: 18
             }
 
-            Repeater {
-                model: documentManager.items
-                Button {
-                    text: modelData.displayName
-                    onClicked: {
-                        txtErrorMessage.visible = false
-
-                        var result = document.loadFilePath(modelData.filePath)
-                        var success = result[0]
-                        if (!success) {
-                            var errmsg = result[1]
-                            txtErrorMessage.text = errmsg
-                            txtErrorMessage.visible = true
-                            return
-                        }
-
-                        var programChannel = document.defaultProgramChannel()
-                        if (programChannel === null) {
-                            txtErrorMessage.text = "Program not found on index 0"
-                            txtErrorMessage.visible = true
-                            return
-                        }
-
-                        stackView.push(docFillComponent, {
-                            cppChannel: programChannel,
-                            session: session,
-                            document: document,
-                            cursorFrame: Qt.binding(function () { return root.cursorFrame }),
-                            changeCursorFrame: function (newFrame) { root.cursorFrame = newFrame }
-                        })
-                    }
-                }
-            }
-
             Text {
                 id: txtErrorMessage
                 Layout.fillWidth: true
@@ -147,6 +113,48 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.Wrap
                 visible: false
+            }
+
+            ScrollView {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                clip: true
+                Column {
+                    spacing: 5
+                    Repeater {
+                        model: documentManager.items
+                        Button {
+                            text: modelData.displayName
+                            onClicked: {
+                                txtErrorMessage.visible = false
+
+                                var result = document.loadFilePath(modelData.filePath)
+                                var success = result[0]
+                                if (!success) {
+                                    var errmsg = result[1]
+                                    txtErrorMessage.text = errmsg
+                                    txtErrorMessage.visible = true
+                                    return
+                                }
+
+                                var programChannel = document.defaultProgramChannel()
+                                if (programChannel === null) {
+                                    txtErrorMessage.text = "Program not found on index 0"
+                                    txtErrorMessage.visible = true
+                                    return
+                                }
+
+                                stackView.push(docFillComponent, {
+                                                   cppChannel: programChannel,
+                                                   session: session,
+                                                   document: document,
+                                                   cursorFrame: Qt.binding(function () { return root.cursorFrame }),
+                                                   changeCursorFrame: function (newFrame) { root.cursorFrame = newFrame }
+                                               })
+                            }
+                        }
+                    }
+                }
             }
         }
     }
