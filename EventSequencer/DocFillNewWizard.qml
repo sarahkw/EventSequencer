@@ -13,7 +13,7 @@ Rectangle {
             Label {
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignHCenter
-                font.pointSize: 14
+                font.pointSize: 12
                 text: "New Document"
             }
             Button {

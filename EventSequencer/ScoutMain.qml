@@ -140,6 +140,11 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                             onClicked: stackView.push(newDocumentComponent)
                         }
                         RoundButton {
+                            text: "Tutorial"
+                            radius: 5
+                            Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
+                        }
+                        RoundButton {
                             text: "Settings"
                             radius: 5
                             Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
