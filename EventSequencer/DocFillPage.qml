@@ -728,9 +728,45 @@ Page {
                     }
                 }
 
+                // Storage
                 Item { }
 
-                Item { }
+                // Export
+                ScrollView {
+                    contentWidth: width
+                    Column {
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.topMargin: 15
+                        anchors.leftMargin: 15
+                        anchors.rightMargin: 15
+                        spacing: 15
+                        GroupBox {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            title: "Export JSON"
+                            Label {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                wrapMode: Text.Wrap
+                                text: "Write a JSON file that lists the parts of the document along with the assigned audio file."
+                            }
+                        }
+
+                        GroupBox {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            title: "Play to File"
+                            Label {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                wrapMode: Text.Wrap
+                                text: "Write an audio file that concatenates audio files for the selected strips."
+                            }
+                        }
+                    }
+                }
 
                 // Settings
                 Item {
