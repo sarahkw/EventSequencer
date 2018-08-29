@@ -23,7 +23,7 @@ GroupBox {
             id: controlResolver
         }
 
-        property ES.WaitFor waitForChannel: document.waitForChannelIndex(ES.ChannelIndexFactory.makeFromPathString(txtChannelPathString.myChannelString))
+        property ES.WaitFor waitForChannel: document.waitForChannelIndex(txtChannelPathString.myChannelIndex)
 
         Text {
             Layout.fillWidth: true
@@ -77,11 +77,28 @@ GroupBox {
                 inputMethodHints: Qt.ImhDigitsOnly
                 implicitWidth: 75
                 selectByMouse: true
-                text: "0"
+                property var myChannelIndex: ES.ChannelIndexFactory.make1(0)
+                text: myChannelIndex.toPathString()
                 property string myChannelString: ""
                 onEditingFinished: {
-                    myChannelString = text
+                    var result = ES.ChannelIndexFactory.makeFromPathString(text)
+                    if (result !== undefined) {
+                        myChannelIndex = result
+                    } else {
+                        myChannelIndex = ES.ChannelIndexFactory.make1(0)
+                    }
                     focus = false
+                }
+            }
+        }
+
+        Label {
+            visible: cboxType.currentIndex === 2 && text != ""
+            text: {
+                if (clayout.waitForChannel.result !== null) {
+                    return clayout.waitForChannel.result + ""
+                } else {
+                    return ""
                 }
             }
         }
