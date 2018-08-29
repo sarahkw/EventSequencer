@@ -138,6 +138,7 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                             text: "Quit"
                             radius: 5
                             Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
+                            onClicked: Qt.quit()
                         }
                     }
                 }
