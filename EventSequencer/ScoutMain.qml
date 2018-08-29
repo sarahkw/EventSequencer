@@ -115,41 +115,73 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                 visible: false
             }
 
-            ScrollView {
+            RowLayout {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                clip: true
-                ListView {
-                    model: documentManager.items
-                    spacing: 5
-                    delegate: Button {
-                        text: modelData.displayName
-                        onClicked: {
-                            txtErrorMessage.visible = false
 
-                            var result = document.loadFilePath(modelData.filePath)
-                            var success = result[0]
-                            if (!success) {
-                                var errmsg = result[1]
-                                txtErrorMessage.text = errmsg
-                                txtErrorMessage.visible = true
-                                return
+                ScrollView {
+                    Layout.fillHeight: true
+                    Layout.alignment: Qt.AlignTop
+                    Column {
+                        spacing: 5
+                        RoundButton {
+                            text: "New"
+                            radius: 5
+                            Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
+                        }
+                        RoundButton {
+                            text: "Settings"
+                            radius: 5
+                            Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
+                        }
+                        RoundButton {
+                            text: "Quit"
+                            radius: 5
+                            Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
+                        }
+                    }
+                }
+
+                ScrollView {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    clip: true
+                    ListView {
+                        model: documentManager.items
+                        spacing: 5
+                        delegate: RoundButton {
+                            radius: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            text: modelData.displayName
+                            Component.onCompleted: background.color = "whitesmoke"
+                            onClicked: {
+                                txtErrorMessage.visible = false
+
+                                var result = document.loadFilePath(modelData.filePath)
+                                var success = result[0]
+                                if (!success) {
+                                    var errmsg = result[1]
+                                    txtErrorMessage.text = errmsg
+                                    txtErrorMessage.visible = true
+                                    return
+                                }
+
+                                var programChannel = document.defaultProgramChannel()
+                                if (programChannel === null) {
+                                    txtErrorMessage.text = "Program not found on index 0"
+                                    txtErrorMessage.visible = true
+                                    return
+                                }
+
+                                stackView.push(docFillComponent, {
+                                    cppChannel: programChannel,
+                                    session: session,
+                                    document: document,
+                                    cursorFrame: Qt.binding(function () { return root.cursorFrame }),
+                                    changeCursorFrame: function (newFrame) { root.cursorFrame = newFrame }
+                                })
                             }
-
-                            var programChannel = document.defaultProgramChannel()
-                            if (programChannel === null) {
-                                txtErrorMessage.text = "Program not found on index 0"
-                                txtErrorMessage.visible = true
-                                return
-                            }
-
-                            stackView.push(docFillComponent, {
-                                cppChannel: programChannel,
-                                session: session,
-                                document: document,
-                                cursorFrame: Qt.binding(function () { return root.cursorFrame }),
-                                changeCursorFrame: function (newFrame) { root.cursorFrame = newFrame }
-                            })
                         }
                     }
                 }
