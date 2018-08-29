@@ -51,6 +51,14 @@ void VisualPositionManager::setSpan(int channelIndexFirst, unsigned span)
             delta = span - oldSpan;
         }
     } else {
+
+        if (span == 0) {
+            // BugFix: I guess it's valid for users to setSpan 0 even
+            // if there's nothing there. We never want to add a span
+            // of 0 in the map.
+            return;
+        }
+        
         modifyStructure = [=]() { spanMap_[channelIndexFirst] = span; };
         affectedAfter = ChannelIndex::make1(channelIndexFirst);
         delta = span;
