@@ -47,5 +47,6 @@
         <file>PropertiesFile.qml</file>
         <file>PropertiesSession.qml</file>
         <file>PropertiesStrip.qml</file>
+        <file>PropertiesChannel.qml</file>
     </qresource>
 </RCC>

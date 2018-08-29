@@ -1084,63 +1084,43 @@ ApplicationWindow {
                     } // strip properties
 
                     // channel properties
-                    Loader {
+                    Column {
+                        id: channelColumn
                         anchors.left: parent.left
                         anchors.right: parent.right
+                        spacing: 15
 
-                        property var channelPropsObject: {
-                            var cppChannel = null
-                            var component = null
-                            var shouldShow = false
+                        property var cppChannel: channelPanel.activeCppChannel
 
-                            cppChannel = channelPanel.activeCppChannel
+                        onCppChannelChanged: {
+                            var needBlank = true
+                            channelPropsLoader.sourceComponent = null
+                            channelPropsLoader.cppChannel = null
                             if (cppChannel !== null) {
                                 var control = controlResolver.resolve(cppChannel.channelType)
                                 if (control !== null) {
                                     if (control.channelPropertiesComponent !== undefined) {
-                                        component = control.channelPropertiesComponent
-                                        shouldShow = true
+                                        channelPropsLoader.cppChannel = cppChannel
+                                        channelPropsLoader.sourceComponent = control.channelPropertiesComponent
+                                        needBlank = false
                                     }
                                 }
                             }
-                            
-                            return {
-                                cppChannel: cppChannel,
-                                component: component,
-                                shouldShow: shouldShow
+                            if (needBlank) {
+                                channelPropsLoader.sourceComponent = blankComponent
                             }
                         }
 
-                        sourceComponent: ((channelPropsObject.shouldShow &&
-                                           selectedCppStrips.every(function (cppStrip) {
-                                               return cppStrip.channelPosition === channelPanel.activeChannelPosition
-                                           })) ? channelPropsHolder : blankComponent)
-
-                        Component {
-                            id: channelPropsHolder
-                            Column {
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                spacing: 15
-                                Label {
-                                    text: "Channel"
-                                    font.pixelSize: 16
-                                    font.bold: true
-                                }
-                                Loader {
-                                    anchors.left: parent.left
-                                    anchors.right: parent.right
-
-                                    // Need to make sure cppChannel is set BEFORE
-                                    // loading the component. Or else, it will try
-                                    // to read from old cppChannel type.
-                                    sourceComponent: (function (ignoreForDependency) {
-                                        return channelPropsObject.component
-                                    })(cppChannel)
-
-                                    property var cppChannel: channelPropsObject.cppChannel
-                                }
-                            }
+                        Label {
+                            text: "Channel"
+                            font.pixelSize: 16
+                            font.bold: true
+                        }
+                        Loader {
+                            id: channelPropsLoader
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            property var cppChannel
                         }
                     } // channel properties
 
