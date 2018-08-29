@@ -516,6 +516,9 @@ QAbstractListModel *Document::stripsModel()
 
 Strip* Document::createStrip()
 {
+    // WARNING Strip must always have a parent, or else it'll be
+    //         garbage collected.
+    
     Strip* s = new Strip(*this, this);
 
     stripsModel_.beginInsertRows(QModelIndex(), strips_.size(), strips_.size());
