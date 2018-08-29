@@ -39,6 +39,15 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
         }
     }
 
+    ES.DocFillSettings {
+        id: applicationSettings
+    }
+
+    ES.DocumentManager {
+        id: documentManager
+        documentsPath: applicationSettings.documentsPath
+    }
+
     ES.Document {
         id: document
     }
@@ -78,6 +87,7 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
             anchors.topMargin: parent.height / 20
             anchors.bottom: parent.bottom
             spacing: parent.height / 20
+
             Text {
                 Layout.fillWidth: true
                 text: root.title
@@ -86,6 +96,14 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                 wrapMode: Text.WordWrap
 
                 font.pointSize: 18
+            }
+
+            Repeater {
+                model: documentManager.items
+                Button {
+                    text: modelData.displayName
+                    onClicked: print(modelData.filePath)
+                }
             }
 
             ColumnLayout {

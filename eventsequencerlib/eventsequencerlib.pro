@@ -81,7 +81,8 @@ SOURCES += \
     managedresourcereport.cpp \
     resourcemetadata.cpp \
     concatiodevicecallbackevent.cpp \
-    docfillsettings.cpp
+    docfillsettings.cpp \
+    documentmanager.cpp
 
 
 HEADERS += \
@@ -143,7 +144,8 @@ HEADERS += \
     managedresourcereport.h \
     resourcemetadata.h \
     concatiodevicecallbackevent.h \
-    docfillsettings.h
+    docfillsettings.h \
+    documentmanager.h
 
 unix {
     target.path = /usr/lib

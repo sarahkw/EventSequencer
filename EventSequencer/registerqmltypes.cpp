@@ -27,6 +27,7 @@
 #include "playable/tone.h"
 #include "watchforstripsintersectingrange.h"
 #include "docfillsettings.h"
+#include "documentmanager.h"
 
 #include <QQmlEngine>
 
@@ -67,4 +68,5 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<playable::Tone>("eventsequencer.playable", 1, 0, "Tone");
     qmlRegisterType<WatchForStripsIntersectingRange>("eventsequencer", 1, 0, "WatchForStripsIntersectingRange");
     qmlRegisterType<DocFillSettings>("eventsequencer", 1, 0, "DocFillSettings");
+    qmlRegisterType<DocumentManager>("eventsequencer", 1, 0, "DocumentManager");
 }
