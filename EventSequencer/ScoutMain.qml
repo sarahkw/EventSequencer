@@ -60,8 +60,9 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
             // Pass to DocFillPage End
 
             function closeFn() {
-                document.reset()
                 stackView.pop()
+                document.reset()
+                root.cursorFrame = 0
             }
         }
     }
