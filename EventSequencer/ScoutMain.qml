@@ -128,6 +128,7 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                             text: "New"
                             radius: 5
                             Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
+                            onClicked: stackView.push("DocFillNewWizard.qml")
                         }
                         RoundButton {
                             text: "Settings"

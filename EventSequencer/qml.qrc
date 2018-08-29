@@ -48,5 +48,6 @@
         <file>PropertiesSession.qml</file>
         <file>PropertiesStrip.qml</file>
         <file>PropertiesChannel.qml</file>
+        <file>DocFillNewWizard.qml</file>
     </qresource>
 </RCC>
