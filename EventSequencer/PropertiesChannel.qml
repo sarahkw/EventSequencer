@@ -1,10 +1,10 @@
 import QtQuick 2.0
 
 Loader {
-    property var sourceCppChannel
+    property var sourceCppChannelRebind: sourceCppChannel
 
     property var cppChannel
-    onSourceCppChannelChanged: {
+    onSourceCppChannelRebindChanged: {
         var needBlank = true
         sourceComponent = null
         cppChannel = null

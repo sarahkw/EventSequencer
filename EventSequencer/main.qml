@@ -1098,7 +1098,7 @@ ApplicationWindow {
                         PropertiesChannel {
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            sourceCppChannel: channelPanel.activeCppChannel
+                            property var sourceCppChannel: channelPanel.activeCppChannel
                         }
                     } // channel properties
 

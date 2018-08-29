@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.3
 
 import "Control/" as Ctrl
 
+import eventsequencer 1.0 as ES
+
 GroupBox {
     id: root
     anchors.left: parent.left
@@ -13,12 +15,15 @@ GroupBox {
 
     title: "Developer Options (no auto-save)"
     ColumnLayout {
+        id: clayout
         anchors.left: parent.left
         anchors.right: parent.right
 
         Ctrl.Resolver {
             id: controlResolver
         }
+
+        property ES.WaitFor waitForChannel: document.waitForChannelIndex(ES.ChannelIndexFactory.makeFromPathString(txtChannelPathString.myChannelString))
 
         Text {
             Layout.fillWidth: true
@@ -46,6 +51,7 @@ GroupBox {
                 onCurrentIndexChanged: {
                     propertiesLoader.sourceComponent = undefined
                     switch (currentIndex) {
+                    case 2: propertiesLoader.source = "PropertiesChannel.qml"; return
                     case 3: propertiesLoader.source = "PropertiesDocument.qml"; return
                     case 4: propertiesLoader.source = "PropertiesFile.qml"; return
                     case 5: propertiesLoader.source = "PropertiesSession.qml"; return
@@ -66,15 +72,24 @@ GroupBox {
                 }
             }
             TextField {
+                id: txtChannelPathString
                 visible: cboxType.currentIndex === 2
                 inputMethodHints: Qt.ImhDigitsOnly
                 implicitWidth: 75
+                selectByMouse: true
+                text: "0"
+                property string myChannelString: ""
+                onEditingFinished: {
+                    myChannelString = text
+                    focus = false
+                }
             }
         }
 
         Loader {
             Layout.fillWidth: true
             id: propertiesLoader
+            property var sourceCppChannel: clayout.waitForChannel.result
         }
         Connections {
             target: propertiesLoader.item
