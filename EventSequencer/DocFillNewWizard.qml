@@ -48,8 +48,32 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.leftMargin: 5
-                Text {
-                    text: "New Wizard"
+
+                ColumnLayout {
+                    anchors.fill: parent
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Label { text: "Name" }
+                        TextField {
+                            Layout.fillWidth: true
+                        }
+                    }
+
+                    GroupBox {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        title: "Contents"
+                        padding: 2
+                        ScrollView {
+                            anchors.fill: parent
+                            TextArea {
+                                font.family: "Courier New"
+                                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                                textFormat: TextEdit.PlainText
+                            }
+                        }
+                    }
                 }
             }
         }
