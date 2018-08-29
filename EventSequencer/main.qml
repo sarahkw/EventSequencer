@@ -1090,27 +1090,6 @@ ApplicationWindow {
                         anchors.right: parent.right
                         spacing: 15
 
-                        property var cppChannel: channelPanel.activeCppChannel
-
-                        onCppChannelChanged: {
-                            var needBlank = true
-                            channelPropsLoader.sourceComponent = null
-                            channelPropsLoader.cppChannel = null
-                            if (cppChannel !== null) {
-                                var control = controlResolver.resolve(cppChannel.channelType)
-                                if (control !== null) {
-                                    if (control.channelPropertiesComponent !== undefined) {
-                                        channelPropsLoader.cppChannel = cppChannel
-                                        channelPropsLoader.sourceComponent = control.channelPropertiesComponent
-                                        needBlank = false
-                                    }
-                                }
-                            }
-                            if (needBlank) {
-                                channelPropsLoader.sourceComponent = blankComponent
-                            }
-                        }
-
                         Label {
                             text: "Channel"
                             font.pixelSize: 16
@@ -1120,7 +1099,26 @@ ApplicationWindow {
                             id: channelPropsLoader
                             anchors.left: parent.left
                             anchors.right: parent.right
+                            property var sourceCppChannel: channelPanel.activeCppChannel
                             property var cppChannel
+                            onSourceCppChannelChanged: {
+                                var needBlank = true
+                                sourceComponent = null
+                                cppChannel = null
+                                if (sourceCppChannel !== null) {
+                                    var control = controlResolver.resolve(sourceCppChannel.channelType)
+                                    if (control !== null) {
+                                        if (control.channelPropertiesComponent !== undefined) {
+                                            cppChannel = sourceCppChannel
+                                            sourceComponent = control.channelPropertiesComponent
+                                            needBlank = false
+                                        }
+                                    }
+                                }
+                                if (needBlank) {
+                                    sourceComponent = blankComponent
+                                }
+                            }
                         }
                     } // channel properties
 
