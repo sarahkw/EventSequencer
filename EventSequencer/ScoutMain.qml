@@ -69,6 +69,15 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
         }
     }
 
+    Component {
+        id: newDocumentComponent
+        DocFillNewWizard {
+            function closeFn() {
+                stackView.pop()
+            }
+        }
+    }
+
     // Don't reset document until the item is actually gone, because otherwise,
     // we're swiping the rug from beneath it and it starts writing errors.
     ES.QmlObjectDestroyedNotifier {
@@ -128,7 +137,7 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                             text: "New"
                             radius: 5
                             Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
-                            onClicked: stackView.push("DocFillNewWizard.qml")
+                            onClicked: stackView.push(newDocumentComponent)
                         }
                         RoundButton {
                             text: "Settings"
