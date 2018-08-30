@@ -1,4 +1,9 @@
+#ifdef Q_OS_ANDROID
+#include <QGuiApplication>
+#else
 #include <QApplication>
+#endif
+
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
 #include <QCommandLineParser>
@@ -29,7 +34,11 @@ int main(int argc, char *argv[])
 //    argv = const_cast<char**>(&hacked_argv[0]);
 //#endif
 
+#ifdef Q_OS_ANDROID
+    QGuiApplication app(argc, argv);
+#else
     QApplication app(argc, argv);
+#endif
 
     bool scoutMode = false;
     QQmlPropertyMap commandLine;
