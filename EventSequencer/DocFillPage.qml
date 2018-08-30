@@ -38,7 +38,9 @@ Page {
 
     AutoSaveManager {
         id: autoSaveManager
-        onSaveNow: documentSaveOrShowError(document.currentUrl)
+        function saveFn() {
+            return documentSaveOrShowError(document.currentUrl)
+        }
         autoSaveEnabled: chkAutoSave.checked
     }
 
@@ -550,10 +552,33 @@ Page {
                 }
                 Button {
                     Layout.fillWidth: true
+                    id: btnCloseFile
                     text: "Close File"
-                    onClicked: {
+
+                    function actuallyClose() {
                         fileDrawer.visible = false // If I don't do this it looks weird
                         closeFn()
+                    }
+
+                    MessageDialog {
+                        id: closeFileDirtyConfirm
+                        title: "Unsaved changes"
+                        standardButtons: StandardButton.Yes | StandardButton.No | StandardButton.Cancel
+                        text: "Would you like to save the document before closing?"
+                        onYes: {
+                            if (documentSaveOrShowError(document.currentUrl)) {
+                                btnCloseFile.actuallyClose()
+                            }
+                        }
+                        onNo: btnCloseFile.actuallyClose()
+                    }
+
+                    onClicked: {
+                        if (autoSaveManager.isDirty) {
+                            closeFileDirtyConfirm.open()
+                        } else {
+                            btnCloseFile.actuallyClose()
+                        }
                     }
                 }
             }

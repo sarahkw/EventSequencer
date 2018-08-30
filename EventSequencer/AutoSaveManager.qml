@@ -6,7 +6,6 @@ Item {
     property bool autoSaveEnabled: false
 
     property bool isDirty: false
-    signal saveNow()
 
     function markDirty() {
         root.isDirty = true
@@ -22,8 +21,9 @@ Item {
         interval: 500
         onTriggered: {
             if (root.autoSaveEnabled) {
-                root.saveNow()
-                root.isDirty = false
+                if (saveFn()) {
+                    root.isDirty = false
+                }
             }
         }
     }
