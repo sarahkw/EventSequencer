@@ -49,5 +49,6 @@
         <file>PropertiesStrip.qml</file>
         <file>PropertiesChannel.qml</file>
         <file>DocFillNewWizard.qml</file>
+        <file>AutoSaveManager.qml</file>
     </qresource>
 </RCC>

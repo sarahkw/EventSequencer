@@ -36,11 +36,22 @@ Page {
     property var cppTextChannel: waitForTextChannel !== null ? waitForTextChannel.result : null
     property var cppResourceChannel: waitForResourceChannel !== null ? waitForResourceChannel.result : null
 
+    AutoSaveManager {
+        id: autoSaveManager
+        onSaveNow: documentSaveOrShowError(document.currentUrl)
+        autoSaveEnabled: chkAutoSave.checked
+    }
+
     MsgBox  {
         id: msgbox
     }
 
     function documentSaveOrShowError(url) {
+        if (url === "") {
+            msgbox.msgbox("No URL to save to", "Save failure")
+            return false
+        }
+        
         var result = document.save(url)
         var success = result[0]
         if (success) {
@@ -166,7 +177,9 @@ Page {
         TabButton { text: "View" }
         TabButton { text: "Record" }
         TabButton { text: "Play" }
-        TabButton { text: "File" }
+        TabButton {
+            text: autoSaveManager.isDirty ? "File*" : "File"
+        }
     }
 
     ColumnLayout {
@@ -389,6 +402,7 @@ Page {
                                 // TODO Delete file
                             }
                             btnRangeStart.checked = false
+                            autoSaveManager.markDirty()
                         } else {
                             msgbox.msgbox("Cannot assign")
                         }
@@ -521,17 +535,16 @@ Page {
                     Layout.fillWidth: true
                     text: "Save File"
                     onClicked: {
-                        if (document.currentUrl === "") {
-                            console.error("Don't have a current URL to save to?")
-                        } else {
-                            documentSaveOrShowError(document.currentUrl)
-                        }
+                        documentSaveOrShowError(document.currentUrl)
+                        autoSaveManager.markManualSaved()
                     }
                 }
                 Button {
+                    id: chkAutoSave
                     Layout.fillWidth: true
                     text: "Auto Save"
                     checkable: true
+                    checked: true
                 }
                 Button {
                     Layout.fillWidth: true
