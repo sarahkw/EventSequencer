@@ -363,7 +363,7 @@ Page {
                     property int startFrame
 
                     Layout.fillWidth: true
-                    text: "Range"
+                    text: "Select"
                     checkable: true
                     onCheckedChanged: {
                         if (checked) {
@@ -375,7 +375,7 @@ Page {
                             when: btnRangeStart.checked
                             PropertyChanges {
                                 target: btnRangeStart
-                                text: "Range (%1)".arg(cursorFrame - startFrame)
+                                text: "Select (%1)".arg(cursorFrame - startFrame)
                             }
                         }
                     ]
