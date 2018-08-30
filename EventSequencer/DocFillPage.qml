@@ -927,52 +927,19 @@ Page {
                         anchors.leftMargin: 15
                         anchors.rightMargin: 15
                         spacing: 15
-                        GroupBox {
+
+                        DocFillPageExportSection {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             title: "Export JSON"
-                            ColumnLayout {
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                Label {
-                                    Layout.fillWidth: true
-                                    wrapMode: Text.Wrap
-                                    text: "Write a JSON file that lists the parts of the document along with the assigned audio file."
-                                }
-                                RowLayout {
-                                    Layout.fillWidth: true
-                                    Label {
-                                        text: "Output Path"
-                                    }
-                                    TextField {
-                                        Layout.fillWidth: true
-                                    }
-                                }
-                                RowLayout {
-                                    Layout.fillWidth: true
-                                    Button {
-                                        Layout.fillWidth: true
-                                        checkable: true
-                                        text: "Use Suggested Path"
-                                    }
-                                    Button {
-                                        Layout.fillWidth: true
-                                        text: "Export"
-                                    }
-                                }
-                            }
+                            description: "Write a JSON file that lists the parts of the document along with the assigned audio file."
                         }
 
-                        GroupBox {
+                        DocFillPageExportSection {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             title: "Play to File"
-                            Label {
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                wrapMode: Text.Wrap
-                                text: "Write an audio file that concatenates audio files for the selected strips."
-                            }
+                            description: "Write an audio file that concatenates audio files for the selected strips."
                         }
                     }
                 }

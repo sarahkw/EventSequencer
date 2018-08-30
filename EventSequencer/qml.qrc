@@ -50,5 +50,6 @@
         <file>PropertiesChannel.qml</file>
         <file>DocFillNewWizard.qml</file>
         <file>AutoSaveManager.qml</file>
+        <file>DocFillPageExportSection.qml</file>
     </qresource>
 </RCC>
