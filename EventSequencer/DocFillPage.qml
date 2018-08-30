@@ -296,7 +296,7 @@ Page {
                         id: viewMenu
                         MenuItem {
                             text: "Copy All"
-                            onTriggered: ES.ClipboardWrapper.setText("Test OK!")
+                            onTriggered: ES.ClipboardWrapper.setText(cppTextChannel.content)
                         }
                         MenuItem {
                             text: "Font"
