@@ -742,21 +742,13 @@ Page {
                                     deleteStripDialog.open()
                                 }
 
-                                Controls2.Dialog {
+                                MessageDialog {
                                     id: deleteStripDialog
-                                    parent: ApplicationWindow.overlay
-                                    x: (parent.width - width) / 2
-                                    y: (parent.height - height) / 2
-                                    width: parent.width * 0.8
 
                                     title: "Delete Strip"
                                     standardButtons:
-                                        Controls2.Dialog.Yes | Controls2.Dialog.No | Controls2.Dialog.Cancel
-                                    Label {
-                                        anchors.fill: parent
-                                        text: "Would you like to reclaim the strip's resource as an unassigned recording?"
-                                        wrapMode: Text.Wrap
-                                    }
+                                        StandardButton.Yes | StandardButton.No | StandardButton.Cancel
+                                    text: "Would you like to reclaim the strip's resource as an unassigned recording?"
                                 }
                             }
                             Button {
