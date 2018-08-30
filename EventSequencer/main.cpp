@@ -1,3 +1,4 @@
+#include <QtGlobal> // This is what would provide Q_OS_ANDROID!
 #ifdef Q_OS_ANDROID
 #include <QGuiApplication>
 #else

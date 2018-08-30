@@ -1,5 +1,7 @@
 QT += quick
+!android {
 QT += widgets  # For FileDialog on Linux
+}
 QT += quickcontrols2 # For QQuickStyle
 QT += multimedia
 CONFIG += c++11
