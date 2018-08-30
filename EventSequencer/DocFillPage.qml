@@ -241,6 +241,7 @@ Page {
                     y: (parent.height - height) / 2
 
                     title: "Change Cursor Position"
+                    modal: true
                     standardButtons: Controls2.Dialog.Ok | Controls2.Dialog.Cancel
                     TextField {
                         id: positionDialogTextField
@@ -324,6 +325,7 @@ Page {
                         y: (parent.height - height) / 2
 
                         title: "Change Font Size"
+                        modal: true
                         standardButtons: Controls2.Dialog.Ok
                         SpinBox {
                             id: fontDialogTextField
@@ -750,12 +752,41 @@ Page {
                                     width: parent.width * 0.8
 
                                     title: "Delete Strip"
-                                    standardButtons:
-                                        Controls2.Dialog.Yes | Controls2.Dialog.No | Controls2.Dialog.Cancel
-                                    Label {
-                                        anchors.fill: parent
-                                        text: "Would you like to reclaim the strip's resource as an unassigned recording?"
-                                        wrapMode: Text.Wrap
+                                    modal: true
+
+                                    onOpened: deleteStripOption1.checked = true
+
+                                    footer: DialogButtonBox {
+                                        Button {
+                                            text: "Delete Strip"
+                                        }
+                                        Button {
+                                            text: "Cancel"
+                                            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+                                        }
+                                    }
+
+                                    ColumnLayout {
+                                        Label {
+                                            Layout.fillWidth: true
+                                            text: "Action to take on strip's recording:"
+                                            wrapMode: Text.Wrap
+                                        }
+                                        RadioButton {
+                                            Layout.fillWidth: true
+                                            id: deleteStripOption1
+                                            text: "Reclaim as unassigned recording"
+                                        }
+                                        RadioButton {
+                                            Layout.fillWidth: true
+                                            id: deleteStripOption2
+                                            text: "Delete recording"
+                                        }
+                                        RadioButton {
+                                            Layout.fillWidth: true
+                                            id: deleteStripOption3
+                                            text: "Leave recording as orphan"
+                                        }
                                     }
                                 }
                             }
