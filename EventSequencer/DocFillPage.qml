@@ -290,7 +290,19 @@ Page {
             RowLayout {
                 Button {
                     Layout.fillWidth: true
-                    text: "Font"
+                    text: "View"
+                    onClicked: viewMenu.open()
+                    Menu {
+                        id: viewMenu
+                        MenuItem {
+                            text: "Copy All"
+                            onTriggered: ES.ClipboardWrapper.setText("Test OK!")
+                        }
+                        MenuItem {
+                            text: "Font"
+                            onTriggered: fontDialog.open()
+                        }
+                    }
                     Controls2.Dialog {
                         id: fontDialog
 
@@ -313,8 +325,8 @@ Page {
                             }
                         }
                     }
-                    onClicked: fontDialog.open()
                 }
+
                 Button {
                     Layout.fillWidth: true
                     text: "Go"

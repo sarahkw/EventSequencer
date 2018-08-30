@@ -5,17 +5,17 @@ ChannelIndexFactory::ChannelIndexFactory(QObject *parent) : QObject(parent)
 
 }
 
-QVariant ChannelIndexFactory::make1(int first)
+QVariant ChannelIndexFactory::make1(int first) const
 {
     return QVariant::fromValue(ChannelIndex::make1(first));
 }
 
-QVariant ChannelIndexFactory::make2(int first, unsigned second)
+QVariant ChannelIndexFactory::make2(int first, unsigned second) const
 {
     return QVariant::fromValue(ChannelIndex::make2(first, second));
 }
 
-QVariant ChannelIndexFactory::makeFromPathString(QString pathString)
+QVariant ChannelIndexFactory::makeFromPathString(QString pathString) const
 {
     bool success;
     auto ci = ChannelIndex::makeFromPathString(pathString, &success);

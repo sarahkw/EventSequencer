@@ -83,7 +83,8 @@ SOURCES += \
     concatiodevicecallbackevent.cpp \
     docfillsettings.cpp \
     documentmanager.cpp \
-    qmlobjectdestroyednotifier.cpp
+    qmlobjectdestroyednotifier.cpp \
+    clipboardwrapper.cpp
 
 
 HEADERS += \
@@ -147,7 +148,8 @@ HEADERS += \
     concatiodevicecallbackevent.h \
     docfillsettings.h \
     documentmanager.h \
-    qmlobjectdestroyednotifier.h
+    qmlobjectdestroyednotifier.h \
+    clipboardwrapper.h
 
 unix {
     target.path = /usr/lib

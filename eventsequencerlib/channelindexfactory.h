@@ -11,9 +11,9 @@ class ChannelIndexFactory : public QObject
 public:
     explicit ChannelIndexFactory(QObject *parent = nullptr);
 
-    Q_INVOKABLE QVariant make1(int first);
-    Q_INVOKABLE QVariant make2(int first, unsigned second);
-    Q_INVOKABLE QVariant makeFromPathString(QString pathString);
+    Q_INVOKABLE QVariant make1(int first) const;
+    Q_INVOKABLE QVariant make2(int first, unsigned second) const;
+    Q_INVOKABLE QVariant makeFromPathString(QString pathString) const;
 
 signals:
 

@@ -29,6 +29,7 @@
 #include "docfillsettings.h"
 #include "documentmanager.h"
 #include "qmlobjectdestroyednotifier.h"
+#include "clipboardwrapper.h"
 
 #include <QQmlEngine>
 
@@ -71,4 +72,9 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<DocFillSettings>("eventsequencer", 1, 0, "DocFillSettings");
     qmlRegisterType<DocumentManager>("eventsequencer", 1, 0, "DocumentManager");
     qmlRegisterType<QmlObjectDestroyedNotifier>("eventsequencer", 1, 0, "QmlObjectDestroyedNotifier");
+    qmlRegisterSingletonType<ClipboardWrapper>(
+        "eventsequencer", 1, 0, "ClipboardWrapper",
+        [](QQmlEngine*, QJSEngine*) -> QObject* {
+            return new ClipboardWrapper;
+        });
 }
