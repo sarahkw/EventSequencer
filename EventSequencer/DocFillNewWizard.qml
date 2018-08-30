@@ -65,12 +65,35 @@ Rectangle {
                         Layout.fillHeight: true
                         title: "Contents"
                         padding: 2
-                        ScrollView {
+
+                        // An extra item so that GroupBox doesn't try
+                        // to auto calculate the size and create a
+                        // binding loop.
+                        Item { }
+
+                        ColumnLayout {
                             anchors.fill: parent
-                            TextArea {
-                                font.family: "Courier New"
-                                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                                textFormat: TextEdit.PlainText
+                            Rectangle {
+                                Layout.fillWidth: true
+                                color: "lemonchiffon"
+                                implicitHeight: textContentExplanation.implicitHeight
+
+                                Text {
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    id: textContentExplanation
+                                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                                    text: "Contents cannot be changed later. Characters need to fit in a single UTF-16 codepoint and must only take up a single space."
+                                }
+                            }
+                            ScrollView {
+                                Layout.fillWidth: true
+                                Layout.fillHeight: true
+                                TextArea {
+                                    font.family: "Courier New"
+                                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                                    textFormat: TextEdit.PlainText
+                                }
                             }
                         }
                     }
