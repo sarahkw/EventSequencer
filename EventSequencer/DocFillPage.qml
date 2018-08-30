@@ -833,75 +833,85 @@ Page {
                 }
 
                 // Storage
-                ScrollView {
-                    contentWidth: width
-                    Column {
-                        anchors.top: parent.top
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.topMargin: 15
-                        anchors.leftMargin: 15
-                        anchors.rightMargin: 15
-                        spacing: 15
-                        GroupBox {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            title: "Information"
-                            GridLayout {
-                                columns: 2
-                                Label { text: "Report Age" }
-                                Label {
-                                    Layout.fillWidth: true
-                                    text: "2 minutes ago"
+                Item {
+                    ColumnLayout {
+                        anchors.fill: parent
+                        anchors.margins: 15
+                        ScrollView {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            contentWidth: width
+                            clip: true
+                            Column {
+                                anchors.top: parent.top
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                spacing: 15
+                                GroupBox {
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    title: "Information"
+                                    GridLayout {
+                                        columns: 2
+                                        Label { text: "Report Age" }
+                                        Label {
+                                            Layout.fillWidth: true
+                                            text: "2 minutes ago"
+                                        }
+                                        
+                                        Label { text: "Resources Size" }
+                                        Label {
+                                            Layout.fillWidth: true
+                                            text: "80 MB"
+                                        }
+                                    }
                                 }
-                                
-                                Label { text: "Resources Size" }
-                                Label {
-                                    Layout.fillWidth: true
-                                    text: "80 MB"
+                                GroupBox {
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    title: "Orphaned Resources"
+                                    RowLayout {
+                                        Button {
+                                            Layout.fillWidth: true
+                                            text: "Select All"
+                                            checkable: true
+                                        }
+                                        Button {
+                                            Layout.fillWidth: true
+                                            text: "Copy List"
+                                        }
+                                        Button {
+                                            Layout.fillWidth: true
+                                            text: "Delete Selected"
+                                        }
+                                    }
                                 }
-                            }
-                        }
-                        GroupBox {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            title: "Orphaned Resources"
-                            RowLayout {
-                                Button {
-                                    Layout.fillWidth: true
-                                    text: "Select All"
-                                    checkable: true
-                                }
-                                Button {
-                                    Layout.fillWidth: true
-                                    text: "Copy List"
-                                }
-                                Button {
-                                    Layout.fillWidth: true
-                                    text: "Delete Selected"
-                                }
-                            }
-                        }
 
-                        GroupBox {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            title: "Strips Missing Resources"
-                            RowLayout {
-                                Button {
-                                    Layout.fillWidth: true
-                                    text: "Select All"
-                                    checkable: true
-                                }
-                                Button {
-                                    Layout.fillWidth: true
-                                    text: "Copy List"
-                                }
-                                Button {
-                                    Layout.fillWidth: true
-                                    text: "Delete Selected"
+                                GroupBox {
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    title: "Strips Missing Resources"
+                                    RowLayout {
+                                        Button {
+                                            Layout.fillWidth: true
+                                            text: "Select All"
+                                            checkable: true
+                                        }
+                                        Button {
+                                            Layout.fillWidth: true
+                                            text: "Copy List"
+                                        }
+                                        Button {
+                                            Layout.fillWidth: true
+                                            text: "Delete Selected"
+                                        }
+                                    }
                                 }
                             }
+                        }
+                        Button {
+                            Layout.fillWidth: true
+                            text: "Generate Report"
                         }
                     }
                 }
