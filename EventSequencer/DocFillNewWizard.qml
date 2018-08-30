@@ -4,6 +4,24 @@ import QtQuick.Controls 2.2
 
 Rectangle {
     color: "whitesmoke"
+
+    states: [
+        State {
+            when: swipeView.currentIndex === 0
+            PropertyChanges {
+                target: btnBack
+                enabled: false
+            }
+        },
+        State {
+            when: swipeView.currentIndex === 1
+            PropertyChanges {
+                target: btnNext
+                text: "Finish"
+            }
+        }
+    ]
+    
     ColumnLayout {
         anchors.fill: parent
         anchors.topMargin: 5
@@ -21,9 +39,11 @@ Rectangle {
                 onClicked: closeFn()
             }
             Button {
+                id: btnBack
                 text: "Back"
             }
             Button {
+                id: btnNext
                 text: "Next"
             }
         }
@@ -37,10 +57,11 @@ Rectangle {
                 Layout.alignment: Qt.AlignTop
                 Label {
                     text: "1. Content"
-                    font.bold: true
+                    font.bold: swipeView.currentIndex === 0
                 }
                 Label {
                     text: "2. Audio"
+                    font.bold: swipeView.currentIndex === 1
                 }
             }
 
@@ -50,6 +71,7 @@ Rectangle {
                 Layout.leftMargin: 5
 
                 SwipeView {
+                    id: swipeView
                     anchors.fill: parent
                     clip: true
                     
