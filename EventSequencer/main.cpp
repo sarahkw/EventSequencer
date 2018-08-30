@@ -2,6 +2,8 @@
 #ifdef Q_OS_ANDROID
 #include <QGuiApplication>
 #else
+// TODO When porting to other stuff like Windows I guess we should avoid widgets
+//      on Windows too.
 #include <QApplication>
 #endif
 
