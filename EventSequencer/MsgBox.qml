@@ -5,7 +5,8 @@ MessageDialog {
     id: msgbox
     function msgbox(msg, title_) {
         if (visible) {
-            console.warn("Replacing unacknowledged message", text)
+            // TODO Come up with a way of queueing msgbox's/error msgs
+            console.error("MsgBox cannot show message", title_, msg)
         }
         if (title_) {
             title = title_
