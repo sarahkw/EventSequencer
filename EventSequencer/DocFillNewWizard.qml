@@ -49,53 +49,60 @@ Rectangle {
                 Layout.fillHeight: true
                 Layout.leftMargin: 5
 
-                ColumnLayout {
+                SwipeView {
                     anchors.fill: parent
-
-                    RowLayout {
-                        Layout.fillWidth: true
-                        Label { text: "Name" }
-                        TextField {
+                    clip: true
+                    
+                    ColumnLayout {
+                        RowLayout {
                             Layout.fillWidth: true
+                            Label { text: "Name" }
+                            TextField {
+                                Layout.fillWidth: true
+                            }
+                        }
+
+                        GroupBox {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            title: "Contents"
+                            padding: 2
+
+                            // An extra item so that GroupBox doesn't try
+                            // to auto calculate the size and create a
+                            // binding loop.
+                            Item { }
+
+                            ColumnLayout {
+                                anchors.fill: parent
+                                Rectangle {
+                                    Layout.fillWidth: true
+                                    color: "lemonchiffon"
+                                    implicitHeight: textContentExplanation.implicitHeight
+
+                                    Text {
+                                        anchors.left: parent.left
+                                        anchors.right: parent.right
+                                        id: textContentExplanation
+                                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                                        text: "Contents cannot be changed later. Characters need to fit in a single UTF-16 codepoint and must only take up a single space."
+                                    }
+                                }
+                                ScrollView {
+                                    Layout.fillWidth: true
+                                    Layout.fillHeight: true
+                                    TextArea {
+                                        font.family: "Courier New"
+                                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                                        textFormat: TextEdit.PlainText
+                                    }
+                                }
+                            }
                         }
                     }
 
-                    GroupBox {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                        title: "Contents"
-                        padding: 2
-
-                        // An extra item so that GroupBox doesn't try
-                        // to auto calculate the size and create a
-                        // binding loop.
-                        Item { }
-
-                        ColumnLayout {
-                            anchors.fill: parent
-                            Rectangle {
-                                Layout.fillWidth: true
-                                color: "lemonchiffon"
-                                implicitHeight: textContentExplanation.implicitHeight
-
-                                Text {
-                                    anchors.left: parent.left
-                                    anchors.right: parent.right
-                                    id: textContentExplanation
-                                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                                    text: "Contents cannot be changed later. Characters need to fit in a single UTF-16 codepoint and must only take up a single space."
-                                }
-                            }
-                            ScrollView {
-                                Layout.fillWidth: true
-                                Layout.fillHeight: true
-                                TextArea {
-                                    font.family: "Courier New"
-                                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                                    textFormat: TextEdit.PlainText
-                                }
-                            }
-                        }
+                    Text {
+                        text: "Page 2!"
                     }
                 }
             }
