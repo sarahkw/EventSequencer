@@ -97,7 +97,7 @@ Page {
                     strip.resourceUrl = result.newUrl
                     return true
                 } else {
-                    msgbox.msgbox(result.errorMsg)
+                    msgbox.msgbox(result.errorMsg, "Cannot assign resource to strip")
                     return false
                 }
             }
@@ -403,11 +403,14 @@ Page {
                         if (thestrip !== null) {
                             var success = recorderControl.corraledResourceFile.possiblyAssignUrlToStrip(thestrip)
                             if (!success) {
-                                // TODO Delete file
+                                // An error has already been shown.
+                                document.deleteStrip(thestrip)
+                            } else {
+                                btnRangeStart.checked = false
+                                autoSaveManager.markDirty()
                             }
-                            btnRangeStart.checked = false
-                            autoSaveManager.markDirty()
                         } else {
+                            // TODO Explain why, like it overlaps, or the length is bad
                             msgbox.msgbox("Cannot assign")
                         }
                     }
