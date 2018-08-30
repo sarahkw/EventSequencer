@@ -37,6 +37,8 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_ANDROID
     QGuiApplication app(argc, argv);
 #else
+    // I think(!) this was for QWidgets to draw the file browser dialogs on
+    // Linux.
     QApplication app(argc, argv);
 #endif
 
