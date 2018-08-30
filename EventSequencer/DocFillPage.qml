@@ -939,7 +939,7 @@ Page {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             title: "Play to File"
-                            description: "Write an audio file that concatenates audio files for the selected strips."
+                            description: "Play as configured in the 'Play' tab, but output to a file instead of to your speakers."
                         }
                     }
                 }
