@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QUrl>
+#include <QVariantList>
 
 class QFile;
 
@@ -27,8 +28,8 @@ public:
 
     Q_INVOKABLE QUrl urlForFileName(QString fileName);
 
-    Q_INVOKABLE QUrl renameUrlToFileName(QUrl url, QString newFileName);
-    Q_INVOKABLE QUrl renameUrlToGeneratedFileName(QUrl url, QString suffix);
+    Q_INVOKABLE QVariantList renameUrlToFileName(QUrl url, QString newFileName);
+    Q_INVOKABLE QVariantList renameUrlToGeneratedFileName(QUrl url, QString suffix);
 
     Q_INVOKABLE bool deleteUrl(QUrl url);
     Q_INVOKABLE bool existsUrl(QUrl url);

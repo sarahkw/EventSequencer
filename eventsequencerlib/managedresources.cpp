@@ -45,7 +45,7 @@ QUrl ManagedResources::urlForFileName(QString fileName)
     return "evseq://managed/" + fileName;
 }
 
-QUrl ManagedResources::renameUrlToFileName(QUrl url, QString newFileName)
+QVariantList ManagedResources::renameUrlToFileName(QUrl url, QString newFileName)
 {
     QString fileName;
     if (!urlConvertToFilePath(url, &fileName)) return {};
@@ -53,16 +53,16 @@ QUrl ManagedResources::renameUrlToFileName(QUrl url, QString newFileName)
     QFile f(fileName);
     if (f.rename(QFileInfo(fileName).dir().path() + "/" + newFileName)) {
         if (urlIsManaged(url)) {
-            return urlForFileName(newFileName);
+            return {true, urlForFileName(newFileName)};
         } else {
-            return QUrl::fromLocalFile(f.fileName());
+            return {true, QUrl::fromLocalFile(f.fileName())};
         }
     } else {
-        return {};
+        return {false, f.errorString()};
     }
 }
 
-QUrl ManagedResources::renameUrlToGeneratedFileName(QUrl url, QString suffix)
+QVariantList ManagedResources::renameUrlToGeneratedFileName(QUrl url, QString suffix)
 {
     return renameUrlToFileName(url, generateResourceBaseName() + suffix);
 }

@@ -891,11 +891,13 @@ Page {
                                                 }
 
                                                 if (deleteStripOption1.checked) {
-                                                    var success = recorderControl.corraledResourceFile.recorral(thestrip.resourceUrl)
-                                                    if (success) {
+                                                    var result = recorderControl.corraledResourceFile.recorral(thestrip.resourceUrl)
+                                                    if (result.success) {
                                                         deleteTheStrip()
                                                     } else {
-                                                        msgbox.msgbox("Unable to reclaim recording. Is there already an unassigned recording?")
+                                                        msgbox.msgbox("Unable to reclaim recording.
+Ensure that there is currently no unassigned recording.
+Error: %1".arg(result.errorMsg))
                                                     }
                                                 } else if (deleteStripOption2.checked) {
                                                     var success = managedResources.deleteUrl(thestrip.resourceUrl)

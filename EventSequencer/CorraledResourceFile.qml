@@ -42,31 +42,40 @@ QtObject {
     }
 
     function take() {
-        takeable = false
-        var newUrl = managedResources.renameUrlToGeneratedFileName(corralUrl, corralFileSuffix)
-        if (newUrl == "") {
+        var result = managedResources.renameUrlToGeneratedFileName(corralUrl, corralFileSuffix)
+        var success = result[0]
+        if (success) {
+            takeable = false // Not takeable only if successful!
             return {
-                success: false,
-                errorMsg: "Unable to rename file"
+                success: true,
+                newUrl: result[1]
             }
         } else {
             return {
-                success: true,
-                newUrl: newUrl
+                success: false,
+                errorMsg: result[1]
             }
         }
     }
 
     function recorral(url) {
-        if (takeable) {
-            return false
-        }
-        var newUrl = managedResources.renameUrlToFileName(url, corralFileName)
-        if (newUrl != "") {
+        // Let's just let the rename fail.
+//        if (takeable) {
+//            return false
+//        }
+
+        var result = managedResources.renameUrlToFileName(url, corralFileName)
+        var success = result[0]
+        if (success) {
             takeable = true
-            return true
+            return {
+                success: true
+            }
         } else {
-            return false
+            return {
+                success: false,
+                errorMsg: result[1]
+            }
         }
     }
 
