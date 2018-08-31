@@ -75,7 +75,12 @@ Page {
         sessionAudio: session.audio
         fileResourceDirectory: document.fileResourceDirectory
         allowOverwrite: true
-        onFileDone: corraledResourceFile.done()
+        onFileDone: {
+            corraledResourceFile.done()
+            if (chkSettingReviewAfterRecord.checked) {
+                playPage.reviewAfterRecord()
+            }
+        }
 
         function beginRecord() {
             var begin = corraledResourceFile.begin()
@@ -456,6 +461,14 @@ Page {
 
             // Play
             RowLayout {
+                id: playPage
+
+                function reviewAfterRecord() {
+                    playerControl.stop()
+                    cmbSelectionMode.currentIndex = 0
+                    playerControl.play()
+                }
+
                 ComboBox {
                     id: cmbSelectionMode
                     Layout.fillWidth: true
@@ -963,6 +976,7 @@ Page {
                                     columns: 2
 
                                     CheckBox {
+                                        id: chkSettingReviewAfterRecord
                                         Layout.fillWidth: true
                                         Layout.columnSpan: 2
                                         text: "Automatically play review after record"
