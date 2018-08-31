@@ -1050,7 +1050,7 @@ Page {
                                         text: "Play tone before record"
                                     }
                                     CheckBox {
-                                        id: chkDeveloperOptions
+                                        id: chkSettingDeveloperOptions
                                         Layout.fillWidth: true
                                         Layout.columnSpan: 2
                                         text: "Enable developer options"
@@ -1062,7 +1062,7 @@ Page {
                                 id: devOptionsLoader
                                 anchors.left: parent.left
                                 anchors.right: parent.right
-                                source: chkDeveloperOptions.checked ? "DocFillDeveloperOptions.qml" : ""
+                                source: chkSettingDeveloperOptions.checked ? "DocFillDeveloperOptions.qml" : ""
                                 property alias selectedCppStrip: stripsHolderItem.selectedStrip
                             }
                             Connections {
