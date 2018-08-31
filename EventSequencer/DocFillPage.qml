@@ -973,10 +973,16 @@ Page {
                                             text: "2 minutes ago"
                                         }
                                         
-                                        Label { text: "Resources Size" }
+                                        Label { text: "Active Resource Size" }
                                         Label {
                                             Layout.fillWidth: true
                                             text: "80 MB"
+                                        }
+
+                                        Label { text: "Orphan Resource Size" }
+                                        Label {
+                                            Layout.fillWidth: true
+                                            text: "10 MB"
                                         }
                                     }
                                 }
