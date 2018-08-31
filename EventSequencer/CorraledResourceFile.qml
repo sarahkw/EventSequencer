@@ -57,6 +57,19 @@ QtObject {
         }
     }
 
+    function recorral(url) {
+        if (takeable) {
+            return false
+        }
+        var newUrl = managedResources.renameUrlToFileName(url, corralFileName)
+        if (newUrl != "") {
+            takeable = true
+            return true
+        } else {
+            return false
+        }
+    }
+
     function cancel() {
         takeable = false
         if (!managedResources.deleteUrl(root.corralUrl)) {

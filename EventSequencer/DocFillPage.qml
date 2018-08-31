@@ -861,6 +861,30 @@ Page {
                                     footer: DialogButtonBox {
                                         Button {
                                             text: "Delete Strip"
+                                            onClicked: {
+                                                var thestrip = stripsHolderItem.selectedStrip
+
+                                                function deleteTheStrip() {
+                                                    document.deleteStrip(thestrip)
+                                                    autoSaveManager.markDirty()
+                                                }
+
+                                                if (thestrip.resourceUrl == "") {
+                                                    deleteTheStrip()
+                                                    return
+                                                }
+
+                                                if (deleteStripOption1.checked) {
+                                                    var success = recorderControl.corraledResourceFile.recorral(thestrip.resourceUrl)
+                                                    if (success) {
+                                                        deleteTheStrip()
+                                                    } else {
+                                                        msgbox.msgbox("Unable to reclaim recording. Is there already an unassigned recording?")
+                                                    }
+                                                }
+
+                                                deleteStripDialog.close()
+                                            }
                                         }
                                         Button {
                                             text: "Cancel"
