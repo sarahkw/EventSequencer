@@ -183,7 +183,9 @@ Page {
 
         TabButton { text: "View" }
         TabButton { text: "Record" }
-        TabButton { text: "Play" }
+        TabButton {
+            text: playPage.isStopped ? "Play" : "PLAY"
+        }
         TabButton {
             text: autoSaveManager.isDirty ? "File*" : "File"
         }
@@ -463,6 +465,11 @@ Page {
             RowLayout {
                 id: playPage
 
+                property bool isStopped: [
+                    ES.PlayerControl.Stopped,
+                    ES.PlayerControl.Unconfigured
+                ].indexOf(playerControl.audioState + 0) !== -1
+
                 function reviewAfterRecord() {
                     playerControl.stop()
                     cmbSelectionMode.currentIndex = 0
@@ -522,10 +529,7 @@ Page {
                     onClicked: playerControl.stop()
                     states: [
                         State {
-                            when: ([
-                                ES.PlayerControl.Stopped,
-                                ES.PlayerControl.Unconfigured // Want to show the "Record" button
-                            ].indexOf(playerControl.audioState + 0) !== -1 && playerControl.error !== "")
+                            when: (playPage.isStopped && playerControl.error !== "")
 
                             PropertyChanges {
                                 target: unnamedParent_6bbd
@@ -534,10 +538,7 @@ Page {
                             }
                         },
                         State {
-                            when: [
-                                ES.PlayerControl.Stopped,
-                                ES.PlayerControl.Unconfigured // Want to show the "Record" button
-                            ].indexOf(playerControl.audioState + 0) !== -1
+                            when: playPage.isStopped
 
                             PropertyChanges {
                                 target: unnamedParent_6bbd
