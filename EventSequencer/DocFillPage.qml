@@ -69,6 +69,13 @@ Page {
         id: errorReportingContext
     }
 
+    // XXX The CorraledResourceFile also has a copy of this. Maybe we should
+    //     pass it a ref.
+    ES.ManagedResources {
+        id: managedResources
+        fileResourceDirectory: document.fileResourceDirectory
+    }
+
     ES.RecorderControl {
         id: recorderControl
         audioFormatHolder: document.audioFormatHolder
@@ -881,6 +888,15 @@ Page {
                                                     } else {
                                                         msgbox.msgbox("Unable to reclaim recording. Is there already an unassigned recording?")
                                                     }
+                                                } else if (deleteStripOption2.checked) {
+                                                    var success = managedResources.deleteUrl(thestrip.resourceUrl)
+                                                    if (success) {
+                                                        deleteTheStrip()
+                                                    } else {
+                                                        msgbox.msgbox("Unable to delete recording")
+                                                    }
+                                                } else if (deleteStripOption3.checked) {
+                                                    deleteTheStrip()
                                                 }
 
                                                 deleteStripDialog.close()
