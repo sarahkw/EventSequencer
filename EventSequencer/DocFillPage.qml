@@ -182,7 +182,9 @@ Page {
         currentIndex: sview.currentIndex
 
         TabButton { text: "View" }
-        TabButton { text: "Record" }
+        TabButton {
+            text: recordPage.isStopped ? "Record" : "RECORD"
+        }
         TabButton {
             text: playPage.isStopped ? "Play" : "PLAY"
         }
@@ -307,7 +309,7 @@ Page {
             anchors.bottom: parent.bottom
 
             // Take implicitHeight from a normal item
-            implicitHeight: recordButtons.implicitHeight
+            implicitHeight: recordPage.implicitHeight
 
             // View
             RowLayout {
@@ -364,7 +366,13 @@ Page {
 
             // Record
             RowLayout {
-                id: recordButtons
+                id: recordPage
+
+                property bool isStopped: [
+                    ES.RecorderControl.Stopped,
+                    ES.RecorderControl.Unconfigured
+                ].indexOf(recorderControl.audioState + 0) !== -1
+                
                 Button {
                     id: btnRangeStart
                     property int startFrame
@@ -447,10 +455,7 @@ Page {
                             }
                         },
                         State {
-                            when: [
-                                ES.RecorderControl.Stopped,
-                                ES.RecorderControl.Unconfigured // Want to show the "Record" button
-                            ].indexOf(recorderControl.audioState + 0) !== -1
+                            when: recordPage.isStopped
                             PropertyChanges {
                                 target: unnamedParent_7c13
                                 text: "Record"
