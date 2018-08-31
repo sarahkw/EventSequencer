@@ -494,6 +494,10 @@ Page {
                                 target: unnamedParent_7c13
                                 text: "Record"
                                 onClicked: {
+                                    if (chkSettingSelectOnRecord.checked) {
+                                        btnRangeStart.checked = false
+                                        btnRangeStart.checked = true
+                                    }
                                     if (chkSettingToneBeforeRecord.checked) {
                                         playPage.playToneBeforeRecord()
                                         tmrPlayToneBeforeRecord1.start()
@@ -1039,9 +1043,10 @@ Page {
                                         text: "Automatically play review after record"
                                     }
                                     CheckBox {
+                                        id: chkSettingSelectOnRecord
                                         Layout.fillWidth: true
                                         Layout.columnSpan: 2
-                                        text: "Automatically set range start on record"
+                                        text: "Automatically start selection on record"
                                     }
                                     CheckBox {
                                         id: chkSettingToneBeforeRecord
