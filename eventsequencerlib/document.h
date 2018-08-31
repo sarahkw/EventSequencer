@@ -108,7 +108,7 @@ class Document : public QObject
 
     Q_PROPERTY(QUrl currentUrl READ currentUrl WRITE setCurrentUrl NOTIFY currentUrlChanged)
     Q_PROPERTY(QString currentFileName MEMBER currentFileName_ NOTIFY currentFileNameChanged)
-    Q_PROPERTY(QString fileResourceDirectory MEMBER fileResourceDirectory_ NOTIFY fileResourceDirectoryChanged)
+    Q_PROPERTY(QString fileResourceDirectory READ fileResourceDirectory NOTIFY fileResourceDirectoryChanged)
 
     QString fileForkedFromChecksum_;
 public:
@@ -177,6 +177,8 @@ public:
 
     QUrl currentUrl() const;
     void setCurrentUrl(const QUrl &currentUrl);
+
+    QString fileResourceDirectory() const;
 
     QString fileForkedFromChecksum() const;
     void setFileForkedFromChecksum(const QString &fileForkedFromChecksum);

@@ -51,5 +51,6 @@
         <file>DocFillNewWizard.qml</file>
         <file>AutoSaveManager.qml</file>
         <file>DocFillPageExportSection.qml</file>
+        <file>DocFillPageStorageTab.qml</file>
     </qresource>
 </RCC>

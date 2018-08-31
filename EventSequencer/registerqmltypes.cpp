@@ -30,6 +30,7 @@
 #include "documentmanager.h"
 #include "qmlobjectdestroyednotifier.h"
 #include "clipboardwrapper.h"
+#include "managedresourcereport.h"
 
 #include <QQmlEngine>
 
@@ -77,4 +78,5 @@ void RegisterQmlTypes::registerQmlTypes()
         [](QQmlEngine*, QJSEngine*) -> QObject* {
             return new ClipboardWrapper;
         });
+    qmlRegisterType<ManagedResourceReport>("eventsequencer", 1, 0, "ManagedResourceReport");
 }

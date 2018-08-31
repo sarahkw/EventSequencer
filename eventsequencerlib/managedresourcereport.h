@@ -19,7 +19,6 @@ class ManagedResourceReport : public QObject
 {
     Q_OBJECT
 
-    bool hasQuickData_ = false;
     bool hasData_ = false;
     QDateTime generatedAt_;
 
@@ -28,21 +27,32 @@ class ManagedResourceReport : public QObject
     QVariantList stripsMissingResource_;
     QVariantList unusedFiles_;
 
+    Q_PROPERTY(bool hasData READ hasData NOTIFY hasDataChanged)
+    Q_PROPERTY(QVariantList stripsMissingResource READ stripsMissingResource NOTIFY stripsMissingResourceChanged)
+
 public:
     explicit ManagedResourceReport(QObject *parent = nullptr);
 
     Q_INVOKABLE void generateReport(Document* document);
 
-    Q_INVOKABLE void clearReport()
-    {
-    }
+    Q_INVOKABLE void clearReport();
 
     // Returns a report of file deletion success/failure
     Q_INVOKABLE QString deleteFiles(QStringList files)
     {
     }
 
+    QVariantList stripsMissingResource() const;
+
+    bool hasData() const;
+private:
+    void setHasData(bool hasData);
+public:
+
 signals:
+
+    void hasDataChanged();
+    void stripsMissingResourceChanged();
 
 public slots:
 };

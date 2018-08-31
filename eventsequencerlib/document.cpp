@@ -326,6 +326,11 @@ void Document::setCurrentUrl(const QUrl &currentUrl)
     }
 }
 
+QString Document::fileResourceDirectory() const
+{
+    return fileResourceDirectory_;
+}
+
 QString Document::fileForkedFromChecksum() const
 {
     return fileForkedFromChecksum_;
