@@ -80,9 +80,18 @@ QtObject {
     }
 
     function cancel() {
-        takeable = false
-        if (!managedResources.deleteUrl(root.corralUrl)) {
-            console.warn("Deletion failed")
+        var result = managedResources.deleteUrl(root.corralUrl)
+        var success = result[0]
+        if (success) {
+            takeable = false
+            return {
+                success: true
+            }
+        } else {
+            return {
+                success: false,
+                errorMsg: result[1]
+            }
         }
     }
 

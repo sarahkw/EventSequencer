@@ -458,7 +458,12 @@ Page {
                         // times.
                         text: "Delete unassigned recording?"
                         standardButtons: StandardButton.Yes | StandardButton.No
-                        onYes: recorderControl.corraledResourceFile.cancel()
+                        onYes: {
+                            var result = recorderControl.corraledResourceFile.cancel()
+                            if (!result.success) {
+                                msgbox.msgbox(result.errorMsg, "Delete Failed")
+                            }
+                        }
                     }
 
                     Timer {
@@ -900,11 +905,13 @@ Ensure that there is currently no unassigned recording.
 Error: %1".arg(result.errorMsg))
                                                     }
                                                 } else if (deleteStripOption2.checked) {
-                                                    var success = managedResources.deleteUrl(thestrip.resourceUrl)
+                                                    var result = managedResources.deleteUrl(thestrip.resourceUrl)
+                                                    var success = result[0]
                                                     if (success) {
                                                         deleteTheStrip()
                                                     } else {
-                                                        msgbox.msgbox("Unable to delete recording")
+                                                        msgbox.msgbox("Unable to delete recording.
+Error: %1".arg(result[1]))
                                                     }
                                                 } else if (deleteStripOption3.checked) {
                                                     deleteTheStrip()

@@ -67,12 +67,19 @@ QVariantList ManagedResources::renameUrlToGeneratedFileName(QUrl url, QString su
     return renameUrlToFileName(url, generateResourceBaseName() + suffix);
 }
 
-bool ManagedResources::deleteUrl(QUrl url)
+QVariantList ManagedResources::deleteUrl(QUrl url)
 {
     QString fileName;
-    if (!urlConvertToFilePath(url, &fileName)) return false;
+    if (!urlConvertToFilePath(url, &fileName)) {
+        return {false, "ManagedResources not ready"};
+    }
 
-    return QFile::remove(fileName);
+    QFile f(fileName);
+    if (f.remove()) {
+        return {true};
+    } else {
+        return {false, f.errorString()};
+    }
 }
 
 bool ManagedResources::existsUrl(QUrl url)

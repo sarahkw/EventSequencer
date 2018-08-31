@@ -31,7 +31,7 @@ public:
     Q_INVOKABLE QVariantList renameUrlToFileName(QUrl url, QString newFileName);
     Q_INVOKABLE QVariantList renameUrlToGeneratedFileName(QUrl url, QString suffix);
 
-    Q_INVOKABLE bool deleteUrl(QUrl url);
+    Q_INVOKABLE QVariantList deleteUrl(QUrl url);
     Q_INVOKABLE bool existsUrl(QUrl url);
 
     static bool urlIsManaged(QUrl url);
