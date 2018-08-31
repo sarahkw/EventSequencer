@@ -344,7 +344,16 @@ Page {
 
                         title: "Change Font Size"
                         modal: true
-                        standardButtons: Controls2.Dialog.Ok
+
+                        // Unfortunately, in the default theme, if we just say
+                        // stand button "Ok" then it doesn't show up right at first.
+                        // So workaround by making a Done button.
+                        footer: DialogButtonBox {
+                            Button {
+                                text: "Done"
+                                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+                            }
+                        }
                         SpinBox {
                             id: fontDialogTextField
                             anchors.centerIn: parent
