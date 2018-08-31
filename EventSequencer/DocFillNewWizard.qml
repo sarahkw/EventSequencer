@@ -23,6 +23,10 @@ Rectangle {
             }
         }
     ]
+
+    ES.ConstrainedMetricsFontUtil {
+        id: cmfu
+    }
     
     ColumnLayout {
         anchors.fill: parent
@@ -126,7 +130,7 @@ Rectangle {
                                     Layout.fillHeight: true
                                     TextArea {
                                         id: contentBody
-                                        font.family: "Courier New"
+                                        font: cmfu.builtFont
                                         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                                         textFormat: TextEdit.PlainText
                                     }

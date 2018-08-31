@@ -106,7 +106,6 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
             Text {
                 Layout.fillWidth: true
                 text: root.title
-                font.family: "Courier"
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
 
