@@ -149,6 +149,11 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                             Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
                         }
                         RoundButton {
+                            text: "About"
+                            radius: 5
+                            Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
+                        }
+                        RoundButton {
                             text: "Quit"
                             radius: 5
                             Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
