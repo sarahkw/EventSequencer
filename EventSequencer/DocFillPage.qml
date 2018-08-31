@@ -445,6 +445,28 @@ Page {
                         onYes: recorderControl.corraledResourceFile.cancel()
                     }
 
+                    Timer {
+                        id: tmrPlayToneBeforeRecord1
+                        interval: 2000
+                        onTriggered: {
+                            playPage.stopToneBeforeRecord()
+                            tmrPlayToneBeforeRecord2.start()
+                        }
+                    }
+
+                    Timer {
+                        // XXX If I start recording right after the tone stops,
+                        // some of the tone gets recorded. Maybe this other timer
+                        // is a race condition? I guess we'll have to find out
+                        // a nice way to wait for the tone to stop. Maybe we have
+                        // to wait out the audio buffer size?
+                        id: tmrPlayToneBeforeRecord2
+                        interval: 100
+                        onTriggered: {
+                            recorderControl.beginRecord()
+                        }
+                    }
+
                     states: [
                         State {
                             when: recorderControl.corraledResourceFile.takeable
@@ -455,11 +477,30 @@ Page {
                             }
                         },
                         State {
+                            when: tmrPlayToneBeforeRecord1.running || tmrPlayToneBeforeRecord2.running
+                            PropertyChanges {
+                                target: unnamedParent_7c13
+                                text: "Cancel Tone"
+                                onClicked: {
+                                    tmrPlayToneBeforeRecord1.stop()
+                                    tmrPlayToneBeforeRecord2.stop()
+                                    playPage.stopToneBeforeRecord()
+                                }
+                            }
+                        },
+                        State {
                             when: recordPage.isStopped
                             PropertyChanges {
                                 target: unnamedParent_7c13
                                 text: "Record"
-                                onClicked: recorderControl.beginRecord()
+                                onClicked: {
+                                    if (chkSettingToneBeforeRecord.checked) {
+                                        playPage.playToneBeforeRecord()
+                                        tmrPlayToneBeforeRecord1.start()
+                                    } else {
+                                        recorderControl.beginRecord()
+                                    }
+                                }
                             }
                         }
                     ]
@@ -479,6 +520,16 @@ Page {
                     playerControl.stop()
                     cmbSelectionMode.currentIndex = 0
                     playerControl.play()
+                }
+
+                function playToneBeforeRecord() {
+                    playerControl.stop()
+                    cmbSelectionMode.currentIndex = 4
+                    playerControl.play()
+                }
+
+                function stopToneBeforeRecord() {
+                    playerControl.stop()
                 }
 
                 ComboBox {
@@ -993,6 +1044,7 @@ Page {
                                         text: "Automatically set range start on record"
                                     }
                                     CheckBox {
+                                        id: chkSettingToneBeforeRecord
                                         Layout.fillWidth: true
                                         Layout.columnSpan: 2
                                         text: "Play tone before record"
