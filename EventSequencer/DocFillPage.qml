@@ -871,18 +871,15 @@ Page {
                                     anchors.right: parent.right
                                     title: "Orphaned Resources"
                                     RowLayout {
-                                        Button {
-                                            Layout.fillWidth: true
-                                            text: "Select All"
-                                            checkable: true
-                                        }
+                                        anchors.left: parent.left
+                                        anchors.right: parent.right
                                         Button {
                                             Layout.fillWidth: true
                                             text: "Copy List"
                                         }
                                         Button {
                                             Layout.fillWidth: true
-                                            text: "Delete Selected"
+                                            text: "Delete All"
                                         }
                                     }
                                 }
@@ -892,18 +889,15 @@ Page {
                                     anchors.right: parent.right
                                     title: "Strips Missing Resources"
                                     RowLayout {
-                                        Button {
-                                            Layout.fillWidth: true
-                                            text: "Select All"
-                                            checkable: true
-                                        }
+                                        anchors.left: parent.left
+                                        anchors.right: parent.right
                                         Button {
                                             Layout.fillWidth: true
                                             text: "Copy List"
                                         }
                                         Button {
                                             Layout.fillWidth: true
-                                            text: "Delete Selected"
+                                            text: "Delete All"
                                         }
                                     }
                                 }
