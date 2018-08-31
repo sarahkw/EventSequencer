@@ -100,14 +100,20 @@ Rectangle {
                                 Rectangle {
                                     Layout.fillWidth: true
                                     color: "lemonchiffon"
-                                    implicitHeight: textContentExplanation.implicitHeight
+                                    implicitHeight: internalRowLayout.implicitHeight
 
-                                    Text {
+                                    RowLayout {
+                                        id: internalRowLayout
                                         anchors.left: parent.left
                                         anchors.right: parent.right
-                                        id: textContentExplanation
-                                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                                        text: "Contents cannot be changed later. Characters need to fit in a single UTF-16 codepoint and must only take up a single space."
+                                        Text {
+                                            Layout.fillWidth: true
+                                            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                                            text: "Cannot be changed later. Characters need to fit in 1 UTF-16 codepoint and be single-spaced."
+                                        }
+                                        Button {
+                                            text: "Paste"
+                                        }
                                     }
                                 }
                                 ScrollView {
