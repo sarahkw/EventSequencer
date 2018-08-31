@@ -31,15 +31,7 @@ class ManagedResourceReport : public QObject
 public:
     explicit ManagedResourceReport(QObject *parent = nullptr);
 
-    // Quick check for unused files. This will be done automatiacally sometimes
-    // when app is idle.
-    Q_INVOKABLE void generateQuickReport(Document* document)
-    {
-    }
-
-    Q_INVOKABLE void generateReport(Document* document)
-    {
-    }
+    Q_INVOKABLE void generateReport(Document* document);
 
     Q_INVOKABLE void clearReport()
     {
