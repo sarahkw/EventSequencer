@@ -2,6 +2,8 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.2
 
+import eventsequencer 1.0 as ES
+
 Rectangle {
     color: "whitesmoke"
 
@@ -113,6 +115,9 @@ Rectangle {
                                         }
                                         Button {
                                             text: "Paste"
+                                            onClicked: {
+                                                contentBody.text = ES.ClipboardWrapper.getText()
+                                            }
                                         }
                                     }
                                 }
@@ -120,6 +125,7 @@ Rectangle {
                                     Layout.fillWidth: true
                                     Layout.fillHeight: true
                                     TextArea {
+                                        id: contentBody
                                         font.family: "Courier New"
                                         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                                         textFormat: TextEdit.PlainText

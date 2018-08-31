@@ -12,3 +12,8 @@ void ClipboardWrapper::setText(QString text) const
 {
     QGuiApplication::clipboard()->setText(text);
 }
+
+QString ClipboardWrapper::getText() const
+{
+    return QGuiApplication::clipboard()->text();
+}

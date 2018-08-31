@@ -12,6 +12,7 @@ public:
     explicit ClipboardWrapper(QObject *parent = nullptr);
 
     Q_INVOKABLE void setText(QString text) const;
+    Q_INVOKABLE QString getText() const;
 
 signals:
 
