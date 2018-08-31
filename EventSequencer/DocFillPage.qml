@@ -183,10 +183,10 @@ Page {
 
         TabButton { text: "View" }
         TabButton {
-            text: recordPage.isStopped ? "Record" : "RECORD"
+            text: recordPage.isStopped ? "Record" : "Recording"
         }
         TabButton {
-            text: playPage.isStopped ? "Play" : "PLAY"
+            text: playPage.isStopped ? "Play" : "Playing"
         }
         TabButton {
             text: autoSaveManager.isDirty ? "File*" : "File"
