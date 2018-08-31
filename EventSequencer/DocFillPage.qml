@@ -621,21 +621,6 @@ Page {
                 id: fileFooterItem
                 Button {
                     Layout.fillWidth: true
-                    text: "Save File"
-                    onClicked: {
-                        documentSaveOrShowError(document.currentUrl)
-                        autoSaveManager.markManualSaved()
-                    }
-                }
-                Button {
-                    id: chkAutoSave
-                    Layout.fillWidth: true
-                    text: "Auto Save"
-                    checkable: true
-                    checked: true
-                }
-                Button {
-                    Layout.fillWidth: true
                     id: btnCloseFile
                     text: "Close File"
 
@@ -663,6 +648,21 @@ Page {
                         } else {
                             btnCloseFile.actuallyClose()
                         }
+                    }
+                }
+                Button {
+                    id: chkAutoSave
+                    Layout.fillWidth: true
+                    text: "Auto Save"
+                    checkable: true
+                    checked: true
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: "Save File"
+                    onClicked: {
+                        documentSaveOrShowError(document.currentUrl)
+                        autoSaveManager.markManualSaved()
                     }
                 }
             }
