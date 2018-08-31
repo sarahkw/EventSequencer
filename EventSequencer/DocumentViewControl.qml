@@ -38,7 +38,6 @@ Rectangle {
 
     ES.ConstrainedMetricsFontUtil {
         id: cmfu
-        constrainByWidthEnabled: false
         //baseFont.pointSize: 24
         //constrainByWidthValue: 8
     }

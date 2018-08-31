@@ -222,7 +222,6 @@ QFont ConstrainedMetricsFontUtil::builtFont()
 ConstrainedMetricsFontUtil::ConstrainedMetricsFontUtil(QObject *parent) : QObject(parent)
 {
     baseFont_ = makeUniformPixelWidth(defaultFont());
-    builtFont_ = baseFont_;
 }
 
 QFont ConstrainedMetricsFontUtil::defaultFont()

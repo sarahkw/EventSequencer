@@ -8,7 +8,7 @@ class ConstrainedMetricsFontUtil : public QObject
 {
     Q_OBJECT
 
-    bool constrainByWidthEnabled_ = true; // Allowing this to be false was added later.
+    bool constrainByWidthEnabled_ = false;
     int constrainByWidthValue_ = 0;
 
     bool constrainByHeightEnabled_ = false;
@@ -37,7 +37,7 @@ class ConstrainedMetricsFontUtil : public QObject
     Q_PROPERTY(int   builtFontWidth                   READ builtFontWidth                     NOTIFY builtFontWidthChanged)
     Q_PROPERTY(QFont builtFont                        READ builtFont                          NOTIFY builtFontChanged)
 
-    bool builtFontIsDirty_ = false;
+    bool builtFontIsDirty_ = true;
 
 public:
     explicit ConstrainedMetricsFontUtil(QObject *parent = nullptr);

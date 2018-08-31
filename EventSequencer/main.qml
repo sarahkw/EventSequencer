@@ -635,6 +635,7 @@ ApplicationWindow {
                     implicitHeight: childrenRect.height + childrenRect.y
 
                     property ES.ConstrainedMetricsFontUtil cmfuAlignedFont: ES.ConstrainedMetricsFontUtil {
+                        constrainByWidthEnabled: true
                         constrainByWidthValue: zoom.displayWidthPerRulerTick
                         addLetterSpacingToMatchWidth: true
                         constrainByHeightEnabled: true

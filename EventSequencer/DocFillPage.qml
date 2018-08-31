@@ -725,7 +725,6 @@ Page {
 
                                 property int spaceToTakeUp: parent.width
                                 property var cmfuAlignedFont: ES.ConstrainedMetricsFontUtil {
-                                    constrainByWidthEnabled: false
                                 }
                                 property int charactersToShow: spaceToTakeUp / cmfuAlignedFont.builtFontWidth + 2 /*Rounding, I guess. Can't hurt*/
                                 property int charactersShifted: charactersToShow / 2
