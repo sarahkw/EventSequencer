@@ -25,6 +25,11 @@ void ManagedResourceReport::setHasData(bool hasData)
     }
 }
 
+QVariantList ManagedResourceReport::unusedFiles() const
+{
+    return unusedFiles_;
+}
+
 ManagedResourceReport::ManagedResourceReport(QObject *parent) : QObject(parent)
 {
 
@@ -54,6 +59,11 @@ void ManagedResourceReport::generateReport(Document *document)
 
     emit stripsMissingResourceChanged();
 
+    for (QUrl& url : mr.urlList()) {
+        unusedFiles_.push_back(url);
+    }
+    emit unusedFilesChanged();
+
     setHasData(true);
 }
 
@@ -71,4 +81,7 @@ void ManagedResourceReport::clearReport()
     }
     stripsMissingResource_.clear();
     emit stripsMissingResourceChanged();
+
+    unusedFiles_.clear();
+    emit unusedFilesChanged();
 }

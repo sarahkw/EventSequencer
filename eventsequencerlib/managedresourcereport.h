@@ -29,6 +29,7 @@ class ManagedResourceReport : public QObject
 
     Q_PROPERTY(bool hasData READ hasData NOTIFY hasDataChanged)
     Q_PROPERTY(QVariantList stripsMissingResource READ stripsMissingResource NOTIFY stripsMissingResourceChanged)
+    Q_PROPERTY(QVariantList unusedFiles READ unusedFiles NOTIFY unusedFilesChanged)
 
 public:
     explicit ManagedResourceReport(QObject *parent = nullptr);
@@ -49,10 +50,13 @@ private:
     void setHasData(bool hasData);
 public:
 
+    QVariantList unusedFiles() const;
+
 signals:
 
     void hasDataChanged();
     void stripsMissingResourceChanged();
+    void unusedFilesChanged();
 
 public slots:
 };

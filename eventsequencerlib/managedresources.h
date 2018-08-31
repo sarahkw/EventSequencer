@@ -39,6 +39,8 @@ public:
 
     bool urlFile(QUrl url, QFile* file);
 
+    std::vector<QUrl> urlList();
+
 signals:
 
     void fileResourceDirectoryChanged();

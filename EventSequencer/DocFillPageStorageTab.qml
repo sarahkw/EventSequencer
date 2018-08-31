@@ -62,16 +62,26 @@ Item {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     title: "Orphaned Resources"
-                    RowLayout {
+                    ColumnLayout {
                         anchors.left: parent.left
                         anchors.right: parent.right
-                        Button {
-                            Layout.fillWidth: true
-                            text: "Copy List"
+                        Repeater {
+                            model: report.unusedFiles
+                            Text {
+                                text: modelData + ""
+                                Layout.fillWidth: true
+                            }
                         }
-                        Button {
+                        RowLayout {
                             Layout.fillWidth: true
-                            text: "Delete All"
+                            Button {
+                                Layout.fillWidth: true
+                                text: "Copy List"
+                            }
+                            Button {
+                                Layout.fillWidth: true
+                                text: "Delete All"
+                            }
                         }
                     }
                 }

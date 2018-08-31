@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QUuid>
 #include <QDebug>
+#include <QFileInfo>
 
 void ManagedResources::mkpathManagedDirectory()
 {
@@ -117,6 +118,15 @@ bool ManagedResources::urlFile(QUrl url, QFile *file)
     return true;
 }
 
+std::vector<QUrl> ManagedResources::urlList()
+{
+    std::vector<QUrl> result;
+    QDir dir(fileResourceDirectory_);
+    for (QFileInfo& fi : dir.entryInfoList(QDir::Files)) {
+        result.push_back(urlForFileName(fi.fileName()));
+    }
+    return result;
+}
 
 ManagedResources::ManagedResources(QObject *parent) : QObject(parent)
 {
