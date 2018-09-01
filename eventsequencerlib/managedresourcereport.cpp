@@ -72,6 +72,33 @@ QString ManagedResourceReport::unusedFilesAsText()
     return lines.join("\n");
 }
 
+void ManagedResourceReport::deleteAllStripsMissingResources(Document* document)
+{
+    std::vector<Strip*> stripsToDelete;
+
+    for (QVariant& v : stripsMissingResource_) {
+        Strip* s = v.value<Strip*>();
+        if (s != nullptr) {
+            stripsToDelete.push_back(s);
+        } else {
+            qWarning("Null strip?");
+        }
+    }
+
+    // When we start deleting strips, it will clear the report anyway. I think
+    // it's cleaner to just do it now.
+    clearReport();
+
+    for (Strip* s : stripsToDelete) {
+        document->deleteStrip(s);
+    }
+}
+
+QString ManagedResourceReport::deleteAllUnusedFiles(Document* document)
+{
+
+}
+
 ManagedResourceReport::ManagedResourceReport(QObject *parent) : QObject(parent)
 {
 

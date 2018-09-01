@@ -133,6 +133,10 @@ Item {
                             Button {
                                 Layout.fillWidth: true
                                 text: "Delete All Strips"
+                                onClicked: {
+                                    report.deleteAllStripsMissingResources(document)
+                                    autoSaveManager.markDirty()
+                                }
                             }
                         }
                     }

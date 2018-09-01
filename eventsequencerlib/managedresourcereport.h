@@ -35,11 +35,6 @@ public:
 
     Q_INVOKABLE void clearReport();
 
-    // Returns a report of file deletion success/failure
-    Q_INVOKABLE QString deleteFiles(QStringList files)
-    {
-    }
-
     QVariantList stripsMissingResource() const;
 
     bool hasData() const;
@@ -53,6 +48,9 @@ public:
 
     Q_INVOKABLE QString stripsMissingResourceAsText();
     Q_INVOKABLE QString unusedFilesAsText();
+
+    Q_INVOKABLE void deleteAllStripsMissingResources(Document* document);
+    Q_INVOKABLE QString deleteAllUnusedFiles(Document* document);
 
 signals:
 
