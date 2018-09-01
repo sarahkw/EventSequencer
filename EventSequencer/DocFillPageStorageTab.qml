@@ -83,6 +83,7 @@ Item {
                             Layout.fillWidth: true
                             Button {
                                 Layout.fillWidth: true
+                                enabled: report.unusedFiles.length !== 0
                                 text: "Copy List"
                                 onClicked: {
                                     ES.ClipboardWrapper.setText(report.unusedFilesAsText())
@@ -90,6 +91,7 @@ Item {
                             }
                             Button {
                                 Layout.fillWidth: true
+                                enabled: report.unusedFiles.length !== 0
                                 text: "Delete All Files"
 
                                 MessageDialog {
@@ -138,6 +140,7 @@ Item {
                             Layout.fillWidth: true
                             Button {
                                 Layout.fillWidth: true
+                                enabled: report.stripsMissingResource.length !== 0
                                 text: "Copy List"
                                 onClicked: {
                                     ES.ClipboardWrapper.setText(report.stripsMissingResourceAsText())
@@ -145,6 +148,7 @@ Item {
                             }
                             Button {
                                 Layout.fillWidth: true
+                                enabled: report.stripsMissingResource.length !== 0
                                 text: "Delete All Strips"
 
                                 MessageDialog {
