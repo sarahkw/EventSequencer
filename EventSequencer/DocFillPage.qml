@@ -693,6 +693,10 @@ Page {
         interactive: false
         visible: fileFooterItem.SwipeView.isCurrentItem
 
+        function showStripsPage() {
+            fileDrawerSwipeView.setCurrentIndex(0)
+        }
+
         Page {
             anchors.fill: parent
             clip: true
@@ -974,6 +978,7 @@ Error: %1".arg(result[1]))
                     unassignedFileName: recorderControl.corraledResourceFile.corralFileName
                     function goToAndSelectStrip(strip) {
                         stripsHolderItem.goToAndSelectStrip(strip)
+                        fileDrawer.showStripsPage()
                     }
                 }
 
