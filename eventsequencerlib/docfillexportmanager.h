@@ -20,6 +20,11 @@ class DocFillExportManager : public QObject
     Q_PROPERTY(QString defaultExportJsonOutputPath READ defaultExportJsonOutputPath NOTIFY defaultOutputPathsChanged)
     Q_PROPERTY(QString defaultPlayToFileOutputPath READ defaultPlayToFileOutputPath NOTIFY defaultOutputPathsChanged)
 
+    bool defaultExportJsonOutputPathExists_ = false;
+    bool defaultPlayToFileOutputPathExists_ = false;
+    Q_PROPERTY(bool defaultExportJsonOutputPathExists READ defaultExportJsonOutputPathExists NOTIFY defaultOutputPathsChanged)
+    Q_PROPERTY(bool defaultPlayToFileOutputPathExists READ defaultPlayToFileOutputPathExists NOTIFY defaultOutputPathsChanged)
+
     void updateDefaultOutputPaths();
 
 public:
@@ -36,6 +41,12 @@ public:
     Q_INVOKABLE QString exportJson(channel::ChannelBase* textChannel,
                                    channel::ChannelBase* resourceChannel,
                                    QString outputPath);
+
+    bool defaultExportJsonOutputPathExists() const;
+    bool defaultPlayToFileOutputPathExists() const;
+
+    Q_INVOKABLE bool deleteDefaultExportJsonOutputPath();
+    Q_INVOKABLE bool deleteDefaultPlayToFileOutputPath();
 
 signals:
 

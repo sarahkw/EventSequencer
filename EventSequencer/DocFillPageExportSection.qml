@@ -6,8 +6,23 @@ GroupBox {
     property alias description: descriptionLabel.text
     property string defaultOutputPath
     property alias outputPath: txtOutputPath.text
+    property bool defaultOutputPathExists
 
     signal exportActivated(string path)
+    signal deleteActivated()
+
+    states: [
+        State {
+            when: defaultOutputPathExists
+            PropertyChanges {
+                target: btnExport
+                text: "Delete"
+                onActivated: {
+                    deleteActivated()
+                }
+            }
+        }
+    ]
 
     ColumnLayout {
         anchors.left: parent.left
@@ -31,9 +46,13 @@ GroupBox {
             }
         }
         DelayButton {
+            id: btnExport
             Layout.fillWidth: true
             text: "Export"
-            onActivated: exportActivated(txtOutputPath.text)
+            onActivated: {
+                exportActivated(txtOutputPath.text)
+            }
+            onCheckedChanged: checked = false
         }
     }
 }

@@ -109,18 +109,56 @@ QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
         return QString("Cannot flush: %1").arg(file.errorString());
     }
     file.close();
+
+    defaultExportJsonOutputPathExists_ = true;
+    emit defaultOutputPathsChanged();
+
     return "Success";
+}
+
+bool DocFillExportManager::defaultExportJsonOutputPathExists() const
+{
+    return defaultExportJsonOutputPathExists_;
+}
+
+bool DocFillExportManager::defaultPlayToFileOutputPathExists() const
+{
+    return defaultPlayToFileOutputPathExists_;
+}
+
+bool DocFillExportManager::deleteDefaultExportJsonOutputPath()
+{
+    const bool success = QFile::remove(defaultExportJsonOutputPath_);
+    if (success) {
+        defaultExportJsonOutputPathExists_ = false;
+        emit defaultOutputPathsChanged();
+    }
+    return success;
+}
+
+bool DocFillExportManager::deleteDefaultPlayToFileOutputPath()
+{
+    const bool success = QFile::remove(defaultPlayToFileOutputPath_);
+    if (success) {
+        defaultPlayToFileOutputPathExists_ = false;
+        emit defaultOutputPathsChanged();
+    }
+    return success;
 }
 
 void DocFillExportManager::updateDefaultOutputPaths()
 {
     defaultExportJsonOutputPath_.clear();
     defaultPlayToFileOutputPath_.clear();
+    defaultExportJsonOutputPathExists_ = false;
+    defaultPlayToFileOutputPathExists_ = false;
     if (document_ != nullptr) {
         auto pathGen = document_->exportPathGenerator();
         if (!!pathGen) {
             defaultExportJsonOutputPath_ = pathGen(".json");
             defaultPlayToFileOutputPath_ = pathGen(".au");
+            defaultExportJsonOutputPathExists_ = QFile::exists(defaultExportJsonOutputPath_);
+            defaultPlayToFileOutputPathExists_ = QFile::exists(defaultPlayToFileOutputPath_);
         }
     }
     emit defaultOutputPathsChanged();
