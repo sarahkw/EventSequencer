@@ -829,6 +829,12 @@ Page {
                                             }
                                         }
 
+                                        function goToAndSelectStrip(strip) {
+                                            rebind_changeCursorFrame(strip.startFrame)
+                                            // XXX Maybe confirm the strip is visible before selecting it?
+                                            selectedStrip = strip
+                                        }
+
                                         Repeater {
                                             model: wfsir.strips
                                             Button {
@@ -966,6 +972,9 @@ Error: %1".arg(result[1]))
                 // Storage
                 DocFillPageStorageTab {
                     unassignedFileName: recorderControl.corraledResourceFile.corralFileName
+                    function goToAndSelectStrip(strip) {
+                        stripsHolderItem.goToAndSelectStrip(strip)
+                    }
                 }
 
                 // Export

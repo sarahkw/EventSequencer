@@ -109,6 +109,7 @@ Item {
                                         text: "%1: %2".arg(modelData.startFrame).arg(managedResources.urlConvertToFileName(modelData.resourceUrl))
                                     }
                                 }
+                                onClicked: goToAndSelectStrip(modelData)
                                 Layout.fillWidth: true
                             }
                         }
