@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.2
+import QtQuick.Dialogs 1.2
 
 import eventsequencer 1.0 as ES
 
@@ -133,9 +134,19 @@ Item {
                             Button {
                                 Layout.fillWidth: true
                                 text: "Delete All Strips"
+
+                                MessageDialog {
+                                    id: mdConfirmDeleteAllStrips
+                                    standardButtons: StandardButton.Yes | StandardButton.No
+                                    text: "Are you sure you wish to delete all strips that are missing resources?"
+                                    onYes: {
+                                        report.deleteAllStripsMissingResources(document)
+                                        autoSaveManager.markDirty()
+                                    }
+                                }
+
                                 onClicked: {
-                                    report.deleteAllStripsMissingResources(document)
-                                    autoSaveManager.markDirty()
+                                    mdConfirmDeleteAllStrips.open()
                                 }
                             }
                         }
