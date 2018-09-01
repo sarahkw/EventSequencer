@@ -2,6 +2,11 @@
 
 #include "document.h"
 
+#include <QJsonDocument>
+#include <QJsonObject>
+
+#include <QDebug> // FOR DEV WORK
+
 QObject *DocFillExportManager::document() const
 {
     return document_;
@@ -40,6 +45,15 @@ QString DocFillExportManager::defaultExportJsonOutputPath() const
 QString DocFillExportManager::defaultPlayToFileOutputPath() const
 {
     return defaultPlayToFileOutputPath_;
+}
+
+void DocFillExportManager::exportJson(QString outputPath)
+{
+    QJsonObject obj;
+    obj["a"] = true;
+
+    QJsonDocument jsonDoc(obj);
+    qInfo() << jsonDoc.toJson().data();
 }
 
 void DocFillExportManager::updateDefaultOutputPaths()

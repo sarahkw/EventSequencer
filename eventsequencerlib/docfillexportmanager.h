@@ -31,6 +31,8 @@ public:
 
     QString defaultPlayToFileOutputPath() const;
 
+    Q_INVOKABLE void exportJson(QString outputPath);
+
 signals:
 
     void documentChanged();

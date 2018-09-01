@@ -7,6 +7,8 @@ GroupBox {
     property string defaultOutputPath
     property alias outputPath: txtOutputPath.text
 
+    signal exportActivated(string path)
+
     ColumnLayout {
         anchors.left: parent.left
         anchors.right: parent.right
@@ -31,6 +33,7 @@ GroupBox {
         DelayButton {
             Layout.fillWidth: true
             text: "Export"
+            onActivated: exportActivated(txtOutputPath.text)
         }
     }
 }
