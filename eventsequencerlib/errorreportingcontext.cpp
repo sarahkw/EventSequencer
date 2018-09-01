@@ -2,18 +2,11 @@
 
 #include "conditionalerror.h"
 
-// Test!
-//#define DEMO
-
 QStringList ErrorReportingContext::model() const
 {
-    // XXX It sucks to abuse strings like that, but I have to ship.
     QStringList ret;
-#ifdef DEMO
-    ret.push_back("AD If you find this software enjoyable or useful, please consider purchasing it. Thanks!");
-#endif
     for (ConditionalError* cerror : activeConditionalErrors_) {
-        ret.push_back(QString("ERROR %1").arg(cerror->errorText()));
+        ret.push_back(cerror->errorText());
     }
     return ret;
 }

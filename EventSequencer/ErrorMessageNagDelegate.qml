@@ -11,34 +11,19 @@ Item {
         anchors.leftMargin: 20
         anchors.rightMargin: 20
         Component.onCompleted: background.color = "white"
-        palette.window: myColor
-        property var messageItems: {
-            var spacePos = modelData.indexOf(" ")
-            return [modelData.substr(0, spacePos),
-                    modelData.substr(spacePos + 1)]
-        }
-
-        property color myColor: {
-            if (messageItems[0] === "ERROR") {
-                return "red"
-            } else {
-                return "green"
-            }
-        }
+        palette.window: "red"
 
         RowLayout {
-
-
             anchors.left: parent.left
             anchors.right: parent.right
             Label {
-                text: chld.messageItems[0]
-                color: chld.myColor
+                text: "ERROR"
+                color: "red"
             }
 
             Label {
                 Layout.fillWidth: true
-                text: chld.messageItems[1]
+                text: modelData
                 wrapMode: Text.Wrap
             }
         }
