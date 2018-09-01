@@ -118,12 +118,12 @@ bool ManagedResources::urlFile(QUrl url, QFile *file)
     return true;
 }
 
-std::vector<std::pair<QUrl, QString>> ManagedResources::urlList()
+std::vector<std::pair<QUrl, QFileInfo>> ManagedResources::urlList()
 {
-    std::vector<std::pair<QUrl, QString>> result;
+    std::vector<std::pair<QUrl, QFileInfo>> result;
     QDir dir(fileResourceDirectory_);
     for (QFileInfo& fi : dir.entryInfoList(QDir::Files)) {
-        result.push_back(std::make_pair(urlForFileName(fi.fileName()), fi.fileName()));
+        result.push_back(std::make_pair(urlForFileName(fi.fileName()), fi));
     }
     return result;
 }

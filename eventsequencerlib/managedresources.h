@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QUrl>
 #include <QVariantList>
+#include <QFileInfo>
 
 class QFile;
 
@@ -39,7 +40,7 @@ public:
 
     bool urlFile(QUrl url, QFile* file);
 
-    std::vector<std::pair<QUrl, QString>> urlList();
+    std::vector<std::pair<QUrl, QFileInfo>> urlList();
 
 signals:
 

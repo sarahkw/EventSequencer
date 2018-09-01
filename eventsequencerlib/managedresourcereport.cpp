@@ -46,7 +46,7 @@ void ManagedResourceReport::generateReport(Document *document)
     ManagedResources mr(document->fileResourceDirectory());
 
     std::map<QUrl, Strip*> strips;
-    std::map<QUrl, QString> files;
+    std::map<QUrl, QFileInfo> files;
 
     for (Strip* s : document->strips()) {
         if (!s->resourceUrl().isEmpty()) {
@@ -54,7 +54,7 @@ void ManagedResourceReport::generateReport(Document *document)
         }
     }
 
-    for (std::pair<QUrl, QString>& urlPair : mr.urlList()) {
+    for (std::pair<QUrl, QFileInfo>& urlPair : mr.urlList()) {
         files.insert(urlPair);
     }
 
@@ -66,9 +66,9 @@ void ManagedResourceReport::generateReport(Document *document)
         }
     }
 
-    for (std::pair<const QUrl, QString>& pair : files) {
+    for (std::pair<const QUrl, QFileInfo>& pair : files) {
         if (strips.find(pair.first) == strips.end()) {
-            unusedFiles_.push_back(pair.second);
+            unusedFiles_.push_back(pair.second.fileName());
         }
     }
 
