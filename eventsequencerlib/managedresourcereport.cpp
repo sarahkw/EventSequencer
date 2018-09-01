@@ -45,23 +45,34 @@ void ManagedResourceReport::generateReport(Document *document)
     }
     ManagedResources mr(document->fileResourceDirectory());
 
+    std::map<QUrl, Strip*> strips;
+    std::map<QUrl, QString> files;
+
     for (Strip* s : document->strips()) {
         if (!s->resourceUrl().isEmpty()) {
-            QString filePath;
-            mr.urlConvertToFilePath(s->resourceUrl(), &filePath);
-            if (!QFile::exists(filePath)) {
-                QObject::connect(s, &QObject::destroyed,
-                                 this, &ManagedResourceReport::clearReport);
-                stripsMissingResource_.push_back(QVariant::fromValue(s));
-            }
+            strips[s->resourceUrl()] = s;
+        }
+    }
+
+    for (std::pair<QUrl, QString>& urlPair : mr.urlList()) {
+        files.insert(urlPair);
+    }
+
+    for (std::pair<const QUrl, Strip*>& pair : strips) {
+        if (files.find(pair.first) == files.end()) {
+            QObject::connect(pair.second, &QObject::destroyed,
+                             this, &ManagedResourceReport::clearReport);
+            stripsMissingResource_.push_back(QVariant::fromValue(pair.second));
+        }
+    }
+
+    for (std::pair<const QUrl, QString>& pair : files) {
+        if (strips.find(pair.first) == strips.end()) {
+            unusedFiles_.push_back(pair.second);
         }
     }
 
     emit stripsMissingResourceChanged();
-
-    for (std::pair<QUrl, QString>& urlPair : mr.urlList()) {
-        unusedFiles_.push_back(urlPair.second);
-    }
     emit unusedFilesChanged();
 
     setHasData(true);
