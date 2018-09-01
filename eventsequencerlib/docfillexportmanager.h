@@ -1,6 +1,8 @@
 #ifndef DOCFILLEXPORTMANAGER_H
 #define DOCFILLEXPORTMANAGER_H
 
+#include "channel/channelbase.h"
+
 #include <QObject>
 
 class Document;
@@ -31,7 +33,9 @@ public:
 
     QString defaultPlayToFileOutputPath() const;
 
-    Q_INVOKABLE void exportJson(QString outputPath);
+    Q_INVOKABLE void exportJson(channel::ChannelBase* textChannel,
+                                channel::ChannelBase* resourceChannel,
+                                QString outputPath);
 
 signals:
 

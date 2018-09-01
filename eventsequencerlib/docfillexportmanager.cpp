@@ -47,8 +47,15 @@ QString DocFillExportManager::defaultPlayToFileOutputPath() const
     return defaultPlayToFileOutputPath_;
 }
 
-void DocFillExportManager::exportJson(QString outputPath)
+void DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
+                                      channel::ChannelBase* resourceChannel,
+                                      QString outputPath)
 {
+    if (document_ == nullptr || textChannel == nullptr || resourceChannel == nullptr) {
+        qWarning("Cannot export; no document or missing channel");
+        return;
+    }
+
     QJsonObject obj;
     obj["a"] = true;
 
