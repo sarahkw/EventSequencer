@@ -89,7 +89,7 @@ Item {
                             }
                             Button {
                                 Layout.fillWidth: true
-                                text: "Delete All"
+                                text: "Delete All Files"
                             }
                         }
                     }
@@ -132,7 +132,7 @@ Item {
                             }
                             Button {
                                 Layout.fillWidth: true
-                                text: "Delete All"
+                                text: "Delete All Strips"
                             }
                         }
                     }
