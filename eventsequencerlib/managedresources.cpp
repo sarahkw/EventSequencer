@@ -91,6 +91,18 @@ bool ManagedResources::existsUrl(QUrl url)
     return QFile::exists(fileName);
 }
 
+QString ManagedResources::urlConvertToFileName(QUrl url)
+{
+    // This assumes that ManagedResources is only 1 level. A fair assumption
+    // for now.
+    QString path = url.path();
+    int pos = path.lastIndexOf("/");
+    if (pos != -1) {
+        path = path.mid(pos + 1);
+    }
+    return path;
+}
+
 bool ManagedResources::urlIsManaged(QUrl url)
 {
     return url.scheme() == "evseq" && url.host() == "managed";

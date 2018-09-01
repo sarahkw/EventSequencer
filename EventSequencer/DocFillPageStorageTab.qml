@@ -102,10 +102,11 @@ Item {
                         Repeater {
                             model: report.stripsMissingResource
                             Button {
+                                clip: true
                                 contentItem: ColumnLayout {
                                     Text {
                                         Layout.fillWidth: true
-                                        text: "%1: %2".arg(modelData.startFrame).arg(modelData.resourceUrl)
+                                        text: "%1: %2".arg(modelData.startFrame).arg(managedResources.urlConvertToFileName(modelData.resourceUrl))
                                     }
                                 }
                                 Layout.fillWidth: true
