@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.3
 
 GroupBox {
     property alias description: descriptionLabel.text
+    property string defaultOutputPath
+    property alias outputPath: txtOutputPath.text
 
     ColumnLayout {
         anchors.left: parent.left
@@ -20,7 +22,9 @@ GroupBox {
             }
             TextField {
                 Layout.fillWidth: true
+                id: txtOutputPath
                 readOnly: !btnUseCustomPath.checked
+                text: defaultOutputPath
             }
         }
         RowLayout {

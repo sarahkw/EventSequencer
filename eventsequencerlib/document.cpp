@@ -318,9 +318,15 @@ void Document::setCurrentUrl(const QUrl &currentUrl)
 
         if (!currentFileName_.isEmpty()) {
             QFileInfo fi(currentFileName_);
-            fileResourceDirectory_ = fi.dir().path() + "/" + fi.completeBaseName() + "_data";
+            QString pathPart1 = fi.dir().path();
+            QString pathPart2 = fi.completeBaseName();
+            fileResourceDirectory_ = pathPart1 + "/" + pathPart2 + "_data";
+            exportPathGenerator_ = [pathPart1, pathPart2](QString suffix) {
+                return pathPart1 + "/" + "export-" + pathPart2 + suffix;
+            };
         } else {
             fileResourceDirectory_.clear();
+            exportPathGenerator_ = std::function<QString (QString suffix)>();
         }
         emit fileResourceDirectoryChanged();
     }
@@ -329,6 +335,11 @@ void Document::setCurrentUrl(const QUrl &currentUrl)
 QString Document::fileResourceDirectory() const
 {
     return fileResourceDirectory_;
+}
+
+std::function<QString (QString suffix)> Document::exportPathGenerator()
+{
+    return exportPathGenerator_;
 }
 
 QString Document::fileForkedFromChecksum() const
