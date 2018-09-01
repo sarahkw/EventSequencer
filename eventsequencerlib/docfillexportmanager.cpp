@@ -1,6 +1,8 @@
 #include "docfillexportmanager.h"
 
 #include "document.h"
+#include "channel/textchannel.h"
+#include "channel/collatechannel.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -55,6 +57,21 @@ void DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
         qWarning("Cannot export; no document or missing channel");
         return;
     }
+
+    auto* castTextChannel = qobject_cast<channel::TextChannel*>(textChannel);
+    if (castTextChannel == nullptr) {
+        qWarning("Unsupported text channel type");
+        return;
+    }
+
+    auto* castResourceChannel = qobject_cast<channel::CollateChannel*>(resourceChannel);
+    if (castResourceChannel == nullptr) {
+        qWarning("Unsupported resource channel type");
+        return;
+    }
+
+
+    QString content = castTextChannel->content();
 
     QJsonObject obj;
     obj["a"] = true;
