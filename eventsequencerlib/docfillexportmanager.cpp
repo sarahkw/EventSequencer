@@ -52,8 +52,7 @@ QString DocFillExportManager::defaultPlayToFileOutputPath() const
 }
 
 QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
-                                         channel::ChannelBase* resourceChannel,
-                                         QString outputPath)
+                                         channel::ChannelBase* resourceChannel)
 {
     if (document_ == nullptr || textChannel == nullptr || resourceChannel == nullptr) {
         qWarning("Cannot export; no document or missing channel");
@@ -94,7 +93,7 @@ QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
         jsonSegments.push_back(obj);
     }
 
-    QFile file(outputPath);
+    QFile file(defaultExportJsonOutputPath_);
     if (!file.open(QFile::NewOnly)) {
         return QString("Cannot open file: %1").arg(file.errorString());
     }

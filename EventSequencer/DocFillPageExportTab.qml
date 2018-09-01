@@ -30,7 +30,7 @@ ScrollView {
             defaultOutputPath: exportManager.defaultExportJsonOutputPath
             defaultOutputPathExists: exportManager.defaultExportJsonOutputPathExists
             onExportActivated: {
-                var result = exportManager.exportJson(cppTextChannel, cppResourceChannel, path)
+                var result = exportManager.exportJson(cppTextChannel, cppResourceChannel)
                 msgbox.msgbox(result, "Export")
             }
             onDeleteActivated: {

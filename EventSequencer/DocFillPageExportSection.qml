@@ -8,7 +8,7 @@ GroupBox {
     property alias outputPath: txtOutputPath.text
     property bool defaultOutputPathExists
 
-    signal exportActivated(string path)
+    signal exportActivated()
     signal deleteActivated()
 
     states: [
@@ -17,9 +17,7 @@ GroupBox {
             PropertyChanges {
                 target: btnExport
                 text: "Delete"
-                onActivated: {
-                    deleteActivated()
-                }
+                onActivated: deleteActivated()
             }
         }
     ]
@@ -49,9 +47,7 @@ GroupBox {
             id: btnExport
             Layout.fillWidth: true
             text: "Export"
-            onActivated: {
-                exportActivated(txtOutputPath.text)
-            }
+            onActivated: exportActivated()
             onCheckedChanged: checked = false
         }
     }
