@@ -140,6 +140,23 @@ std::vector<std::pair<QUrl, QFileInfo>> ManagedResources::urlList()
     return result;
 }
 
+bool ManagedResources::deleteManagedFileName(QString fileName)
+{
+    if (fileResourceDirectory_.isEmpty()) {
+        qWarning("ManagedResources not ready");
+        return false;
+    }
+
+    if (fileName.indexOf("/") != -1) {
+        qWarning("fileName should not have / in it");
+        return false;
+    }
+
+    qInfo() << "Not really removing" << fileResourceDirectory_ + "/" + fileName;
+    return false;
+    return QFile::remove(fileResourceDirectory_ + "/" + fileName);
+}
+
 ManagedResources::ManagedResources(QObject *parent) : QObject(parent)
 {
 

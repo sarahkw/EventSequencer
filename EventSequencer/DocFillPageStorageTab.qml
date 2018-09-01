@@ -97,6 +97,8 @@ Item {
                                     standardButtons: StandardButton.Yes | StandardButton.No
                                     text: "Are you sure you wish to delete all orphaned files?"
                                     onYes: {
+                                        var result = report.deleteAllUnusedFiles(document)
+                                        msgbox.msgbox(result)
                                     }
                                 }
 

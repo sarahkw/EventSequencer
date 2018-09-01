@@ -96,7 +96,25 @@ void ManagedResourceReport::deleteAllStripsMissingResources(Document* document)
 
 QString ManagedResourceReport::deleteAllUnusedFiles(Document* document)
 {
+    ManagedResources mr(document->fileResourceDirectory());
 
+    size_t successCount = 0;
+    size_t failureCount = 0;
+
+    for (QVariant& v : unusedFiles_) {
+        QString fn = v.toString();
+        if (mr.deleteManagedFileName(fn)) {
+            ++successCount;
+        } else {
+            ++failureCount;
+        }
+    }
+
+    // Just to be consistent because we need to delete the strips list. The file
+    // list wouldn't be valid anymore anyway.
+    clearReport();
+
+    return QString("%1 successful deletions, %2 failures").arg(successCount).arg(failureCount);
 }
 
 ManagedResourceReport::ManagedResourceReport(QObject *parent) : QObject(parent)

@@ -44,6 +44,8 @@ public:
 
     std::vector<std::pair<QUrl, QFileInfo>> urlList();
 
+    Q_INVOKABLE bool deleteManagedFileName(QString fileName);
+
 signals:
 
     void fileResourceDirectoryChanged();
