@@ -11,6 +11,10 @@ class ManagedResourceReport : public QObject
 {
     Q_OBJECT
 
+    // Ignored file names are excluded from being "unused"
+    QVariantList ignoredFileNames_;
+    Q_PROPERTY(QVariantList ignoredFileNames READ ignoredFileNames WRITE setIgnoredFileNames NOTIFY ignoredFileNamesChanged)
+
     bool hasData_ = false;
 
     QVariantList stripsMissingResource_;
@@ -44,7 +48,12 @@ public:
     QString unusedFilesSize() const;
     QString usedFilesSize() const;
 
+    QVariantList ignoredFileNames() const;
+    void setIgnoredFileNames(const QVariantList &ignoredFileNames);
+
 signals:
+
+    void ignoredFileNamesChanged();
 
     void reportChanged();
 

@@ -965,6 +965,7 @@ Error: %1".arg(result[1]))
 
                 // Storage
                 DocFillPageStorageTab {
+                    unassignedFileName: recorderControl.corraledResourceFile.corralFileName
                 }
 
                 // Export

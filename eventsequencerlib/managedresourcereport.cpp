@@ -33,6 +33,19 @@ QString ManagedResourceReport::usedFilesSize() const
     return usedFilesSize_;
 }
 
+QVariantList ManagedResourceReport::ignoredFileNames() const
+{
+    return ignoredFileNames_;
+}
+
+void ManagedResourceReport::setIgnoredFileNames(const QVariantList &ignoredFileNames)
+{
+    if (ignoredFileNames_ != ignoredFileNames) {
+        ignoredFileNames_ = ignoredFileNames;
+        emit ignoredFileNamesChanged();
+    }
+}
+
 ManagedResourceReport::ManagedResourceReport(QObject *parent) : QObject(parent)
 {
 
@@ -47,6 +60,16 @@ void ManagedResourceReport::generateReport(Document *document)
         return;
     }
     ManagedResources mr(document->fileResourceDirectory());
+
+    std::set<QString> ignored;
+    for (QVariant& v : ignoredFileNames_) {
+        auto s = v.toString();
+        if (s.isEmpty()) {
+            qWarning("Got an empty ignored file name");
+        } else {
+            ignored.insert(s);
+        }
+    }
 
     std::map<QUrl, Strip*> strips;
     std::map<QUrl, QFileInfo> files;
@@ -74,8 +97,11 @@ void ManagedResourceReport::generateReport(Document *document)
 
     for (std::pair<const QUrl, QFileInfo>& pair : files) {
         if (strips.find(pair.first) == strips.end()) {
-            unusedFiles_.push_back(pair.second.fileName());
-            unusedFilesBytes += pair.second.size();
+            auto fileName = pair.second.fileName();
+            if (ignored.find(fileName) == ignored.end()) {
+                unusedFiles_.push_back(fileName);
+                unusedFilesBytes += pair.second.size();
+            }
         } else {
             usedFilesBytes += pair.second.size();
         }

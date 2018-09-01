@@ -5,8 +5,13 @@ import QtQuick.Controls 2.2
 import eventsequencer 1.0 as ES
 
 Item {
+    property string unassignedFileName
+
     ES.ManagedResourceReport {
         id: report
+        ignoredFileNames: [
+            unassignedFileName
+        ]
     }
 
     states: [
