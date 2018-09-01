@@ -34,19 +34,31 @@ void ErrorReportingContext::unregisterConditionalError(ConditionalError *cerror)
 
 void ErrorReportingContext::destroyedConditionalError(QObject *object)
 {
-    ConditionalError* cerror = qobject_cast<ConditionalError*>(object);
-    if (cerror == nullptr) {
-        qWarning("ErrorReportingContext destroyed wrong object type");
-        return;
+    // This was a bug that I'm now keeping here as a record that the
+    // bug existed, so that it is less likely that it will happen
+    // again.
+
+//    ConditionalError* cerror = qobject_cast<ConditionalError*>(object);
+//    if (cerror == nullptr) {
+//        qWarning("ErrorReportingContext destroyed wrong object type");
+//        return;
+//    }
+
+    bool found = false;
+    for (auto iter = activeConditionalErrors_.begin();
+         iter != activeConditionalErrors_.end();
+         ++iter) {
+
+        if (static_cast<QObject*>(*iter) == object) {
+            found = true;
+            activeConditionalErrors_.erase(iter);
+            break;
+        }
     }
 
-    auto iter = std::find(activeConditionalErrors_.begin(),
-                          activeConditionalErrors_.end(),
-                          cerror);
-    if (iter != activeConditionalErrors_.end()) {
-        activeConditionalErrors_.erase(iter);
-    } else {
+    if (!found) {
         qWarning("ErrorReportingContext failed to find error to unregister");
     }
+
     emit modelChanged();
 }
