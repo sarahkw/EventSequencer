@@ -6,6 +6,7 @@
 #include "document.h"
 
 #include <QFile>
+#include <QLocale>
 
 QVariantList ManagedResourceReport::stripsMissingResource() const
 {
@@ -17,17 +18,19 @@ bool ManagedResourceReport::hasData() const
     return hasData_;
 }
 
-void ManagedResourceReport::setHasData(bool hasData)
-{
-    if (hasData_ != hasData) {
-        hasData_ = hasData;
-        emit hasDataChanged();
-    }
-}
-
 QVariantList ManagedResourceReport::unusedFiles() const
 {
     return unusedFiles_;
+}
+
+QString ManagedResourceReport::unusedFilesSize() const
+{
+    return unusedFilesSize_;
+}
+
+QString ManagedResourceReport::usedFilesSize() const
+{
+    return usedFilesSize_;
 }
 
 ManagedResourceReport::ManagedResourceReport(QObject *parent) : QObject(parent)
@@ -47,6 +50,9 @@ void ManagedResourceReport::generateReport(Document *document)
 
     std::map<QUrl, Strip*> strips;
     std::map<QUrl, QFileInfo> files;
+
+    qint64 unusedFilesBytes = 0;
+    qint64 usedFilesBytes = 0;
 
     for (Strip* s : document->strips()) {
         if (!s->resourceUrl().isEmpty()) {
@@ -69,18 +75,23 @@ void ManagedResourceReport::generateReport(Document *document)
     for (std::pair<const QUrl, QFileInfo>& pair : files) {
         if (strips.find(pair.first) == strips.end()) {
             unusedFiles_.push_back(pair.second.fileName());
+            unusedFilesBytes += pair.second.size();
+        } else {
+            usedFilesBytes += pair.second.size();
         }
     }
 
-    emit stripsMissingResourceChanged();
-    emit unusedFilesChanged();
+    QLocale locale;
+    unusedFilesSize_ = locale.formattedDataSize(unusedFilesBytes);
+    usedFilesSize_ = locale.formattedDataSize(usedFilesBytes);
 
-    setHasData(true);
+    hasData_ = true;
+    emit reportChanged();
 }
 
 void ManagedResourceReport::clearReport()
 {
-    setHasData(false);
+    hasData_ = false;
 
     for (QVariant& qv : stripsMissingResource_) {
         auto* s = qv.value<Strip*>();
@@ -91,8 +102,10 @@ void ManagedResourceReport::clearReport()
         }
     }
     stripsMissingResource_.clear();
-    emit stripsMissingResourceChanged();
-
     unusedFiles_.clear();
-    emit unusedFilesChanged();
+
+    unusedFilesSize_.clear();
+    usedFilesSize_.clear();
+
+    emit reportChanged();
 }

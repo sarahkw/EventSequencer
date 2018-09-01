@@ -29,6 +29,7 @@ Item {
             contentWidth: width
             clip: true
             Column {
+                visible: report.hasData
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.right: parent.right
@@ -39,22 +40,17 @@ Item {
                     title: "Information"
                     GridLayout {
                         columns: 2
-                        Label { text: "Report Age" }
-                        Label {
-                            Layout.fillWidth: true
-                            text: "2 minutes ago"
-                        }
 
                         Label { text: "Active Resource Size" }
                         Label {
                             Layout.fillWidth: true
-                            text: "80 MB"
+                            text: report.usedFilesSize
                         }
 
                         Label { text: "Orphan Resource Size" }
                         Label {
                             Layout.fillWidth: true
-                            text: "10 MB"
+                            text: report.unusedFilesSize
                         }
                     }
                 }
@@ -71,6 +67,11 @@ Item {
                                 text: modelData + ""
                                 Layout.fillWidth: true
                             }
+                        }
+                        Text {
+                            text: "Nothing"
+                            font.italic: true
+                            visible: report.unusedFiles.length === 0
                         }
                         RowLayout {
                             Layout.fillWidth: true
@@ -99,6 +100,11 @@ Item {
                                 text: modelData + ""
                                 Layout.fillWidth: true
                             }
+                        }
+                        Text {
+                            text: "Nothing"
+                            font.italic: true
+                            visible: report.stripsMissingResource.length === 0
                         }
                         RowLayout {
                             Layout.fillWidth: true

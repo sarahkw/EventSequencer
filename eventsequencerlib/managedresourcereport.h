@@ -7,29 +7,22 @@
 
 class Document;
 
-class ManagedResourceReportUnusedFile {
-    Q_GADGET
-
-    QString path_;
-    qint64 size_;
-    QDateTime metaDataCreateDate_;
-};
-
 class ManagedResourceReport : public QObject
 {
     Q_OBJECT
 
     bool hasData_ = false;
-    QDateTime generatedAt_;
 
-    int totalFileCount_ = 0;
-    qint64 totalSizeInBytes_ = 0;
     QVariantList stripsMissingResource_;
     QVariantList unusedFiles_;
+    QString unusedFilesSize_;
+    QString usedFilesSize_;
 
-    Q_PROPERTY(bool hasData READ hasData NOTIFY hasDataChanged)
-    Q_PROPERTY(QVariantList stripsMissingResource READ stripsMissingResource NOTIFY stripsMissingResourceChanged)
-    Q_PROPERTY(QVariantList unusedFiles READ unusedFiles NOTIFY unusedFilesChanged)
+    Q_PROPERTY(bool hasData READ hasData NOTIFY reportChanged)
+    Q_PROPERTY(QVariantList stripsMissingResource READ stripsMissingResource NOTIFY reportChanged)
+    Q_PROPERTY(QVariantList unusedFiles READ unusedFiles NOTIFY reportChanged)
+    Q_PROPERTY(QString unusedFilesSize READ unusedFilesSize NOTIFY reportChanged)
+    Q_PROPERTY(QString usedFilesSize READ usedFilesSize NOTIFY reportChanged)
 
 public:
     explicit ManagedResourceReport(QObject *parent = nullptr);
@@ -46,17 +39,14 @@ public:
     QVariantList stripsMissingResource() const;
 
     bool hasData() const;
-private:
-    void setHasData(bool hasData);
-public:
 
     QVariantList unusedFiles() const;
+    QString unusedFilesSize() const;
+    QString usedFilesSize() const;
 
 signals:
 
-    void hasDataChanged();
-    void stripsMissingResourceChanged();
-    void unusedFilesChanged();
+    void reportChanged();
 
 public slots:
 };
