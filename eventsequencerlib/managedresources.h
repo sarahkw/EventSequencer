@@ -39,7 +39,7 @@ public:
 
     bool urlFile(QUrl url, QFile* file);
 
-    std::vector<QUrl> urlList();
+    std::vector<std::pair<QUrl, QString>> urlList();
 
 signals:
 

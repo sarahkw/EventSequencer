@@ -59,8 +59,8 @@ void ManagedResourceReport::generateReport(Document *document)
 
     emit stripsMissingResourceChanged();
 
-    for (QUrl& url : mr.urlList()) {
-        unusedFiles_.push_back(url);
+    for (std::pair<QUrl, QString>& urlPair : mr.urlList()) {
+        unusedFiles_.push_back(urlPair.second);
     }
     emit unusedFilesChanged();
 
