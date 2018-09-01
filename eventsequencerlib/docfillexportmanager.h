@@ -33,9 +33,9 @@ public:
 
     QString defaultPlayToFileOutputPath() const;
 
-    Q_INVOKABLE void exportJson(channel::ChannelBase* textChannel,
-                                channel::ChannelBase* resourceChannel,
-                                QString outputPath);
+    Q_INVOKABLE QString exportJson(channel::ChannelBase* textChannel,
+                                   channel::ChannelBase* resourceChannel,
+                                   QString outputPath);
 
 signals:
 

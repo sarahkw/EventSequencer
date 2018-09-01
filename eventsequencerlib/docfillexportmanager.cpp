@@ -51,25 +51,25 @@ QString DocFillExportManager::defaultPlayToFileOutputPath() const
     return defaultPlayToFileOutputPath_;
 }
 
-void DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
-                                      channel::ChannelBase* resourceChannel,
-                                      QString outputPath)
+QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
+                                         channel::ChannelBase* resourceChannel,
+                                         QString outputPath)
 {
     if (document_ == nullptr || textChannel == nullptr || resourceChannel == nullptr) {
         qWarning("Cannot export; no document or missing channel");
-        return;
+        return "Internal error";
     }
 
     auto* castTextChannel = qobject_cast<channel::TextChannel*>(textChannel);
     if (castTextChannel == nullptr) {
         qWarning("Unsupported text channel type");
-        return;
+        return "Internal error";
     }
 
     auto* castResourceChannel = qobject_cast<channel::CollateChannel*>(resourceChannel);
     if (castResourceChannel == nullptr) {
         qWarning("Unsupported resource channel type");
-        return;
+        return "Internal error";
     }
 
     QString content = castTextChannel->content();
@@ -94,8 +94,22 @@ void DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
         jsonSegments.push_back(obj);
     }
 
+    QFile file(outputPath);
+    if (!file.open(QFile::NewOnly)) {
+        return QString("Cannot open file: %1").arg(file.errorString());
+    }
+
     QJsonDocument jsonDoc(jsonSegments);
-    qInfo() << jsonDoc.toJson().data();
+    QByteArray toWrite = jsonDoc.toJson();
+    qint64 written = file.write(toWrite);
+    if (written != toWrite.size()) {
+        return QString("Cannot completely write file: %1").arg(file.errorString());
+    }
+    if (!file.flush()) {
+        return QString("Cannot flush: %1").arg(file.errorString());
+    }
+    file.close();
+    return "Success";
 }
 
 void DocFillExportManager::updateDefaultOutputPaths()

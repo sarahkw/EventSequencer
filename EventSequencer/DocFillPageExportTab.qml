@@ -28,7 +28,10 @@ ScrollView {
             title: "Export JSON"
             description: "Write a JSON file that lists the parts of the document along with the assigned audio file."
             defaultOutputPath: exportManager.defaultExportJsonOutputPath
-            onExportActivated: exportManager.exportJson(cppTextChannel, cppResourceChannel, path)
+            onExportActivated: {
+                var result = exportManager.exportJson(cppTextChannel, cppResourceChannel, path)
+                msgbox.msgbox(result, "Export")
+            }
         }
 
         DocFillPageExportSection {
