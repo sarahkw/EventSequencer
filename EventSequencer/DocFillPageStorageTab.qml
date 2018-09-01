@@ -91,6 +91,16 @@ Item {
                             Button {
                                 Layout.fillWidth: true
                                 text: "Delete All Files"
+
+                                MessageDialog {
+                                    id: mdConfirmDeleteAllFiles
+                                    standardButtons: StandardButton.Yes | StandardButton.No
+                                    text: "Are you sure you wish to delete all orphaned files?"
+                                    onYes: {
+                                    }
+                                }
+
+                                onClicked: mdConfirmDeleteAllFiles.open()
                             }
                         }
                     }
