@@ -18,27 +18,19 @@ GroupBox {
         RowLayout {
             Layout.fillWidth: true
             Label {
-                text: "Output Path"
+                text: "Path"
             }
             TextField {
                 Layout.fillWidth: true
                 id: txtOutputPath
-                readOnly: !btnUseCustomPath.checked
+                readOnly: true
                 text: defaultOutputPath
+                selectByMouse: true
             }
         }
-        RowLayout {
+        DelayButton {
             Layout.fillWidth: true
-            Button {
-                id: btnUseCustomPath
-                Layout.fillWidth: true
-                checkable: true
-                text: "Use Custom Path"
-            }
-            Button {
-                Layout.fillWidth: true
-                text: "Export"
-            }
+            text: "Export"
         }
     }
 }
