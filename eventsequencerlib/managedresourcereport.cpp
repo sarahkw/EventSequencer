@@ -120,7 +120,9 @@ void ManagedResourceReport::clearReport()
     hasData_ = false;
 
     for (QVariant& qv : stripsMissingResource_) {
-        auto* s = qv.value<Strip*>();
+        // Casting to QObject* instead of Strip* because the Strip part would
+        // already be destroyed if this is a response to the destroyed signal.
+        auto* s = qv.value<QObject*>();
         if (s != nullptr) {
             s->disconnect(this);
         } else {
