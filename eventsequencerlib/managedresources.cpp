@@ -152,8 +152,6 @@ bool ManagedResources::deleteManagedFileName(QString fileName)
         return false;
     }
 
-    qInfo() << "Not really removing" << fileResourceDirectory_ + "/" + fileName;
-    return false;
     return QFile::remove(fileResourceDirectory_ + "/" + fileName);
 }
 
