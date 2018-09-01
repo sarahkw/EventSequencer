@@ -69,7 +69,7 @@ Item {
                         Repeater {
                             model: report.unusedFiles
                             Text {
-                                text: modelData + ""
+                                text: modelData
                                 Layout.fillWidth: true
                             }
                         }
@@ -101,8 +101,13 @@ Item {
                         anchors.right: parent.right
                         Repeater {
                             model: report.stripsMissingResource
-                            Text {
-                                text: modelData + ""
+                            Button {
+                                contentItem: ColumnLayout {
+                                    Text {
+                                        Layout.fillWidth: true
+                                        text: "%1: %2".arg(modelData.startFrame).arg(modelData.resourceUrl)
+                                    }
+                                }
                                 Layout.fillWidth: true
                             }
                         }
