@@ -35,7 +35,7 @@ public:
     Q_INVOKABLE QVariantList deleteUrl(QUrl url);
     Q_INVOKABLE bool existsUrl(QUrl url);
 
-    Q_INVOKABLE QString urlConvertToFileName(QUrl url);
+    static Q_INVOKABLE QString urlConvertToFileName(QUrl url);
 
     static bool urlIsManaged(QUrl url);
     bool urlConvertToFilePath(QUrl url, QString* filePath);

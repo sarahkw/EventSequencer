@@ -46,6 +46,32 @@ void ManagedResourceReport::setIgnoredFileNames(const QVariantList &ignoredFileN
     }
 }
 
+QString ManagedResourceReport::stripsMissingResourceAsText()
+{
+    QStringList lines;
+    for (QVariant& v : stripsMissingResource_) {
+        Strip* s = v.value<Strip*>();
+        if (s != nullptr) {
+            lines.push_back(QString("%1, %2")
+                                .arg(s->startFrame())
+                                .arg(ManagedResources::urlConvertToFileName(
+                                    s->resourceUrl().toString())));
+        } else {
+            qWarning("Null strip?");
+        }
+    }
+    return lines.join("\n");
+}
+
+QString ManagedResourceReport::unusedFilesAsText()
+{
+    QStringList lines;
+    for (QVariant& v : unusedFiles_) {
+        lines.push_back(v.toString());
+    }
+    return lines.join("\n");
+}
+
 ManagedResourceReport::ManagedResourceReport(QObject *parent) : QObject(parent)
 {
 

@@ -83,6 +83,9 @@ Item {
                             Button {
                                 Layout.fillWidth: true
                                 text: "Copy List"
+                                onClicked: {
+                                    ES.ClipboardWrapper.setText(report.unusedFilesAsText())
+                                }
                             }
                             Button {
                                 Layout.fillWidth: true
@@ -123,6 +126,9 @@ Item {
                             Button {
                                 Layout.fillWidth: true
                                 text: "Copy List"
+                                onClicked: {
+                                    ES.ClipboardWrapper.setText(report.stripsMissingResourceAsText())
+                                }
                             }
                             Button {
                                 Layout.fillWidth: true

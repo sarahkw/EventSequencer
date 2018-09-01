@@ -51,6 +51,9 @@ public:
     QVariantList ignoredFileNames() const;
     void setIgnoredFileNames(const QVariantList &ignoredFileNames);
 
+    Q_INVOKABLE QString stripsMissingResourceAsText();
+    Q_INVOKABLE QString unusedFilesAsText();
+
 signals:
 
     void ignoredFileNamesChanged();
