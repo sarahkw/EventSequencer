@@ -3,7 +3,9 @@
 #include "document.h"
 #include "channel/textchannel.h"
 #include "channel/collatechannel.h"
+#include "managedresources.h"
 
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 
@@ -70,13 +72,29 @@ void DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
         return;
     }
 
-
     QString content = castTextChannel->content();
 
-    QJsonObject obj;
-    obj["a"] = true;
+    QJsonArray jsonSegments;
 
-    QJsonDocument jsonDoc(obj);
+    for (auto& segment : castResourceChannel->segments()) {
+        QJsonObject obj;
+        Strip* s = segment.strip;
+        obj["startPosition"] = segment.segmentStart;
+        obj["length"] = segment.segmentLength;
+        obj["text"] = content.mid(segment.segmentStart, segment.segmentLength);
+        if (segment.segmentType == channel::CollateChannel::SegmentType::Conflict) {
+            obj["hasConflict"] = true;
+        }
+        if (s != nullptr) {
+            QUrl url = s->resourceUrl();
+            if (!url.isEmpty()) {
+                obj["file"] = ManagedResources::urlConvertToFileName(url.toString());
+            }
+        }
+        jsonSegments.push_back(obj);
+    }
+
+    QJsonDocument jsonDoc(jsonSegments);
     qInfo() << jsonDoc.toJson().data();
 }
 

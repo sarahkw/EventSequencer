@@ -103,6 +103,18 @@ bool CollateChannel::event(QEvent *event)
     return ChannelBase::event(event);
 }
 
+const std::vector<CollateChannel::Segment> &CollateChannel::segments()
+{
+    // Need to forcefully call recalculate() each time this is read. Otherwise,
+    // we could be returning a set with a strip that was deleted.
+    if (refreshPending_) {
+        refreshPending_ = false;
+        recalculate();
+    }
+
+    return segments_;
+}
+
 std::vector<Strip*> CollateChannel::strips()
 {
     // Need to forcefully call recalculate() each time this is read. Otherwise,
@@ -363,7 +375,8 @@ void CollateChannel::recalculate()
             break;
         }
 
-        segments_.push_back({segment.start, segment.length, segmentType});
+        segments_.push_back(
+            {segment.start, segment.length, segmentType, segment.data});
     }
 
     model_.endResetModel();

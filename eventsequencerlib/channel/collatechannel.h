@@ -45,6 +45,13 @@ public:
         Conflict
     };
     Q_ENUM(SegmentType)
+
+    struct Segment {
+        int segmentStart;
+        int segmentLength;
+        SegmentType segmentType;
+        Strip* strip;
+    };
 private:
 
     friend class CollateChannelModel;
@@ -61,12 +68,10 @@ private:
     channel::ChannelBase* sourceChannel_ = nullptr;
     Q_PROPERTY(QObject* sourceChannel READ sourceChannel NOTIFY sourceChannelChanged)
 
-    struct Segment {
-        int segmentStart;
-        int segmentLength;
-        SegmentType segmentType;
-    };
     std::vector<Segment> segments_;
+    // Segment didn't used to have Strip*. But I guess I'll keep this around
+    // because it may be faster to copy a vector of Strip* to return vs building
+    // a new one each time?
     std::vector<Strip*> stripSet_;
 
     void setupCurrentChannel();
@@ -88,6 +93,7 @@ public:
 
     bool event(QEvent *event) override;
 
+    const std::vector<Segment>& segments();
     std::vector<Strip*> strips() override;
 
     virtual Strip* createStrip(int startFrame, int length) override;
