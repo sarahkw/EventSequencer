@@ -14,7 +14,7 @@ class ConcatIODevice : public QIODevice
     };
     std::list<Child> inputs_;
 
-    bool errorCondition_ = false;
+    bool flaggedEof_ = false;
 
 protected:
 

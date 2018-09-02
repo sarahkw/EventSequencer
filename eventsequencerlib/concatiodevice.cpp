@@ -7,7 +7,12 @@
 qint64 ConcatIODevice::readData(char *data, qint64 maxlen)
 {
     if (inputs_.empty()) {
-        return -1;
+        if (!flaggedEof_) {
+            flaggedEof_ = true;
+            return 0;
+        } else {
+            return -1;
+        }
     }
     if (maxlen == 0) {
         // Audio input can request maxlen of 0. Need this special case because
@@ -35,7 +40,6 @@ qint64 ConcatIODevice::readData(char *data, qint64 maxlen)
         inputs_.pop_front();
         return readData(data, maxlen);
     } else if (bytesRead == -1) {
-        errorCondition_ = true;
         return -1;
     } else {
         return bytesRead;

@@ -167,19 +167,17 @@ QString DocFillExportManager::exportPlayToFile(playable::PlayableBase *playable)
     char buffer[4096];
     for (;;) {
         qint64 gotBytes = source->read(buffer, sizeof(buffer));
-        if (gotBytes == -1) {
-            error = "Read error";
-            goto done;
-        }
+
         if (gotBytes > 0) {
             if (gotBytes != file.write(buffer, gotBytes)) {
                 error = "Incomplete write";
                 goto done;
             }
-        }
-        if (gotBytes < qint64(sizeof(buffer))) {
-            // This as an EOF condition relies on the fact that QIODevice
-            // will fill up the buffer.
+        } else if (gotBytes < 0) {
+            error = "Read error";
+            goto done;
+        } else {
+            // EOF
             break;
         }
     }
