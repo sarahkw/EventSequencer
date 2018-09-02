@@ -28,6 +28,8 @@ public:
     // something.
     virtual QIODevice* createPlayableDevice(const QAudioFormat& outputFormat) = 0;
 
+    virtual bool isFinite() const = 0;
+
 protected:
     void setError(QString error);
 public:

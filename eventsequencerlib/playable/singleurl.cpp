@@ -19,6 +19,11 @@ QIODevice *SingleUrl::createPlayableDevice(const QAudioFormat& outputFormat)
     return playingDevice.release();
 }
 
+bool SingleUrl::isFinite() const
+{
+    return true;
+}
+
 QString SingleUrl::singleUrl() const
 {
     return singleUrl_;

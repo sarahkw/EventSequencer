@@ -64,6 +64,8 @@ public:
 
     QIODevice* createPlayableDevice(const QAudioFormat& outputFormat) override;
 
+    bool isFinite() const override;
+
     SelectionMode selectionMode() const;
     void setSelectionMode(const SelectionMode &selectionMode);
 

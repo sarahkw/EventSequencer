@@ -18,6 +18,8 @@ public:
 
     QIODevice* createPlayableDevice(const QAudioFormat& outputFormat) override;
 
+    bool isFinite() const override;
+
     QString singleUrl() const;
     void setSingleUrl(const QString &singleUrl);
 

@@ -150,4 +150,9 @@ QIODevice *Tone::createPlayableDevice(const QAudioFormat &outputFormat)
     return new LoopedBytesIODevice(std::move(sampleBytes));
 }
 
+bool Tone::isFinite() const
+{
+    return false;
+}
+
 } // namespace playable

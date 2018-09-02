@@ -19,6 +19,8 @@ public:
 
     QIODevice* createPlayableDevice(const QAudioFormat& outputFormat) override;
 
+    bool isFinite() const override;
+
     int frequency() const;
     void setFrequency(int frequency);
 

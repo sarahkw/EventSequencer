@@ -31,6 +31,11 @@ QIODevice *StripsList::createPlayableDevice(const QAudioFormat& outputFormat)
     return playingDevice.release();
 }
 
+bool StripsList::isFinite() const
+{
+    return true;
+}
+
 namespace {
 QString describeStrip(const Strip* s)
 {
