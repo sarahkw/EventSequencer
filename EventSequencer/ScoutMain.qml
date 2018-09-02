@@ -9,24 +9,29 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
     id: root
     visible: true
 
-    // Trying to see if not setting width and height resolves the
-    // issue where on Android, sometimes the "Window" doesn't line up
-    // with the screen until you resize it by flipping orientations.
-    //
-    // TODO If this didn't fix the problem, remove this
-    property var widthAndHeight: {
-        if (Qt.platform.os == "android") {
-            // Yes, there is a
-            //   Unable to assign null to int
-            // error, but at least the assignment doesn't go through.
-            return [null, null]
-        } else {
-            return [540, 720]
-        }
-    }
-    width: widthAndHeight[0]
-    height: widthAndHeight[1]
+//    // Trying to see if not setting width and height resolves the
+//    // issue where on Android, sometimes the "Window" doesn't line up
+//    // with the screen until you resize it by flipping orientations.
+//    //
+//    // TODO If this didn't fix the problem, remove this
+//    property var widthAndHeight: {
+//        if (Qt.platform.os == "android") {
+//            // Yes, there is a
+//            //   Unable to assign null to int
+//            // error, but at least the assignment doesn't go through.
+//            return [null, null]
+//        } else {
+//            return [540, 720]
+//        }
+//    }
+//    width: widthAndHeight[0]
+//    height: widthAndHeight[1]
 
+    // Let's try this again. I have removed the Qt Widgets stuff from
+    // Android since, maybe that could have helped.
+    width: 540
+    height: 720
+    
     title: "DocFill"
 
     property int cursorFrame: 0
