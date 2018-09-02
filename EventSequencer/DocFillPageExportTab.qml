@@ -44,7 +44,9 @@ ScrollView {
             anchors.left: parent.left
             anchors.right: parent.right
             title: "Play to File"
-            description: "Play as configured in the 'Play' tab, but output to a file instead of to your speakers."
+            description: "Play as configured in the 'Play' tab, but output to a file instead of to your speakers.
+
+Current selection: %1".arg(cmbSelectionMode.currentText)
             defaultOutputPath: exportManager.defaultPlayToFileOutputPath
             defaultOutputPathExists: exportManager.defaultPlayToFileOutputPathExists
             onExportActivated: {

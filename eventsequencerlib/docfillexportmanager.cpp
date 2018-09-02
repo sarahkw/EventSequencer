@@ -150,6 +150,7 @@ QString DocFillExportManager::exportPlayToFile(playable::PlayableBase *playable)
         return QString("Cannot open file: %1").arg(file.errorString());
     }
 
+    qint64 totalBytes = 0;
     QString error = "Success";
 
     AuFileHeader afh;
@@ -169,6 +170,7 @@ QString DocFillExportManager::exportPlayToFile(playable::PlayableBase *playable)
         qint64 gotBytes = source->read(buffer, sizeof(buffer));
 
         if (gotBytes > 0) {
+            totalBytes += gotBytes;
             if (gotBytes != file.write(buffer, gotBytes)) {
                 error = "Incomplete write";
                 goto done;
@@ -188,6 +190,10 @@ QString DocFillExportManager::exportPlayToFile(playable::PlayableBase *playable)
     }
 
     file.close();
+
+    if (totalBytes == 0) {
+        error = "Success, but the audio file has no data";
+    }
 
 done:
     updateDefaultOutputPaths();
