@@ -4,12 +4,16 @@
 #include "channel/textchannel.h"
 #include "channel/collatechannel.h"
 #include "managedresources.h"
+#include "aufileheader.h"
+#include "audioformatholder.h"
 
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 
 #include <QDebug> // FOR DEV WORK
+
+#include <memory>
 
 QObject *DocFillExportManager::document() const
 {
@@ -98,26 +102,26 @@ QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
         return QString("Cannot open file: %1").arg(file.errorString());
     }
 
+    QString error = "Success";
+
     QJsonDocument jsonDoc(jsonSegments);
     QByteArray toWrite = jsonDoc.toJson();
     qint64 written = file.write(toWrite);
     if (written != toWrite.size()) {
-        return QString("Cannot completely write file: %1").arg(file.errorString());
+        error = QString("Cannot completely write file: %1").arg(file.errorString());
+    } else if (!file.flush()) {
+        error = QString("Cannot flush: %1").arg(file.errorString());
+    } else {
+        file.close();
     }
-    if (!file.flush()) {
-        return QString("Cannot flush: %1").arg(file.errorString());
-    }
-    file.close();
 
-    defaultExportJsonOutputPathExists_ = true;
-    emit defaultOutputPathsChanged();
-
-    return "Success";
+    updateDefaultOutputPaths();
+    return error;
 }
 
 QString DocFillExportManager::exportPlayToFile(playable::PlayableBase *playable)
 {
-    if (playable == nullptr) {
+    if (playable == nullptr || document_ == nullptr || !document_->audioFormatHolderSet()) {
         return "Internal error";
     }
 
@@ -125,8 +129,71 @@ QString DocFillExportManager::exportPlayToFile(playable::PlayableBase *playable)
         return "Cannot export from infinite audio input";
     }
 
-    // TODO Implement me!
-    return "Not implemented";
+    auto* audioFormatHolder =
+        qobject_cast<AudioFormatHolder*>(document_->audioFormatHolderQObject());
+    if (audioFormatHolder == nullptr) {
+        return "Internal error";
+    }
+    auto audioFormat = audioFormatHolder->toQAudioFormat();
+
+    // .au's have big endian samples
+    audioFormat.setByteOrder(QAudioFormat::BigEndian);
+
+    std::unique_ptr<QIODevice> source{playable->createPlayableDevice(audioFormat)};
+    if (!source) {
+        return playable->error();
+    }
+    source->open(QIODevice::ReadOnly);
+
+    QFile file(defaultPlayToFileOutputPath_);
+    if (!file.open(QFile::NewOnly)) {
+        return QString("Cannot open file: %1").arg(file.errorString());
+    }
+
+    QString error = "Success";
+
+    AuFileHeader afh;
+    if (!afh.loadFormat(audioFormat)) {
+        qCritical() << "??? Format was good but now is not?";
+        error = "Internal error";
+        goto done;
+    }
+
+    if (!afh.writeFile(file)) {
+        error = QString("Cannot write header: %1").arg(file.errorString());
+        goto done;
+    }
+
+    char buffer[4096];
+    for (;;) {
+        qint64 gotBytes = source->read(buffer, sizeof(buffer));
+        if (gotBytes == -1) {
+            error = "Read error";
+            goto done;
+        }
+        if (gotBytes > 0) {
+            if (gotBytes != file.write(buffer, gotBytes)) {
+                error = "Incomplete write";
+                goto done;
+            }
+        }
+        if (gotBytes < qint64(sizeof(buffer))) {
+            // This as an EOF condition relies on the fact that QIODevice
+            // will fill up the buffer.
+            break;
+        }
+    }
+
+    if (!file.flush()) {
+        error = QString("Cannot flush: %1").arg(file.errorString());
+        goto done;
+    }
+
+    file.close();
+
+done:
+    updateDefaultOutputPaths();
+    return error;
 }
 
 bool DocFillExportManager::defaultExportJsonOutputPathExists() const
@@ -142,20 +209,14 @@ bool DocFillExportManager::defaultPlayToFileOutputPathExists() const
 bool DocFillExportManager::deleteDefaultExportJsonOutputPath()
 {
     const bool success = QFile::remove(defaultExportJsonOutputPath_);
-    if (success) {
-        defaultExportJsonOutputPathExists_ = false;
-        emit defaultOutputPathsChanged();
-    }
+    updateDefaultOutputPaths();
     return success;
 }
 
 bool DocFillExportManager::deleteDefaultPlayToFileOutputPath()
 {
     const bool success = QFile::remove(defaultPlayToFileOutputPath_);
-    if (success) {
-        defaultPlayToFileOutputPathExists_ = false;
-        emit defaultOutputPathsChanged();
-    }
+    updateDefaultOutputPaths();
     return success;
 }
 
