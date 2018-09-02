@@ -54,8 +54,8 @@ QString DocFillExportManager::defaultPlayToFileOutputPath() const
 QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
                                          channel::ChannelBase* resourceChannel)
 {
-    if (document_ == nullptr || textChannel == nullptr || resourceChannel == nullptr) {
-        qWarning("Cannot export; no document or missing channel");
+    if (textChannel == nullptr || resourceChannel == nullptr) {
+        qWarning("Missing channel(s)");
         return "Internal error";
     }
 
