@@ -7,12 +7,7 @@
 qint64 ConcatIODevice::readData(char *data, qint64 maxlen)
 {
     if (inputs_.empty()) {
-        if (!flaggedEof_) {
-            flaggedEof_ = true;
-            return 0;
-        } else {
-            return -1;
-        }
+        return 0;
     }
     if (maxlen == 0) {
         // Audio input can request maxlen of 0. Need this special case because

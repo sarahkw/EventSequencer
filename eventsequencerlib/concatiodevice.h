@@ -14,8 +14,6 @@ class ConcatIODevice : public QIODevice
     };
     std::list<Child> inputs_;
 
-    bool flaggedEof_ = false;
-
 protected:
 
     qint64 readData(char *data, qint64 maxlen) override;
