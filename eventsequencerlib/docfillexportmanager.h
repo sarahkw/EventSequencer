@@ -2,6 +2,7 @@
 #define DOCFILLEXPORTMANAGER_H
 
 #include "channel/channelbase.h"
+#include "playable/playablebase.h"
 
 #include <QObject>
 
@@ -40,6 +41,7 @@ public:
 
     Q_INVOKABLE QString exportJson(channel::ChannelBase* textChannel,
                                    channel::ChannelBase* resourceChannel);
+    Q_INVOKABLE QString exportPlayToFile(playable::PlayableBase* playable);
 
     bool defaultExportJsonOutputPathExists() const;
     bool defaultPlayToFileOutputPathExists() const;

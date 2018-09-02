@@ -115,6 +115,20 @@ QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
     return "Success";
 }
 
+QString DocFillExportManager::exportPlayToFile(playable::PlayableBase *playable)
+{
+    if (playable == nullptr) {
+        return "Internal error";
+    }
+
+    if (!playable->isFinite()) {
+        return "Cannot export from infinite audio input";
+    }
+
+    // TODO Implement me!
+    return "Not implemented";
+}
+
 bool DocFillExportManager::defaultExportJsonOutputPathExists() const
 {
     return defaultExportJsonOutputPathExists_;

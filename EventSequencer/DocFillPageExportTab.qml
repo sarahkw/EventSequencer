@@ -46,6 +46,16 @@ ScrollView {
             title: "Play to File"
             description: "Play as configured in the 'Play' tab, but output to a file instead of to your speakers."
             defaultOutputPath: exportManager.defaultPlayToFileOutputPath
+            defaultOutputPathExists: exportManager.defaultPlayToFileOutputPathExists
+            onExportActivated: {
+                var result = exportManager.exportPlayToFile(playerControl.playable)
+                msgbox.msgbox(result, "Export")
+            }
+            onDeleteActivated: {
+                if (!exportManager.deleteDefaultPlayToFileOutputPath()) {
+                    msgbox.msgbox("Delete failure", "Export")
+                }
+            }
         }
     }
 }
