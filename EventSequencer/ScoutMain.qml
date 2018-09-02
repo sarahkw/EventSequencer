@@ -202,6 +202,17 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                                     changeCursorFrame: function (newFrame) { root.cursorFrame = newFrame }
                                 })
                             }
+
+                            Menu {
+                                id: subMenu
+                                MenuItem {
+                                    text: "Delete %1".arg(modelData.displayName)
+                                }
+                            }
+
+                            onPressAndHold: {
+                                subMenu.open()
+                            }
                         }
                     }
                 }
