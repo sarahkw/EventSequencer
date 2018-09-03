@@ -4,6 +4,7 @@
 #include "document.h"
 #include "sessionaudio.h"
 
+#include <QVariantList>
 #include <QObject>
 
 class DocFillNewDocumentCreator : public QObject
@@ -19,6 +20,8 @@ class DocFillNewDocumentCreator : public QObject
 
     QString name_;
     QString contents_;
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(QString contents READ contents WRITE setContents NOTIFY contentsChanged)
     Q_PROPERTY(QObject* audioFormatHolder READ audioFormatHolderQObject CONSTANT)
 
     void updateDefaultAudioFormat();
@@ -41,10 +44,14 @@ public:
     QString contents() const;
     void setContents(const QString &contents);
 
+    Q_INVOKABLE QVariantList make();
+
 signals:
 
     void sessionAudioChanged();
     void documentsPathChanged();
+    void nameChanged();
+    void contentsChanged();
 
 public slots:
 };

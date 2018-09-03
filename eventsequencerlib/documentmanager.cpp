@@ -22,6 +22,11 @@ QVariantList DocumentManager::items() const
     return items_;
 }
 
+void DocumentManager::refresh()
+{
+    updateItems();
+}
+
 void DocumentManager::updateItems()
 {
     items_.clear();

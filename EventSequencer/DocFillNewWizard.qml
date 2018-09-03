@@ -38,6 +38,16 @@ Pane {
             PropertyChanges {
                 target: btnNext
                 text: "Finish"
+                onClicked: {
+                    var result = documentCreator.make()
+                    var success = result[0]
+                    if (success) {
+                        closeFn()
+                    } else {
+                        var errorMsg = result[1]
+                        msgbox.msgbox(errorMsg, "Error")
+                    }
+                }
             }
         }
     ]
@@ -80,12 +90,13 @@ Pane {
                     font.bold: true
                     text: "Contents"
                 }
-                
+
                 RowLayout {
                     Layout.fillWidth: true
                     Label { text: "Name" }
                     TextField {
                         Layout.fillWidth: true
+                        onEditingFinished: documentCreator.name = text
                     }
                 }
 
@@ -150,6 +161,7 @@ Pane {
                                 font: cmfu.builtFont
                                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                                 textFormat: TextEdit.PlainText
+                                onEditingFinished: documentCreator.contents = text
                             }
                         }
                     }

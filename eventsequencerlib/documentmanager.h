@@ -40,6 +40,8 @@ public:
 
     QVariantList items() const;
 
+    Q_INVOKABLE void refresh();
+
 signals:
 
     void documentsPathChanged();

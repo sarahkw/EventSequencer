@@ -52,7 +52,10 @@ QString DocFillNewDocumentCreator::name() const
 
 void DocFillNewDocumentCreator::setName(const QString &name)
 {
-    name_ = name;
+    if (name_ != name) {
+        name_ = name;
+        emit nameChanged();
+    }
 }
 
 QString DocFillNewDocumentCreator::contents() const
@@ -62,7 +65,15 @@ QString DocFillNewDocumentCreator::contents() const
 
 void DocFillNewDocumentCreator::setContents(const QString &contents)
 {
-    contents_ = contents;
+    if (contents_ != contents) {
+        contents_ = contents;
+        emit contentsChanged();
+    }
+}
+
+QVariantList DocFillNewDocumentCreator::make()
+{
+    return {false, "Not implemented"};
 }
 
 void DocFillNewDocumentCreator::updateDefaultAudioFormat()

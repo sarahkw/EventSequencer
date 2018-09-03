@@ -138,6 +138,7 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                                                                      closeFn : function () {
                                                                          stackView.pop()
                                                                          obj.destroy()
+                                                                         documentManager.refresh()
                                                                      },
                                                                      documentsPath: Qt.binding(function () { return applicationSettings.documentsPath })
                                                                  })
