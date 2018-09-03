@@ -144,7 +144,7 @@ DocFillSettings::DocFillSettings(QObject* parent)
 
     documentsPath_ = settings_.value(KEY_DOCUMENTSPATH, "").toString();
 
-    fontPointSize_ = settings_.value(KEY_FONTPOINTSIZE, QVariant::fromValue(12)).toInt();
+    fontPointSize_ = settings_.value(KEY_FONTPOINTSIZE, QVariant::fromValue(16)).toInt();
 
     toneFrequency_     = settings_.value(KEY_TONEFREQUENCY, QVariant::fromValue(0)).toInt();
     reviewAfterRecord_ = settings_.value(KEY_REVIEWAFTERRECORD, QVariant::fromValue(false)).toBool();
