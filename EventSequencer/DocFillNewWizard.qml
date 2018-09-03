@@ -186,7 +186,7 @@ Pane {
 
                         Label {
                             Layout.fillWidth: true
-                            text: "Review the audio settings in which audio is recorded. The settings default to your input device parameters and you do not have to change them."
+                            text: "Review the audio settings in which audio is recorded. The settings default to your input device parameters."
                             wrapMode: Text.Wrap
                         }
 
