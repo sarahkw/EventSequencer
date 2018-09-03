@@ -1,5 +1,6 @@
 #include "docfillnewdocumentcreator.h"
 
+#include "audioformatholder.h"
 #include "channelindex.h"
 #include "channel/docfillchannel.h"
 #include "channel/textchannel.h"
@@ -80,6 +81,14 @@ void DocFillNewDocumentCreator::setContents(const QString &contents)
 
 QVariantList DocFillNewDocumentCreator::make()
 {
+    {
+        auto* afh = qobject_cast<AudioFormatHolder*>(document_.audioFormatHolderQObject());
+        SessionAudio::TestFormatSupportResult tfsr = sessionAudio_->testFormatSupport(*afh);
+        if (!tfsr.allSupported()) {
+            return {false, tfsr.describeMissing()};
+        }
+    }
+
     const auto textChannelIndex = ChannelIndex::make1(1);
     const auto resourceChannelIndex = ChannelIndex::make1(2);
     const auto spanChannelIndex = ChannelIndex::make1(3);
@@ -98,7 +107,8 @@ QVariantList DocFillNewDocumentCreator::make()
 
     document_.setEndFrame(contents().size());
 
-    return {false, "Not implemented"};
+    QUrl saveUrl = QUrl::fromLocalFile(documentsPath_ + "/" + name_ + ".evseq");
+    return document_.save(saveUrl); // Return the same save method as us!
 }
 
 void DocFillNewDocumentCreator::updateDefaultAudioFormat()

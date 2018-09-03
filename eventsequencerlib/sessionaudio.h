@@ -39,7 +39,15 @@ public:
     void outputPreferredFormat(AudioFormatHolder& af);
     Q_INVOKABLE void outputPreferredFormat(QObject* af);
 
-    QString testFormatSupport(AudioFormatHolder& af);
+    struct TestFormatSupportResult {
+        bool inputSupports;
+        bool outputSupports;
+        bool auSupports;
+        QString describeLong() const;
+        QString describeMissing() const;
+        bool allSupported() const;
+    };
+    TestFormatSupportResult testFormatSupport(AudioFormatHolder& af);
     Q_INVOKABLE QString testFormatSupport(QObject* af);
 
     int selectedInputIndex() const;

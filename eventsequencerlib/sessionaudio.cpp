@@ -108,28 +108,42 @@ void SessionAudio::outputPreferredFormat(QObject *af)
     outputPreferredFormat(*x);
 }
 
-QString SessionAudio::testFormatSupport(AudioFormatHolder &af)
+SessionAudio::TestFormatSupportResult SessionAudio::testFormatSupport(AudioFormatHolder &af)
 {
     QAudioFormat qaf = af.toQAudioFormat();
-    QString ret;
-    ret += QString("Input supports format: %1\n").arg(selectedInputDevice_.isFormatSupported(qaf) ? "YES" : "NO");
-    ret += QString("Output supports format: %1\n").arg(selectedOutputDevice_.isFormatSupported(qaf) ? "YES" : "NO");
-    const char* auSupports;
-    {
-        AuFileHeader afh;
-        if (afh.loadFormat(qaf)) {
-            auSupports = "YES";
-        } else {
-            auSupports = "NO";
-        }
-    }
-    ret += QString("AU supports format: %1\n").arg(auSupports);
-    return ret;
+    TestFormatSupportResult result;
+    result.inputSupports = selectedInputDevice_.isFormatSupported(qaf);
+    result.outputSupports = selectedOutputDevice_.isFormatSupported(qaf);
+    result.auSupports = AuFileHeader().loadFormat(qaf);
+    return result;
 }
 
 QString SessionAudio::testFormatSupport(QObject *af)
 {
     auto x = qobject_cast<AudioFormatHolder*>(af);
     Q_ASSERT(x);
-    return testFormatSupport(*x);
+    return testFormatSupport(*x).describeLong();
+}
+
+QString SessionAudio::TestFormatSupportResult::describeLong() const
+{
+    QString ret;
+    ret += QString("Input supports format: %1\n").arg(inputSupports ? "YES" : "NO");
+    ret += QString("Output supports format: %1\n").arg(outputSupports ? "YES" : "NO");
+    ret += QString("AU supports format: %1\n").arg(auSupports ? "YES" : "NO");
+    return ret;
+}
+
+QString SessionAudio::TestFormatSupportResult::describeMissing() const
+{
+    QStringList doesntSupport;
+    if (!inputSupports) doesntSupport << "Input device";
+    if (!outputSupports) doesntSupport << "Output device";
+    if (!auSupports) doesntSupport << "AU file format";
+    return QString("The following do not support the audio format: %1").arg(doesntSupport.join(", "));
+}
+
+bool SessionAudio::TestFormatSupportResult::allSupported() const
+{
+    return inputSupports && outputSupports && auSupports;
 }
