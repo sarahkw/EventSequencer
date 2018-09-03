@@ -10,8 +10,13 @@ Rectangle {
     property var closeFn
     property alias documentsPath: documentCreator.documentsPath
 
+    MsgBox {
+        id: msgbox
+    }
+
     ES.DocFillNewDocumentCreator {
         id: documentCreator
+        sessionAudio: session.audio
     }
 
     states: [
@@ -146,8 +151,79 @@ Rectangle {
                         }
                     }
 
-                    Text {
-                        text: "Page 2!"
+                    ScrollView {
+                        contentWidth: width
+                        GridLayout {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.margins: 15
+                            columns: 2
+
+                            Label { text: "\u2514 Sample Rate" }
+                            ESTextField {
+                                Layout.fillWidth: true
+                                text: documentCreator.audioFormatHolder.audioFormat.sampleRate
+                                onEsEditingFinished: documentCreator.audioFormatHolder.audioFormat.sampleRate = parseInt(text, 10)
+                            }
+                            Label { text: "\u2514 Sample Size" }
+                            ESTextField {
+                                Layout.fillWidth: true
+                                text: documentCreator.audioFormatHolder.audioFormat.sampleSize
+                                onEsEditingFinished: documentCreator.audioFormatHolder.audioFormat.sampleSize = parseInt(text, 10)
+                            }
+                            Label { text: "\u2514 Channels" }
+                            ESTextField {
+                                Layout.fillWidth: true
+                                text: documentCreator.audioFormatHolder.audioFormat.channelCount
+                                onEsEditingFinished: documentCreator.audioFormatHolder.audioFormat.channelCount = parseInt(text, 10)
+                            }
+                            Label { text: "\u2514 Sample Type" }
+                            ComboBox {
+                                Layout.fillWidth: true
+                                model: documentCreator.audioFormatHolder.sampleTypeModel
+                                currentIndex: documentCreator.audioFormatHolder.sampleTypeIndex
+                                onActivated: documentCreator.audioFormatHolder.sampleTypeIndex = index
+                            }
+                            Label { text: "\u2514 Byte Order" }
+                            ComboBox {
+                                Layout.fillWidth: true
+                                model: documentCreator.audioFormatHolder.endianModel
+                                currentIndex: documentCreator.audioFormatHolder.endianIndex
+                                onActivated: documentCreator.audioFormatHolder.endianIndex = index
+                            }
+                            Label { text: "\u2514 Actions" }
+                            RowLayout {
+                                Layout.fillWidth: true
+                                Button {
+                                    Layout.fillWidth: true
+                                    text: "Set Default"
+                                    onClicked: menu.popup()
+
+                                    property Menu menu: Menu {
+                                        MenuItem {
+                                            text: "From Input"
+                                            onTriggered: {
+                                                session.audio.inputPreferredFormat(documentCreator.audioFormatHolder)
+                                            }
+                                        }
+                                        MenuItem {
+                                            text: "From Output"
+                                            onTriggered: {
+                                                session.audio.outputPreferredFormat(documentCreator.audioFormatHolder)
+                                            }
+                                        }
+                                    }
+                                }
+                                Button {
+                                    Layout.fillWidth: true
+                                    text: "Test"
+
+                                    onClicked: {
+                                        msgbox.msgbox(session.audio.testFormatSupport(documentCreator.audioFormatHolder))
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
