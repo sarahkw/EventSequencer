@@ -14,14 +14,12 @@ class AudioFormat
     Q_GADGET
 public:
     enum class SampleType {
-        None,
         SignedInt,
         UnSignedInt,
         Float
     };
     Q_ENUM(SampleType)
     enum class Endian {
-        None,
         BigEndian,
         LittleEndian
     };
@@ -31,8 +29,8 @@ private:
     int sampleRate_ = 0;
     int sampleSize_ = 0;
     int channelCount_ = 0;
-    SampleType sampleType_ = SampleType::None;
-    Endian endian_ = Endian::None;
+    SampleType sampleType_ = SampleType::SignedInt;
+    Endian endian_ = Endian::BigEndian;
 
     Q_PROPERTY(int        sampleRate   READ sampleRate   WRITE setSampleRate  )
     Q_PROPERTY(int        sampleSize   READ sampleSize   WRITE setSampleSize  )
