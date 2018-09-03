@@ -152,70 +152,95 @@ Pane {
                     ColumnLayout {
                         anchors.left: parent.left
                         anchors.right: parent.right
-                        GridLayout {
-                            Layout.fillWidth: true
-                            columns: 2
 
-                            Label { text: "Sample Rate" }
-                            ESTextField {
-                                Layout.fillWidth: true
-                                text: documentCreator.audioFormatHolder.audioFormat.sampleRate
-                                onEsEditingFinished: documentCreator.audioFormatHolder.audioFormat.sampleRate = parseInt(text, 10)
-                            }
-                            Label { text: "Sample Size" }
-                            ESTextField {
-                                Layout.fillWidth: true
-                                text: documentCreator.audioFormatHolder.audioFormat.sampleSize
-                                onEsEditingFinished: documentCreator.audioFormatHolder.audioFormat.sampleSize = parseInt(text, 10)
-                            }
-                            Label { text: "Channels" }
-                            ESTextField {
-                                Layout.fillWidth: true
-                                text: documentCreator.audioFormatHolder.audioFormat.channelCount
-                                onEsEditingFinished: documentCreator.audioFormatHolder.audioFormat.channelCount = parseInt(text, 10)
-                            }
-                            Label { text: "Sample Type" }
-                            ComboBox {
-                                Layout.fillWidth: true
-                                model: documentCreator.audioFormatHolder.sampleTypeModel
-                                currentIndex: documentCreator.audioFormatHolder.sampleTypeIndex
-                                onActivated: documentCreator.audioFormatHolder.sampleTypeIndex = index
-                            }
-                            Label { text: "Byte Order" }
-                            ComboBox {
-                                Layout.fillWidth: true
-                                model: documentCreator.audioFormatHolder.endianModel
-                                currentIndex: documentCreator.audioFormatHolder.endianIndex
-                                onActivated: documentCreator.audioFormatHolder.endianIndex = index
-                            }
+                        Label {
+                            Layout.fillWidth: true
+                            text: "Review the audio settings in which audio is recorded. The settings default to your input device parameters and you do not have to change them."
+                            wrapMode: Text.Wrap
                         }
 
-                        Button {
-                            Layout.fillWidth: true
-                            text: "Set Default"
-                            onClicked: menu.open()
-
-                            property Menu menu: Menu {
-                                MenuItem {
-                                    text: "From Input"
-                                    onTriggered: {
-                                        session.audio.inputPreferredFormat(documentCreator.audioFormatHolder)
-                                    }
-                                }
-                                MenuItem {
-                                    text: "From Output"
-                                    onTriggered: {
-                                        session.audio.outputPreferredFormat(documentCreator.audioFormatHolder)
-                                    }
-                                }
+                        GroupBox {
+                            label: CheckBox {
+                                id: chkCustomSettings
+                                text: "Use custom settings"
                             }
-                        }
-                        Button {
-                            Layout.fillWidth: true
-                            text: "Test"
 
-                            onClicked: {
-                                msgbox.msgbox(session.audio.testFormatSupport(documentCreator.audioFormatHolder))
+                            Layout.fillWidth: true
+                            GridLayout {
+                                columns: 2
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+
+                                Label { text: "Sample Rate" }
+                                ESTextField {
+                                    Layout.fillWidth: true
+                                    text: documentCreator.audioFormatHolder.audioFormat.sampleRate
+                                    onEsEditingFinished: documentCreator.audioFormatHolder.audioFormat.sampleRate = parseInt(text, 10)
+                                    enabled: chkCustomSettings.checked
+                                }
+                                Label { text: "Sample Size" }
+                                ESTextField {
+                                    Layout.fillWidth: true
+                                    text: documentCreator.audioFormatHolder.audioFormat.sampleSize
+                                    onEsEditingFinished: documentCreator.audioFormatHolder.audioFormat.sampleSize = parseInt(text, 10)
+                                    enabled: chkCustomSettings.checked
+                                }
+                                Label { text: "Channels" }
+                                ESTextField {
+                                    Layout.fillWidth: true
+                                    text: documentCreator.audioFormatHolder.audioFormat.channelCount
+                                    onEsEditingFinished: documentCreator.audioFormatHolder.audioFormat.channelCount = parseInt(text, 10)
+                                    enabled: chkCustomSettings.checked
+                                }
+                                Label { text: "Sample Type" }
+                                ComboBox {
+                                    Layout.fillWidth: true
+                                    model: documentCreator.audioFormatHolder.sampleTypeModel
+                                    currentIndex: documentCreator.audioFormatHolder.sampleTypeIndex
+                                    onActivated: documentCreator.audioFormatHolder.sampleTypeIndex = index
+                                    enabled: chkCustomSettings.checked
+                                }
+                                Label { text: "Byte Order" }
+                                ComboBox {
+                                    Layout.fillWidth: true
+                                    model: documentCreator.audioFormatHolder.endianModel
+                                    currentIndex: documentCreator.audioFormatHolder.endianIndex
+                                    onActivated: documentCreator.audioFormatHolder.endianIndex = index
+                                    enabled: chkCustomSettings.checked
+                                }
+
+                                Button {
+                                    Layout.fillWidth: true
+                                    Layout.columnSpan: 2
+                                    text: "Set Default"
+                                    onClicked: menu.open()
+                                    enabled: chkCustomSettings.checked
+
+                                    property Menu menu: Menu {
+                                        MenuItem {
+                                            text: "From Input"
+                                            onTriggered: {
+                                                session.audio.inputPreferredFormat(documentCreator.audioFormatHolder)
+                                            }
+                                        }
+                                        MenuItem {
+                                            text: "From Output"
+                                            onTriggered: {
+                                                session.audio.outputPreferredFormat(documentCreator.audioFormatHolder)
+                                            }
+                                        }
+                                    }
+                                }
+                                Button {
+                                    Layout.fillWidth: true
+                                    Layout.columnSpan: 2
+                                    text: "Test"
+                                    enabled: chkCustomSettings.checked
+
+                                    onClicked: {
+                                        msgbox.msgbox(session.audio.testFormatSupport(documentCreator.audioFormatHolder))
+                                    }
+                                }
                             }
                         }
                     }
