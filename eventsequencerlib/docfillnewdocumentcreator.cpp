@@ -8,6 +8,8 @@
 #include "channel/spanchannel.h"
 #include "channel/playlistchannel.h"
 
+#include <QFile>
+
 QObject *DocFillNewDocumentCreator::sessionAudio() const
 {
     return sessionAudio_;
@@ -89,6 +91,11 @@ QVariantList DocFillNewDocumentCreator::make()
         }
     }
 
+    if (name_.isEmpty()) {
+        // Or else the name will just be ".evseq" which is weird.
+        return {false, "Need to provide a name"};
+    }
+
     const auto textChannelIndex = ChannelIndex::make1(1);
     const auto resourceChannelIndex = ChannelIndex::make1(2);
     const auto spanChannelIndex = ChannelIndex::make1(3);
@@ -107,7 +114,13 @@ QVariantList DocFillNewDocumentCreator::make()
 
     document_.setEndFrame(contents().size());
 
-    QUrl saveUrl = QUrl::fromLocalFile(documentsPath_ + "/" + name_ + ".evseq");
+    QString filePath = documentsPath_ + "/" + name_ + ".evseq";
+    if (QFile::exists(filePath)) {
+        // Don't want to save over an existing file.
+        return {false, "File already exists"};
+    }
+
+    QUrl saveUrl = QUrl::fromLocalFile(filePath);
     return document_.save(saveUrl); // Return the same save method as us!
 }
 
