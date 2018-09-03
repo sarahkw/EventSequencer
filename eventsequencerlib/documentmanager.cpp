@@ -27,7 +27,7 @@ void DocumentManager::updateItems()
     items_.clear();
 
     QDir dir(documentsPath_);
-    for (QFileInfo& fi : dir.entryInfoList({"*.evseq"}, QDir::Files)) {
+    for (QFileInfo& fi : dir.entryInfoList({"*.evseq"}, QDir::Files, QDir::Name)) {
         DocumentManagerItem dmi;
         dmi.displayName_ = fi.completeBaseName();
         dmi.filePath_ = fi.filePath();
