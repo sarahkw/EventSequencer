@@ -6,6 +6,7 @@
 #include "managedresources.h"
 #include "aufileheader.h"
 #include "audioformatholder.h"
+#include "resourcemetadata.h"
 
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -92,6 +93,28 @@ QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
             QUrl url = s->resourceUrl();
             if (!url.isEmpty()) {
                 obj["file"] = ManagedResources::urlConvertToFileName(url.toString());
+
+                // Let's make an attempt to read meta-data. Failures are silently
+                // ignored because files may not have meta-data, may be missing,
+                // etc.
+                {
+                    QString filePath;
+                    ManagedResources mr(document_->fileResourceDirectory());
+                    if (mr.urlConvertToFilePath(url, &filePath)) {
+                        QFile muhFile(filePath);
+                        if (muhFile.open(QFile::ReadOnly)) {
+                            AuFileHeader afh;
+                            std::string metaData;
+                            if (afh.loadFileAndSeek(muhFile, &metaData)) {
+                                std::string createTime;
+                                if (ResourceMetaData::read(metaData, &createTime)) {
+                                    obj["fileCreateTime"] = QString::fromStdString(createTime);
+                                }
+                            }
+                        }
+                    }
+                    // RAII to clean up
+                }
             }
         }
         jsonSegments.push_back(obj);

@@ -22,3 +22,15 @@ std::string ResourceMetaData::createFromNow()
         return {};
     }
 }
+
+bool ResourceMetaData::read(std::string &input, std::string *createTime)
+{
+    pb::ResourceMetaData rmd;
+    auto result = google::protobuf::util::JsonStringToMessage(input, &rmd);
+    if (result.ok()) {
+        *createTime = TimeUtil::ToString(rmd.createtime());
+        return true;
+    } else {
+        return false;
+    }
+}
