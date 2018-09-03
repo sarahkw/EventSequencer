@@ -127,7 +127,12 @@ QVariantList DocFillNewDocumentCreator::make()
 void DocFillNewDocumentCreator::updateDefaultAudioFormat()
 {
     if (sessionAudio_ != nullptr) {
-        sessionAudio_->inputPreferredFormat(document_.audioFormatHolderQObject());
+        auto* afh = qobject_cast<AudioFormatHolder*>(document_.audioFormatHolderQObject());
+        sessionAudio_->inputPreferredFormat(afh);
+        auto audioFormat = afh->audioFormat();
+        // Business logic: set channel count to 1, because it's a voice recording.
+        audioFormat.setChannelCount(1);
+        afh->setAudioFormat(audioFormat);
     }
 }
 

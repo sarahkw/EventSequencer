@@ -187,7 +187,7 @@ Pane {
 
                         Label {
                             Layout.fillWidth: true
-                            text: "Review the audio settings in which audio is recorded. The settings default to your input device parameters. If 'Channels' comes back as 2 (stereo), you may want to change it to 1 (mono) for recording speech."
+                            text: "Review the audio settings in which audio is recorded. The settings default to your input device parameters, but with 1 channel."
                             wrapMode: Text.Wrap
                         }
 
