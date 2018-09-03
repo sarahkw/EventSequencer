@@ -97,6 +97,7 @@ Pane {
                     TextField {
                         Layout.fillWidth: true
                         onEditingFinished: documentCreator.name = text
+                        placeholderText: "Use only characters valid for file names"
                     }
                 }
 
