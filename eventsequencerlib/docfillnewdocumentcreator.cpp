@@ -1,5 +1,12 @@
 #include "docfillnewdocumentcreator.h"
 
+#include "channelindex.h"
+#include "channel/docfillchannel.h"
+#include "channel/textchannel.h"
+#include "channel/collatechannel.h"
+#include "channel/spanchannel.h"
+#include "channel/playlistchannel.h"
+
 QObject *DocFillNewDocumentCreator::sessionAudio() const
 {
     return sessionAudio_;
@@ -73,6 +80,24 @@ void DocFillNewDocumentCreator::setContents(const QString &contents)
 
 QVariantList DocFillNewDocumentCreator::make()
 {
+    const auto textChannelIndex = ChannelIndex::make1(1);
+    const auto resourceChannelIndex = ChannelIndex::make1(2);
+    const auto spanChannelIndex = ChannelIndex::make1(3);
+
+    auto* docFillChannel = qobject_cast<channel::DocFillChannel*>(document_.createChannel(ChannelIndex::make1(0), channel::ChannelType::DocFill));
+    auto* textChannel    = qobject_cast<channel::TextChannel*>(document_.createChannel(textChannelIndex, channel::ChannelType::Text));
+    auto* collateChannel = qobject_cast<channel::CollateChannel*>(document_.createChannel(resourceChannelIndex, channel::ChannelType::Collate));
+    auto* spanChannel    = qobject_cast<channel::SpanChannel*>(document_.createChannel(spanChannelIndex, channel::ChannelType::Span));
+
+    docFillChannel->setTextChannel(textChannelIndex);
+    docFillChannel->setResourceChannel(resourceChannelIndex);
+    textChannel->setContent(contents());
+    collateChannel->setChannel(spanChannelIndex);
+    spanChannel->setDefaultChannelType(channel::ChannelType::Playlist);
+    spanChannel->setCount(1);
+
+    document_.setEndFrame(contents().size());
+
     return {false, "Not implemented"};
 }
 
