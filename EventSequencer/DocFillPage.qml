@@ -84,7 +84,7 @@ Page {
         allowOverwrite: true
         onFileDone: {
             corraledResourceFile.done()
-            if (chkSettingReviewAfterRecord.checked) {
+            if (applicationSettings.reviewAfterRecord) {
                 playPage.reviewAfterRecord()
             }
         }
@@ -155,7 +155,7 @@ Page {
 
     ESPlayable.Tone {
         id: playableTone
-        //frequency: 220
+        frequency: applicationSettings.toneFrequency
     }
 
     ES.PlayerControl {
@@ -221,6 +221,8 @@ Page {
 
             cppTextChannel: root.cppTextChannel
             cppRenderChannel: root.cppResourceChannel
+
+            font.pointSize: applicationSettings.fontPointSize
 
             ES.ConditionalError {
                 errorReportingContext: errorReportingContext
@@ -360,9 +362,9 @@ Page {
                             from: 1
                             to: 72
                             editable: true
-                            value: dvc.font.pointSize
+                            value: applicationSettings.fontPointSize
                             onValueModified: {
-                                dvc.font.pointSize = value
+                                applicationSettings.fontPointSize = value
                                 focus = false
                             }
                         }
@@ -515,11 +517,11 @@ Page {
                                 target: unnamedParent_7c13
                                 text: "Record"
                                 onClicked: {
-                                    if (chkSettingSelectOnRecord.checked) {
+                                    if (applicationSettings.selectOnRecord) {
                                         btnRangeStart.checked = false
                                         btnRangeStart.checked = true
                                     }
-                                    if (chkSettingToneBeforeRecord.checked) {
+                                    if (applicationSettings.toneBeforeRecord) {
                                         playPage.playToneBeforeRecord()
                                         tmrPlayToneBeforeRecord1.start()
                                     } else {
@@ -595,11 +597,16 @@ Page {
                 TextField {
                     visible: cmbSelectionMode.currentIndex === 4
                     placeholderText: "Hz"
-                    text: playableTone.frequency !== 0 ? playableTone.frequency : null
+                    text: applicationSettings.toneFrequency !== 0 ? applicationSettings.toneFrequency : null
                     implicitWidth: 80
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
-                        playableTone.frequency = parseInt(text, 10)
+                        var result = parseInt(text, 10)
+                        if (isNaN(result)) {
+                            result = 0
+                        }
+                        applicationSettings.toneFrequency = result
+                        textChanged()
                         focus = false
                     }
                 }
@@ -1016,24 +1023,32 @@ Error: %1".arg(result[1]))
                                         Layout.fillWidth: true
                                         Layout.columnSpan: 2
                                         text: "Automatically play review after record"
+                                        checked: applicationSettings.reviewAfterRecord
+                                        onToggled: applicationSettings.reviewAfterRecord = checked
                                     }
                                     CheckBox {
                                         id: chkSettingSelectOnRecord
                                         Layout.fillWidth: true
                                         Layout.columnSpan: 2
                                         text: "Automatically start selection on record"
+                                        checked: applicationSettings.selectOnRecord
+                                        onToggled: applicationSettings.selectOnRecord = checked
                                     }
                                     CheckBox {
                                         id: chkSettingToneBeforeRecord
                                         Layout.fillWidth: true
                                         Layout.columnSpan: 2
                                         text: "Play tone before record"
+                                        checked: applicationSettings.toneBeforeRecord
+                                        onToggled: applicationSettings.toneBeforeRecord = checked
                                     }
                                     CheckBox {
                                         id: chkSettingDeveloperOptions
                                         Layout.fillWidth: true
                                         Layout.columnSpan: 2
-                                        text: "Enable developer options"
+                                        text: "Show developer options"
+                                        checked: applicationSettings.developerOptions
+                                        onToggled: applicationSettings.developerOptions = checked
                                     }
                                 }
                             }
@@ -1042,7 +1057,7 @@ Error: %1".arg(result[1]))
                                 id: devOptionsLoader
                                 anchors.left: parent.left
                                 anchors.right: parent.right
-                                source: chkSettingDeveloperOptions.checked ? "DocFillDeveloperOptions.qml" : ""
+                                source: applicationSettings.developerOptions ? "DocFillDeveloperOptions.qml" : ""
                                 property alias selectedCppStrip: stripsHolderItem.selectedStrip
                             }
                             Connections {
