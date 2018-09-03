@@ -677,6 +677,7 @@ Page {
                     text: "Auto Save"
                     checkable: true
                     checked: true
+                    visible: applicationSettings.developerOptions
                 }
                 Button {
                     Layout.fillWidth: true
@@ -685,6 +686,7 @@ Page {
                         documentSaveOrShowError(document.currentUrl)
                         autoSaveManager.markManualSaved()
                     }
+                    visible: applicationSettings.developerOptions
                 }
             }
         }
