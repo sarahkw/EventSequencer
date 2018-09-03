@@ -102,10 +102,9 @@ Pane {
 
                     ColumnLayout {
                         anchors.fill: parent
-                        Rectangle {
+                        Pane {
                             Layout.fillWidth: true
-                            color: "lemonchiffon"
-                            implicitHeight: internalRowLayout.implicitHeight
+                            palette.window: "lemonchiffon"
 
                             RowLayout {
                                 id: internalRowLayout
@@ -149,6 +148,7 @@ Pane {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     contentWidth: width
+                    clip: true
                     ColumnLayout {
                         anchors.left: parent.left
                         anchors.right: parent.right
