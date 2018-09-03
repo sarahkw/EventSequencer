@@ -86,7 +86,8 @@ SOURCES += \
     qmlobjectdestroyednotifier.cpp \
     clipboardwrapper.cpp \
     docfillexportmanager.cpp \
-    docfillnewdocumentcreator.cpp
+    docfillnewdocumentcreator.cpp \
+    documentmanagerdeleter.cpp
 
 
 HEADERS += \
@@ -153,7 +154,8 @@ HEADERS += \
     qmlobjectdestroyednotifier.h \
     clipboardwrapper.h \
     docfillexportmanager.h \
-    docfillnewdocumentcreator.h
+    docfillnewdocumentcreator.h \
+    documentmanagerdeleter.h
 
 unix {
     target.path = /usr/lib
