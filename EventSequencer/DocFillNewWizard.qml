@@ -67,87 +67,87 @@ Pane {
             }
         }
 
-        Label {
-            Layout.fillWidth: true
-            font.bold: true
-            text: {
-                if (swipeView.currentIndex === 0) {
-                    return "Contents"
-                } else if (swipeView.currentIndex === 1) {
-                    return "Audio Settings"
-                }
-            }
-        }
-
-        Rectangle {
+        SwipeView {
             Layout.fillWidth: true
             Layout.fillHeight: true
-
-            SwipeView {
-                id: swipeView
-                anchors.fill: parent
-                clip: true
-                interactive: false
+            id: swipeView
+            clip: true
+            interactive: false
+            
+            ColumnLayout {
+                Label {
+                    Layout.fillWidth: true
+                    font.bold: true
+                    text: "Contents"
+                }
                 
-                ColumnLayout {
-                    RowLayout {
+                RowLayout {
+                    Layout.fillWidth: true
+                    Label { text: "Name" }
+                    TextField {
                         Layout.fillWidth: true
-                        Label { text: "Name" }
-                        TextField {
+                    }
+                }
+
+                GroupBox {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    title: "Contents"
+                    padding: 2
+
+                    // An extra item so that GroupBox doesn't try
+                    // to auto calculate the size and create a
+                    // binding loop.
+                    Item { }
+
+                    ColumnLayout {
+                        anchors.fill: parent
+                        Rectangle {
                             Layout.fillWidth: true
-                        }
-                    }
+                            color: "lemonchiffon"
+                            implicitHeight: internalRowLayout.implicitHeight
 
-                    GroupBox {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                        title: "Contents"
-                        padding: 2
-
-                        // An extra item so that GroupBox doesn't try
-                        // to auto calculate the size and create a
-                        // binding loop.
-                        Item { }
-
-                        ColumnLayout {
-                            anchors.fill: parent
-                            Rectangle {
-                                Layout.fillWidth: true
-                                color: "lemonchiffon"
-                                implicitHeight: internalRowLayout.implicitHeight
-
-                                RowLayout {
-                                    id: internalRowLayout
-                                    anchors.left: parent.left
-                                    anchors.right: parent.right
-                                    Text {
-                                        Layout.fillWidth: true
-                                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                                        text: "Cannot be changed later. Characters need to fit in 1 UTF-16 codepoint and be single-spaced."
-                                    }
-                                    Button {
-                                        text: "Paste"
-                                        onClicked: {
-                                            contentBody.text = ES.ClipboardWrapper.getText()
-                                        }
-                                    }
-                                }
-                            }
-                            ScrollView {
-                                Layout.fillWidth: true
-                                Layout.fillHeight: true
-                                TextArea {
-                                    id: contentBody
-                                    font: cmfu.builtFont
+                            RowLayout {
+                                id: internalRowLayout
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                Text {
+                                    Layout.fillWidth: true
                                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                                    textFormat: TextEdit.PlainText
+                                    text: "Cannot be changed later. Characters need to fit in 1 UTF-16 codepoint and be single-spaced."
+                                }
+                                Button {
+                                    text: "Paste"
+                                    onClicked: {
+                                        contentBody.text = ES.ClipboardWrapper.getText()
+                                    }
                                 }
                             }
                         }
+                        ScrollView {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            TextArea {
+                                id: contentBody
+                                font: cmfu.builtFont
+                                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                                textFormat: TextEdit.PlainText
+                            }
+                        }
                     }
+                }
+            }
+
+            ColumnLayout {
+                Label {
+                    Layout.fillWidth: true
+                    font.bold: true
+                    text: "Audio Settings"
                 }
 
                 ScrollView {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
                     contentWidth: width
                     ColumnLayout {
                         anchors.left: parent.left
