@@ -7,6 +7,13 @@ import eventsequencer 1.0 as ES
 Rectangle {
     color: "whitesmoke"
 
+    property var closeFn
+    property alias documentsPath: documentCreator.documentsPath
+
+    ES.DocFillNewDocumentCreator {
+        id: documentCreator
+    }
+
     states: [
         State {
             when: swipeView.currentIndex === 0
