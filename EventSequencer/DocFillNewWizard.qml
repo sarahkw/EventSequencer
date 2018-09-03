@@ -116,9 +116,28 @@ Pane {
                                     text: "Cannot be changed later. Characters must fit in 1 UTF-16 codepoint and must take up only 1 space."
                                 }
                                 Button {
-                                    text: "Paste"
+                                    text: "Edit"
+                                    Menu {
+                                        id: editMenu
+                                        MenuItem {
+                                            text: "Cut"
+                                            onClicked: contentBody.cut()
+                                        }
+                                        MenuItem {
+                                            text: "Copy"
+                                            onClicked: contentBody.copy()
+                                        }
+                                        MenuItem {
+                                            text: "Paste"
+                                            onClicked: contentBody.paste()
+                                        }
+                                        MenuItem {
+                                            text: "Select All"
+                                            onClicked: contentBody.selectAll()
+                                        }
+                                    }
                                     onClicked: {
-                                        contentBody.text = ES.ClipboardWrapper.getText()
+                                        editMenu.open()
                                     }
                                 }
                             }
