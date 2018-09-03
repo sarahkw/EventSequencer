@@ -111,10 +111,10 @@ Pane {
                                 id: internalRowLayout
                                 anchors.left: parent.left
                                 anchors.right: parent.right
-                                Text {
+                                Label {
                                     Layout.fillWidth: true
                                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                                    text: "Cannot be changed later. Characters need to fit in 1 UTF-16 codepoint and be single-spaced."
+                                    text: "Cannot be changed later. Characters must fit in 1 UTF-16 codepoint and must take up only 1 space."
                                 }
                                 Button {
                                     text: "Paste"
@@ -193,7 +193,7 @@ Pane {
                         Button {
                             Layout.fillWidth: true
                             text: "Set Default"
-                            onClicked: menu.popup()
+                            onClicked: menu.open()
 
                             property Menu menu: Menu {
                                 MenuItem {
