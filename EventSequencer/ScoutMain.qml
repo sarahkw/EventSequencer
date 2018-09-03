@@ -154,6 +154,52 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                             text: "Settings"
                             radius: 5
                             Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
+
+                            Dialog {
+                                id: settingsDialog
+
+                                parent: ApplicationWindow.overlay
+                                x: (parent.width - width) / 2
+                                y: (parent.height - height) / 2
+                                width: parent.width * 0.95
+
+                                title: "Settings"
+                                modal: true
+                                closePolicy: Popup.CloseOnEscape
+                                standardButtons: Dialog.Ok | Dialog.Cancel
+
+                                GroupBox {
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    title: "Documents Path"
+                                    ColumnLayout {
+                                        anchors.left: parent.left
+                                        anchors.right: parent.right
+                                        TextField {
+                                            id: txtDocsPath
+                                            Layout.fillWidth: true
+                                            selectByMouse: true
+                                            text: applicationSettings.documentsPath
+                                            readOnly: chkDocsPathUseDefault.checked
+                                        }
+                                        CheckBox {
+                                            id: chkDocsPathUseDefault
+                                            text: "Use Default"
+                                            onToggled: if (checked) txtDocsPath.text = applicationSettings.defaultDocumentsPath
+                                            checked: applicationSettings.documentsPathIsDefault
+                                        }
+                                    }
+                                }
+
+                                onAccepted: {
+                                    if (chkDocsPathUseDefault.checked) {
+                                        applicationSettings.unsetDocumentsPath()
+                                    } else {
+                                        applicationSettings.documentsPath = txtDocsPath.text
+                                    }
+                                }
+                            }
+                            onClicked: settingsDialog.open()
                         }
                         RoundButton {
                             text: "About"

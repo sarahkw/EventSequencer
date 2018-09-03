@@ -37,7 +37,7 @@ public:
 
     QString documentsPath() const;
     void setDocumentsPath(const QString &documentsPath);
-    void unsetDocumentsPath();
+    Q_INVOKABLE void unsetDocumentsPath();
     bool documentsPathIsDefault() const;
 
     int fontPointSize() const;
