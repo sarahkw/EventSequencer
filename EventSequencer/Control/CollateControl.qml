@@ -58,7 +58,7 @@ Item {
 
                 // Left border
                 Rectangle {
-                    width: 1
+                    width: 2
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
