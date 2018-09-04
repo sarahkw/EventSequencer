@@ -40,7 +40,13 @@ Dialog {
             ListView {
                 model: deleter.queuedForDeletion
                 delegate: Label {
-                    text: modelData
+                    text: {
+                        if (modelData.isDirectory) {
+                            modelData.fileName + "/"
+                        } else {
+                            modelData.fileName
+                        }
+                    }
                 }
             }
         }

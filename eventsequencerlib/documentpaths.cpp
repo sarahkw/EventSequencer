@@ -7,7 +7,7 @@
 
 void DocumentPaths::pathQuery(QString documentFileName,
                               DocumentPaths::PathRequest request,
-                              DocumentPaths::PathResponse* response)
+                              DocumentPathsResponse* response)
 {
     QFileInfo fi(documentFileName);
     response->dirPath = fi.dir().path();

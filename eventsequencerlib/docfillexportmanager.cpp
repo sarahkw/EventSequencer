@@ -252,7 +252,7 @@ void DocFillExportManager::updateDefaultOutputPaths()
     defaultExportJsonOutputPathExists_ = false;
     defaultPlayToFileOutputPathExists_ = false;
     if (document_ != nullptr) {
-        DocumentPaths::PathResponse pathResponse;
+        DocumentPathsResponse pathResponse;
         if (document_->pathQuery(DocumentPaths::PathRequest::JSON_EXPORT, &pathResponse)) {
             defaultExportJsonOutputPath_ = pathResponse.filePath;
             defaultExportJsonOutputPathExists_ = QFile::exists(defaultExportJsonOutputPath_);

@@ -182,7 +182,7 @@ public:
     QString fileResourceDirectory() const;
 
     bool pathQuery(DocumentPaths::PathRequest request,
-                   DocumentPaths::PathResponse* response) const;
+                   DocumentPathsResponse* response) const;
 
     QString fileForkedFromChecksum() const;
     void setFileForkedFromChecksum(const QString &fileForkedFromChecksum);

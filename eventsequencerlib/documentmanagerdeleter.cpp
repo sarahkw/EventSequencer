@@ -42,11 +42,11 @@ void DocumentManagerDeleter::updateQueuedForDeletion()
              DocumentPaths::PathRequest::DATA_DIRECTORY,
              DocumentPaths::PathRequest::JSON_EXPORT,
              DocumentPaths::PathRequest::PLAYTOFILE_EXPORT}) {
-        DocumentPaths::PathResponse response;
+        DocumentPathsResponse response;
         DocumentPaths::pathQuery(filePath_, request, &response);
 
         if (QFile::exists(response.filePath)) {
-            queuedForDeletion_.push_back(response.fileName);
+            queuedForDeletion_.push_back(QVariant::fromValue(response));
         }
     }
 

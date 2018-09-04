@@ -315,7 +315,7 @@ void Document::setCurrentUrl(const QUrl &currentUrl)
         emit currentFileNameChanged();
 
         if (!currentFileName_.isEmpty()) {
-            DocumentPaths::PathResponse response;
+            DocumentPathsResponse response;
             const bool result = pathQuery(
                 DocumentPaths::PathRequest::DATA_DIRECTORY, &response);
             Q_ASSERT(result);
@@ -332,7 +332,7 @@ QString Document::fileResourceDirectory() const
     return fileResourceDirectory_;
 }
 
-bool Document::pathQuery(DocumentPaths::PathRequest request, DocumentPaths::PathResponse *response) const
+bool Document::pathQuery(DocumentPaths::PathRequest request, DocumentPathsResponse *response) const
 {
     if (currentFileName_.isEmpty()) {
         return false;
