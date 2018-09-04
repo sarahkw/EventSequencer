@@ -15,6 +15,9 @@ public:
         JSON_EXPORT,
         PLAYTOFILE_EXPORT
     };
+
+    // XXX Making this struct because I don't know if QFileInfo requires the
+    //     file to actually exist.
     struct PathResponse {
         QString dirPath;
         QString fileName;
