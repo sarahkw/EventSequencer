@@ -216,6 +216,34 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                             text: "About"
                             radius: 5
                             Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
+
+                            Dialog {
+                                id: aboutDialog
+
+                                parent: ApplicationWindow.overlay
+                                x: (parent.width - width) / 2
+                                y: (parent.height - height) / 2
+                                width: parent.width * 0.95
+                                height: parent.height * 0.75
+
+                                title: "About"
+                                modal: true
+                                closePolicy: Popup.CloseOnEscape
+                                footer: DialogButtonBox {
+                                    Button {
+                                        text: "Ok"
+                                        DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+                                    }
+                                }
+
+                                ScrollView {
+                                    TextEdit {
+                                        readOnly: true
+                                        text: "This is some About text"
+                                    }
+                                }
+                            }
+                            onClicked: aboutDialog.open()
                         }
                         RoundButton {
                             text: "Quit"
