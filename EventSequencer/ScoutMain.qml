@@ -99,13 +99,24 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
             anchors.bottom: parent.bottom
             spacing: parent.height / 20
 
-            Text {
+            Column {
                 Layout.fillWidth: true
-                text: root.title
-                horizontalAlignment: Text.AlignHCenter
-                wrapMode: Text.WordWrap
+                Text {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    text: root.title
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.WordWrap
 
-                font.pointSize: 18
+                    font.pointSize: 18
+                }
+                Text {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    text: "0.1.0"
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.WordWrap
+                }
             }
 
             Text {
