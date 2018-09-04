@@ -87,7 +87,8 @@ SOURCES += \
     clipboardwrapper.cpp \
     docfillexportmanager.cpp \
     docfillnewdocumentcreator.cpp \
-    documentmanagerdeleter.cpp
+    documentmanagerdeleter.cpp \
+    documentpaths.cpp
 
 
 HEADERS += \
@@ -155,7 +156,8 @@ HEADERS += \
     clipboardwrapper.h \
     docfillexportmanager.h \
     docfillnewdocumentcreator.h \
-    documentmanagerdeleter.h
+    documentmanagerdeleter.h \
+    documentpaths.h
 
 unix {
     target.path = /usr/lib

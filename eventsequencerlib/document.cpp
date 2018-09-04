@@ -11,8 +11,6 @@
 #include <QDebug>
 #include <QFile>
 #include <QCryptographicHash>
-#include <QFileInfo>
-#include <QDir>
 
 /******************************************************************************/
 
@@ -317,8 +315,9 @@ void Document::setCurrentUrl(const QUrl &currentUrl)
         emit currentFileNameChanged();
 
         if (!currentFileName_.isEmpty()) {
-            PathResponse response;
-            const bool result = pathQuery(PathRequest::DATA_DIRECTORY, &response);
+            DocumentPaths::PathResponse response;
+            const bool result = pathQuery(
+                DocumentPaths::PathRequest::DATA_DIRECTORY, &response);
             Q_ASSERT(result);
             fileResourceDirectory_ = response.filePath;
         } else {
@@ -333,37 +332,13 @@ QString Document::fileResourceDirectory() const
     return fileResourceDirectory_;
 }
 
-bool Document::pathQuery(Document::PathRequest request, Document::PathResponse *response) const
+bool Document::pathQuery(DocumentPaths::PathRequest request, DocumentPaths::PathResponse *response) const
 {
     if (currentFileName_.isEmpty()) {
         return false;
     }
 
-    QFileInfo fi(currentFileName_);
-    response->dirPath = fi.dir().path();
-
-    switch (request) {
-    case PathRequest::DOCUMENT:
-        response->fileName = fi.fileName();
-        response->filePath = fi.filePath();
-        break;
-    case PathRequest::DOCUMENT_BACKUP:
-        response->fileName = fi.fileName() + SaferFileReplacement::BACKUP_FILE_SUFFIX;
-        response->filePath = fi.filePath() + SaferFileReplacement::BACKUP_FILE_SUFFIX;
-        break;
-    case PathRequest::DATA_DIRECTORY:
-        response->fileName = fi.completeBaseName() + "_data";
-        response->filePath = response->dirPath + "/" + response->fileName;
-        break;
-    case PathRequest::JSON_EXPORT:
-        response->fileName = "export-" + fi.completeBaseName() + ".json";
-        response->filePath = response->dirPath + "/" + response->fileName;
-        break;
-    case PathRequest::PLAYTOFILE_EXPORT:
-        response->fileName = "export-" + fi.completeBaseName() + ".au";
-        response->filePath = response->dirPath + "/" + response->fileName;
-        break;
-    }
+    DocumentPaths::pathQuery(currentFileName_, request, response);
     return true;
 }
 

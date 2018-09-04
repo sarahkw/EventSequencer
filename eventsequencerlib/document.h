@@ -6,6 +6,7 @@
 #include "documentstripsonchannel.h"
 #include "channelindex.h"
 #include "visualpositionmanager.h"
+#include "documentpaths.h"
 
 #include <QAbstractListModel>
 #include <QUrl>
@@ -180,19 +181,8 @@ public:
 
     QString fileResourceDirectory() const;
 
-    enum class PathRequest {
-        DOCUMENT,
-        DOCUMENT_BACKUP,
-        DATA_DIRECTORY,
-        JSON_EXPORT,
-        PLAYTOFILE_EXPORT
-    };
-    struct PathResponse {
-        QString dirPath;
-        QString fileName;
-        QString filePath;
-    };
-    bool pathQuery(PathRequest request, PathResponse* response) const;
+    bool pathQuery(DocumentPaths::PathRequest request,
+                   DocumentPaths::PathResponse* response) const;
 
     QString fileForkedFromChecksum() const;
     void setFileForkedFromChecksum(const QString &fileForkedFromChecksum);
