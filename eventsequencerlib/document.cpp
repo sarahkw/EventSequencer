@@ -317,16 +317,12 @@ void Document::setCurrentUrl(const QUrl &currentUrl)
         emit currentFileNameChanged();
 
         if (!currentFileName_.isEmpty()) {
-            QFileInfo fi(currentFileName_);
-            QString pathPart1 = fi.dir().path();
-            QString pathPart2 = fi.completeBaseName();
-            fileResourceDirectory_ = pathPart1 + "/" + pathPart2 + "_data";
-            exportPathGenerator_ = [pathPart1, pathPart2](QString suffix) {
-                return pathPart1 + "/" + "export-" + pathPart2 + suffix;
-            };
+            PathResponse response;
+            const bool result = pathQuery(PathRequest::DATA_DIRECTORY, &response);
+            Q_ASSERT(result);
+            fileResourceDirectory_ = response.filePath;
         } else {
             fileResourceDirectory_.clear();
-            exportPathGenerator_ = std::function<QString (QString suffix)>();
         }
         emit fileResourceDirectoryChanged();
     }
@@ -337,9 +333,38 @@ QString Document::fileResourceDirectory() const
     return fileResourceDirectory_;
 }
 
-std::function<QString (QString suffix)> Document::exportPathGenerator()
+bool Document::pathQuery(Document::PathRequest request, Document::PathResponse *response) const
 {
-    return exportPathGenerator_;
+    if (currentFileName_.isEmpty()) {
+        return false;
+    }
+
+    QFileInfo fi(currentFileName_);
+    response->dirPath = fi.dir().path();
+
+    switch (request) {
+    case PathRequest::DOCUMENT:
+        response->fileName = fi.fileName();
+        response->filePath = fi.filePath();
+        break;
+    case PathRequest::DOCUMENT_BACKUP:
+        response->fileName = fi.fileName() + SaferFileReplacement::BACKUP_FILE_SUFFIX;
+        response->filePath = fi.filePath() + SaferFileReplacement::BACKUP_FILE_SUFFIX;
+        break;
+    case PathRequest::DATA_DIRECTORY:
+        response->fileName = fi.completeBaseName() + "_data";
+        response->filePath = response->dirPath + "/" + response->fileName;
+        break;
+    case PathRequest::JSON_EXPORT:
+        response->fileName = "export-" + fi.completeBaseName() + ".json";
+        response->filePath = response->dirPath + "/" + response->fileName;
+        break;
+    case PathRequest::PLAYTOFILE_EXPORT:
+        response->fileName = "export-" + fi.completeBaseName() + ".au";
+        response->filePath = response->dirPath + "/" + response->fileName;
+        break;
+    }
+    return true;
 }
 
 QString Document::fileForkedFromChecksum() const

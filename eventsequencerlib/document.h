@@ -11,7 +11,6 @@
 #include <QUrl>
 
 #include <set>
-#include <functional>
 
 namespace pb {
 class Document;
@@ -106,7 +105,6 @@ class Document : public QObject
     QUrl currentUrl_;
     QString currentFileName_;
     QString fileResourceDirectory_;
-    std::function<QString(QString suffix)> exportPathGenerator_;
 
     Q_PROPERTY(QUrl currentUrl READ currentUrl WRITE setCurrentUrl NOTIFY currentUrlChanged)
     Q_PROPERTY(QString currentFileName MEMBER currentFileName_ NOTIFY currentFileNameChanged)
@@ -181,7 +179,20 @@ public:
     void setCurrentUrl(const QUrl &currentUrl);
 
     QString fileResourceDirectory() const;
-    std::function<QString(QString suffix)> exportPathGenerator();
+
+    enum class PathRequest {
+        DOCUMENT,
+        DOCUMENT_BACKUP,
+        DATA_DIRECTORY,
+        JSON_EXPORT,
+        PLAYTOFILE_EXPORT
+    };
+    struct PathResponse {
+        QString dirPath;
+        QString fileName;
+        QString filePath;
+    };
+    bool pathQuery(PathRequest request, PathResponse* response) const;
 
     QString fileForkedFromChecksum() const;
     void setFileForkedFromChecksum(const QString &fileForkedFromChecksum);

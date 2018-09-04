@@ -12,8 +12,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-#include <QDebug> // FOR DEV WORK
-
 #include <memory>
 
 QObject *DocFillExportManager::document() const
@@ -178,7 +176,7 @@ QString DocFillExportManager::exportPlayToFile(playable::PlayableBase *playable)
 
     AuFileHeader afh;
     if (!afh.loadFormat(audioFormat)) {
-        qCritical() << "??? Format was good but now is not?";
+        qCritical("??? Format was good but now is not?");
         error = "Internal error";
         goto done;
     }
@@ -254,11 +252,13 @@ void DocFillExportManager::updateDefaultOutputPaths()
     defaultExportJsonOutputPathExists_ = false;
     defaultPlayToFileOutputPathExists_ = false;
     if (document_ != nullptr) {
-        auto pathGen = document_->exportPathGenerator();
-        if (!!pathGen) {
-            defaultExportJsonOutputPath_ = pathGen(".json");
-            defaultPlayToFileOutputPath_ = pathGen(".au");
+        Document::PathResponse pathResponse;
+        if (document_->pathQuery(Document::PathRequest::JSON_EXPORT, &pathResponse)) {
+            defaultExportJsonOutputPath_ = pathResponse.filePath;
             defaultExportJsonOutputPathExists_ = QFile::exists(defaultExportJsonOutputPath_);
+        }
+        if (document_->pathQuery(Document::PathRequest::PLAYTOFILE_EXPORT, &pathResponse)) {
+            defaultPlayToFileOutputPath_ = pathResponse.filePath;
             defaultPlayToFileOutputPathExists_ = QFile::exists(defaultPlayToFileOutputPath_);
         }
     }

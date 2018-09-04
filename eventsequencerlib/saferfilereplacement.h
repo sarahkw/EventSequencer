@@ -4,6 +4,10 @@
 #include <QFile>
 
 class SaferFileReplacement {
+public:
+    static const QString BACKUP_FILE_SUFFIX;
+private:
+
     QString fileName_;
     QFile file_;
 

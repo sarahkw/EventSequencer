@@ -1,5 +1,7 @@
 #include "saferfilereplacement.h"
 
+const QString SaferFileReplacement::BACKUP_FILE_SUFFIX("~");
+
 SaferFileReplacement::SaferFileReplacement(const QString &fileName) : fileName_(fileName)
 {
 
