@@ -36,12 +36,15 @@ void DocumentManagerDeleter::updateQueuedForDeletion()
         return;
     }
 
-    for (auto request : {
-             DocumentPaths::PathRequest::DOCUMENT,
-             DocumentPaths::PathRequest::DOCUMENT_BACKUP,
-             DocumentPaths::PathRequest::DATA_DIRECTORY,
-             DocumentPaths::PathRequest::JSON_EXPORT,
-             DocumentPaths::PathRequest::PLAYTOFILE_EXPORT}) {
+    for (auto request :
+         {// These are ordered such that the less important stuff is
+          // deleted first. If delete fails, we won't continue
+          // further.
+          DocumentPaths::PathRequest::JSON_EXPORT,
+          DocumentPaths::PathRequest::PLAYTOFILE_EXPORT,
+          DocumentPaths::PathRequest::DOCUMENT_BACKUP,
+          DocumentPaths::PathRequest::DATA_DIRECTORY,
+          DocumentPaths::PathRequest::DOCUMENT}) {
         DocumentPathsResponse response;
         DocumentPaths::pathQuery(filePath_, request, &response);
 
