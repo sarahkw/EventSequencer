@@ -24,21 +24,24 @@ Dialog {
     title: "Delete"
     modal: true
     closePolicy: Popup.CloseOnEscape
-    footer: DialogButtonBox {
-        Button {
-            text: "Ok"
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-        }
-    }
+    standardButtons: Dialog.Yes | Dialog.No
 
     ColumnLayout {
         anchors.fill: parent
-        ListView {
+        Label {
+            Layout.fillWidth: true
+            text: "Are you sure you wish to permanently delete the following files/directories?"
+            wrapMode: Text.Wrap
+        }
+        ScrollView {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            model: deleter.queuedForDeletion
-            delegate: Label {
-                text: modelData
+            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+            ListView {
+                model: deleter.queuedForDeletion
+                delegate: Label {
+                    text: modelData
+                }
             }
         }
     }

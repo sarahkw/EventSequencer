@@ -44,7 +44,10 @@ void DocumentManagerDeleter::updateQueuedForDeletion()
              DocumentPaths::PathRequest::PLAYTOFILE_EXPORT}) {
         DocumentPaths::PathResponse response;
         DocumentPaths::pathQuery(filePath_, request, &response);
-        queuedForDeletion_.push_back(response.filePath);
+
+        if (QFile::exists(response.filePath)) {
+            queuedForDeletion_.push_back(response.fileName);
+        }
     }
 
     emit queuedForDeletionChanged();

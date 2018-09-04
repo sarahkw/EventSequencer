@@ -22,6 +22,7 @@ public:
         QString dirPath;
         QString fileName;
         QString filePath;
+        bool isDirectory;
     };
 
     static void pathQuery(QString documentFileName, PathRequest request,
