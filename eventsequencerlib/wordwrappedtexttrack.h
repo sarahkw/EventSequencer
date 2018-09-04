@@ -13,7 +13,8 @@ class WordWrappedTextTrack : public QAbstractListModel
 
     enum CustomRoles {
         ModelDataRole = Qt::UserRole + 1,
-        TextOffsetRole
+        TextOffsetRole,
+        HasNextLineRole
     };
 
     int width_ = 1;

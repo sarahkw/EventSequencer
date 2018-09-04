@@ -213,6 +213,8 @@ QVariant WordWrappedTextTrack::data(const QModelIndex &index, int role) const
             return rows_[size_t(index.row())].text;
         } else if (role == TextOffsetRole) {
             return rows_[size_t(index.row())].offset;
+        } else if (role == HasNextLineRole) {
+            return (size_t(index.row()) + 1) < rows_.size();
         }
     }
     return {};
@@ -222,6 +224,7 @@ QHash<int, QByteArray> WordWrappedTextTrack::roleNames() const
 {
     return {
         {ModelDataRole, "modelData"},
-        {TextOffsetRole, "textOffset"}
+        {TextOffsetRole, "textOffset"},
+        {HasNextLineRole, "hasNextLine"}
     };
 }

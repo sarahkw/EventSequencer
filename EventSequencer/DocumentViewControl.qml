@@ -125,7 +125,12 @@ Rectangle {
                         if (frameInside < 0) {
                             frameInside = 0
                         } else if (frameInside >= modelData.length) {
-                            frameInside = modelData.length - 1
+                            if (hasNextLine) {
+                                frameInside = modelData.length - 1
+                            } else {
+                                // If no next line, allow selection past the end.
+                                frameInside = modelData.length
+                            }
                             if (frameInside < 0) {
                                 frameInside = 0
                             }
