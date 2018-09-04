@@ -3,6 +3,7 @@
 #include "documentpaths.h"
 
 #include <QFileInfo>
+#include <QDir>
 
 QString DocumentManagerDeleter::filePath() const
 {
@@ -25,7 +26,25 @@ QVariantList DocumentManagerDeleter::queuedForDeletion() const
 
 QString DocumentManagerDeleter::actuallyDelete()
 {
-    return "Not implemented";
+    for (QVariant& var : queuedForDeletion_) {
+        auto dpr = var.value<DocumentPathsResponse>();
+        if (dpr.isDirectory) {
+            QDir dir(dpr.filePath);
+            if (!dir.removeRecursively()) {
+                // TODO Stop using removeRecursively() because it doesn't give error msg.
+                return QString("Cannot recursively remove directory: %1")
+                    .arg(dpr.filePath);
+            }
+        } else {
+            QFile file(dpr.filePath);
+            if (!file.remove()) {
+                return QString("Cannot remove %1: %2")
+                    .arg(dpr.filePath)
+                    .arg(file.errorString());
+            }
+        }
+    }
+    return "Success";
 }
 
 void DocumentManagerDeleter::updateQueuedForDeletion()
