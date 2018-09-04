@@ -299,6 +299,16 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                                 id: subMenu
                                 MenuItem {
                                     text: "Delete %1".arg(modelData.displayName)
+                                    onClicked: {
+                                        var component = Qt.createComponent("DocFillDeleteDialog.qml")
+                                        var obj = component.createObject(root, {
+                                                                             //visible: true,
+                                                                             filePath: modelData.filePath
+                                                                         })
+                                        // Wow I can't say visible=true instead or else
+                                        // there are layout problems.
+                                        obj.open()
+                                    }
                                 }
                             }
 

@@ -53,5 +53,6 @@
         <file>DocFillPageExportSection.qml</file>
         <file>DocFillPageStorageTab.qml</file>
         <file>DocFillPageExportTab.qml</file>
+        <file>DocFillDeleteDialog.qml</file>
     </qresource>
 </RCC>
