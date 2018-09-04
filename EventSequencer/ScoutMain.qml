@@ -36,6 +36,10 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
 
     property int cursorFrame: 0
 
+    MsgBox {
+        id: msgbox
+    }
+
     ES.DocFillSettings {
         id: applicationSettings
     }
@@ -303,7 +307,13 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                                         var component = Qt.createComponent("DocFillDeleteDialog.qml")
                                         var obj = component.createObject(root, {
                                                                              //visible: true,
-                                                                             filePath: modelData.filePath
+                                                                             filePath: modelData.filePath,
+                                                                             returnResult: function (result) {
+                                                                                 msgbox.msgbox(result, "Delete")
+                                                                                 // XXX Can't call .refresh() before the msgbox or else
+                                                                                 //     QML breaks.
+                                                                                 documentManager.refresh()
+                                                                             }
                                                                          })
                                         // Wow I can't say visible=true instead or else
                                         // there are layout problems.

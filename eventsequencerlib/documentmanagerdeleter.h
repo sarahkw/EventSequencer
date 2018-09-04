@@ -23,6 +23,8 @@ public:
 
     QVariantList queuedForDeletion() const;
 
+    Q_INVOKABLE QString actuallyDelete();
+
 signals:
 
     void filePathChanged();

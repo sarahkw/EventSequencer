@@ -23,6 +23,11 @@ QVariantList DocumentManagerDeleter::queuedForDeletion() const
     return queuedForDeletion_;
 }
 
+QString DocumentManagerDeleter::actuallyDelete()
+{
+    return "Not implemented";
+}
+
 void DocumentManagerDeleter::updateQueuedForDeletion()
 {
     queuedForDeletion_.clear();

@@ -7,6 +7,7 @@ Dialog {
     id: root
 
     property string filePath
+    property var returnResult // fn
 
     ES.DocumentManagerDeleter {
         id: deleter
@@ -25,6 +26,11 @@ Dialog {
     modal: true
     closePolicy: Popup.CloseOnEscape
     standardButtons: Dialog.Yes | Dialog.No
+
+    onAccepted: {
+        var result = deleter.actuallyDelete()
+        returnResult(result)
+    }
 
     ColumnLayout {
         anchors.fill: parent
