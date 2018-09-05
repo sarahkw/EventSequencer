@@ -46,12 +46,21 @@ Pane {
                 target: btnNext
                 text: "Finish"
                 onClicked: {
+
+                    // Unfortunately, need the audio permission to test the
+                    // audio input.
+                    var permgranted =
+                            ES.AndroidPermissionRequest.requestRecordAudio()
+
                     var result = documentCreator.make()
                     var success = result[0]
                     if (success) {
                         closeFn()
                     } else {
                         var errorMsg = result[1]
+                        if (!permgranted && Qt.platform.os === "android") {
+                            errorMsg += "\n\nNote: testing audio input will fail without permission to record. If testing audio input fails due to lack of permission, you will have to restart the application to try again."
+                        }
                         msgbox.msgbox(errorMsg, "Error")
                     }
                 }

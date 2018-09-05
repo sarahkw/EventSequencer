@@ -58,7 +58,7 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
     ES.DocumentManager {
         id: documentManager
         documentsPath: applicationSettings.documentsPath
-        onBeforeScanDocuments: ES.AndroidPermissionRequest.requestPermissions()
+        onBeforeScanDocuments: ES.AndroidPermissionRequest.requestStorage()
     }
 
     ES.Document {

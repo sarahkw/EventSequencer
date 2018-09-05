@@ -9,7 +9,11 @@ class AndroidPermissionRequest : public QObject
 public:
     explicit AndroidPermissionRequest(QObject *parent = nullptr);
 
-    Q_INVOKABLE void requestPermissions() const;
+    Q_INVOKABLE void requestStorage() const;
+
+    Q_INVOKABLE bool requestRecordAudio() const;
+
+    //Q_INVOKABLE void requestPermissions() const;
 
 signals:
 
