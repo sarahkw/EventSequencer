@@ -1,0 +1,42 @@
+<!DOCTYPE RCC>
+<RCC>
+    <qresource prefix="/">
+        <file>About.txt</file>
+        <file>AutoSaveManager.qml</file>
+        <file>ChannelTypeComboBox.qml</file>
+        <file>Control/AudioControl.qml</file>
+        <file>Control/BadClockControl.qml</file>
+        <file>Control/BadJsControl.qml</file>
+        <file>Control/CollateControl.qml</file>
+        <file>Control/DocFillControl.qml</file>
+        <file>Control/LabelControl.qml</file>
+        <file>Control/PlaylistControl.qml</file>
+        <file>Control/Resolver.qml</file>
+        <file>Control/SpanControl.qml</file>
+        <file>Control/TextControl.qml</file>
+        <file>CorraledResourceFile.qml</file>
+        <file>Cursor.qml</file>
+        <file>DocFill.qml</file>
+        <file>DocFillAboutDialog.qml</file>
+        <file>DocFillDeleteDialog.qml</file>
+        <file>DocFillDeveloperOptions.qml</file>
+        <file>DocFillNewWizard.qml</file>
+        <file>DocFillPage.qml</file>
+        <file>DocFillPageExportSection.qml</file>
+        <file>DocFillPageExportTab.qml</file>
+        <file>DocFillPageStorageTab.qml</file>
+        <file>DocumentViewControl.qml</file>
+        <file>ESTextField.qml</file>
+        <file>ErrorMessageNagDelegate.qml</file>
+        <file>FrameTextField.qml</file>
+        <file>MsgBox.qml</file>
+        <file>PropertiesChannel.qml</file>
+        <file>PropertiesDocument.qml</file>
+        <file>PropertiesFile.qml</file>
+        <file>PropertiesSession.qml</file>
+        <file>PropertiesStrip.qml</file>
+        <file>ScoutMain.qml</file>
+        <file>Tutorial.txt</file>
+        <file>util.js</file>
+    </qresource>
+</RCC>
