@@ -249,7 +249,24 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
 
                             onClicked: {
                                 var component = Qt.createComponent("DocFillAboutDialog.qml")
-                                var obj = component.createObject(root, {})
+                                var obj = component.createObject(root, {
+                                                                     title: "About",
+                                                                     text: ES.QmlFileReader.readFile(":/About.txt")
+                                                                 })
+                                obj.open()
+                            }
+                        }
+                        RoundButton {
+                            text: "Privacy"
+                            radius: 5
+                            Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
+
+                            onClicked: {
+                                var component = Qt.createComponent("DocFillAboutDialog.qml")
+                                var obj = component.createObject(root, {
+                                                                     title: "Privacy",
+                                                                     text: ES.QmlFileReader.readFile(":/Privacy.txt")
+                                                                 })
                                 obj.open()
                             }
                         }

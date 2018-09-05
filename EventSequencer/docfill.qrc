@@ -30,6 +30,7 @@
         <file>ErrorMessageNagDelegate.qml</file>
         <file>FrameTextField.qml</file>
         <file>MsgBox.qml</file>
+        <file>Privacy.txt</file>
         <file>PropertiesChannel.qml</file>
         <file>PropertiesDocument.qml</file>
         <file>PropertiesFile.qml</file>

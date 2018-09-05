@@ -5,6 +5,8 @@ import eventsequencer 1.0 as ES
 Dialog {
     id: aboutDialog
 
+    property alias text: txtEdit.text
+
     onClosed: destroy()
 
     parent: ApplicationWindow.overlay
@@ -13,7 +15,6 @@ Dialog {
     width: parent.width * 0.97
     height: parent.height * 0.97
 
-    title: "About"
     modal: true
     closePolicy: Popup.CloseOnEscape
     footer: DialogButtonBox {
@@ -29,10 +30,10 @@ Dialog {
         anchors.fill: parent
         contentWidth: width
         TextEdit {
+            id: txtEdit
             width: aboutScrollView.width
             readOnly: true
             wrapMode: TextEdit.Wrap
-            text: ES.QmlFileReader.readFile(":/About.txt")
         }
     }
 }
