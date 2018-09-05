@@ -254,7 +254,7 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                                 ScrollView {
                                     TextEdit {
                                         readOnly: true
-                                        text: "This is some About text"
+                                        text: ES.QmlFileReader.readFile(":/About.txt")
                                     }
                                 }
                             }

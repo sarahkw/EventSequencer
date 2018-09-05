@@ -35,6 +35,7 @@
 #include "docfillnewdocumentcreator.h"
 #include "documentmanagerdeleter.h"
 #include "channel/channelbase.h"
+#include "qmlfilereader.h"
 
 #include <QQmlEngine>
 
@@ -87,4 +88,7 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<DocFillNewDocumentCreator>("eventsequencer", 1, 0, "DocFillNewDocumentCreator");
     qmlRegisterType<DocumentManagerDeleter>("eventsequencer", 1, 0, "DocumentManagerDeleter");
     qmlRegisterUncreatableType<channel::ChannelBase>("eventsequencer", 1, 0, "ChannelBase", "Only used for enumeration");
+    qmlRegisterSingletonType<QmlFileReader>(
+        "eventsequencer", 1, 0, "QmlFileReader",
+        [](QQmlEngine*, QJSEngine*) -> QObject* { return new QmlFileReader; });
 }

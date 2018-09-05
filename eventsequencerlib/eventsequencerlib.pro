@@ -88,7 +88,8 @@ SOURCES += \
     docfillexportmanager.cpp \
     docfillnewdocumentcreator.cpp \
     documentmanagerdeleter.cpp \
-    documentpaths.cpp
+    documentpaths.cpp \
+    qmlfilereader.cpp
 
 
 HEADERS += \
@@ -157,7 +158,8 @@ HEADERS += \
     docfillexportmanager.h \
     docfillnewdocumentcreator.h \
     documentmanagerdeleter.h \
-    documentpaths.h
+    documentpaths.h \
+    qmlfilereader.h
 
 unix {
     target.path = /usr/lib

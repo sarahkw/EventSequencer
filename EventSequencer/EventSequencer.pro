@@ -47,4 +47,5 @@ unix:!macx: PRE_TARGETDEPS += $$OUT_PWD/../eventsequencerlib/libeventsequencerli
 include(../protobuf.pri)
 
 DISTFILES += \
-    Tutorial.txt
+    Tutorial.txt \
+    About.txt
