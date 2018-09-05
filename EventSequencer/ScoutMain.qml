@@ -252,6 +252,8 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                                 }
 
                                 ScrollView {
+                                    clip: true
+                                    anchors.fill: parent
                                     TextEdit {
                                         readOnly: true
                                         text: ES.QmlFileReader.readFile(":/About.txt")
