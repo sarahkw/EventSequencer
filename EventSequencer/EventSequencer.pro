@@ -45,7 +45,3 @@ DEPENDPATH += $$PWD/../eventsequencerlib
 unix:!macx: PRE_TARGETDEPS += $$OUT_PWD/../eventsequencerlib/libeventsequencerlib.a
 
 include(../protobuf.pri)
-
-DISTFILES += \
-    Tutorial.txt \
-    About.txt
