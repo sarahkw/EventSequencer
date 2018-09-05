@@ -36,6 +36,17 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
 
     property int cursorFrame: 0
 
+    // Android back button.
+    onClosing: {
+        if (Qt.platform.os === "android") {
+            var handler = stackView.currentItem.androidCloseHandler
+            if (handler !== undefined) {
+                handler()
+                close.accepted = false
+            }
+        }
+    }
+
     MsgBox {
         id: msgbox
     }

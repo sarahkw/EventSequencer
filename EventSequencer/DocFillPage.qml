@@ -28,6 +28,10 @@ Page {
     }
     */
 
+    function androidCloseHandler() {
+        btnCloseFile.onClicked()
+    }
+
     property int rebind_cursorFrame: cursorFrame
     property var rebind_changeCursorFrame: changeCursorFrame
 
