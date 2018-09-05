@@ -1,1 +1,1 @@
-Test
+The application will record data from the microphone when you request that it does so. Recordings are saved locally on your device storage. Other applications that have read access to device storage may access your recordings.
