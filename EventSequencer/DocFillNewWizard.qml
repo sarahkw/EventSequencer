@@ -8,6 +8,9 @@ Pane {
     property var closeFn
     property alias documentsPath: documentCreator.documentsPath
 
+    property alias documentName: documentCreator.name
+    property alias documentContents: documentCreator.contents
+
     function androidCloseHandler() {
         closeFn()
     }
@@ -100,6 +103,7 @@ Pane {
                     Label { text: "Name" }
                     TextField {
                         Layout.fillWidth: true
+                        text: documentCreator.name
                         onEditingFinished: documentCreator.name = text
                         placeholderText: "Use only characters valid for file names"
                     }
@@ -166,6 +170,7 @@ Pane {
                                 font: cmfu.builtFont
                                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                                 textFormat: TextEdit.PlainText
+                                text: documentCreator.contents
                                 onEditingFinished: documentCreator.contents = text
                             }
                         }

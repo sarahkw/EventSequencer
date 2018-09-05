@@ -175,6 +175,21 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                             text: "Tutorial"
                             radius: 5
                             Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
+                            onClicked: {
+                                // TODO This is mostly copy and paste, make this a function
+                                var component = Qt.createComponent("DocFillNewWizard.qml")
+                                var obj = component.createObject(null, {
+                                                                     closeFn : function () {
+                                                                         stackView.pop()
+                                                                         obj.destroy()
+                                                                         documentManager.refresh()
+                                                                     },
+                                                                     documentsPath: Qt.binding(function () { return applicationSettings.documentsPath }),
+                                                                     documentName: "Tutorial",
+                                                                     documentContents: ES.QmlFileReader.readFile(':/Tutorial.txt')
+                                                                 })
+                                stackView.push(obj)
+                            }
                         }
                         RoundButton {
                             text: "Settings"
