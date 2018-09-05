@@ -18,7 +18,10 @@ Item {
 
     Timer {
         id: timer
-        interval: 500
+        // Basically save immediately after, on the next event loop
+        // run. But delay long enough to flash the auto-save
+        // asterisk. (Animation timer for QML is 60fps)
+        interval: 40
         onTriggered: {
             if (root.autoSaveEnabled) {
                 if (saveFn()) {
