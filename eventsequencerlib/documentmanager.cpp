@@ -31,6 +31,10 @@ void DocumentManager::updateItems()
 {
     items_.clear();
 
+    if (!documentsPath_.isEmpty()) {
+        emit beforeScanDocuments();
+    }
+
     QDir dir(documentsPath_);
     for (QFileInfo& fi : dir.entryInfoList({"*.evseq"}, QDir::Files, QDir::Name)) {
         DocumentManagerItem dmi;

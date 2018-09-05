@@ -47,6 +47,8 @@ signals:
     void documentsPathChanged();
     void itemsChanged();
 
+    void beforeScanDocuments();
+
 public slots:
 };
 

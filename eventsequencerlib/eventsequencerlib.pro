@@ -6,6 +6,9 @@
 
 #QT       -= gui
 QT += multimedia
+android {
+QT += androidextras
+}
 
 TARGET = eventsequencerlib
 TEMPLATE = lib
@@ -89,7 +92,8 @@ SOURCES += \
     docfillnewdocumentcreator.cpp \
     documentmanagerdeleter.cpp \
     documentpaths.cpp \
-    qmlfilereader.cpp
+    qmlfilereader.cpp \
+    androidpermissionrequest.cpp
 
 
 HEADERS += \
@@ -159,7 +163,8 @@ HEADERS += \
     docfillnewdocumentcreator.h \
     documentmanagerdeleter.h \
     documentpaths.h \
-    qmlfilereader.h
+    qmlfilereader.h \
+    androidpermissionrequest.h
 
 unix {
     target.path = /usr/lib

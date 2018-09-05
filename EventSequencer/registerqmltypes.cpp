@@ -36,6 +36,7 @@
 #include "documentmanagerdeleter.h"
 #include "channel/channelbase.h"
 #include "qmlfilereader.h"
+#include "androidpermissionrequest.h"
 
 #include <QQmlEngine>
 
@@ -91,4 +92,7 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterSingletonType<QmlFileReader>(
         "eventsequencer", 1, 0, "QmlFileReader",
         [](QQmlEngine*, QJSEngine*) -> QObject* { return new QmlFileReader; });
+    qmlRegisterSingletonType<AndroidPermissionRequest>(
+        "eventsequencer", 1, 0, "AndroidPermissionRequest",
+        [](QQmlEngine*, QJSEngine*) -> QObject* { return new AndroidPermissionRequest; });
 }
