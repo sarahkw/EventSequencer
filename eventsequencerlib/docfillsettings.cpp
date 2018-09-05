@@ -130,10 +130,8 @@ void DocFillSettings::setDeveloperOptions(bool developerOptions)
 }
 
 DocFillSettings::DocFillSettings(QObject* parent)
-    : QObject(parent), settings_("DocFillInc", "DocFill") // TODO This is fake
+    : QObject(parent), settings_("doctorfill456.at.gmail.com", "DocFill") // TODO This is fake
 {
-    qWarning("TODO: Fake settings company/application name");
-
     const char DEFAULT_PATH[] = "/DocFill";
 #ifdef Q_OS_ANDROID
     QStandardPaths::StandardLocation location = QStandardPaths::GenericDataLocation;
