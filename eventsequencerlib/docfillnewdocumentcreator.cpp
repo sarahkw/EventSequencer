@@ -9,6 +9,7 @@
 #include "channel/playlistchannel.h"
 
 #include <QFile>
+#include <QDir>
 
 QObject *DocFillNewDocumentCreator::sessionAudio() const
 {
@@ -83,6 +84,17 @@ void DocFillNewDocumentCreator::setContents(const QString &contents)
 
 QVariantList DocFillNewDocumentCreator::make()
 {
+    {
+        QDir documentsDir(documentsPath_);
+        if (!documentsDir.exists()) {
+            if (!documentsDir.mkpath(".")) {
+                // Just write a warning. I guess the error message will come
+                // from saving the file.
+                qWarning("Failed to make Documents path");
+            }
+        }
+    }
+
     {
         auto* afh = qobject_cast<AudioFormatHolder*>(document_.audioFormatHolderQObject());
         SessionAudio::TestFormatSupportResult tfsr = sessionAudio_->testFormatSupport(*afh);
