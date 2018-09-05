@@ -63,6 +63,7 @@ Item {
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
                     color: colors[1] || "white"
+                    visible: colors[1] !== undefined
                 }
             }
         }
