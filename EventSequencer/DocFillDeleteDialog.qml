@@ -42,6 +42,7 @@ Dialog {
         ScrollView {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            clip: true
             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
             ListView {
                 model: deleter.queuedForDeletion
