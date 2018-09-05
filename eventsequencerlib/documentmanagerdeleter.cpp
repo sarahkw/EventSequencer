@@ -44,7 +44,7 @@ QString DocumentManagerDeleter::actuallyDelete()
             }
         }
     }
-    return "Success";
+    return ""; // Blank means success
 }
 
 void DocumentManagerDeleter::updateQueuedForDeletion()

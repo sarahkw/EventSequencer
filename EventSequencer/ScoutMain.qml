@@ -313,7 +313,9 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                                                                              //visible: true,
                                                                              filePath: modelData.filePath,
                                                                              returnResult: function (result) {
-                                                                                 msgbox.msgbox(result, "Delete")
+                                                                                 if (result !== "") {
+                                                                                    msgbox.msgbox(result, "Delete")
+                                                                                 }
                                                                                  // XXX Can't call .refresh() before the msgbox or else
                                                                                  //     QML breaks.
                                                                                  documentManager.refresh()
