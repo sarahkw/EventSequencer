@@ -1,1 +1,43 @@
-This is the tutorial! Well, it's the tutorial's placeholder.
+WELCOME TO DOCFILL
+
+This tutorial will help you get started quickly!
+
+You should now be viewing this text in the new document wizard.
+
+After you've pressed the Tutorial button on the main menu, you are taken to the wizard that creates a document with the tutorial text. Finish the wizard and you shall see your newly created document on the main menu.
+
+From the main menu, press on the Tutorial document, you should now be inside the document!
+
+Notice that the text is highlighted in gray. Gray highlighted text means that there are no recordings assigned to the text. A green highlighted text means there is a recording assigned.
+
+Let's make your first recording!
+
+X Place the cursor before the X and change to the Record tab. Press the Record button and start reading the text from before the X to before the Y. Press Stop when you are done. While the cursor is still on the X, start the Selection range by pressing on the Select button.
+
+Y Place the cursor before the Y. Finally, press Assign! You will notice that the line which you have read has now been highlighted in green.
+
+Z Now read the line starting with Y and assign it to right before the Z. Now you're getting the hang of it!
+
+It is ideal to assign as large of a range as you could. There is a feature accessed on the View tab's Go button that moves the cursor to the next unassigned range. This will help you easily scroll to where you left off last time so you can continue reading.
+
+PLAYING BACK
+
+Now that you have recorded yourself reading some text, let's play them back! Click on the Play tab.
+
+The ComboBox lets you choose what to play. I'm sure you could figure it out.
+
+You may wonder what the "Review Unassigned Recording" is for. After you've made a recording, you can use the option to listen to the recording and determine if you wish to assign it.
+
+The "Tone" option helps you start speaking on the specified pitch if that is your goal.
+
+I MISASSIGNED
+
+If you accidentally make the wrong assignment, put your cursor on the incorrect assignment and go to the File tab. In the Strips subtab, select the Strip that represents your wrong assignment. Press the Delete button and you will have the option to reclaim the recording as the unassigned recording, and you can assign it again.
+
+WORKFLOW AUTOMATION
+
+Once you are comfortable with using the application, File -> Settings has a few options to automate your workflow. This will enable you to read quickly without pressing as many buttons.
+
+YOUR TURN
+
+Create documents with what you wish to read and start filling the document with recordings!
