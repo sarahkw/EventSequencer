@@ -238,8 +238,8 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                                 parent: ApplicationWindow.overlay
                                 x: (parent.width - width) / 2
                                 y: (parent.height - height) / 2
-                                width: parent.width * 0.95
-                                height: parent.height * 0.75
+                                width: parent.width * 0.97
+                                height: parent.height * 0.97
 
                                 title: "About"
                                 modal: true
@@ -252,10 +252,14 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                                 }
 
                                 ScrollView {
+                                    id: aboutScrollView
                                     clip: true
                                     anchors.fill: parent
+                                    contentWidth: width
                                     TextEdit {
+                                        width: aboutScrollView.width
                                         readOnly: true
+                                        wrapMode: TextEdit.Wrap
                                         text: ES.QmlFileReader.readFile(":/About.txt")
                                     }
                                 }
