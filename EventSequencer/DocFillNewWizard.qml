@@ -8,6 +8,10 @@ Pane {
     property var closeFn
     property alias documentsPath: documentCreator.documentsPath
 
+    function androidCloseHandler() {
+        closeFn()
+    }
+
     MsgBox {
         id: msgbox
     }
