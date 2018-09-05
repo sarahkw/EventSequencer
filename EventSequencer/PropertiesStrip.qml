@@ -79,7 +79,6 @@ Column {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        readonly property Item blankComponent: Item {}
         property ES.WaitFor waitForchannel: document.waitForChannelIndex(selectedCppStrip.channelIndex)
         property var cppChannel: waitForchannel.result
         property var control: cppChannel !== null ? controlResolver.resolve(cppChannel.channelType) : null
