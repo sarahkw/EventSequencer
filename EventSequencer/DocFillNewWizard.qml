@@ -141,19 +141,35 @@ Pane {
                                         id: editMenu
                                         MenuItem {
                                             text: "Cut"
-                                            onClicked: contentBody.cut()
+                                            onClicked: {
+                                                contentBody.cut()
+                                                // Need to do this so that editingFinish gets called.
+                                                contentBody.forceActiveFocus()
+                                            }
                                         }
                                         MenuItem {
                                             text: "Copy"
-                                            onClicked: contentBody.copy()
+                                            onClicked: {
+                                                contentBody.copy()
+                                                // Need to do this so that editingFinish gets called.
+                                                contentBody.forceActiveFocus()
+                                            }
                                         }
                                         MenuItem {
                                             text: "Paste"
-                                            onClicked: contentBody.paste()
+                                            onClicked: {
+                                                contentBody.paste()
+                                                // Need to do this so that editingFinish gets called.
+                                                contentBody.forceActiveFocus()
+                                            }
                                         }
                                         MenuItem {
                                             text: "Select All"
-                                            onClicked: contentBody.selectAll()
+                                            onClicked: {
+                                                contentBody.selectAll()
+                                                // Need to do this so that editingFinish gets called.
+                                                contentBody.forceActiveFocus()
+                                            }
                                         }
                                     }
                                     onClicked: {
