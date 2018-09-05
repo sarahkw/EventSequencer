@@ -96,7 +96,7 @@ public:
     const std::vector<Segment>& segments();
     std::vector<Strip*> strips() override;
 
-    virtual Strip* createStrip(int startFrame, int length) override;
+    virtual Strip* createStrip(int startFrame, int length, CreateStripFlags flags=CSF_None) override;
 
     // If there is none, then return the current fromPosition.
 private:

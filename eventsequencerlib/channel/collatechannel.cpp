@@ -151,7 +151,7 @@ channel::ChannelBase* findChannelToAcceptStrip(
 }
 } // namespace anonymous
 
-Strip *CollateChannel::createStrip(int startFrame, int length)
+Strip *CollateChannel::createStrip(int startFrame, int length, CreateStripFlags flags)
 {
     if (sourceChannel_ == nullptr) {
         return nullptr;
@@ -165,7 +165,7 @@ Strip *CollateChannel::createStrip(int startFrame, int length)
                                          startFrame, length);
 
         // See if we can make one.
-        if (potentialTarget == nullptr) {
+        if (potentialTarget == nullptr && flags & CSF_AutoExpandSpan) {
             if (sc->defaultChannelType() != ChannelType::UNSET) {
                 sc->setCount(sc->count() + 1);
                 auto& waiters = sc->waitersForChildChannels();

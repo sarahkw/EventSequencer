@@ -435,8 +435,13 @@ Page {
                             length = btnRangeStart.startFrame - start
                         }
 
+                        var flags = ES.ChannelBase.CSF_None
+                        if (cppChannel.attemptExpansionOfResourceChannel) {
+                            flags = ES.ChannelBase.CSF_AutoExpandSpan
+                        }
+
                         var thestrip =
-                                cppResourceChannel.createStrip(start, length)
+                                cppResourceChannel.createStrip(start, length, flags)
                         if (thestrip !== null) {
                             var success = recorderControl.corraledResourceFile.possiblyAssignUrlToStrip(thestrip)
                             if (!success) {

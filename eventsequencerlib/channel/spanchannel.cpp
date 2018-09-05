@@ -90,7 +90,7 @@ std::vector<Strip *> SpanChannel::multiChannelStrips()
     return ret;
 }
 
-Strip *SpanChannel::createStrip(int startFrame, int length)
+Strip *SpanChannel::createStrip(int startFrame, int length, CreateStripFlags flags)
 {
     return nullptr;
 }

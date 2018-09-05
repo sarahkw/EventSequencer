@@ -36,9 +36,16 @@ public:
     virtual std::vector<Strip*> multiChannelStrips();
 
     virtual bool stripWillCollide(int startFrame, int length);
+
+    enum CreateStripFlags {
+        CSF_None = 0,
+        CSF_AutoExpandSpan = 1
+    };
+    Q_ENUM(CreateStripFlags)
+
     // Creates a strip on this channel. Returns a pointer to the Strip if it's
     // successful. Otherwise, returns nullptr.
-    Q_INVOKABLE virtual Strip* createStrip(int startFrame, int length);
+    Q_INVOKABLE virtual Strip* createStrip(int startFrame, int length, CreateStripFlags flags=CSF_None);
 
 signals:
 

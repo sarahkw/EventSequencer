@@ -34,6 +34,7 @@
 #include "docfillexportmanager.h"
 #include "docfillnewdocumentcreator.h"
 #include "documentmanagerdeleter.h"
+#include "channel/channelbase.h"
 
 #include <QQmlEngine>
 
@@ -85,4 +86,5 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<DocFillExportManager>("eventsequencer", 1, 0, "DocFillExportManager");
     qmlRegisterType<DocFillNewDocumentCreator>("eventsequencer", 1, 0, "DocFillNewDocumentCreator");
     qmlRegisterType<DocumentManagerDeleter>("eventsequencer", 1, 0, "DocumentManagerDeleter");
+    qmlRegisterUncreatableType<channel::ChannelBase>("eventsequencer", 1, 0, "ChannelBase", "Only used for enumeration");
 }

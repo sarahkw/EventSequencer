@@ -44,7 +44,7 @@ bool ChannelBase::stripWillCollide(int startFrame, int length)
     return false;
 }
 
-Strip *ChannelBase::createStrip(int startFrame, int length)
+Strip *ChannelBase::createStrip(int startFrame, int length, CreateStripFlags flags)
 {
     if (stripWillCollide(startFrame, length)) {
         return nullptr;

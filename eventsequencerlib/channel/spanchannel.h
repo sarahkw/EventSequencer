@@ -48,7 +48,7 @@ public:
     // Don't allow strips to be created on Span. Doesn't make sense, and that
     // would most likely be a mistake. Span doesn't possess the knowledge of how
     // new strips should be placed.
-    Strip* createStrip(int startFrame, int length) override;
+    Strip* createStrip(int startFrame, int length, CreateStripFlags flags=CSF_None) override;
 
     // For CollateChannel
     const std::vector<std::unique_ptr<WaitFor>>& waitersForChildChannels() const;
