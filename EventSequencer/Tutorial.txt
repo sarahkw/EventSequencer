@@ -2,11 +2,9 @@ WELCOME TO DOCFILL
 
 This tutorial will help you get started quickly!
 
-You should now be viewing this text in the new document wizard.
+You should now be viewing this text in the new document wizard. Finish the wizard to create the tutorial document.
 
-After you've pressed the Tutorial button on the main menu, you are taken to the wizard that creates a document with the tutorial text. Finish the wizard and you shall see your newly created document on the main menu.
-
-From the main menu, press on the Tutorial document, you should now be inside the document!
+From the main menu, select the Tutorial document, you should now be inside the document!
 
 Notice that the text is highlighted in gray. Gray highlighted text means that there are no recordings assigned to the text. A green highlighted text means there is a recording assigned.
 
