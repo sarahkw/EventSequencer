@@ -448,7 +448,7 @@ Page {
                             }
                         } else {
                             // TODO Explain why, like it overlaps, or the length is bad
-                            msgbox.msgbox("Cannot assign")
+                            msgbox.msgbox("Cannot assign. Make sure length is non-zero and you're not overlapping an existing strip.")
                         }
                     }
                 }
