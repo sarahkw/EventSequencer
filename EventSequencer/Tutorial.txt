@@ -16,7 +16,7 @@ Y Place the cursor before the Y. Finally, press Assign! You will notice that the
 
 Now choose a few more parts to record and assign. You're getting the hang of it!
 
-It is ideal to assign ranges consecutively without leaving space in between. There is a menu option on the View tab's Go button that moves the cursor to the next unassigned location. This will help you easily scroll to where you left off last time so you can continue reading.
+It is ideal to assign ranges consecutively without leaving space in between. There is a menu option on the View tab's Go button that moves the cursor to the next unassigned location. If you assign ranges consecutively, this will help you easily scroll to where you left off last time so you can continue reading.
 
 PLAYING BACK
 
@@ -30,7 +30,7 @@ The "Tone" option helps you start speaking on the specified pitch if that is you
 
 I MISASSIGNED
 
-If you accidentally make the wrong assignment, put your cursor on the incorrect assignment and go to the File tab. In the Strips subtab, select the Strip that represents your wrong assignment. Press the Delete button and you will have the option to reclaim the recording as the unassigned recording, and you can assign it again.
+If you accidentally make the wrong assignment, put your cursor on the incorrect assignment and go to the File tab. In the Strips subtab, select the Strip that represents your wrong assignment. Press the Delete button and you will have the option to reclaim the recording as the unassigned recording, and you can assign it again in the Record tab.
 
 WORKFLOW AUTOMATION
 
