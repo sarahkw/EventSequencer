@@ -142,7 +142,7 @@ Pane {
                                 Label {
                                     Layout.fillWidth: true
                                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                                    text: "Cannot be changed later. Characters must fit in 1 UTF-16 codepoint and must take up only 1 space."
+                                    text: "Characters must fit in 1 UTF-16 codepoint and must take up only 1 space."
                                 }
                                 Button {
                                     text: "Edit"
