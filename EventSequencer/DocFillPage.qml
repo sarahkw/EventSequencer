@@ -157,6 +157,18 @@ Page {
         }
     }
 
+    ESPlayable.SingleUrl {
+        id: playableSelectedStrip
+        fileResourceDirectory: document.fileResourceDirectory
+        singleUrl: {
+            if (stripsHolderItem.selectedStrip !== null) {
+                return stripsHolderItem.selectedStrip.resourceUrl
+            } else {
+                return ""
+            }
+        }
+    }
+
     ESPlayable.Tone {
         id: playableTone
         frequency: applicationSettings.toneFrequency
@@ -576,7 +588,8 @@ Page {
                         "At Cursor",
                         "From Cursor",
                         "From Start",
-                        "Tone"
+                        "Tone",
+                        "Selected Strip"
                     ]
                     function currentPlayable() {
                         switch (currentIndex) {
@@ -586,6 +599,7 @@ Page {
                         case 2: return playableStripsList
                         case 3: return playableStripsList
                         case 4: return playableTone
+                        case 5: return playableSelectedStrip
                         default:
                             console.error("Invalid index", currentIndex)
                         }
@@ -598,6 +612,7 @@ Page {
                         case 2: return ESPlayable.StripsList.ChannelFromCursor
                         case 3: return ESPlayable.StripsList.ChannelFromBegin
                         case 4: return ESPlayable.StripsList.UNSET
+                        case 5: return ESPlayable.StripsList.UNSET
                         default:
                             console.error("Invalid index", currentIndex)
                         }
