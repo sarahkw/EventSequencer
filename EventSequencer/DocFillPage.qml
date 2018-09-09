@@ -912,6 +912,20 @@ Page {
                         }
                         RowLayout {
                             Layout.fillWidth: true
+
+                            Button {
+                                Layout.fillWidth: true
+                                text: "View"
+                                Menu {
+                                    id: stripsViewMenu
+                                    MenuItem {
+                                        text: "Show Create Date"
+                                        checkable: true
+                                    }
+                                }
+                                onClicked: stripsViewMenu.open()
+                            }
+
                             Button {
                                 Layout.fillWidth: true
                                 text: "Delete..."
