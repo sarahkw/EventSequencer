@@ -915,8 +915,7 @@ Page {
                                             active: mnuShowCreateDate.checked
                                             anchors.top: parent.top
                                             anchors.bottom: parent.bottom
-                                            width: cursorObj.x
-                                            clip: true
+                                            x: cursorObj.x
                                             sourceComponent: Item {
                                                 id: extraInfo
                                                 anchors.fill: parent
@@ -946,16 +945,17 @@ Page {
 
                                                         Rectangle {
                                                             anchors.fill: extraInfoLabel
-                                                            anchors.rightMargin: -cursorObj.rectHorizontalMargin - cursorObj.width
+                                                            anchors.rightMargin: -cursorObj.rectHorizontalMargin
                                                             anchors.leftMargin: -cursorObj.rectHorizontalMargin
                                                             //anchors.topMargin: -cursorObj.rectVerticalMargin
                                                             //anchors.bottomMargin: -cursorObj.rectVerticalMargin
-                                                            color: Qt.lighter(cursorObj.color, 1.8)
+                                                            color: cursorObj.color
                                                         }
                                                         Text {
                                                             id: extraInfoLabel
-                                                            anchors.right: parent.right
                                                             anchors.verticalCenter: parent.verticalCenter
+                                                            anchors.left: parent.left
+                                                            anchors.leftMargin: cursorObj.rectHorizontalMargin
                                                             text: Qt.formatDateTime(myValue)
                                                             font.pixelSize: cursorObj.fontPixelSize
                                                         }
