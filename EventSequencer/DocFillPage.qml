@@ -929,6 +929,11 @@ Page {
                                                     length: 1
                                                 }
 
+                                                ES.QmlResourceMetaDataGetter {
+                                                    id: qrmdg
+                                                    fileResourceDirectory: document.fileResourceDirectory
+                                                }
+
                                                 Repeater {
                                                     model: extraInfoWfsir.strips
                                                     Item {
@@ -936,6 +941,9 @@ Page {
                                                         anchors.right: parent.right
                                                         y: (height + 5) * modelData.channelIndex.second
                                                         height: stripsBody.cmfuAlignedFont.builtFontHeight * 1.5
+
+                                                        property date myValue: qrmdg.get(modelData.resourceUrl)
+
                                                         Rectangle {
                                                             anchors.fill: extraInfoLabel
                                                             anchors.rightMargin: -cursorObj.rectHorizontalMargin - cursorObj.width
@@ -948,7 +956,7 @@ Page {
                                                             id: extraInfoLabel
                                                             anchors.right: parent.right
                                                             anchors.verticalCenter: parent.verticalCenter
-                                                            text: modelData + ""
+                                                            text: Qt.formatDateTime(myValue)
                                                             font: stripsBody.cmfuAlignedFont.builtFont
                                                         }
                                                     }

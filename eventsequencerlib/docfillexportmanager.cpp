@@ -99,16 +99,9 @@ QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
                     QString filePath;
                     ManagedResources mr(document_->fileResourceDirectory());
                     if (mr.urlConvertToFilePath(url, &filePath)) {
-                        QFile muhFile(filePath);
-                        if (muhFile.open(QFile::ReadOnly)) {
-                            AuFileHeader afh;
-                            std::string metaData;
-                            if (afh.loadFileAndSeek(muhFile, &metaData)) {
-                                std::string createTime;
-                                if (ResourceMetaData::read(metaData, &createTime)) {
-                                    obj["fileCreateTime"] = QString::fromStdString(createTime);
-                                }
-                            }
+                        std::string createTime;
+                        if (ResourceMetaData::readFromFile(filePath, &createTime)) {
+                            obj["fileCreateTime"] = QString::fromStdString(createTime);
                         }
                     }
                     // RAII to clean up

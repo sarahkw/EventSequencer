@@ -93,7 +93,8 @@ SOURCES += \
     documentmanagerdeleter.cpp \
     documentpaths.cpp \
     qmlfilereader.cpp \
-    androidpermissionrequest.cpp
+    androidpermissionrequest.cpp \
+    qmlresourcemetadatagetter.cpp
 
 
 HEADERS += \
@@ -164,7 +165,8 @@ HEADERS += \
     documentmanagerdeleter.h \
     documentpaths.h \
     qmlfilereader.h \
-    androidpermissionrequest.h
+    androidpermissionrequest.h \
+    qmlresourcemetadatagetter.h
 
 unix {
     target.path = /usr/lib
