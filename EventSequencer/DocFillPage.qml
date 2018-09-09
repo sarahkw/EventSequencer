@@ -942,14 +942,14 @@ Page {
                                                             anchors.leftMargin: -cursorObj.rectHorizontalMargin
                                                             anchors.topMargin: -cursorObj.rectVerticalMargin
                                                             anchors.bottomMargin: -cursorObj.rectVerticalMargin
-                                                            border.color: cursorObj.color
-                                                            color: Qt.lighter(border.color, 1.8)
+                                                            color: Qt.lighter(cursorObj.color, 1.8)
                                                         }
-                                                        Label {
+                                                        Text {
                                                             id: extraInfoLabel
                                                             anchors.right: parent.right
                                                             anchors.verticalCenter: parent.verticalCenter
                                                             text: modelData + ""
+                                                            font: stripsBody.cmfuAlignedFont.builtFont
                                                         }
                                                     }
                                                 }
