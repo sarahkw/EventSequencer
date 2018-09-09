@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 import "Control/" as C
 
-// Don't know why but "Dialog" is the native one otherwise.
+// Be able to use "Dialog" from Controls2 instead of from Layouts.
 import QtQuick.Controls 2.2 as Controls2
 
 import eventsequencer 1.0 as ES
