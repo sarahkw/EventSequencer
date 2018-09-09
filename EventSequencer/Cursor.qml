@@ -11,6 +11,7 @@ Rectangle {
     //      We should start using these values inside here.
     readonly property int rectVerticalMargin: 2
     readonly property int rectHorizontalMargin: 10
+    readonly property alias fontPixelSize: cursorText.font.pixelSize
 
     Rectangle {
         id: cursorBackground

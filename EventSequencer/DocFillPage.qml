@@ -948,8 +948,8 @@ Page {
                                                             anchors.fill: extraInfoLabel
                                                             anchors.rightMargin: -cursorObj.rectHorizontalMargin - cursorObj.width
                                                             anchors.leftMargin: -cursorObj.rectHorizontalMargin
-                                                            anchors.topMargin: -cursorObj.rectVerticalMargin
-                                                            anchors.bottomMargin: -cursorObj.rectVerticalMargin
+                                                            //anchors.topMargin: -cursorObj.rectVerticalMargin
+                                                            //anchors.bottomMargin: -cursorObj.rectVerticalMargin
                                                             color: Qt.lighter(cursorObj.color, 1.8)
                                                         }
                                                         Text {
@@ -957,7 +957,7 @@ Page {
                                                             anchors.right: parent.right
                                                             anchors.verticalCenter: parent.verticalCenter
                                                             text: Qt.formatDateTime(myValue)
-                                                            font: stripsBody.cmfuAlignedFont.builtFont
+                                                            font.pixelSize: cursorObj.fontPixelSize
                                                         }
                                                     }
                                                 }
