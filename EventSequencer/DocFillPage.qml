@@ -842,55 +842,66 @@ Page {
                                     width: 1
                                 }
 
-                                Item {
-                                    anchors.left: cursorObj.left
+                                ScrollView {
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
                                     anchors.top: textLoader.bottom
+                                    anchors.bottom: dragArea.top
                                     anchors.topMargin: 5
-                                    ES.WatchForStripsIntersectingRange {
-                                        id: wfsir
-                                        channel: root.cppResourceChannel.sourceChannel
-                                        startFrame: cursorFrame - stripsBody.charactersShifted
-                                        length: stripsBody.charactersToShow
-                                    }
-                                    Item {
-                                        id: stripsHolderItem
+                                    contentHeight: stripsHolderItem.childrenRect.height
+                                    contentWidth: width
+                                    clip: true
 
-                                        property QtObject selectedStrip: null
-                                        Connections {
-                                            target: wfsir
-                                            onStripsChanged: {
-                                                if (stripsHolderItem.selectedStrip !== null &&
-                                                        !wfsir.isStripInView(stripsHolderItem.selectedStrip)) {
-                                                    stripsHolderItem.selectedStrip = null
+                                    Flickable {
+                                        boundsBehavior: Flickable.StopAtBounds
+
+                                        ES.WatchForStripsIntersectingRange {
+                                            id: wfsir
+                                            channel: root.cppResourceChannel.sourceChannel
+                                            startFrame: cursorFrame - stripsBody.charactersShifted
+                                            length: stripsBody.charactersToShow
+                                        }
+                                        Item {
+                                            id: stripsHolderItem
+                                            x: cursorObj.x
+
+                                            property QtObject selectedStrip: null
+                                            Connections {
+                                                target: wfsir
+                                                onStripsChanged: {
+                                                    if (stripsHolderItem.selectedStrip !== null &&
+                                                            !wfsir.isStripInView(stripsHolderItem.selectedStrip)) {
+                                                        stripsHolderItem.selectedStrip = null
+                                                    }
                                                 }
                                             }
-                                        }
 
-                                        function goToAndSelectStrip(strip) {
-                                            rebind_changeCursorFrame(strip.startFrame)
-                                            // XXX Maybe confirm the strip is visible before selecting it?
-                                            selectedStrip = strip
-                                        }
+                                            function goToAndSelectStrip(strip) {
+                                                rebind_changeCursorFrame(strip.startFrame)
+                                                // XXX Maybe confirm the strip is visible before selecting it?
+                                                selectedStrip = strip
+                                            }
 
-                                        Repeater {
-                                            model: wfsir.strips
-                                            Button {
-                                                x: (modelData.startFrame - cursorFrame) * stripsBody.cmfuAlignedFont.builtFontWidth
-                                                width: modelData.length * stripsBody.cmfuAlignedFont.builtFontWidth
-                                                y: (height + 5) * modelData.channelIndex.second
-                                                checkable: true
-                                                height: stripsBody.cmfuAlignedFont.builtFontHeight * 1.5
-                                                palette.button: "pink"
-                                                Component.onCompleted: {
-                                                    background.border.width = 1
-                                                    background.border.color = "black"
-                                                }
-                                                checked: stripsHolderItem.selectedStrip === modelData
-                                                onToggled: {
-                                                    if (checked) {
-                                                        stripsHolderItem.selectedStrip = modelData
-                                                    } else {
-                                                        stripsHolderItem.selectedStrip = null
+                                            Repeater {
+                                                model: wfsir.strips
+                                                Button {
+                                                    x: (modelData.startFrame - cursorFrame) * stripsBody.cmfuAlignedFont.builtFontWidth
+                                                    width: modelData.length * stripsBody.cmfuAlignedFont.builtFontWidth
+                                                    y: (height + 5) * modelData.channelIndex.second
+                                                    checkable: true
+                                                    height: stripsBody.cmfuAlignedFont.builtFontHeight * 1.5
+                                                    palette.button: "pink"
+                                                    Component.onCompleted: {
+                                                        background.border.width = 1
+                                                        background.border.color = "black"
+                                                    }
+                                                    checked: stripsHolderItem.selectedStrip === modelData
+                                                    onToggled: {
+                                                        if (checked) {
+                                                            stripsHolderItem.selectedStrip = modelData
+                                                        } else {
+                                                            stripsHolderItem.selectedStrip = null
+                                                        }
                                                     }
                                                 }
                                             }
