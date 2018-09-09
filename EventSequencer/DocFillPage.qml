@@ -861,6 +861,7 @@ Page {
                                             startFrame: cursorFrame - stripsBody.charactersShifted
                                             length: stripsBody.charactersToShow
                                         }
+
                                         Item {
                                             id: stripsHolderItem
                                             x: cursorObj.x
@@ -906,6 +907,15 @@ Page {
                                                 }
                                             }
                                         }
+
+                                        Rectangle {
+                                            id: extraInfo
+                                            anchors.top: parent.top
+                                            anchors.bottom: parent.bottom
+                                            color: "whitesmoke"
+                                            visible: mnuShowCreateDate.checked ? true : false
+                                            width: visible ? cursorObj.x : 0
+                                        }
                                     }
                                 }
                             }
@@ -919,6 +929,7 @@ Page {
                                 Menu {
                                     id: stripsViewMenu
                                     MenuItem {
+                                        id: mnuShowCreateDate
                                         text: "Show Create Date"
                                         checkable: true
                                     }
