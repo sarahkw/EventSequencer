@@ -1,8 +1,11 @@
 #include "resourcemetadata.h"
 
+#include <aufileheader.h>
 #include <eventsequencer.pb.h>
 
 #include <QtGlobal>
+#include <QString>
+#include <QFile>
 
 #include <google/protobuf/util/time_util.h>
 #include <google/protobuf/util/json_util.h>
@@ -23,14 +26,34 @@ std::string ResourceMetaData::createFromNow()
     }
 }
 
-bool ResourceMetaData::read(std::string &input, std::string *createTime)
+bool ResourceMetaData::read(std::string& input, std::string* createTime,
+                            qint64* createTimeInSeconds)
 {
     pb::ResourceMetaData rmd;
     auto result = google::protobuf::util::JsonStringToMessage(input, &rmd);
     if (result.ok()) {
-        *createTime = TimeUtil::ToString(rmd.createtime());
+        if (createTime != nullptr) {
+            *createTime = TimeUtil::ToString(rmd.createtime());
+        }
+        if (createTimeInSeconds != nullptr) {
+            *createTimeInSeconds = rmd.createtime().seconds();
+        }
         return true;
     } else {
         return false;
     }
+}
+
+bool ResourceMetaData::readFromFile(QString filePath, std::string* createTime,
+                                    qint64* createTimeInSeconds)
+{
+    QFile muhFile(filePath);
+    if (muhFile.open(QFile::ReadOnly)) {
+        AuFileHeader afh;
+        std::string metaData;
+        if (afh.loadFileAndSeek(muhFile, &metaData)) {
+            return read(metaData, createTime, createTimeInSeconds);
+        }
+    }
+    return false;
 }

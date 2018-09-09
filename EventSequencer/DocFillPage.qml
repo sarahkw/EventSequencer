@@ -840,6 +840,9 @@ Page {
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     text: cursorFrame
                                     width: 1
+                                    // If we're showing labels drawn off the cursor line, it looks
+                                    // weird if the cursor line is below.
+                                    z: mnuShowCreateDate.checked ? 1 : 0
                                 }
 
                                 ScrollView {
@@ -861,6 +864,7 @@ Page {
                                             startFrame: cursorFrame - stripsBody.charactersShifted
                                             length: stripsBody.charactersToShow
                                         }
+
                                         Item {
                                             id: stripsHolderItem
                                             x: cursorObj.x
@@ -888,8 +892,8 @@ Page {
                                                     x: (modelData.startFrame - cursorFrame) * stripsBody.cmfuAlignedFont.builtFontWidth
                                                     width: modelData.length * stripsBody.cmfuAlignedFont.builtFontWidth
                                                     y: (height + 5) * modelData.channelIndex.second
-                                                    checkable: true
                                                     height: stripsBody.cmfuAlignedFont.builtFontHeight * 1.5
+                                                    checkable: true
                                                     palette.button: "pink"
                                                     Component.onCompleted: {
                                                         background.border.width = 1
@@ -906,12 +910,80 @@ Page {
                                                 }
                                             }
                                         }
+
+                                        Loader {
+                                            active: mnuShowCreateDate.checked
+                                            anchors.top: parent.top
+                                            anchors.bottom: parent.bottom
+                                            width: cursorObj.x
+                                            clip: true
+                                            sourceComponent: Item {
+                                                id: extraInfo
+                                                anchors.fill: parent
+                                                anchors.rightMargin: cursorObj.rectHorizontalMargin
+
+                                                ES.WatchForStripsIntersectingRange {
+                                                    id: extraInfoWfsir
+                                                    channel: root.cppResourceChannel.sourceChannel
+                                                    startFrame: cursorFrame
+                                                    length: 1
+                                                }
+
+                                                ES.QmlResourceMetaDataGetter {
+                                                    id: qrmdg
+                                                    fileResourceDirectory: document.fileResourceDirectory
+                                                }
+
+                                                Repeater {
+                                                    model: extraInfoWfsir.strips
+                                                    Item {
+                                                        anchors.left: parent.left
+                                                        anchors.right: parent.right
+                                                        y: (height + 5) * modelData.channelIndex.second
+                                                        height: stripsBody.cmfuAlignedFont.builtFontHeight * 1.5
+
+                                                        property date myValue: qrmdg.get(modelData.resourceUrl)
+
+                                                        Rectangle {
+                                                            anchors.fill: extraInfoLabel
+                                                            anchors.rightMargin: -cursorObj.rectHorizontalMargin - cursorObj.width
+                                                            anchors.leftMargin: -cursorObj.rectHorizontalMargin
+                                                            //anchors.topMargin: -cursorObj.rectVerticalMargin
+                                                            //anchors.bottomMargin: -cursorObj.rectVerticalMargin
+                                                            color: Qt.lighter(cursorObj.color, 1.8)
+                                                        }
+                                                        Text {
+                                                            id: extraInfoLabel
+                                                            anchors.right: parent.right
+                                                            anchors.verticalCenter: parent.verticalCenter
+                                                            text: Qt.formatDateTime(myValue)
+                                                            font.pixelSize: cursorObj.fontPixelSize
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                         RowLayout {
                             Layout.fillWidth: true
+
+                            Button {
+                                Layout.fillWidth: true
+                                text: "View"
+                                Menu {
+                                    id: stripsViewMenu
+                                    MenuItem {
+                                        id: mnuShowCreateDate
+                                        text: "Show Create Date"
+                                        checkable: true
+                                    }
+                                }
+                                onClicked: stripsViewMenu.open()
+                            }
+
                             Button {
                                 Layout.fillWidth: true
                                 text: "Delete..."
