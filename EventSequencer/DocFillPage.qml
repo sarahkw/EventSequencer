@@ -840,6 +840,9 @@ Page {
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     text: cursorFrame
                                     width: 1
+                                    // If we're showing labels drawn off the cursor line, it looks
+                                    // weird if the cursor line is below.
+                                    z: mnuShowCreateDate.checked ? 1 : 0
                                 }
 
                                 ScrollView {
@@ -889,8 +892,8 @@ Page {
                                                     x: (modelData.startFrame - cursorFrame) * stripsBody.cmfuAlignedFont.builtFontWidth
                                                     width: modelData.length * stripsBody.cmfuAlignedFont.builtFontWidth
                                                     y: (height + 5) * modelData.channelIndex.second
-                                                    checkable: true
                                                     height: stripsBody.cmfuAlignedFont.builtFontHeight * 1.5
+                                                    checkable: true
                                                     palette.button: "pink"
                                                     Component.onCompleted: {
                                                         background.border.width = 1
@@ -908,13 +911,49 @@ Page {
                                             }
                                         }
 
-                                        Rectangle {
-                                            id: extraInfo
+                                        Loader {
+                                            active: mnuShowCreateDate.checked
                                             anchors.top: parent.top
                                             anchors.bottom: parent.bottom
-                                            color: "whitesmoke"
-                                            visible: mnuShowCreateDate.checked ? true : false
-                                            width: visible ? cursorObj.x : 0
+                                            width: cursorObj.x
+                                            clip: true
+                                            sourceComponent: Item {
+                                                id: extraInfo
+                                                anchors.fill: parent
+                                                anchors.rightMargin: cursorObj.rectHorizontalMargin
+
+                                                ES.WatchForStripsIntersectingRange {
+                                                    id: extraInfoWfsir
+                                                    channel: root.cppResourceChannel.sourceChannel
+                                                    startFrame: cursorFrame
+                                                    length: 1
+                                                }
+
+                                                Repeater {
+                                                    model: extraInfoWfsir.strips
+                                                    Item {
+                                                        anchors.left: parent.left
+                                                        anchors.right: parent.right
+                                                        y: (height + 5) * modelData.channelIndex.second
+                                                        height: stripsBody.cmfuAlignedFont.builtFontHeight * 1.5
+                                                        Rectangle {
+                                                            anchors.fill: extraInfoLabel
+                                                            anchors.rightMargin: -cursorObj.rectHorizontalMargin - cursorObj.width
+                                                            anchors.leftMargin: -cursorObj.rectHorizontalMargin
+                                                            anchors.topMargin: -cursorObj.rectVerticalMargin
+                                                            anchors.bottomMargin: -cursorObj.rectVerticalMargin
+                                                            border.color: cursorObj.color
+                                                            color: Qt.lighter(border.color, 1.8)
+                                                        }
+                                                        Label {
+                                                            id: extraInfoLabel
+                                                            anchors.right: parent.right
+                                                            anchors.verticalCenter: parent.verticalCenter
+                                                            text: modelData + ""
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
