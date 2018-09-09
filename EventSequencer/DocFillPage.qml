@@ -868,6 +868,8 @@ Page {
                                         Item {
                                             id: stripsHolderItem
                                             x: cursorObj.x
+                                            readonly property int stripHeight: stripsBody.cmfuAlignedFont.builtFontHeight * 1.6
+                                            readonly property int stripSpacing: 5
 
                                             property QtObject selectedStrip: null
                                             Connections {
@@ -891,8 +893,8 @@ Page {
                                                 Button {
                                                     x: (modelData.startFrame - cursorFrame) * stripsBody.cmfuAlignedFont.builtFontWidth
                                                     width: modelData.length * stripsBody.cmfuAlignedFont.builtFontWidth
-                                                    y: (height + 5) * modelData.channelIndex.second
-                                                    height: stripsBody.cmfuAlignedFont.builtFontHeight * 1.5
+                                                    y: (height + stripsHolderItem.stripSpacing) * modelData.channelIndex.second
+                                                    height: stripsHolderItem.stripHeight
                                                     checkable: true
                                                     palette.button: "pink"
                                                     Component.onCompleted: {
@@ -938,8 +940,8 @@ Page {
                                                     Item {
                                                         anchors.left: parent.left
                                                         anchors.right: parent.right
-                                                        y: (height + 5) * modelData.channelIndex.second
-                                                        height: stripsBody.cmfuAlignedFont.builtFontHeight * 1.5
+                                                        y: (height + stripsHolderItem.stripSpacing) * modelData.channelIndex.second
+                                                        height: stripsHolderItem.stripHeight
 
                                                         property date myValue: qrmdg.get(modelData.resourceUrl)
 
