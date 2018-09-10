@@ -334,8 +334,10 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                                                                                  if (result !== "") {
                                                                                     msgbox.msgbox(result, "Delete")
                                                                                  }
-                                                                                 // XXX Can't call .refresh() before the msgbox or else
-                                                                                 //     QML breaks.
+
+                                                                                 // Note: .refresh() must come after msgbox because
+                                                                                 // it will destroy this delegate and msgbox reference
+                                                                                 // will be destroyed.
                                                                                  documentManager.refresh()
                                                                              }
                                                                          })
