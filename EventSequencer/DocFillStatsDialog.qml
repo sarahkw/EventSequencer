@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
+import QtQuick.Dialogs 1.2 as NativeDialogs
+import eventsequencer 1.0 as ES
 
 Dialog {
     id: root
@@ -15,10 +17,37 @@ Dialog {
 
     modal: true
     closePolicy: Popup.CloseOnEscape
+
+    NativeDialogs.MessageDialog {
+        id: confirmResetDialog
+        title: "Reset Stats"
+        text: "Are you sure you wish to erase all statistics?"
+        standardButtons: NativeDialogs.StandardButton.Yes | NativeDialogs.StandardButton.No
+    }
+
+    ES.QmlDialogButtonOrderHack {
+        id: qdboh
+        buttonCount: 3
+        onButtonInit: {
+            buttonList[0].text = "Copy"
+            buttonList[1].text = "Reset"
+            buttonList[2].text = "Ok"
+        }
+        onButtonClicked: {
+            switch (index) {
+            case 0: txtEdit.selectAll(); txtEdit.copy(); txtEdit.deselect(); break
+            case 1: confirmResetDialog.open(); break
+            case 2: root.close(); break
+            }
+        }
+    }
     footer: DialogButtonBox {
-        Button {
-            text: "Ok"
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+        Repeater {
+            model: qdboh.buttonCount
+            Button {
+                property bool reg: qdboh.registerButton(this);
+                onClicked: qdboh.registerButtonClick(this)
+            }
         }
     }
 
