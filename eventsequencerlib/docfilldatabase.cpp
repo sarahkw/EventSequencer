@@ -41,7 +41,7 @@ bool databaseInitTables(QString* errorMessage)
 
     const int expectedVersion = 1;
 
-    if (tables.contains("DocFill_DbVersion")) {
+    if (tables.contains("DocFill_DbVersion", Qt::CaseInsensitive)) {
         QSqlQuery query;
         bool ok = query.exec("SELECT Version FROM DocFill_DbVersion");
         if (ok) {
