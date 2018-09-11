@@ -35,7 +35,7 @@ Dialog {
         anchors.fill: parent
         Label {
             Layout.fillWidth: true
-            text: "Do you wish to add this document's statistics to the database? Nothing stops you from adding the same statistics twice."
+            text: "Do you wish to add this document's stats to the database? If the stats are already there, it will be counted again."
             wrapMode: Text.Wrap
         }
         ScrollView {
