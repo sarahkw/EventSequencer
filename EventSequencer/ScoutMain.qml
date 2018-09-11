@@ -360,6 +360,20 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                         }
                     }
                 }
+
+                Item {
+                    Layout.alignment: Qt.AlignTop
+                    implicitHeight: instructionLabel.implicitWidth
+                    implicitWidth: instructionLabel.implicitHeight
+                    Label {
+                        id: instructionLabel
+                        text: "Long press for menu."
+                        color: "lightgray"
+                        y: -implicitHeight
+                        rotation: 90
+                        transformOrigin: Item.BottomLeft
+                    }
+                }
             }
         }
     }
