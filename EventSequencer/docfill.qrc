@@ -39,5 +39,6 @@
         <file>ScoutMain.qml</file>
         <file>Tutorial.txt</file>
         <file>util.js</file>
+        <file>DocFillStatsDialog.qml</file>
     </qresource>
 </RCC>

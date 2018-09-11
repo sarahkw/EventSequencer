@@ -1,5 +1,7 @@
 #include "docfilldatabase.h"
 
+#include "describeduration.h"
+
 #include <QDate>
 #include <QDebug>
 #include <QStandardPaths>
@@ -129,6 +131,34 @@ void DocFillDatabase::statsAddTodayAssignedDuration(qint64 duration)
         setErrorMessage(QString("Stats: %1").arg(query.lastError().text()));
         return;
     }
+}
+
+QString DocFillDatabase::statsGenerateReport()
+{
+    if (!initWasSuccessful_) {
+        return QString("Database init failed: %1").arg(errorMessage_);
+    }
+
+    QSqlQuery query;
+    bool ok = query.prepare("SELECT `LocalYYYYMMDD`, `Value` FROM `DocFill_Stats` \n"
+                            "WHERE `Key` = :Key                                   \n"
+                            "ORDER BY `LocalYYYYMMDD` DESC                        \n");
+    if (!ok) {
+        return QString("Error: %1").arg(query.lastError().text());
+    }
+    query.bindValue(":Key", "AssignedDuration");
+    ok = query.exec();
+    if (!ok) {
+        return QString("Error: %1").arg(query.lastError().text());
+    }
+
+    QString result = "Assigned Duration\n\n";
+    while (query.next()) {
+        auto yyyymmdd = query.value(0).toInt();
+        auto value = query.value(1).value<qint64>();
+        result.append(QString("%1 %2\n").arg(yyyymmdd).arg(DescribeDuration::describeDuration(value / 1000 / 1000)));
+    }
+    return result;
 }
 
 void DocFillDatabase::init()

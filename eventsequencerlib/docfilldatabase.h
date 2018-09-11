@@ -22,6 +22,7 @@ private:
 public:
 
     Q_INVOKABLE void statsAddTodayAssignedDuration(qint64 duration);
+    Q_INVOKABLE QString statsGenerateReport();
 
 signals:
 

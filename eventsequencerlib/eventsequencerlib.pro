@@ -96,7 +96,8 @@ SOURCES += \
     qmlfilereader.cpp \
     androidpermissionrequest.cpp \
     qmlresourcemetadatagetter.cpp \
-    docfilldatabase.cpp
+    docfilldatabase.cpp \
+    describeduration.cpp
 
 
 HEADERS += \
@@ -169,7 +170,8 @@ HEADERS += \
     qmlfilereader.h \
     androidpermissionrequest.h \
     qmlresourcemetadatagetter.h \
-    docfilldatabase.h
+    docfilldatabase.h \
+    describeduration.h
 
 unix {
     target.path = /usr/lib
