@@ -6,6 +6,9 @@ Dialog {
     id: root
     title: "Backfill Stats"
 
+    property string filePath
+    property var returnResult // fn
+
     onClosed: destroy()
 
     ES.DocFillBackfillStats {

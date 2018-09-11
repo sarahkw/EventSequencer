@@ -330,7 +330,7 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                             Menu {
                                 id: subMenu
                                 MenuItem {
-                                    text: "Delete %1".arg(modelData.displayName)
+                                    text: "Delete"
                                     onClicked: {
                                         var component = Qt.createComponent("DocFillDeleteDialog.qml")
                                         var obj = component.createObject(root, {
@@ -357,7 +357,13 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                                     onClicked: {
                                         var component = Qt.createComponent("DocFillBackfillStatsDialog.qml")
                                         var obj = component.createObject(root, {
-                                                                         })
+                                                                             filePath: modelData.filePath,
+                                                                             returnResult: function (result) {
+                                                                                 if (result !== "") {
+                                                                                    msgbox.msgbox(result, "Backfill stats")
+                                                                                 }
+                                                                             }
+                                        })
                                         obj.open()
                                     }
                                 }
