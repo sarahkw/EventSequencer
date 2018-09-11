@@ -40,5 +40,6 @@
         <file>Tutorial.txt</file>
         <file>util.js</file>
         <file>DocFillStatsDialog.qml</file>
+        <file>DocFillBackfillStatsDialog.qml</file>
     </qresource>
 </RCC>

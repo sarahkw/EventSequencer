@@ -40,6 +40,7 @@
 #include "qmlresourcemetadatagetter.h"
 #include "docfilldatabase.h"
 #include "qmldialogbuttonorderhack.h"
+#include "docfillbackfillstats.h"
 
 #include <QQmlEngine>
 
@@ -101,4 +102,5 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<QmlResourceMetaDataGetter>("eventsequencer", 1, 0, "QmlResourceMetaDataGetter");
     qmlRegisterType<DocFillDatabase>("eventsequencer", 1, 0, "DocFillDatabase");
     qmlRegisterType<QmlDialogButtonOrderHack>("eventsequencer", 1, 0, "QmlDialogButtonOrderHack");
+    qmlRegisterType<DocFillBackfillStats>("eventsequencer", 1, 0, "DocFillBackfillStats");
 }

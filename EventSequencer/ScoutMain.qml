@@ -352,6 +352,15 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                                         obj.open()
                                     }
                                 }
+                                MenuItem {
+                                    text: "Backfill stats"
+                                    onClicked: {
+                                        var component = Qt.createComponent("DocFillBackfillStatsDialog.qml")
+                                        var obj = component.createObject(root, {
+                                                                         })
+                                        obj.open()
+                                    }
+                                }
                             }
 
                             onPressAndHold: {

@@ -59,5 +59,6 @@
         <file>DocFillAboutDialog.qml</file>
         <file>Privacy.txt</file>
         <file>DocFillStatsDialog.qml</file>
+        <file>DocFillBackfillStatsDialog.qml</file>
     </qresource>
 </RCC>

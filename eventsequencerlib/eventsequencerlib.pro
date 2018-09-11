@@ -98,7 +98,8 @@ SOURCES += \
     qmlresourcemetadatagetter.cpp \
     docfilldatabase.cpp \
     describeduration.cpp \
-    qmldialogbuttonorderhack.cpp
+    qmldialogbuttonorderhack.cpp \
+    docfillbackfillstats.cpp
 
 
 HEADERS += \
@@ -173,7 +174,8 @@ HEADERS += \
     qmlresourcemetadatagetter.h \
     docfilldatabase.h \
     describeduration.h \
-    qmldialogbuttonorderhack.h
+    qmldialogbuttonorderhack.h \
+    docfillbackfillstats.h
 
 unix {
     target.path = /usr/lib
