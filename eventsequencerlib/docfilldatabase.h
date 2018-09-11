@@ -17,6 +17,11 @@ public:
     explicit DocFillDatabase(QObject *parent = nullptr);
 
     QString errorMessage() const;
+private:
+    void setErrorMessage(QString errorMessage);
+public:
+
+    Q_INVOKABLE void statsAddTodayAssignedDuration(qint64 duration);
 
 signals:
 

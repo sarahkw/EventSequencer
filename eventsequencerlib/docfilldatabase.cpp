@@ -1,5 +1,7 @@
 #include "docfilldatabase.h"
 
+#include <QDate>
+#include <QDebug>
 #include <QStandardPaths>
 #include <QDir>
 #include <QSqlDatabase>
@@ -89,6 +91,45 @@ bool databaseInitTables(QString* errorMessage)
 QString DocFillDatabase::errorMessage() const
 {
     return errorMessage_;
+}
+
+void DocFillDatabase::setErrorMessage(QString errorMessage)
+{
+    if (errorMessage_ != errorMessage) {
+        errorMessage_ = errorMessage;
+        emit errorMessageChanged();
+    }
+}
+
+void DocFillDatabase::statsAddTodayAssignedDuration(qint64 duration)
+{
+    if (!initWasSuccessful_) {
+        return;
+    }
+    setErrorMessage("");
+
+    auto today = QDate::currentDate();
+    int yyyymmdd = today.year() * 10000 + today.month() * 100 + today.day();
+    qInfo() << "Delta" << yyyymmdd << duration;
+
+    /*
+    QSqlQuery query;
+    bool ok = query.prepare("UPDATE `DocFill_Stats` SET Value = Value + :delta");
+    if (!ok) {
+        setErrorMessage(QString("Stats: %1").arg(query.lastError().text()));
+        return;
+    }
+    query.bindValue(":delta", duration);
+    ok = query.exec();
+    if (!ok) {
+        setErrorMessage(QString("Stats: %1").arg(query.lastError().text()));
+        return;
+    }
+
+    if (query.numRowsAffected() == 0) {
+
+    }
+    */
 }
 
 void DocFillDatabase::init()

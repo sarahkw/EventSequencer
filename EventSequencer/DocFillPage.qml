@@ -472,11 +472,11 @@ Page {
                                 document.deleteStrip(thestrip)
                             } else {
                                 btnRangeStart.checked = false
-                                autoSaveManager.markDirty()
 
                                 var duration = resourceMetaDataGetter.getDurationInMicroSeconds(thestrip.resourceUrl)
-                                // TODO Add to stats db
-                                console.log("Assigning file with duration", duration)
+                                docFillDatabase.statsAddTodayAssignedDuration(duration)
+
+                                autoSaveManager.markDirty()
                             }
                         } else {
                             // TODO Explain why, like it overlaps, or the length is bad
@@ -1061,7 +1061,7 @@ Error: %1".arg(result[1]))
                                                 }
 
                                                 if (unassignedDuration > 0) {
-                                                    console.log("Unassigned file with duration", unassignedDuration)
+                                                    docFillDatabase.statsAddTodayAssignedDuration(-unassignedDuration)
                                                 }
 
                                                 deleteStripDialog.close()
