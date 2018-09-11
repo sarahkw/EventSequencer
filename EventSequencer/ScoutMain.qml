@@ -120,9 +120,9 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
             anchors.leftMargin: parent.width / 10
             anchors.rightMargin: parent.width / 10
             anchors.top: parent.top
-            anchors.topMargin: parent.height / 20
+            anchors.topMargin: 15
             anchors.bottom: parent.bottom
-            spacing: parent.height / 20
+            spacing: 15
 
             Column {
                 Layout.fillWidth: true
