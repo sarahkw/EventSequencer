@@ -1066,6 +1066,7 @@ Error: %1".arg(result[1]))
 
                                                 deleteStripDialog.close()
                                             }
+                                            DialogButtonBox.buttonRole: DialogButtonBox.DestructiveRole
                                         }
                                         Button {
                                             text: "Cancel"
