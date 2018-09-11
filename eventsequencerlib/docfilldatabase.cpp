@@ -110,26 +110,25 @@ void DocFillDatabase::statsAddTodayAssignedDuration(qint64 duration)
 
     auto today = QDate::currentDate();
     int yyyymmdd = today.year() * 10000 + today.month() * 100 + today.day();
-    qInfo() << "Delta" << yyyymmdd << duration;
 
-    /*
     QSqlQuery query;
-    bool ok = query.prepare("UPDATE `DocFill_Stats` SET Value = Value + :delta");
+    bool ok = query.prepare("INSERT OR REPLACE INTO `DocFill_Stats` (`LocalYYYYMMDD`, `Key`, `Value`) \n"
+                            "VALUES (:LocalYYYYMMDD, :Key,                                            \n"
+                            "         COALESCE((SELECT `Value` FROM `DocFill_Stats`                   \n"
+                            "                  WHERE `LocalYYYYMMDD` = :LocalYYYYMMDD AND             \n"
+                            "                        `Key` = :Key), 0) + :delta)                      \n");
     if (!ok) {
         setErrorMessage(QString("Stats: %1").arg(query.lastError().text()));
         return;
     }
     query.bindValue(":delta", duration);
+    query.bindValue(":LocalYYYYMMDD", yyyymmdd);
+    query.bindValue(":Key", "AssignedDuration");
     ok = query.exec();
     if (!ok) {
         setErrorMessage(QString("Stats: %1").arg(query.lastError().text()));
         return;
     }
-
-    if (query.numRowsAffected() == 0) {
-
-    }
-    */
 }
 
 void DocFillDatabase::init()
