@@ -11,10 +11,13 @@ class QmlResourceMetaDataGetter : public QObject
 {
     Q_OBJECT
 
+public:
     struct CacheObject {
+        bool success_ = false;
         QDateTime createTime;
         qint64 durationInMicroSeconds = 0;
     };
+private:
 
     // TODO I think we should cap the amount of memory we use, eventually. For now
     //      I don't think it should even hit a MB.
@@ -23,9 +26,9 @@ class QmlResourceMetaDataGetter : public QObject
     QString fileResourceDirectory_;
     Q_PROPERTY(QString fileResourceDirectory READ fileResourceDirectory WRITE setFileResourceDirectory NOTIFY fileResourceDirectoryChanged)
 
-    const CacheObject& get(QUrl resourceUrl);
-
 public:
+    const CacheObject& getRaw(QUrl resourceUrl);
+
     explicit QmlResourceMetaDataGetter(QObject *parent = nullptr);
 
     QString fileResourceDirectory() const;
