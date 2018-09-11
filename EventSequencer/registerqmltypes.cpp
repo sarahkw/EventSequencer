@@ -38,6 +38,7 @@
 #include "qmlfilereader.h"
 #include "androidpermissionrequest.h"
 #include "qmlresourcemetadatagetter.h"
+#include "docfilldatabase.h"
 
 #include <QQmlEngine>
 
@@ -97,4 +98,5 @@ void RegisterQmlTypes::registerQmlTypes()
         "eventsequencer", 1, 0, "AndroidPermissionRequest",
         [](QQmlEngine*, QJSEngine*) -> QObject* { return new AndroidPermissionRequest; });
     qmlRegisterType<QmlResourceMetaDataGetter>("eventsequencer", 1, 0, "QmlResourceMetaDataGetter");
+    qmlRegisterType<DocFillDatabase>("eventsequencer", 1, 0, "DocFillDatabase");
 }

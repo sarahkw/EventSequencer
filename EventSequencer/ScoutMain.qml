@@ -55,6 +55,15 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
         id: applicationSettings
     }
 
+    ES.DocFillDatabase {
+        id: docFillDatabase
+        Component.onCompleted: {
+            if (errorMessage !== "") {
+                console.error(errorMessage)
+            }
+        }
+    }
+
     ES.DocumentManager {
         id: documentManager
         documentsPath: applicationSettings.documentsPath

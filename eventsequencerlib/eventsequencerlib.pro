@@ -6,6 +6,7 @@
 
 #QT       -= gui
 QT += multimedia
+QT += sql
 android {
 QT += androidextras
 }
@@ -94,7 +95,8 @@ SOURCES += \
     documentpaths.cpp \
     qmlfilereader.cpp \
     androidpermissionrequest.cpp \
-    qmlresourcemetadatagetter.cpp
+    qmlresourcemetadatagetter.cpp \
+    docfilldatabase.cpp
 
 
 HEADERS += \
@@ -166,7 +168,8 @@ HEADERS += \
     documentpaths.h \
     qmlfilereader.h \
     androidpermissionrequest.h \
-    qmlresourcemetadatagetter.h
+    qmlresourcemetadatagetter.h \
+    docfilldatabase.h
 
 unix {
     target.path = /usr/lib

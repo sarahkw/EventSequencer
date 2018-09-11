@@ -4,6 +4,7 @@ QT += widgets  # For FileDialog on Linux
 }
 QT += quickcontrols2 # For QQuickStyle
 QT += multimedia
+QT += sql
 android {
 QT += androidextras
 }
