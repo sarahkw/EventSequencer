@@ -23,6 +23,10 @@ Dialog {
         title: "Reset Stats"
         text: "Are you sure you wish to erase all statistics?"
         standardButtons: NativeDialogs.StandardButton.Yes | NativeDialogs.StandardButton.No
+        onYes: {
+            docFillDatabase.statsReset()
+            txtEdit.reload()
+        }
     }
 
     ES.QmlDialogButtonOrderHack {
@@ -62,6 +66,9 @@ Dialog {
             readOnly: true
             wrapMode: TextEdit.Wrap
             text: docFillDatabase.statsGenerateReport()
+            function reload() {
+                text = docFillDatabase.statsGenerateReport()
+            }
             font.family: platformMonospacedFont
         }
     }

@@ -161,6 +161,27 @@ QString DocFillDatabase::statsGenerateReport()
     return result;
 }
 
+void DocFillDatabase::statsReset()
+{
+    // Not implementing showing error to the user. It should be clear that something
+    // failed if pressing the button does nothing.
+    if (!initWasSuccessful_) {
+        return;
+    }
+
+    QSqlQuery query;
+    bool ok = query.prepare("DELETE FROM `DocFill_Stats` \n"
+                            "WHERE `Key` = :Key          \n");
+    if (!ok) {
+        return;
+    }
+    query.bindValue(":Key", "AssignedDuration");
+    ok = query.exec();
+    if (!ok) {
+        return;
+    }
+}
+
 void DocFillDatabase::init()
 {
     // Called from constructor, so not emitting errorMessageChanged here
