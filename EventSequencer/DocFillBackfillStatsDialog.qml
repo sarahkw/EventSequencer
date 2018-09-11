@@ -21,7 +21,7 @@ Dialog {
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
     width: parent.width * 0.97
-    height: parent.height * 0.5
+    height: parent.height * 0.75
 
     modal: true
     closePolicy: Popup.CloseOnEscape
@@ -35,8 +35,11 @@ Dialog {
         anchors.fill: parent
         Label {
             Layout.fillWidth: true
-            text: "Do you wish to add this document's stats to the database? If the stats are already there, it will be counted again."
+            text: "Do you wish to naively merge this document's stats to the database? Be careful not to end up with the same stats counted multiple times!"
             wrapMode: Text.Wrap
+        }
+        CheckBox {
+            text: "Subtract instead of add"
         }
         ScrollView {
             id: scrollview
