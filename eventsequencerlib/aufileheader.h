@@ -13,7 +13,12 @@ class AuFileHeader {
 public:
 
     bool loadFormat(const QAudioFormat& af);
-    bool loadFileAndSeek(QIODevice& device, std::string* annotation=nullptr);
+
+    struct FileInformation {
+        std::string annotation;
+        qint64 durationInMicroSeconds = 0;
+    };
+    bool loadFileAndSeek(QIODevice& device, FileInformation* fi=nullptr);
 
     unsigned int dataSize();
     void setDataSize(unsigned int dataSize);

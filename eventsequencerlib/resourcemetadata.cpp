@@ -45,14 +45,19 @@ bool ResourceMetaData::read(std::string& input, std::string* createTime,
 }
 
 bool ResourceMetaData::readFromFile(QString filePath, std::string* createTime,
-                                    qint64* createTimeInSeconds)
+                                    qint64* createTimeInSeconds,
+                                    AuFileHeader::FileInformation* fileInformation)
 {
+    AuFileHeader::FileInformation dummyFi;
+    if (fileInformation == nullptr) {
+        fileInformation = &dummyFi;
+    }
+
     QFile muhFile(filePath);
     if (muhFile.open(QFile::ReadOnly)) {
         AuFileHeader afh;
-        std::string metaData;
-        if (afh.loadFileAndSeek(muhFile, &metaData)) {
-            return read(metaData, createTime, createTimeInSeconds);
+        if (afh.loadFileAndSeek(muhFile, fileInformation)) {
+            return read(fileInformation->annotation, createTime, createTimeInSeconds);
         }
     }
     return false;

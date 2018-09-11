@@ -179,7 +179,7 @@ struct AnnotationHeader {
 constexpr char AnnotationHeader::MAGIC[];
 }
 
-bool AuFileHeader::loadFileAndSeek(QIODevice &device, std::string* annotation)
+bool AuFileHeader::loadFileAndSeek(QIODevice &device, FileInformation* fi)
 {
     AuHeader auh;
     // For files, .read() should read it all unless there's an error.
@@ -205,11 +205,17 @@ bool AuFileHeader::loadFileAndSeek(QIODevice &device, std::string* annotation)
     }
 
     // We are currently at AU_MIN_DATA_OFFSET
-    if (annotation != nullptr && seekTo > AU_MIN_DATA_OFFSET) {
+    if (fi != nullptr && seekTo > AU_MIN_DATA_OFFSET) {
         if (!AnnotationHeader::readFromFile(
-                    device, seekTo - AU_MIN_DATA_OFFSET, annotation)) {
+                    device, seekTo - AU_MIN_DATA_OFFSET, &fi->annotation)) {
             qDebug("Unable to process annotation; ignoring.");
         }
+    }
+
+    if (fi != nullptr) {
+        Q_ASSERT(!device.isSequential()); // Should be a file
+        qint64 bytes = device.size() - seekTo;
+        fi->durationInMicroSeconds = audioFormat_.durationForBytes(qint32(bytes));
     }
 
     return device.seek(seekTo);

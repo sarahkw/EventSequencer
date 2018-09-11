@@ -80,6 +80,11 @@ Page {
         fileResourceDirectory: document.fileResourceDirectory
     }
 
+    ES.QmlResourceMetaDataGetter {
+        id: resourceMetaDataGetter
+        fileResourceDirectory: document.fileResourceDirectory
+    }
+
     ES.RecorderControl {
         id: recorderControl
         audioFormatHolder: document.audioFormatHolder
@@ -462,6 +467,10 @@ Page {
                             } else {
                                 btnRangeStart.checked = false
                                 autoSaveManager.markDirty()
+
+                                var duration = resourceMetaDataGetter.getDurationInMicroSeconds(thestrip.resourceUrl)
+                                // TODO Add to stats db
+                                console.log("Assigning file with duration", duration)
                             }
                         } else {
                             // TODO Explain why, like it overlaps, or the length is bad
@@ -930,11 +939,6 @@ Page {
                                                     length: 1
                                                 }
 
-                                                ES.QmlResourceMetaDataGetter {
-                                                    id: qrmdg
-                                                    fileResourceDirectory: document.fileResourceDirectory
-                                                }
-
                                                 Repeater {
                                                     model: extraInfoWfsir.strips
                                                     Item {
@@ -943,7 +947,7 @@ Page {
                                                         y: (height + stripsHolderItem.stripSpacing) * modelData.channelIndex.second
                                                         height: stripsHolderItem.stripHeight
 
-                                                        property date myValue: qrmdg.get(modelData.resourceUrl)
+                                                        property date myValue: resourceMetaDataGetter.getCreateTime(modelData.resourceUrl)
 
                                                         Rectangle {
                                                             anchors.fill: extraInfoLabel
@@ -1022,10 +1026,14 @@ Page {
                                                     return
                                                 }
 
+                                                var resourceDuration = resourceMetaDataGetter.getDurationInMicroSeconds(thestrip.resourceUrl)
+                                                var unassignedDuration = 0
+
                                                 if (deleteStripOption1.checked) {
                                                     var result = recorderControl.corraledResourceFile.recorral(thestrip.resourceUrl)
                                                     if (result.success) {
                                                         deleteTheStrip()
+                                                        unassignedDuration = resourceDuration
                                                     } else {
                                                         msgbox.msgbox("Unable to reclaim recording.
 Ensure that there is currently no unassigned recording.
@@ -1036,12 +1044,18 @@ Error: %1".arg(result.errorMsg))
                                                     var success = result[0]
                                                     if (success) {
                                                         deleteTheStrip()
+                                                        unassignedDuration = resourceDuration
                                                     } else {
                                                         msgbox.msgbox("Unable to delete recording.
 Error: %1".arg(result[1]))
                                                     }
                                                 } else if (deleteStripOption3.checked) {
                                                     deleteTheStrip()
+                                                    unassignedDuration = resourceDuration
+                                                }
+
+                                                if (unassignedDuration > 0) {
+                                                    console.log("Unassigned file with duration", unassignedDuration)
                                                 }
 
                                                 deleteStripDialog.close()
