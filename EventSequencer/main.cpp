@@ -15,6 +15,7 @@
 #include <QUrl>
 
 #include "registerqmltypes.h"
+#include "constrainedmetricsfontutil.h" // XXX Sucks to include this.
 
 int main(int argc, char *argv[])
 {
@@ -73,6 +74,9 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("commandLine", &commandLine);
+    engine.rootContext()->setContextProperty(
+        "platformMonospacedFont",
+        ConstrainedMetricsFontUtil::defaultFont().family());
     if (scoutMode) {
         engine.load(QUrl(QStringLiteral("qrc:/ScoutMain.qml")));
     } else {
