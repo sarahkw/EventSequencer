@@ -58,5 +58,6 @@
         <file>Tutorial.txt</file>
         <file>DocFillAboutDialog.qml</file>
         <file>Privacy.txt</file>
+        <file>DocFillStatsDialog.qml</file>
     </qresource>
 </RCC>

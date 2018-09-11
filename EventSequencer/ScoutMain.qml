@@ -182,6 +182,17 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                             }
                         }
                         RoundButton {
+                            text: "Stats"
+                            radius: 5
+                            Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
+
+                            onClicked: {
+                                var component = Qt.createComponent("DocFillStatsDialog.qml")
+                                var obj = component.createObject(root, {})
+                                obj.open()
+                            }
+                        }
+                        RoundButton {
                             text: "Tutorial"
                             radius: 5
                             Component.onCompleted: background.color = Qt.lighter("lime", 1.8)

@@ -2,9 +2,8 @@ import QtQuick 2.0
 import QtQuick.Controls 2.2
 
 Dialog {
-    id: aboutDialog
-
-    property alias text: txtEdit.text
+    id: root
+    title: "Stats"
 
     onClosed: destroy()
 
@@ -23,16 +22,7 @@ Dialog {
         }
     }
 
-    ScrollView {
-        id: aboutScrollView
-        clip: true
-        anchors.fill: parent
-        contentWidth: width
-        TextEdit {
-            id: txtEdit
-            width: aboutScrollView.width
-            readOnly: true
-            wrapMode: TextEdit.Wrap
-        }
+    Label {
+        text: "Stats here!"
     }
 }
