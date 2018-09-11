@@ -73,6 +73,12 @@ Page {
         id: errorReportingContext
     }
 
+    ES.ConditionalError {
+        errorReportingContext: errorReportingContext
+        active: docFillDatabase.errorMessage !== ""
+        errorText: "Database: %1".arg(docFillDatabase.errorMessage)
+    }
+
     // XXX The CorraledResourceFile also has a copy of this. Maybe we should
     //     pass it a ref.
     ES.ManagedResources {
