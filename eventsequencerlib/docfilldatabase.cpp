@@ -70,6 +70,16 @@ bool databaseInitTables(QString* errorMessage)
             *errorMessage = QString("Unable to insert in version table: %1").arg(query.lastError().text());
             return false;
         }
+
+        // DocFill_Stats
+        {
+            QSqlQuery query;
+            bool ok = query.exec("CREATE TABLE `DocFill_Stats` ( `LocalYYYYMMDD` INTEGER, `Key` TEXT, `Value` REAL DEFAULT 0, PRIMARY KEY(`LocalYYYYMMDD`,`Key`) )");
+            if (!ok) {
+                *errorMessage = QString("Unable to create stats table: %1").arg(query.lastError().text());
+                return false;
+            }
+        }
     }
 
     return true;
