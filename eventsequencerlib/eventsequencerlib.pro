@@ -97,7 +97,8 @@ SOURCES += \
     androidpermissionrequest.cpp \
     qmlresourcemetadatagetter.cpp \
     docfilldatabase.cpp \
-    describeduration.cpp
+    describeduration.cpp \
+    qmldialogbuttonorderhack.cpp
 
 
 HEADERS += \
@@ -171,7 +172,8 @@ HEADERS += \
     androidpermissionrequest.h \
     qmlresourcemetadatagetter.h \
     docfilldatabase.h \
-    describeduration.h
+    describeduration.h \
+    qmldialogbuttonorderhack.h
 
 unix {
     target.path = /usr/lib

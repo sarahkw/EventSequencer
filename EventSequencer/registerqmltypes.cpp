@@ -39,6 +39,7 @@
 #include "androidpermissionrequest.h"
 #include "qmlresourcemetadatagetter.h"
 #include "docfilldatabase.h"
+#include "qmldialogbuttonorderhack.h"
 
 #include <QQmlEngine>
 
@@ -99,4 +100,5 @@ void RegisterQmlTypes::registerQmlTypes()
         [](QQmlEngine*, QJSEngine*) -> QObject* { return new AndroidPermissionRequest; });
     qmlRegisterType<QmlResourceMetaDataGetter>("eventsequencer", 1, 0, "QmlResourceMetaDataGetter");
     qmlRegisterType<DocFillDatabase>("eventsequencer", 1, 0, "DocFillDatabase");
+    qmlRegisterType<QmlDialogButtonOrderHack>("eventsequencer", 1, 0, "QmlDialogButtonOrderHack");
 }
