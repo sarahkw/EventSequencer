@@ -3,6 +3,7 @@
 #include "channel/docfillchannel.h"
 #include "channel/collatechannel.h"
 #include "qmlresourcemetadatagetter.h"
+#include "describeduration.h"
 
 #include <memory>
 
@@ -103,6 +104,11 @@ void DocFillBackfillStats::updateReport()
     }
 
     report_ = QString("Success = %1\nFailure = %2\n\n").arg(numSuccess).arg(numFailure);
+
+    for (auto& pair : rawData_) {
+        report_.append(QString("%1 %2\n").arg(pair.first).arg(DescribeDuration::describeDuration(pair.second / 1000 / 1000)));
+    }
+
     emit reportChanged();
 }
 
