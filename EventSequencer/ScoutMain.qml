@@ -144,17 +144,6 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                 }
             }
 
-            Text {
-                id: txtErrorMessage
-                Layout.fillWidth: true
-                font.pointSize: 9
-                color: "red"
-                text: "This is an error message"
-                horizontalAlignment: Text.AlignHCenter
-                wrapMode: Text.Wrap
-                visible: false
-            }
-
             RowLayout {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -314,21 +303,18 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                             text: modelData.displayName
                             Component.onCompleted: background.color = "whitesmoke"
                             onClicked: {
-                                txtErrorMessage.visible = false
 
                                 var result = document.loadFilePath(modelData.filePath)
                                 var success = result[0]
                                 if (!success) {
                                     var errmsg = result[1]
-                                    txtErrorMessage.text = errmsg
-                                    txtErrorMessage.visible = true
+                                    msgbox.msgbox(errmsg)
                                     return
                                 }
 
                                 var programChannel = document.defaultProgramChannel()
                                 if (programChannel === null) {
-                                    txtErrorMessage.text = "Program not found on index 0"
-                                    txtErrorMessage.visible = true
+                                    msgbox.msgbox("Program not found on index 0")
                                     return
                                 }
 
