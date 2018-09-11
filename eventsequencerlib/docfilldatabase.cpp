@@ -74,7 +74,7 @@ bool databaseInitTables(QString* errorMessage)
         // DocFill_Stats
         {
             QSqlQuery query;
-            bool ok = query.exec("CREATE TABLE `DocFill_Stats` ( `LocalYYYYMMDD` INTEGER, `Key` TEXT, `Value` REAL DEFAULT 0, PRIMARY KEY(`LocalYYYYMMDD`,`Key`) )");
+            bool ok = query.exec("CREATE TABLE `DocFill_Stats` ( `LocalYYYYMMDD` INTEGER, `Key` TEXT, `Value` NUMERIC DEFAULT 0, PRIMARY KEY(`LocalYYYYMMDD`,`Key`) )");
             if (!ok) {
                 *errorMessage = QString("Unable to create stats table: %1").arg(query.lastError().text());
                 return false;
