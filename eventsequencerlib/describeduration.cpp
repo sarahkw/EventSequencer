@@ -5,7 +5,6 @@ DescribeDuration::DescribeDuration(QObject *parent) : QObject(parent)
 
 }
 
-// Will return blank string if duration is 0.
 QString DescribeDuration::describeDuration(qint64 duration)
 {
     static const char* LABELS[] = {"d", "h", "m", "s"};
@@ -47,6 +46,10 @@ QString DescribeDuration::describeDuration(qint64 duration)
         if (values[i] > 0) {
             ret += QString("%1%2").arg(values[i]).arg(LABELS[i]);
         }
+    }
+
+    if (ret.isEmpty()) {
+        ret = "0";
     }
 
     if (isNeg) {
