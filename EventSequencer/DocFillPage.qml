@@ -397,7 +397,20 @@ Page {
                         }
                     }
                 }
-
+                Button {
+                    Layout.fillWidth: true
+                    text: "Edit"
+                    Menu {
+                        id: documentEditMenu
+                        MenuItem {
+                            text: "Append"
+                        }
+                        MenuItem {
+                            text: "Truncate"
+                        }
+                    }
+                    onClicked: documentEditMenu.open()
+                }
                 Button {
                     Layout.fillWidth: true
                     text: "Go"
