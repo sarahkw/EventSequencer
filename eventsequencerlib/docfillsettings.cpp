@@ -130,7 +130,7 @@ void DocFillSettings::setDeveloperOptions(bool developerOptions)
 }
 
 DocFillSettings::DocFillSettings(QObject* parent)
-    : QObject(parent), settings_("doctorfill456.at.gmail.com", "DocFill")
+    : QObject(parent), settings_("doctorfill456.at.gmail.com", "DocFill") // TODO Change this in the future somehow
 {
     const char DEFAULT_PATH[] = "/DocFill";
 #ifdef Q_OS_ANDROID
