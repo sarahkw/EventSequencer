@@ -473,8 +473,10 @@ Page {
                             } else {
                                 btnRangeStart.checked = false
 
-                                var duration = resourceMetaDataGetter.getDurationInMicroSeconds(thestrip.resourceUrl)
-                                docFillDatabase.statsAddTodayAssignedDuration(duration)
+                                if (applicationSettings.updateStatistics) {
+                                    var duration = resourceMetaDataGetter.getDurationInMicroSeconds(thestrip.resourceUrl)
+                                    docFillDatabase.statsAddTodayAssignedDuration(duration)
+                                }
 
                                 autoSaveManager.markDirty()
                             }
@@ -1016,7 +1018,7 @@ Page {
 
                                     onOpened: {
                                         deleteStripOption1.checked = true
-                                        chkDeleteSubtractFromStats.checked = true
+                                        chkDeleteSubtractFromStats.checked = applicationSettings.updateStatistics
                                     }
 
                                     footer: DialogButtonBox {
@@ -1109,6 +1111,7 @@ Error: %1".arg(result[1]))
                                             id: chkDeleteSubtractFromStats
                                             text: "Subtract duration from stats"
                                             checked: true
+                                            enabled: applicationSettings.updateStatistics
                                         }
                                     }
                                 }
