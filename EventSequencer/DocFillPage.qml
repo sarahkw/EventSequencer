@@ -404,6 +404,11 @@ Page {
                         id: documentEditMenu
                         MenuItem {
                             text: "Append"
+                            onClicked: {
+                                var component = Qt.createComponent("DocFillAppendDialog.qml")
+                                var obj = component.createObject(root, {})
+                                obj.open()
+                            }
                         }
                         MenuItem {
                             text: "Truncate"
