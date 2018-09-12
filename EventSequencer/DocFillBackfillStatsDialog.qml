@@ -27,6 +27,11 @@ Dialog {
     closePolicy: Popup.CloseOnEscape
     standardButtons: Dialog.Yes | Dialog.No
 
+    onAccepted: {
+        var result = dfbs.actuallyBackfill()
+        returnResult(result)
+    }
+
     // Hack: without this, Dialog will have a binding loop trying to size itself
     //       to the single item.
     Item {}
@@ -37,9 +42,6 @@ Dialog {
             Layout.fillWidth: true
             text: "Do you wish to naively merge this document's stats to the database? Be careful not to end up with the same stats counted multiple times!"
             wrapMode: Text.Wrap
-        }
-        CheckBox {
-            text: "Subtract instead of add"
         }
         ScrollView {
             id: scrollview

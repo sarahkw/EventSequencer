@@ -122,5 +122,8 @@ QString DocFillBackfillStats::actuallyBackfill()
     if (rawData_.empty()) {
         return "Nothing to backfill";
     }
-    return "Not implemented";
+    if (docfillDatabase_ == nullptr) {
+        return "Internal error";
+    }
+    return docfillDatabase_->statsMerge(rawData_);
 }

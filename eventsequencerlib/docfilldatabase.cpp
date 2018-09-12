@@ -103,6 +103,15 @@ void DocFillDatabase::setErrorMessage(QString errorMessage)
     }
 }
 
+namespace {
+static const char QUERY_ADD_STAT[] =
+    "INSERT OR REPLACE INTO `DocFill_Stats` (`LocalYYYYMMDD`, `Key`, `Value`) \n"
+    "VALUES (:LocalYYYYMMDD, :Key,                                            \n"
+    "         COALESCE((SELECT `Value` FROM `DocFill_Stats`                   \n"
+    "                  WHERE `LocalYYYYMMDD` = :LocalYYYYMMDD AND             \n"
+    "                        `Key` = :Key), 0) + :delta)                      \n";
+}
+
 void DocFillDatabase::statsAddTodayAssignedDuration(qint64 duration)
 {
     if (!initWasSuccessful_) {
@@ -114,11 +123,7 @@ void DocFillDatabase::statsAddTodayAssignedDuration(qint64 duration)
     int yyyymmdd = today.year() * 10000 + today.month() * 100 + today.day();
 
     QSqlQuery query;
-    bool ok = query.prepare("INSERT OR REPLACE INTO `DocFill_Stats` (`LocalYYYYMMDD`, `Key`, `Value`) \n"
-                            "VALUES (:LocalYYYYMMDD, :Key,                                            \n"
-                            "         COALESCE((SELECT `Value` FROM `DocFill_Stats`                   \n"
-                            "                  WHERE `LocalYYYYMMDD` = :LocalYYYYMMDD AND             \n"
-                            "                        `Key` = :Key), 0) + :delta)                      \n");
+    bool ok = query.prepare(QUERY_ADD_STAT);
     if (!ok) {
         setErrorMessage(QString("Stats: %1").arg(query.lastError().text()));
         return;
@@ -180,6 +185,51 @@ void DocFillDatabase::statsReset()
     if (!ok) {
         return;
     }
+}
+
+QString DocFillDatabase::statsMerge(std::map<int, qint64> &data)
+{
+    if (!initWasSuccessful_) {
+        return QString("Database init failed: %1").arg(errorMessage_);
+    }
+
+    QSqlDatabase db = QSqlDatabase::database();
+
+    QSqlQuery query(db);
+    bool ok = query.prepare(QUERY_ADD_STAT);
+    if (!ok) {
+        return QString("Error: %1").arg(query.lastError().text());
+    }
+
+    QVariantList yyyymmdds;
+    QVariantList durations;
+    QVariantList assignedDurations;
+
+    for (auto& pair : data) {
+        yyyymmdds.push_back(pair.first);
+        durations.push_back(pair.second);
+        assignedDurations.push_back("AssignedDuration");
+    }
+
+    query.bindValue(":LocalYYYYMMDD", yyyymmdds);
+    query.bindValue(":delta", durations);
+    query.bindValue(":Key", assignedDurations);
+
+    if (!db.transaction()) {
+        return QString("Cannot begin transaction: %1").arg(db.lastError().text());
+    }
+
+    if (!query.execBatch()) {
+        QString errorMsg = query.lastError().text();
+        db.rollback();
+        return QString("Error: %1").arg(errorMsg);
+    }
+
+    if (!db.commit()) {
+        return QString("Cannot commit transaction: %1").arg(db.lastError().text());
+    }
+
+    return "";
 }
 
 void DocFillDatabase::init()
