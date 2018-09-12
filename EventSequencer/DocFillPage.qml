@@ -1014,7 +1014,10 @@ Page {
                                     title: "Delete Strip"
                                     modal: true
 
-                                    onOpened: deleteStripOption1.checked = true
+                                    onOpened: {
+                                        deleteStripOption1.checked = true
+                                        chkDeleteSubtractFromStats.checked = true
+                                    }
 
                                     footer: DialogButtonBox {
                                         Button {
@@ -1061,7 +1064,9 @@ Error: %1".arg(result[1]))
                                                 }
 
                                                 if (unassignedDuration > 0) {
-                                                    docFillDatabase.statsAddTodayAssignedDuration(-unassignedDuration)
+                                                    if (chkDeleteSubtractFromStats.checked) {
+                                                        docFillDatabase.statsAddTodayAssignedDuration(-unassignedDuration)
+                                                    }
                                                 }
 
                                                 deleteStripDialog.close()
@@ -1075,25 +1080,35 @@ Error: %1".arg(result[1]))
                                     }
 
                                     ColumnLayout {
-                                        Label {
+                                        anchors.left: parent.left
+                                        anchors.right: parent.right
+                                        GroupBox {
                                             Layout.fillWidth: true
-                                            text: "Action to take on strip's recording:"
-                                            wrapMode: Text.Wrap
+                                            title: "Action to take on strip's recording:"
+                                            ColumnLayout {
+                                                anchors.left: parent.left
+                                                anchors.right: parent.right
+                                                RadioButton {
+                                                    Layout.fillWidth: true
+                                                    id: deleteStripOption1
+                                                    text: "Reclaim as unassigned recording"
+                                                }
+                                                RadioButton {
+                                                    Layout.fillWidth: true
+                                                    id: deleteStripOption2
+                                                    text: "Delete recording"
+                                                }
+                                                RadioButton {
+                                                    Layout.fillWidth: true
+                                                    id: deleteStripOption3
+                                                    text: "Leave recording as orphan"
+                                                }
+                                            }
                                         }
-                                        RadioButton {
-                                            Layout.fillWidth: true
-                                            id: deleteStripOption1
-                                            text: "Reclaim as unassigned recording"
-                                        }
-                                        RadioButton {
-                                            Layout.fillWidth: true
-                                            id: deleteStripOption2
-                                            text: "Delete recording"
-                                        }
-                                        RadioButton {
-                                            Layout.fillWidth: true
-                                            id: deleteStripOption3
-                                            text: "Leave recording as orphan"
+                                        CheckBox {
+                                            id: chkDeleteSubtractFromStats
+                                            text: "Subtract duration from stats"
+                                            checked: true
                                         }
                                     }
                                 }
