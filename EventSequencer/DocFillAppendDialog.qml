@@ -18,6 +18,17 @@ Dialog {
     closePolicy: Popup.CloseOnEscape
     standardButtons: Dialog.Ok | Dialog.Cancel
 
+    footer: DialogButtonBox {
+        Button {
+            DialogButtonBox.buttonRole: DialogButtonBox.ActionRole
+            text: "Timestamp"
+            onClicked: {
+                var txt = Qt.formatDateTime(new Date(Date.now()), Qt.ISODate)
+                txt = txt.replace("T", " ")
+                txtAppendText.append(txt)
+            }
+        }
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -31,7 +42,9 @@ Dialog {
             Layout.fillHeight: true
             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
             TextArea {
+                id: txtAppendText
                 wrapMode: TextEdit.Wrap
+                textFormat: TextEdit.PlainText
                 selectByMouse: true
                 font.family: platformMonospacedFont
             }
