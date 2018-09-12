@@ -138,7 +138,7 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                 Text {
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    text: "0.1.3 dev"
+                    text: "0.1.3"
                     horizontalAlignment: Text.AlignHCenter
                     wrapMode: Text.WordWrap
                 }
