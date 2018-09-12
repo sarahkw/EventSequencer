@@ -1190,6 +1190,15 @@ Error: %1".arg(result[1]))
                                         onToggled: applicationSettings.toneBeforeRecord = checked
                                     }
                                     CheckBox {
+                                        id: chkSettingUpdateStatistics
+                                        Layout.fillWidth: true
+                                        Layout.columnSpan: 2
+                                        text: "Update statistics"
+                                        checked: applicationSettings.updateStatistics
+                                        onToggled: applicationSettings.updateStatistics = checked
+                                        enabled: applicationSettings.developerOptions
+                                    }
+                                    CheckBox {
                                         id: chkSettingDeveloperOptions
                                         Layout.fillWidth: true
                                         Layout.columnSpan: 2

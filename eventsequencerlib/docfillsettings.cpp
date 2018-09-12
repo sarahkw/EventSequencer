@@ -9,6 +9,7 @@ static const char KEY_REVIEWAFTERRECORD[] = "reviewAfterRecord";
 static const char KEY_SELECTONRECORD[]    = "selectOnRecord";
 static const char KEY_TONEBEFORERECORD[]  = "toneBeforeRecord";
 static const char KEY_DEVELOPEROPTIONS[]  = "developerOptions";
+static const char KEY_UPDATESTATISTICS[]  = "updateStatistics";
 
 QString DocFillSettings::defaultDocumentsPath() const
 {
@@ -129,6 +130,20 @@ void DocFillSettings::setDeveloperOptions(bool developerOptions)
     }
 }
 
+bool DocFillSettings::updateStatistics() const
+{
+    return updateStatistics_;
+}
+
+void DocFillSettings::setUpdateStatistics(bool updateStatistics)
+{
+    if (updateStatistics_ != updateStatistics) {
+        settings_.setValue(KEY_UPDATESTATISTICS, updateStatistics);
+        updateStatistics_ = updateStatistics;
+        emit cheapUserSettingsChanged();
+    }
+}
+
 DocFillSettings::DocFillSettings(QObject* parent)
     : QObject(parent), settings_("doctorfill456.at.gmail.com", "DocFill") // TODO Change this in the future somehow
 {
@@ -149,4 +164,5 @@ DocFillSettings::DocFillSettings(QObject* parent)
     selectOnRecord_    = settings_.value(KEY_SELECTONRECORD, QVariant::fromValue(false)).toBool();
     toneBeforeRecord_  = settings_.value(KEY_TONEBEFORERECORD, QVariant::fromValue(false)).toBool();
     developerOptions_  = settings_.value(KEY_DEVELOPEROPTIONS, QVariant::fromValue(false)).toBool();
+    updateStatistics_  = settings_.value(KEY_UPDATESTATISTICS, QVariant::fromValue(true)).toBool();
 }
