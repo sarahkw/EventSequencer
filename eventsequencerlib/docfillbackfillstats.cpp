@@ -94,10 +94,7 @@ void DocFillBackfillStats::updateReport()
         auto& cache = metaGet.getRaw(s->resourceUrl());
         if (cache.success_ && cache.createTime.isValid()) {
             ++numSuccess;
-
-           auto localDate = cache.createTime.toLocalTime().date();
-           int yyyymmdd = localDate.year() * 10000 + localDate.month() * 100 + localDate.day();
-           rawData_[yyyymmdd] += cache.durationInMicroSeconds;
+            rawData_[cache.createTimeAsLocalYYYYMMDD()] += cache.durationInMicroSeconds;
         } else {
             ++numFailure;
         }

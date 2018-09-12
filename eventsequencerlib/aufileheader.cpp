@@ -215,7 +215,13 @@ bool AuFileHeader::loadFileAndSeek(QIODevice &device, FileInformation* fi)
     if (fi != nullptr) {
         Q_ASSERT(!device.isSequential()); // Should be a file
         qint64 bytes = device.size() - seekTo;
-        fi->durationInMicroSeconds = audioFormat_.durationForBytes(qint32(bytes));
+        if (bytes >= 0) {
+            fi->durationInMicroSeconds = audioFormat_.durationForBytes(qint32(bytes));
+        } else {
+            // This shouldn't happen, this is here just to be sure.
+            qWarning("Bytes is negative??");
+            fi->durationInMicroSeconds = 0;
+        }
     }
 
     return device.seek(seekTo);

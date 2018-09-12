@@ -20,9 +20,18 @@ const QmlResourceMetaDataGetter::CacheObject &QmlResourceMetaDataGetter::getRaw(
         AuFileHeader::FileInformation afh_fi;
         qint64 createTimeInSeconds{};
         if (ResourceMetaData::readFromFile(filePath, nullptr, &createTimeInSeconds, &afh_fi)) {
-            mine.createTime = QDateTime::fromSecsSinceEpoch(createTimeInSeconds);
-            mine.durationInMicroSeconds = afh_fi.durationInMicroSeconds;
-            mine.success_ = true;
+            if (createTimeInSeconds > 0) {
+                // XXX This kinda sucks. We can have duration without having
+                //     create time. It's just that for the current business logic
+                //     it's useless to have duration if we don't also have create
+                //     time. Maybe one day we'll need to make them independent.
+                auto dt = QDateTime::fromSecsSinceEpoch(createTimeInSeconds);
+                if (dt.isValid()) {
+                    mine.createTime = dt;
+                    mine.durationInMicroSeconds = afh_fi.durationInMicroSeconds;
+                    mine.success_ = true;
+                }
+            }
         }
     }
     if (!mine.success_) {
@@ -56,7 +65,23 @@ QDateTime QmlResourceMetaDataGetter::getCreateTime(QUrl resourceUrl)
     return getRaw(resourceUrl).createTime;
 }
 
+int QmlResourceMetaDataGetter::getCreateTimeLocalYYYYMMDD(QUrl resourceUrl)
+{
+    auto& cache = getRaw(resourceUrl);
+    if (cache.success_) {
+        return cache.createTimeAsLocalYYYYMMDD();
+    } else {
+        return -1;
+    }
+}
+
 qint64 QmlResourceMetaDataGetter::getDurationInMicroSeconds(QUrl resourceUrl)
 {
     return getRaw(resourceUrl).durationInMicroSeconds;
+}
+
+int QmlResourceMetaDataGetter::CacheObject::createTimeAsLocalYYYYMMDD() const
+{
+    auto localDate = this->createTime.toLocalTime().date();
+    return localDate.year() * 10000 + localDate.month() * 100 + localDate.day();
 }

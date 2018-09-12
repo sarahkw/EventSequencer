@@ -2,7 +2,6 @@
 
 #include "describeduration.h"
 
-#include <QDate>
 #include <QDebug>
 #include <QStandardPaths>
 #include <QDir>
@@ -112,15 +111,12 @@ static const char QUERY_ADD_STAT[] =
     "                        `Key` = :Key), 0) + :delta)                      \n";
 }
 
-void DocFillDatabase::statsAddTodayAssignedDuration(qint64 duration)
+void DocFillDatabase::statsAddAssignedDuration(int yyyymmdd, qint64 duration)
 {
     if (!initWasSuccessful_) {
         return;
     }
     setErrorMessage("");
-
-    auto today = QDate::currentDate();
-    int yyyymmdd = today.year() * 10000 + today.month() * 100 + today.day();
 
     QSqlQuery query;
     bool ok = query.prepare(QUERY_ADD_STAT);
@@ -157,7 +153,7 @@ QString DocFillDatabase::statsGenerateReport()
         return QString("Error: %1").arg(query.lastError().text());
     }
 
-    QString result = "Assigned Duration\n\n";
+    QString result = "Assigned duration by date of recording\n\n";
     while (query.next()) {
         auto yyyymmdd = query.value(0).toInt();
         auto value = query.value(1).value<qint64>();

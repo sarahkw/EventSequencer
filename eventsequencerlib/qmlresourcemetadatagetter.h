@@ -16,6 +16,7 @@ public:
         bool success_ = false;
         QDateTime createTime;
         qint64 durationInMicroSeconds = 0;
+        int createTimeAsLocalYYYYMMDD() const;
     };
 private:
 
@@ -35,6 +36,7 @@ public:
     void setFileResourceDirectory(const QString &fileResourceDirectory);
 
     Q_INVOKABLE QDateTime getCreateTime(QUrl resourceUrl);
+    Q_INVOKABLE int getCreateTimeLocalYYYYMMDD(QUrl resourceUrl);
     Q_INVOKABLE qint64 getDurationInMicroSeconds(QUrl resourceUrl);
 
 signals:

@@ -474,8 +474,13 @@ Page {
                                 btnRangeStart.checked = false
 
                                 if (applicationSettings.updateStatistics) {
+                                    var yyyymmdd = resourceMetaDataGetter.getCreateTimeLocalYYYYMMDD(thestrip.resourceUrl)
                                     var duration = resourceMetaDataGetter.getDurationInMicroSeconds(thestrip.resourceUrl)
-                                    docFillDatabase.statsAddTodayAssignedDuration(duration)
+                                    if (yyyymmdd > 0) {
+                                        docFillDatabase.statsAddAssignedDuration(yyyymmdd, duration)
+                                    } else {
+                                        console.warn("Unable to update stats because of bad metadata")
+                                    }
                                 }
 
                                 autoSaveManager.markDirty()
@@ -1027,9 +1032,12 @@ Page {
                                             onClicked: {
                                                 var thestrip = stripsHolderItem.selectedStrip
 
+                                                var stripWasDeleted = false
+
                                                 function deleteTheStrip() {
                                                     document.deleteStrip(thestrip)
                                                     autoSaveManager.markDirty()
+                                                    stripWasDeleted = true
                                                 }
 
                                                 if (thestrip.resourceUrl == "") {
@@ -1037,14 +1045,14 @@ Page {
                                                     return
                                                 }
 
+                                                // Need to read these things up here because we can't once we delete the strip!
                                                 var resourceDuration = resourceMetaDataGetter.getDurationInMicroSeconds(thestrip.resourceUrl)
-                                                var unassignedDuration = 0
+                                                var resourceYyyymmdd = resourceMetaDataGetter.getCreateTimeLocalYYYYMMDD(thestrip.resourceUrl)
 
                                                 if (deleteStripOption1.checked) {
                                                     var result = recorderControl.corraledResourceFile.recorral(thestrip.resourceUrl)
                                                     if (result.success) {
                                                         deleteTheStrip()
-                                                        unassignedDuration = resourceDuration
                                                     } else {
                                                         msgbox.msgbox("Unable to reclaim recording.
 Ensure that there is currently no unassigned recording.
@@ -1055,19 +1063,19 @@ Error: %1".arg(result.errorMsg))
                                                     var success = result[0]
                                                     if (success) {
                                                         deleteTheStrip()
-                                                        unassignedDuration = resourceDuration
                                                     } else {
                                                         msgbox.msgbox("Unable to delete recording.
 Error: %1".arg(result[1]))
                                                     }
                                                 } else if (deleteStripOption3.checked) {
                                                     deleteTheStrip()
-                                                    unassignedDuration = resourceDuration
                                                 }
 
-                                                if (unassignedDuration > 0) {
-                                                    if (chkDeleteSubtractFromStats.checked) {
-                                                        docFillDatabase.statsAddTodayAssignedDuration(-unassignedDuration)
+                                                if (stripWasDeleted && chkDeleteSubtractFromStats.checked) {
+                                                    if (resourceYyyymmdd > 0) {
+                                                        docFillDatabase.statsAddAssignedDuration(resourceYyyymmdd, -resourceDuration)
+                                                    } else {
+                                                        console.warn("Unable to update stats because of bad metadata")
                                                     }
                                                 }
 

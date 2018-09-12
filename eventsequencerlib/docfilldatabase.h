@@ -24,7 +24,7 @@ private:
     void setErrorMessage(QString errorMessage);
 public:
 
-    Q_INVOKABLE void statsAddTodayAssignedDuration(qint64 duration);
+    Q_INVOKABLE void statsAddAssignedDuration(int yyyymmdd, qint64 duration);
     Q_INVOKABLE QString statsGenerateReport();
     Q_INVOKABLE void statsReset();
     QString statsMerge(std::map<int, qint64>& data);
