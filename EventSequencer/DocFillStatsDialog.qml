@@ -56,13 +56,9 @@ Dialog {
     }
 
     ScrollView {
-        id: scrollView
-        clip: true
         anchors.fill: parent
-        contentWidth: width
-        TextEdit {
+        TextArea {
             id: txtEdit
-            width: scrollView.width
             readOnly: true
             wrapMode: TextEdit.Wrap
             text: docFillDatabase.statsGenerateReport()

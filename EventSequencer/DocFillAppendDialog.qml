@@ -29,13 +29,11 @@ Dialog {
         ScrollView {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            clip: true
-            contentWidth: width
             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-            TextEdit {
-                id: txtEdit
-                width: parent.width
+            TextArea {
                 wrapMode: TextEdit.Wrap
+                selectByMouse: true
+                font.family: platformMonospacedFont
             }
         }
     }

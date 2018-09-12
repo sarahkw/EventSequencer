@@ -44,14 +44,9 @@ Dialog {
             wrapMode: Text.Wrap
         }
         ScrollView {
-            id: scrollview
             Layout.fillWidth: true
             Layout.fillHeight: true
-            clip: true
-            contentWidth: width
-            TextEdit {
-                id: txtEdit
-                width: scrollview.width
+            TextArea {
                 readOnly: true
                 wrapMode: TextEdit.Wrap
                 text: dfbs.report
