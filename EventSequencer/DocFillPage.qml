@@ -1009,7 +1009,7 @@ Page {
                                     parent: ApplicationWindow.overlay
                                     x: (parent.width - width) / 2
                                     y: (parent.height - height) / 2
-                                    width: parent.width * 0.8
+                                    width: parent.width * 0.95
 
                                     title: "Delete Strip"
                                     modal: true
