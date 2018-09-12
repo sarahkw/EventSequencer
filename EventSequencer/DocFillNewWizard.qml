@@ -196,6 +196,7 @@ Pane {
                                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                                 textFormat: TextEdit.PlainText
                                 text: documentCreator.contents
+                                selectByMouse: true
                                 onEditingFinished: documentCreator.contents = text
                             }
                         }
