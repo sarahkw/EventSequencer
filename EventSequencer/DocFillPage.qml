@@ -215,7 +215,7 @@ Page {
         id: tbar
         currentIndex: sview.currentIndex
 
-        TabButton { text: "View" }
+        TabButton { text: "Document" }
         TabButton {
             text: recordPage.isStopped ? "Record" : "Recording"
         }
@@ -347,7 +347,7 @@ Page {
             // Take implicitHeight from a normal item
             implicitHeight: recordPage.implicitHeight
 
-            // View
+            // Document
             RowLayout {
                 Button {
                     Layout.fillWidth: true
