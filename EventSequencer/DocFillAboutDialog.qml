@@ -24,9 +24,13 @@ Dialog {
     }
 
     ScrollView {
+        id: aboutScrollView
+        clip: true
         anchors.fill: parent
-        TextArea {
+        contentWidth: width
+        TextEdit {
             id: txtEdit
+            width: aboutScrollView.width
             readOnly: true
             wrapMode: TextEdit.Wrap
         }
