@@ -631,6 +631,12 @@ Page {
                     playerControl.stop()
                 }
 
+                function playSelectedStrip() {
+                    playerControl.stop()
+                    cmbSelectionMode.currentIndex = 5
+                    playerControl.play()
+                }
+
                 ComboBox {
                     id: cmbSelectionMode
                     Layout.fillWidth: true
@@ -1040,6 +1046,10 @@ Page {
 
                                 Menu {
                                     id: stripsSelectedMenu
+                                    MenuItem {
+                                        text: "Play"
+                                        onClicked: playPage.playSelectedStrip()
+                                    }
                                     MenuItem {
                                         text: "Delete"
                                         onClicked: deleteStripDialog.open()
