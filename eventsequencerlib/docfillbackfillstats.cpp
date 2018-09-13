@@ -5,8 +5,6 @@
 #include "qmlresourcemetadatagetter.h"
 #include "describeduration.h"
 
-#include <memory>
-
 DocFillDatabase *DocFillBackfillStats::docfillDatabase() const
 {
     return docfillDatabase_;
@@ -78,12 +76,10 @@ void DocFillBackfillStats::updateReport()
     auto* programChannel = qobject_cast<channel::DocFillChannel*>(document_.defaultProgramChannel());
     DOCUMENT_INVALID_IF(programChannel == nullptr);
 
-    std::unique_ptr<WaitFor> collateChannelWaitFor(document_.waitForChannelIndex(programChannel->resourceChannel()));
-    auto* collateChannel = qobject_cast<channel::CollateChannel*>(collateChannelWaitFor->result());
+    auto* collateChannel = qobject_cast<channel::CollateChannel*>(document_.getChannelByIndex(programChannel->resourceChannel()));
     DOCUMENT_INVALID_IF(collateChannel == nullptr);
 
-    std::unique_ptr<WaitFor> stripSourceWaitFor(document_.waitForChannelIndex(collateChannel->channel()));
-    auto* stripSource = qobject_cast<channel::ChannelBase*>(stripSourceWaitFor->result());
+    auto* stripSource = qobject_cast<channel::ChannelBase*>(document_.getChannelByIndex(collateChannel->channel()));
     DOCUMENT_INVALID_IF(stripSource == nullptr);
 #undef DOCUMENT_INVALID_IF
 
