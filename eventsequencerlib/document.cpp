@@ -648,8 +648,6 @@ constexpr char FileHeader::MAGIC[];
 
 QVariantList Document::save(const QUrl& url)
 {
-    // TODO Error handling! Need to do more than just write to stdout.
-
     pb::File pbf;
     toPb(*pbf.mutable_document());
 
