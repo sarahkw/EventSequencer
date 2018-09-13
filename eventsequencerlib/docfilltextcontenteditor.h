@@ -12,7 +12,7 @@ class DocFillTextContentEditor : public QObject
 public:
     explicit DocFillTextContentEditor(QObject *parent = nullptr);
 
-    Q_INVOKABLE void appendText(Document* document, QString text);
+    Q_INVOKABLE static void appendText(Document* document, QString text);
 
 signals:
 
