@@ -1034,12 +1034,18 @@ Page {
 
                             Button {
                                 Layout.fillWidth: true
-                                text: "Delete..."
+                                text: "Selected"
                                 enabled: stripsHolderItem.selectedStrip !== null
-                                onClicked: {
-                                    deleteStripDialog.open()
-                                }
+                                onClicked: stripsSelectedMenu.open()
 
+                                Menu {
+                                    id: stripsSelectedMenu
+                                    MenuItem {
+                                        text: "Delete"
+                                        onClicked: deleteStripDialog.open()
+                                    }
+                                }
+                                
                                 Controls2.Dialog {
                                     id: deleteStripDialog
                                     parent: ApplicationWindow.overlay
@@ -1153,6 +1159,7 @@ Error: %1".arg(result[1]))
                                     }
                                 }
                             }
+
                             Button {
                                 id: goButton
                                 Layout.fillWidth: true
