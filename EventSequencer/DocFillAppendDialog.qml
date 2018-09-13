@@ -7,9 +7,9 @@ import eventsequencer 1.0 as ES
 Dialog {
     id: root
 
-    onClosed: destroy()
+    signal dirtied()
 
-    property var document_rebind: document
+    onClosed: destroy()
 
     parent: ApplicationWindow.overlay
     x: (parent.width - width) / 2
@@ -29,14 +29,18 @@ Dialog {
             onClicked: {
                 var txt = Qt.formatDateTime(new Date(Date.now()), Qt.ISODate)
                 txt = txt.replace("T", " ")
-                txtAppendText.append(txt)
+                txtAppendText.append(txt + "\n")
             }
         }
     }
 
+    onAccepted: {
+        dftce.appendText(document, txtAppendText.text)
+        root.dirtied()
+    }
+
     ES.DocFillTextContentEditor {
         id: dftce
-        document: document_rebind
     }
 
     ColumnLayout {

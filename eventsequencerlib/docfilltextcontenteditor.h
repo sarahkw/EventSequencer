@@ -9,19 +9,12 @@ class DocFillTextContentEditor : public QObject
 {
     Q_OBJECT
 
-    Document* document_ = nullptr;
-    Q_PROPERTY(Document* document READ document WRITE setDocument NOTIFY documentChanged)
-
 public:
     explicit DocFillTextContentEditor(QObject *parent = nullptr);
 
-    Document *document() const;
-    void setDocument(Document *document);
-    void clearDocument();
+    Q_INVOKABLE void appendText(Document* document, QString text);
 
 signals:
-
-    void documentChanged();
 
 public slots:
 };
