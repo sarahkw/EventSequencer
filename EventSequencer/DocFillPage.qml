@@ -415,6 +415,14 @@ Page {
                         }
                         MenuItem {
                             text: "Truncate"
+                            onClicked: {
+                                var component = Qt.createComponent("DocFillTruncateDialog.qml")
+                                var obj = component.createObject(root, {})
+                                obj.dirtied.connect(function () {
+                                    autoSaveManager.markDirty()
+                                })
+                                obj.open()
+                            }
                         }
                     }
                     onClicked: documentEditMenu.open()

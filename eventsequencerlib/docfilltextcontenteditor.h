@@ -14,6 +14,8 @@ public:
 
     Q_INVOKABLE static void appendText(Document* document, QString text);
 
+    Q_INVOKABLE static QString truncatePreview(Document* document, int cursorFrame);
+
 signals:
 
 public slots:
