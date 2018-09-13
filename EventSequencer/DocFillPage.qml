@@ -1101,7 +1101,6 @@ Page {
 
                                     onOpened: {
                                         deleteStripOption1.checked = true
-                                        chkDeleteSubtractFromStats.checked = applicationSettings.updateStatistics
                                     }
 
                                     footer: DialogButtonBox {
@@ -1149,7 +1148,7 @@ Error: %1".arg(result[1]))
                                                     deleteTheStrip()
                                                 }
 
-                                                if (stripWasDeleted && chkDeleteSubtractFromStats.checked) {
+                                                if (stripWasDeleted && applicationSettings.updateStatistics) {
                                                     if (resourceYyyymmdd > 0) {
                                                         docFillDatabase.statsAddAssignedDuration(resourceYyyymmdd, -resourceDuration)
                                                     } else {
@@ -1192,12 +1191,6 @@ Error: %1".arg(result[1]))
                                                     text: "Leave recording as orphan"
                                                 }
                                             }
-                                        }
-                                        CheckBox {
-                                            id: chkDeleteSubtractFromStats
-                                            text: "Subtract duration from stats"
-                                            checked: true
-                                            enabled: applicationSettings.updateStatistics
                                         }
                                     }
                                 }
