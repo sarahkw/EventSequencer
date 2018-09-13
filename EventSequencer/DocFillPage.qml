@@ -899,7 +899,7 @@ Page {
                                     width: 1
                                     // If we're showing labels drawn off the cursor line, it looks
                                     // weird if the cursor line is below.
-                                    z: mnuShowCreateDate.checked ? 1 : 0
+                                    z: stripsViewMenu.shouldShowDataAtCursor ? 1 : 0
                                 }
 
                                 ScrollView {
@@ -971,7 +971,7 @@ Page {
                                         }
 
                                         Loader {
-                                            active: mnuShowCreateDate.checked
+                                            active: stripsViewMenu.shouldShowDataAtCursor
                                             anchors.top: parent.top
                                             anchors.bottom: parent.bottom
                                             x: cursorObj.x
@@ -995,7 +995,16 @@ Page {
                                                         y: (height + stripsHolderItem.stripSpacing) * modelData.channelIndex.second
                                                         height: stripsHolderItem.stripHeight
 
-                                                        property date myValue: resourceMetaDataGetter.getCreateTime(modelData.resourceUrl)
+                                                        property string myValue: {
+                                                            if (mnuShowCreateDate.checked) {
+                                                                return Qt.formatDateTime(resourceMetaDataGetter.getCreateTime(modelData.resourceUrl))
+                                                            } else if (mnuShowDuration.checked) {
+                                                                return resourceMetaDataGetter.getDurationDescription(modelData.resourceUrl)
+                                                            } else {
+                                                                console.warn("Unknown what to show?")
+                                                                return ""
+                                                            }
+                                                        }
 
                                                         Rectangle {
                                                             anchors.fill: extraInfoLabel
@@ -1010,7 +1019,7 @@ Page {
                                                             anchors.verticalCenter: parent.verticalCenter
                                                             anchors.left: parent.left
                                                             anchors.leftMargin: cursorObj.rectHorizontalMargin
-                                                            text: Qt.formatDateTime(myValue)
+                                                            text: myValue
                                                             font.pixelSize: cursorObj.fontPixelSize
                                                         }
                                                     }
@@ -1029,10 +1038,20 @@ Page {
                                 text: "View"
                                 Menu {
                                     id: stripsViewMenu
+
+                                    property bool shouldShowDataAtCursor: mnuShowCreateDate.checked || mnuShowDuration.checked
+
                                     MenuItem {
                                         id: mnuShowCreateDate
                                         text: "Show Create Date"
                                         checkable: true
+                                        onToggled: if (checked) mnuShowDuration.checked = false
+                                    }
+                                    MenuItem {
+                                        id: mnuShowDuration
+                                        text: "Show Duration"
+                                        checkable: true
+                                        onToggled: if (checked) mnuShowCreateDate.checked = false
                                     }
                                 }
                                 onClicked: stripsViewMenu.open()

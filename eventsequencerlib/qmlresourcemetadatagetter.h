@@ -38,6 +38,7 @@ public:
     Q_INVOKABLE QDateTime getCreateTime(QUrl resourceUrl);
     Q_INVOKABLE int getCreateTimeLocalYYYYMMDD(QUrl resourceUrl);
     Q_INVOKABLE qint64 getDurationInMicroSeconds(QUrl resourceUrl);
+    Q_INVOKABLE QString getDurationDescription(QUrl resourceUrl);
 
 signals:
 

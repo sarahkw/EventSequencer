@@ -2,6 +2,7 @@
 
 #include "resourcemetadata.h"
 #include "managedresources.h"
+#include "describeduration.h"
 
 #include <QDebug>
 
@@ -78,6 +79,12 @@ int QmlResourceMetaDataGetter::getCreateTimeLocalYYYYMMDD(QUrl resourceUrl)
 qint64 QmlResourceMetaDataGetter::getDurationInMicroSeconds(QUrl resourceUrl)
 {
     return getRaw(resourceUrl).durationInMicroSeconds;
+}
+
+QString QmlResourceMetaDataGetter::getDurationDescription(QUrl resourceUrl)
+{
+    return DescribeDuration::describeDuration(
+        getDurationInMicroSeconds(resourceUrl) / 1000 / 1000);
 }
 
 int QmlResourceMetaDataGetter::CacheObject::createTimeAsLocalYYYYMMDD() const
