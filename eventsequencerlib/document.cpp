@@ -151,15 +151,29 @@ QVariantList Document::channelsProvidingClock() const
     return ret;
 }
 
-channel::ChannelBase* Document::defaultProgramChannel() const
+channel::ChannelBase *Document::getChannelByIndex(ChannelIndex channelIndex) const
 {
-    auto iter = channels_.find(ChannelIndex::make1(0));
-    if (iter != channels_.end() &&
-            iter->second->channelType() == channel::ChannelType::DocFill) {
-        Q_ASSERT(iter->second->parent() != nullptr); // No GC, please.
+    auto iter = channels_.find(channelIndex);
+    if (iter != channels_.end()) {
         return iter->second;
     }
     return nullptr;
+}
+
+channel::ChannelBase* Document::defaultProgramChannel() const
+{
+    auto* ret = getChannelByIndex(ChannelIndex::make1(0));
+    if (ret == nullptr) {
+        return nullptr;
+    }
+    if (ret->channelType() != channel::ChannelType::DocFill) {
+        return nullptr;
+    }
+
+    // Ensure the channel has a parent, so it doesn't end up as javascript
+    // ownership due to invoking from Q_INVOKABLE.
+    Q_ASSERT(ret->parent() != nullptr);
+    return ret;
 }
 
 bool Document::audioFormatHolderSet() const

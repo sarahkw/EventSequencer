@@ -170,6 +170,7 @@ public:
     // QVariantList for use as QML model.
     QVariantList channelsProvidingClock() const;
 
+    channel::ChannelBase* getChannelByIndex(ChannelIndex channelIndex) const;
     Q_INVOKABLE channel::ChannelBase* defaultProgramChannel() const;
 
     bool audioFormatHolderSet() const;
