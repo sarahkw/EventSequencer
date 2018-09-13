@@ -215,6 +215,10 @@ Page {
         id: tbar
         currentIndex: sview.currentIndex
 
+        function isOnPlayPage() {
+            return currentIndex === 2
+        }
+
         TabButton { text: "Document" }
         TabButton {
             text: recordPage.isStopped ? "Record" : "Recording"
@@ -244,7 +248,12 @@ Page {
 
             id: dvc
             cursorFrame: rebind_cursorFrame
-            changeCursorFrame: rebind_changeCursorFrame
+            changeCursorFrame: function (x) {
+                rebind_changeCursorFrame(x)
+                if (tbar.isOnPlayPage()) {
+                    playPage.reconfigToFromCursor()
+                }
+            }
 
             cppTextChannel: root.cppTextChannel
             cppRenderChannel: root.cppResourceChannel
@@ -635,6 +644,10 @@ Page {
                     playerControl.stop()
                     cmbSelectionMode.currentIndex = 5
                     playerControl.play()
+                }
+
+                function reconfigToFromCursor() {
+                    cmbSelectionMode.currentIndex = 2
                 }
 
                 ComboBox {
