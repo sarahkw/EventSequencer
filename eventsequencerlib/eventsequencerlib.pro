@@ -99,7 +99,8 @@ SOURCES += \
     docfilldatabase.cpp \
     describeduration.cpp \
     qmldialogbuttonorderhack.cpp \
-    docfillbackfillstats.cpp
+    docfillbackfillstats.cpp \
+    docfilltextcontenteditor.cpp
 
 
 HEADERS += \
@@ -175,7 +176,8 @@ HEADERS += \
     docfilldatabase.h \
     describeduration.h \
     qmldialogbuttonorderhack.h \
-    docfillbackfillstats.h
+    docfillbackfillstats.h \
+    docfilltextcontenteditor.h
 
 unix {
     target.path = /usr/lib

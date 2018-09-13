@@ -41,6 +41,7 @@
 #include "docfilldatabase.h"
 #include "qmldialogbuttonorderhack.h"
 #include "docfillbackfillstats.h"
+#include "docfilltextcontenteditor.h"
 
 #include <QQmlEngine>
 
@@ -103,4 +104,5 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<DocFillDatabase>("eventsequencer", 1, 0, "DocFillDatabase");
     qmlRegisterType<QmlDialogButtonOrderHack>("eventsequencer", 1, 0, "QmlDialogButtonOrderHack");
     qmlRegisterType<DocFillBackfillStats>("eventsequencer", 1, 0, "DocFillBackfillStats");
+    qmlRegisterType<DocFillTextContentEditor>("eventsequencer", 1, 0, "DocFillTextContentEditor");
 }
