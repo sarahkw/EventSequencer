@@ -42,5 +42,6 @@
         <file>DocFillStatsDialog.qml</file>
         <file>DocFillBackfillStatsDialog.qml</file>
         <file>DocFillAppendDialog.qml</file>
+        <file>DocFillTruncateDialog.qml</file>
     </qresource>
 </RCC>
