@@ -145,44 +145,11 @@ Pane {
                                     text: "Characters must fit in 1 UTF-16 codepoint and must take up only 1 space."
                                 }
                                 Button {
-                                    text: "Edit"
-                                    Menu {
-                                        id: editMenu
-                                        MenuItem {
-                                            text: "Cut"
-                                            onClicked: {
-                                                contentBody.cut()
-                                                // Need to do this so that editingFinish gets called.
-                                                contentBody.forceActiveFocus()
-                                            }
-                                        }
-                                        MenuItem {
-                                            text: "Copy"
-                                            onClicked: {
-                                                contentBody.copy()
-                                                // Need to do this so that editingFinish gets called.
-                                                contentBody.forceActiveFocus()
-                                            }
-                                        }
-                                        MenuItem {
-                                            text: "Paste"
-                                            onClicked: {
-                                                contentBody.paste()
-                                                // Need to do this so that editingFinish gets called.
-                                                contentBody.forceActiveFocus()
-                                            }
-                                        }
-                                        MenuItem {
-                                            text: "Select All"
-                                            onClicked: {
-                                                contentBody.selectAll()
-                                                // Need to do this so that editingFinish gets called.
-                                                contentBody.forceActiveFocus()
-                                            }
-                                        }
-                                    }
+                                    text: "Paste"
                                     onClicked: {
-                                        editMenu.open()
+                                        contentBody.paste()
+                                        // Need to do this so that editingFinish gets called.
+                                        contentBody.forceActiveFocus()
                                     }
                                 }
                             }
