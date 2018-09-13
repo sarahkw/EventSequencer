@@ -14,7 +14,12 @@ public:
 
     Q_INVOKABLE static void appendText(Document* document, QString text);
 
-    Q_INVOKABLE static QString truncatePreview(Document* document, int cursorFrame);
+private:
+    static bool truncateInternal(Document* document, int cursorFrame, bool dryRun, QString* previewText);
+public:
+
+    Q_INVOKABLE static QVariantList truncatePreview(Document* document, int cursorFrame);
+    Q_INVOKABLE static void truncate(Document* document, int cursorFrame);
 
 signals:
 

@@ -20,7 +20,7 @@ Dialog {
     title: "Truncate"
     modal: true
     closePolicy: Popup.CloseOnEscape
-    standardButtons: Dialog.Ok | Dialog.Cancel
+    standardButtons: Dialog.Cancel
     footer: DialogButtonBox {
         Button {
             DialogButtonBox.buttonRole: DialogButtonBox.ActionRole
@@ -31,10 +31,17 @@ Dialog {
                 txtTruncateText.deselect()
             }
         }
+        Button {
+            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            text: "OK"
+            enabled: previewResult[0]
+        }
     }
 
+    property var previewResult: dftce.truncatePreview(document, cursorFrame)
+
     onAccepted: {
-        // TODO
+        dftce.truncate(document, cursorFrame)
         root.dirtied()
     }
 
@@ -63,7 +70,7 @@ Dialog {
                 font.family: platformMonospacedFont
                 readOnly: true
                 textFormat: TextEdit.PlainText
-                text: dftce.truncatePreview(document, cursorFrame)
+                text: previewResult[1]
             }
         }
     }

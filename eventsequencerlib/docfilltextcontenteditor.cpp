@@ -23,7 +23,7 @@ void DocFillTextContentEditor::appendText(Document *document, QString text)
     document->setEndFrame(currentContent.size());
 }
 
-QString DocFillTextContentEditor::truncatePreview(Document *document, int cursorFrame)
+bool DocFillTextContentEditor::truncateInternal(Document *document, int cursorFrame, bool dryRun, QString *previewText)
 {
     Q_ASSERT(document);
     auto* docFillChannel = qobject_cast<channel::DocFillChannel*>(document->defaultProgramChannel());
@@ -32,7 +32,8 @@ QString DocFillTextContentEditor::truncatePreview(Document *document, int cursor
     Q_ASSERT(textChannel);
 
     if (cursorFrame < 0 || cursorFrame > document->endFrame()) {
-        return "*ERROR* Cursor not within range of document";
+        if (previewText) *previewText = "*ERROR* Cursor not within range of document";
+        return false;
     }
 
     bool reject = false;
@@ -48,8 +49,34 @@ QString DocFillTextContentEditor::truncatePreview(Document *document, int cursor
     }
 
     if (reject) {
-        return "*ERROR* Cannot truncate where there are strips.";
+        if (previewText) *previewText = "*ERROR* Cannot truncate through strips";
+        return false;
     }
 
-    return textChannel->content().mid(cursorFrame);
+    if (previewText) {
+        *previewText = textChannel->content().mid(cursorFrame);
+    }
+
+    if (!dryRun) {
+        QString currentContent = textChannel->content();
+        currentContent.resize(cursorFrame);
+        textChannel->setContent(currentContent);
+        document->setEndFrame(currentContent.size());
+    }
+    return true;
+}
+
+QVariantList DocFillTextContentEditor::truncatePreview(Document *document, int cursorFrame)
+{
+    QString previewText;
+    if (truncateInternal(document, cursorFrame, true, &previewText)) {
+        return {true, previewText};
+    } else {
+        return {false, previewText};
+    }
+}
+
+void DocFillTextContentEditor::truncate(Document *document, int cursorFrame)
+{
+    truncateInternal(document, cursorFrame, false, nullptr);
 }
