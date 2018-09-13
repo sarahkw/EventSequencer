@@ -365,10 +365,6 @@ Page {
                     Menu {
                         id: viewMenu
                         MenuItem {
-                            text: "Copy All"
-                            onTriggered: ES.ClipboardWrapper.setText(cppTextChannel.content)
-                        }
-                        MenuItem {
                             text: "Font"
                             onTriggered: fontDialog.open()
                         }
@@ -411,6 +407,11 @@ Page {
                     text: "Edit"
                     Menu {
                         id: documentEditMenu
+                        MenuItem {
+                            text: "Copy All"
+                            onTriggered: ES.ClipboardWrapper.setText(cppTextChannel.content)
+                        }
+                        MenuSeparator {}
                         MenuItem {
                             text: "Append"
                             onClicked: {
