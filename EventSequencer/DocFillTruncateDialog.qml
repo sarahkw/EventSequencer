@@ -63,6 +63,7 @@ Dialog {
             Layout.fillHeight: true
             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
             contentWidth: width
+            clip: true
             TextEdit {
                 id: txtTruncateText
                 width: parent.width
