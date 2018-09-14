@@ -20,7 +20,7 @@ Dialog {
     title: "Append"
     modal: true
     closePolicy: Popup.CloseOnEscape
-    standardButtons: Dialog.Ok | Dialog.Cancel
+    standardButtons: Dialog.Cancel
 
     footer: DialogButtonBox {
         Button {
@@ -31,6 +31,11 @@ Dialog {
                 txt = txt.replace("T", " ")
                 txtAppendText.append(txt + "\n")
             }
+        }
+        Button {
+            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            text: "OK"
+            enabled: txtAppendText.text.length > 0
         }
     }
 
