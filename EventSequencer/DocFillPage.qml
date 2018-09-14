@@ -493,14 +493,16 @@ Page {
                                 text: "Append"
                                 enabled: recorderControl.corraledResourceFile.takeable
                                 onClicked: {
-                                    changeCursorFrame(document.endFrame)
-                                    btnRangeStart.checked = false
-                                    btnRangeStart.checked = true
+                                    var beforeAppendEnd = document.endFrame
 
                                     var component = Qt.createComponent("DocFillAppendDialog.qml")
                                     var obj = component.createObject(root, {})
                                     obj.dirtied.connect(function () {
                                         autoSaveManager.markDirty()
+
+                                        changeCursorFrame(beforeAppendEnd)
+                                        btnRangeStart.checked = false
+                                        btnRangeStart.checked = true
                                         changeCursorFrame(document.endFrame)
                                     })
                                     obj.open()
