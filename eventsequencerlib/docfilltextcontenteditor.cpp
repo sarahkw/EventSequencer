@@ -9,7 +9,7 @@ DocFillTextContentEditor::DocFillTextContentEditor(QObject *parent) : QObject(pa
 
 }
 
-void DocFillTextContentEditor::appendText(Document *document, QString text)
+QVariantList DocFillTextContentEditor::appendText(Document *document, QString text, bool autoNewLines)
 {
     Q_ASSERT(document);
     auto* docFillChannel = qobject_cast<channel::DocFillChannel*>(document->defaultProgramChannel());
@@ -18,9 +18,18 @@ void DocFillTextContentEditor::appendText(Document *document, QString text)
     Q_ASSERT(textChannel);
 
     QString currentContent = textChannel->content();
+    if (autoNewLines && !currentContent.endsWith("\n")) {
+        currentContent.append("\n");
+    }
+    int rangeBegin = currentContent.size();
     currentContent.append(text);
+    if (autoNewLines && !currentContent.endsWith("\n")) {
+        currentContent.append("\n");
+    }
+    int rangeEnd = currentContent.size();
     textChannel->setContent(currentContent);
     document->setEndFrame(currentContent.size());
+    return {rangeBegin, rangeEnd};
 }
 
 bool DocFillTextContentEditor::truncateInternal(Document *document, int cursorFrame, bool dryRun, QString *previewText)

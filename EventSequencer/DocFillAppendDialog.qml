@@ -9,7 +9,7 @@ Dialog {
 
     property bool appendAndAssignMode: false
 
-    signal dirtied()
+    signal appended(int rangeBegin, int rangeEnd)
 
     onClosed: destroy()
 
@@ -42,8 +42,10 @@ Dialog {
     }
 
     onAccepted: {
-        dftce.appendText(document, txtAppendText.text)
-        root.dirtied()
+        var result = dftce.appendText(document, txtAppendText.text, chkAutoNewlines.checked)
+        var rangeBegin = result[0]
+        var rangeEnd = result[1]
+        root.appended(rangeBegin, rangeEnd)
     }
 
     ES.DocFillTextContentEditor {
@@ -70,6 +72,11 @@ Dialog {
                 selectByMouse: true
                 font.family: platformMonospacedFont
             }
+        }
+        CheckBox {
+            id: chkAutoNewlines
+            text: "Automatically insert newlines"
+            checked: true
         }
     }
 }

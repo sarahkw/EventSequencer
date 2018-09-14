@@ -12,7 +12,7 @@ class DocFillTextContentEditor : public QObject
 public:
     explicit DocFillTextContentEditor(QObject *parent = nullptr);
 
-    Q_INVOKABLE static void appendText(Document* document, QString text);
+    Q_INVOKABLE static QVariantList appendText(Document* document, QString text, bool autoNewLines);
 
 private:
     static bool truncateInternal(Document* document, int cursorFrame, bool dryRun, QString* previewText);

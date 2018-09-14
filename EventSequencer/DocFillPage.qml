@@ -417,7 +417,7 @@ Page {
                             onClicked: {
                                 var component = Qt.createComponent("DocFillAppendDialog.qml")
                                 var obj = component.createObject(root, {})
-                                obj.dirtied.connect(function () {
+                                obj.appended.connect(function () {
                                     autoSaveManager.markDirty()
                                 })
                                 obj.open()
@@ -493,19 +493,17 @@ Page {
                                 text: "Append"
                                 enabled: recorderControl.corraledResourceFile.takeable
                                 onClicked: {
-                                    var beforeAppendEnd = document.endFrame
-
                                     var component = Qt.createComponent("DocFillAppendDialog.qml")
                                     var obj = component.createObject(root, {
                                                                          appendAndAssignMode: true
                                                                      })
-                                    obj.dirtied.connect(function () {
+                                    obj.appended.connect(function (rangeBegin, rangeEnd) {
                                         autoSaveManager.markDirty()
 
-                                        changeCursorFrame(beforeAppendEnd)
+                                        changeCursorFrame(rangeBegin)
                                         btnRangeStart.checked = false
                                         btnRangeStart.checked = true
-                                        changeCursorFrame(document.endFrame)
+                                        changeCursorFrame(rangeEnd)
 
                                         btnAssign.doAssign()
                                     })
