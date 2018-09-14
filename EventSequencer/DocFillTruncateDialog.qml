@@ -17,7 +17,7 @@ Dialog {
     width: parent.width * 0.95
     height: parent.height * 0.5
 
-    title: "Truncate"
+    title: "Truncate at Cursor"
     modal: true
     closePolicy: Popup.CloseOnEscape
     standardButtons: Dialog.Cancel
