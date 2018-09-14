@@ -31,7 +31,7 @@ Dialog {
             onClicked: {
                 var txt = Qt.formatDateTime(new Date(Date.now()), Qt.ISODate)
                 txt = txt.replace("T", " ")
-                txtAppendText.append(txt + "\n")
+                txtAppendText.append(txt)
             }
         }
         Button {
