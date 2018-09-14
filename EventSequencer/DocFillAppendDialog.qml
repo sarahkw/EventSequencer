@@ -7,6 +7,8 @@ import eventsequencer 1.0 as ES
 Dialog {
     id: root
 
+    property bool appendAndAssignMode: false
+
     signal dirtied()
 
     onClosed: destroy()
@@ -17,7 +19,7 @@ Dialog {
     width: parent.width * 0.95
     height: parent.height * 0.5
 
-    title: "Append"
+    title: appendAndAssignMode ? "Append and Assign" : "Append"
     modal: true
     closePolicy: Popup.CloseOnEscape
     standardButtons: Dialog.Cancel
@@ -52,7 +54,9 @@ Dialog {
         anchors.fill: parent
         Label {
             Layout.fillWidth: true
-            text: "Text to append to the document:"
+            text: appendAndAssignMode ?
+                      "Text to append to the document and automatically assign afterwards:" :
+                      "Text to append to the document:"
             wrapMode: Text.Wrap
         }
         ScrollView {

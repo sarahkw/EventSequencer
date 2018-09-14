@@ -496,7 +496,9 @@ Page {
                                     var beforeAppendEnd = document.endFrame
 
                                     var component = Qt.createComponent("DocFillAppendDialog.qml")
-                                    var obj = component.createObject(root, {})
+                                    var obj = component.createObject(root, {
+                                                                         appendAndAssignMode: true
+                                                                     })
                                     obj.dirtied.connect(function () {
                                         autoSaveManager.markDirty()
 
@@ -504,6 +506,8 @@ Page {
                                         btnRangeStart.checked = false
                                         btnRangeStart.checked = true
                                         changeCursorFrame(document.endFrame)
+
+                                        btnAssign.doAssign()
                                     })
                                     obj.open()
                                 }
@@ -513,8 +517,8 @@ Page {
 
                     enabled: recorderControl.corraledResourceFile.takeable &&
                              btnRangeStart.checked
-                    onClicked: {
 
+                    function doAssign() {
                         var start
                         var length
                         if (btnRangeStart.startFrame < cursorFrame) {
@@ -557,6 +561,8 @@ Page {
                             msgbox.msgbox("Cannot assign. Make sure length is non-zero and you're not overlapping an existing strip.")
                         }
                     }
+
+                    onClicked: doAssign()
                 }
                 Button {
                     Layout.fillWidth: true
