@@ -460,6 +460,7 @@ Page {
                 Button {
                     id: btnRangeStart
                     property int startFrame
+                    property int aboutToAssignLength: cursorFrame - startFrame
 
                     Layout.fillWidth: true
                     text: "Select"
@@ -474,16 +475,31 @@ Page {
                             when: btnRangeStart.checked
                             PropertyChanges {
                                 target: btnRangeStart
-                                text: "Select (%1)".arg(cursorFrame - startFrame)
+                                text: "Select (%1)".arg(btnRangeStart.aboutToAssignLength)
                             }
                         }
                     ]
                 }
                 Button {
+                    id: btnAssign
                     Layout.fillWidth: true
                     text: "Assign"
-                    enabled: cppResourceChannel !== null &&
-                             recorderControl.corraledResourceFile.takeable &&
+
+                    states: [
+                        State {
+                            when: dvc.cursorPastEnd && (!btnRangeStart.checked || btnRangeStart.aboutToAssignLength === 0)
+                            PropertyChanges {
+                                target: btnAssign
+                                text: "Append"
+                                enabled: recorderControl.corraledResourceFile.takeable
+                                onClicked: {
+
+                                }
+                            }
+                        }
+                    ]
+
+                    enabled: recorderControl.corraledResourceFile.takeable &&
                              btnRangeStart.checked
                     onClicked: {
 

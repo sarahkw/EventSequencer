@@ -18,6 +18,8 @@ Rectangle {
         positionMode = ListView.Visible
     }
 
+    readonly property bool cursorPastEnd: cursorFrame >= wwtt.text.length
+
     property bool textChannelIsValid: chanToTextContent.outputTextContent !== null
     property bool renderChannelIsValid: chanToRenderComponent.outputRenderComponent != null
 
