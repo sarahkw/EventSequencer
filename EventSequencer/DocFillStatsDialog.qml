@@ -35,7 +35,7 @@ Dialog {
         onButtonInit: {
             buttonList[0].text = "Copy"
             buttonList[1].text = "Reset"
-            buttonList[2].text = "Ok"
+            buttonList[2].text = "Close"
         }
         onButtonClicked: {
             switch (index) {
