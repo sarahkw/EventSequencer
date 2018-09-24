@@ -43,6 +43,13 @@
 #include "docfillbackfillstats.h"
 #include "docfilltextcontenteditor.h"
 
+#include <QtGlobal>
+#ifdef Q_OS_ANDROID
+#include "batchservicereplica.h"
+#else
+#include "batchserviceimpl.h"
+#endif
+
 #include <QQmlEngine>
 
 void RegisterQmlTypes::registerQmlTypes()
@@ -105,4 +112,9 @@ void RegisterQmlTypes::registerQmlTypes()
     qmlRegisterType<QmlDialogButtonOrderHack>("eventsequencer", 1, 0, "QmlDialogButtonOrderHack");
     qmlRegisterType<DocFillBackfillStats>("eventsequencer", 1, 0, "DocFillBackfillStats");
     qmlRegisterType<DocFillTextContentEditor>("eventsequencer", 1, 0, "DocFillTextContentEditor");
+#ifdef Q_OS_ANDROID
+    qmlRegisterType<BatchServiceReplica>("eventsequencer", 1, 0, "BatchService");
+#else
+    qmlRegisterType<BatchServiceImpl>("eventsequencer", 1, 0, "BatchService");
+#endif
 }

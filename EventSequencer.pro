@@ -1,5 +1,9 @@
 TEMPLATE = subdirs
 
+ANDROIDLIB_STR = "androidlib"
+!android: ANDROIDLIB_STR = ""
+SUBDIRS += $$ANDROIDLIB_STR
+
 SUBDIRS += \
     eventsequencerlib \
     EventSequencer

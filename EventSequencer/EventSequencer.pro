@@ -50,12 +50,34 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     registerqmltypes.h
 
+########################################################################
+# Begin eventsequencerlib
+
 unix:!macx: LIBS += -L$$OUT_PWD/../eventsequencerlib/ -leventsequencerlib
 
 INCLUDEPATH += $$PWD/../eventsequencerlib
 DEPENDPATH += $$PWD/../eventsequencerlib
 
 unix:!macx: PRE_TARGETDEPS += $$OUT_PWD/../eventsequencerlib/libeventsequencerlib.a
+
+# End eventsequencerlib
+########################################################################
+
+########################################################################
+# Begin androidlib
+
+android {
+LIBS += -L$$OUT_PWD/../androidlib/ -landroidlib
+
+INCLUDEPATH += $$PWD/../androidlib
+DEPENDPATH += $$PWD/../androidlib
+
+PRE_TARGETDEPS += $$OUT_PWD/../androidlib/libandroidlib.a
+}
+
+# End androidlib
+########################################################################
+
 
 include(../protobuf.pri)
 
