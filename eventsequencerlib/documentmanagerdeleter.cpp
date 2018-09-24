@@ -60,10 +60,23 @@ void DocumentManagerDeleter::updateQueuedForDeletion()
         return;
     }
 
+    // Compiler warning if something was added while forgetting this
+    // file.
+    switch (DocumentPaths::PathRequest()) {
+    case DocumentPaths::PathRequest::HTML_EXPORT:
+    case DocumentPaths::PathRequest::JSON_EXPORT:
+    case DocumentPaths::PathRequest::PLAYTOFILE_EXPORT:
+    case DocumentPaths::PathRequest::DOCUMENT_BACKUP:
+    case DocumentPaths::PathRequest::DATA_DIRECTORY:
+    case DocumentPaths::PathRequest::DOCUMENT:
+        break;
+    }
+
     for (auto request :
          {// These are ordered such that the less important stuff is
           // deleted first. If delete fails, we won't continue
           // further.
+          DocumentPaths::PathRequest::HTML_EXPORT,
           DocumentPaths::PathRequest::JSON_EXPORT,
           DocumentPaths::PathRequest::PLAYTOFILE_EXPORT,
           DocumentPaths::PathRequest::DOCUMENT_BACKUP,
