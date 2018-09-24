@@ -102,7 +102,8 @@ SOURCES += \
     docfillbackfillstats.cpp \
     docfilltextcontenteditor.cpp \
     batchserviceimpl.cpp \
-    batchservicereplica.cpp
+    batchservicereplica.cpp \
+    batchservicefactory.cpp
 
 
 HEADERS += \
@@ -181,7 +182,8 @@ HEADERS += \
     docfillbackfillstats.h \
     docfilltextcontenteditor.h \
     batchserviceimpl.h \
-    batchservicereplica.h
+    batchservicereplica.h \
+    batchservicefactory.h
 
 unix {
     target.path = /usr/lib
