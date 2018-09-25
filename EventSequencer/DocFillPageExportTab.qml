@@ -22,6 +22,25 @@ ScrollView {
             document: unnamedParent_6e26.document_rebind
         }
 
+        GroupBox {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            title: "Worker Status"
+            Label {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                text: "%1".arg((function () {
+                    if (exportManager.batchServiceStatus === undefined) {
+                        return "Offline"
+                    } else if (!exportManager.batchServiceStatus.isWorking) {
+                        return "Idle"
+                    } else {
+                        return exportManager.batchServiceStatus.statusText
+                    }
+                })())
+            }
+        }
+
         DocFillPageExportSection {
             anchors.left: parent.left
             anchors.right: parent.right

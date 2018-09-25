@@ -1,29 +1,30 @@
 #include "batchserviceimpl.h"
 
+#include "batchservicestatus.h"
+
 BatchServiceImpl::BatchServiceImpl()
 {
     workSimulator_.setInterval(1000);
     QObject::connect(&workSimulator_, &QTimer::timeout, [this]() {
         workLeft_--;
-        emit statusChanged(workLeft_);
         if (workLeft_ == 0) {
             workSimulator_.stop();
             emit androidStopService();
         }
+        updateStatus();
     });
 }
 
 QVariant BatchServiceImpl::status() const
 {
-    return status_;
+    return QVariant::fromValue(status_);
 }
 
-void BatchServiceImpl::setStatus(const QVariant &status)
+void BatchServiceImpl::updateStatus()
 {
-    if (status_ != status) {
-        status_ = status;
-        emit statusChanged(status);
-    }
+    status_.isWorking_ = workSimulator_.isActive();
+    status_.statusText_ = QString("Working: %1").arg(workLeft_);
+    emit statusChanged(status());
 }
 
 void BatchServiceImpl::requestStartWork()
@@ -33,10 +34,12 @@ void BatchServiceImpl::requestStartWork()
         return;
     }
 
-    workLeft_ = 60;
+    workLeft_ = 30;
     emit statusChanged(workLeft_);
     emit androidStartService();
     workSimulator_.start();
+
+    updateStatus();
 }
 
 void BatchServiceImpl::applicationExiting()

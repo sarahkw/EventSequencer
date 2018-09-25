@@ -1,6 +1,7 @@
 #ifndef DOCFILLEXPORTMANAGER_H
 #define DOCFILLEXPORTMANAGER_H
 
+#include "batchservicefactory.h"
 #include "channel/channelbase.h"
 #include "playable/playablebase.h"
 
@@ -11,6 +12,9 @@ class Document;
 class DocFillExportManager : public QObject
 {
     Q_OBJECT
+
+    BatchServiceFactory::Type batchService_;
+    Q_PROPERTY(QVariant batchServiceStatus READ batchServiceStatus NOTIFY batchServiceStatusChanged)
 
     Document* document_ = nullptr;
     // Using QObject* just so that Document* can stay an incomplete type.
@@ -35,6 +39,8 @@ class DocFillExportManager : public QObject
 public:
     explicit DocFillExportManager(QObject *parent = nullptr);
 
+    QVariant batchServiceStatus();
+
     QObject *document() const;
     void setDocument(QObject *document);
     void clearDocument();
@@ -58,6 +64,8 @@ public:
     Q_INVOKABLE bool deleteDefaultExportHtmlOutputPath();
 
 signals:
+
+    void batchServiceStatusChanged();
 
     void documentChanged();
     void defaultOutputPathsChanged();

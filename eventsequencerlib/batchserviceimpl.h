@@ -1,6 +1,8 @@
 #ifndef BATCHSERVICEIMPL_H
 #define BATCHSERVICEIMPL_H
 
+#include "batchservicestatus.h"
+
 #include <QObject>
 #include <QTimer>
 #include <QVariant>
@@ -12,7 +14,7 @@ class BatchServiceImpl : public QObject
     QTimer workSimulator_;
     int workLeft_ = 0;
 
-    QVariant status_;
+    BatchServiceStatus status_;
     Q_PROPERTY(QVariant status READ status NOTIFY statusChanged)
 
 public:
@@ -21,7 +23,7 @@ public:
 
     QVariant status() const;
 private:
-    void setStatus(const QVariant &status);
+    void updateStatus();
 public:
 
 signals:

@@ -228,12 +228,13 @@ QString DocFillExportManager::exportHtml(channel::ChannelBase* textChannel,
         return "Already exists!";
     }
 
-    if (!dir.mkpath(".")) {
-        return "Cannot create directory";
-    }
+//    if (!dir.mkpath(".")) {
+//        return "Cannot create directory";
+//    }
 
-    updateDefaultOutputPaths();
-    return "Success, but this is a dummy export.";
+    batchService_.requestStartWork();
+    //updateDefaultOutputPaths();
+    return "";
 }
 
 
@@ -308,5 +309,11 @@ void DocFillExportManager::updateDefaultOutputPaths()
 
 DocFillExportManager::DocFillExportManager(QObject *parent) : QObject(parent)
 {
+    QObject::connect(&batchService_, &BatchServiceFactory::Type::statusChanged,
+                     this, &DocFillExportManager::batchServiceStatusChanged);
+}
 
+QVariant DocFillExportManager::batchServiceStatus()
+{
+    return batchService_.status();
 }
