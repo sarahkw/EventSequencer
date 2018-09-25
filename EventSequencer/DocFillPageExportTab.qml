@@ -22,6 +22,45 @@ ScrollView {
             document: unnamedParent_6e26.document_rebind
         }
 
+        GroupBox {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            title: "Worker Status"
+            Label {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                text: "%1".arg((function () {
+                    if (exportManager.batchServiceStatus === undefined) {
+                        return "Offline"
+                    } else if (!exportManager.batchServiceStatus.isWorking) {
+                        return "Idle"
+                    } else {
+                        return exportManager.batchServiceStatus.statusText
+                    }
+                })())
+            }
+        }
+
+        DocFillPageExportSection {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            title: "Export HTML"
+            description: "Write a HTML file with MP3-encoded resources for you to share on the world wide web."
+            defaultOutputPath: exportManager.defaultExportHtmlOutputPath
+            defaultOutputPathExists: exportManager.defaultExportHtmlOutputPathExists
+            onExportActivated: {
+                var result = exportManager.exportHtml(cppTextChannel, cppResourceChannel)
+                if (result !== "") {
+                    msgbox.msgbox(result, "Export")
+                }
+            }
+            onDeleteActivated: {
+                if (!exportManager.deleteDefaultExportHtmlOutputPath()) {
+                    msgbox.msgbox("Delete failure", "Export")
+                }
+            }
+        }
+
         DocFillPageExportSection {
             anchors.left: parent.left
             anchors.right: parent.right

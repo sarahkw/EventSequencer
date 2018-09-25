@@ -11,6 +11,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QDir>
 
 #include <memory>
 
@@ -52,6 +53,11 @@ QString DocFillExportManager::defaultExportJsonOutputPath() const
 QString DocFillExportManager::defaultPlayToFileOutputPath() const
 {
     return defaultPlayToFileOutputPath_;
+}
+
+QString DocFillExportManager::defaultExportHtmlOutputPath() const
+{
+    return defaultExportHtmlOutputPath_;
 }
 
 QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
@@ -214,6 +220,24 @@ done:
     return error;
 }
 
+QString DocFillExportManager::exportHtml(channel::ChannelBase* textChannel,
+                                         channel::ChannelBase* resourceChannel)
+{
+    QDir dir(defaultExportHtmlOutputPath_);
+    if (dir.exists()) {
+        return "Already exists!";
+    }
+
+//    if (!dir.mkpath(".")) {
+//        return "Cannot create directory";
+//    }
+
+    batchService_.requestStartWork();
+    //updateDefaultOutputPaths();
+    return "";
+}
+
+
 bool DocFillExportManager::defaultExportJsonOutputPathExists() const
 {
     return defaultExportJsonOutputPathExists_;
@@ -222,6 +246,11 @@ bool DocFillExportManager::defaultExportJsonOutputPathExists() const
 bool DocFillExportManager::defaultPlayToFileOutputPathExists() const
 {
     return defaultPlayToFileOutputPathExists_;
+}
+
+bool DocFillExportManager::defaultExportHtmlOutputPathExists() const
+{
+    return defaultExportHtmlOutputPathExists_;
 }
 
 bool DocFillExportManager::deleteDefaultExportJsonOutputPath()
@@ -238,12 +267,28 @@ bool DocFillExportManager::deleteDefaultPlayToFileOutputPath()
     return success;
 }
 
+bool DocFillExportManager::deleteDefaultExportHtmlOutputPath()
+{
+    if (defaultExportHtmlOutputPath_.size() < 5) {
+        // I don't know what would happen if this is blank somehow, but this
+        // is for safety. Choosing 5 just so it can't be like "/" or "C:/".
+        Q_ASSERT(false);
+        return false;
+    }
+    QDir dir(defaultExportHtmlOutputPath_);
+    const bool success = dir.exists() && dir.removeRecursively();
+    updateDefaultOutputPaths();
+    return success;
+}
+
 void DocFillExportManager::updateDefaultOutputPaths()
 {
     defaultExportJsonOutputPath_.clear();
     defaultPlayToFileOutputPath_.clear();
+    defaultExportHtmlOutputPath_.clear();
     defaultExportJsonOutputPathExists_ = false;
     defaultPlayToFileOutputPathExists_ = false;
+    defaultExportHtmlOutputPathExists_ = false;
     if (document_ != nullptr) {
         DocumentPathsResponse pathResponse;
         if (document_->pathQuery(DocumentPaths::PathRequest::JSON_EXPORT, &pathResponse)) {
@@ -254,11 +299,21 @@ void DocFillExportManager::updateDefaultOutputPaths()
             defaultPlayToFileOutputPath_ = pathResponse.filePath;
             defaultPlayToFileOutputPathExists_ = QFile::exists(defaultPlayToFileOutputPath_);
         }
+        if (document_->pathQuery(DocumentPaths::PathRequest::HTML_EXPORT, &pathResponse)) {
+            defaultExportHtmlOutputPath_ = pathResponse.filePath;
+            defaultExportHtmlOutputPathExists_ = QFile::exists(defaultExportHtmlOutputPath_);
+        }
     }
     emit defaultOutputPathsChanged();
 }
 
 DocFillExportManager::DocFillExportManager(QObject *parent) : QObject(parent)
 {
+    QObject::connect(&batchService_, &BatchServiceFactory::Type::statusChanged,
+                     this, &DocFillExportManager::batchServiceStatusChanged);
+}
 
+QVariant DocFillExportManager::batchServiceStatus()
+{
+    return batchService_.status();
 }

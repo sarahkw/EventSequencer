@@ -33,7 +33,8 @@ public:
         DOCUMENT_BACKUP,
         DATA_DIRECTORY,
         JSON_EXPORT,
-        PLAYTOFILE_EXPORT
+        PLAYTOFILE_EXPORT,
+        HTML_EXPORT
     };
 
     static void pathQuery(QString documentFileName, PathRequest request,

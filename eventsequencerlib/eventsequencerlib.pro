@@ -100,7 +100,11 @@ SOURCES += \
     describeduration.cpp \
     qmldialogbuttonorderhack.cpp \
     docfillbackfillstats.cpp \
-    docfilltextcontenteditor.cpp
+    docfilltextcontenteditor.cpp \
+    batchserviceimpl.cpp \
+    batchservicereplica.cpp \
+    batchservicefactory.cpp \
+    batchservicestatus.cpp
 
 
 HEADERS += \
@@ -177,7 +181,11 @@ HEADERS += \
     describeduration.h \
     qmldialogbuttonorderhack.h \
     docfillbackfillstats.h \
-    docfilltextcontenteditor.h
+    docfilltextcontenteditor.h \
+    batchserviceimpl.h \
+    batchservicereplica.h \
+    batchservicefactory.h \
+    batchservicestatus.h
 
 unix {
     target.path = /usr/lib
@@ -185,3 +193,18 @@ unix {
 }
 
 include(../protobuf.pri)
+
+########################################################################
+# Begin androidlib
+
+android {
+LIBS += -L$$OUT_PWD/../androidlib/ -landroidlib
+
+INCLUDEPATH += $$PWD/../androidlib
+DEPENDPATH += $$PWD/../androidlib
+
+PRE_TARGETDEPS += $$OUT_PWD/../androidlib/libandroidlib.a
+}
+
+# End androidlib
+########################################################################

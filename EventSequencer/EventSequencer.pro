@@ -50,12 +50,34 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     registerqmltypes.h
 
+########################################################################
+# Begin eventsequencerlib
+
 unix:!macx: LIBS += -L$$OUT_PWD/../eventsequencerlib/ -leventsequencerlib
 
 INCLUDEPATH += $$PWD/../eventsequencerlib
 DEPENDPATH += $$PWD/../eventsequencerlib
 
 unix:!macx: PRE_TARGETDEPS += $$OUT_PWD/../eventsequencerlib/libeventsequencerlib.a
+
+# End eventsequencerlib
+########################################################################
+
+########################################################################
+# Begin androidlib
+
+android {
+LIBS += -L$$OUT_PWD/../androidlib/ -landroidlib
+
+INCLUDEPATH += $$PWD/../androidlib
+DEPENDPATH += $$PWD/../androidlib
+
+PRE_TARGETDEPS += $$OUT_PWD/../androidlib/libandroidlib.a
+}
+
+# End androidlib
+########################################################################
+
 
 include(../protobuf.pri)
 
@@ -66,6 +88,12 @@ DISTFILES += \
     android/res/values/libs.xml \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew.bat
+    android/gradlew.bat \
+    android/res/drawable-hdpi/ic_stat_docfill.png \
+    android/res/drawable-mdpi/ic_stat_docfill.png \
+    android/res/drawable-xhdpi/ic_stat_docfill.png \
+    android/res/drawable-xxhdpi/ic_stat_docfill.png \
+    android/src/com/gmail/doctorfill456/docfill/DfActivity.java \
+    android/src/com/gmail/doctorfill456/docfill/DfService.java
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android

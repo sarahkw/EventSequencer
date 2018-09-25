@@ -38,5 +38,10 @@ void DocumentPaths::pathQuery(QString documentFileName,
         response->filePath = response->dirPath + "/" + response->fileName;
         response->isDirectory = false;
         break;
+    case PathRequest::HTML_EXPORT:
+        response->fileName = "export-" + fi.completeBaseName() + "-html";
+        response->filePath = response->dirPath + "/" + response->fileName;
+        response->isDirectory = true;
+        break;
     }
 }
