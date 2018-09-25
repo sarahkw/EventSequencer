@@ -50,7 +50,9 @@ ScrollView {
             defaultOutputPathExists: exportManager.defaultExportHtmlOutputPathExists
             onExportActivated: {
                 var result = exportManager.exportHtml(cppTextChannel, cppResourceChannel)
-                msgbox.msgbox(result, "Export")
+                if (result !== "") {
+                    msgbox.msgbox(result, "Export")
+                }
             }
             onDeleteActivated: {
                 if (!exportManager.deleteDefaultExportHtmlOutputPath()) {

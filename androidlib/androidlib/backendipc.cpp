@@ -14,7 +14,7 @@ namespace androidlib {
 void BackendIpc::bindService()
 {
     auto serviceIntent = QAndroidIntent(QtAndroid::androidActivity().object(),
-                                        "com.kdab.training.MyService");
+                                        "com.gmail.doctorfill456.docfill.DfService");
     bool result = QtAndroid::bindService(serviceIntent,
                                          serviceConnection_,
                                          QtAndroid::BindFlag::AutoCreate);
@@ -27,7 +27,7 @@ void BackendIpc::unbindService()
 {
     QAndroidJniExceptionCleaner cleaner;
     QtAndroid::androidContext().callMethod<jboolean>(
-        "bindService", "(Landroid/content/ServiceConnection;)Z",
+        "unbindService", "(Landroid/content/ServiceConnection;)Z",
         serviceConnection_.handle().object());
 }
 

@@ -88,6 +88,12 @@ DISTFILES += \
     android/res/values/libs.xml \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew.bat
+    android/gradlew.bat \
+    android/res/drawable-hdpi/ic_stat_docfill.png \
+    android/res/drawable-mdpi/ic_stat_docfill.png \
+    android/res/drawable-xhdpi/ic_stat_docfill.png \
+    android/res/drawable-xxhdpi/ic_stat_docfill.png \
+    android/src/com/gmail/doctorfill456/docfill/DfActivity.java \
+    android/src/com/gmail/doctorfill456/docfill/DfService.java
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android

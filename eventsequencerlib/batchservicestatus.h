@@ -3,6 +3,7 @@
 
 #include <QMetaType>
 #include <QString>
+#include <QDataStream>
 
 struct BatchServiceStatus
 {
@@ -15,5 +16,8 @@ public:
 };
 
 Q_DECLARE_METATYPE(BatchServiceStatus)
+
+QDataStream& operator<<(QDataStream& out, const BatchServiceStatus& val);
+QDataStream& operator>>(QDataStream& in, BatchServiceStatus& val);
 
 #endif // BATCHSERVICESTATUS_H
