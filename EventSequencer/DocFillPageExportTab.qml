@@ -41,7 +41,6 @@ ScrollView {
             }
         }
 
-        /*
         DocFillPageExportSection {
             anchors.left: parent.left
             anchors.right: parent.right
@@ -50,11 +49,12 @@ ScrollView {
             defaultOutputPath: exportManager.defaultExportHtmlOutputPath
             defaultOutputPathExists: exportManager.defaultExportHtmlOutputPathExists
             onExportActivated: {
-                var result = exportManager.exportHtml(document, exportManager.defaultExportHtmlOutputPath)
-                exportManager.tempUpdateDefaultOutputPaths()
-                if (result !== "") {
-                    msgbox.msgbox(result, "Export")
-                }
+                exportManager.requestExportHtml()
+//                var result = exportManager.exportHtml(document, exportManager.defaultExportHtmlOutputPath)
+//                exportManager.tempUpdateDefaultOutputPaths()
+//                if (result !== "") {
+//                    msgbox.msgbox(result, "Export")
+//                }
             }
             onDeleteActivated: {
                 if (!exportManager.deleteDefaultExportHtmlOutputPath()) {
@@ -62,7 +62,6 @@ ScrollView {
                 }
             }
         }
-        */
 
         DocFillPageExportSection {
             anchors.left: parent.left
