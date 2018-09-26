@@ -33,11 +33,13 @@ bool ServiceBinder::onTransact(int code, const QAndroidParcel& data,
     auto service = service_;
 
     if (code == 1000) {
-        // 2x invokeMethod in order to get a copy of the shared pointer onto the
-        // queue.
-        QMetaObject::invokeMethod(service.get(), [service]() {
-            QMetaObject::invokeMethod(service.get(), "requestStartWork");
-        }, Qt::QueuedConnection);
+        QString retval;
+        if (!QMetaObject::invokeMethod(service.get(), "requestExportHtml",
+                                       Qt::BlockingQueuedConnection,
+                                       Q_RETURN_ARG(QString, retval))) {
+            return false;
+        }
+        reply.writeVariant(retval);
     } else {
         return false;
     }

@@ -27,11 +27,10 @@ void BatchServiceImpl::updateStatus()
     emit statusChanged(status());
 }
 
-void BatchServiceImpl::requestStartWork()
+QString BatchServiceImpl::requestExportHtml()
 {
     if (workSimulator_.isActive()) {
-        qWarning("Work is already running!!");
-        return;
+        return "Work is already running!!";
     }
 
     workLeft_ = 30;
@@ -40,6 +39,7 @@ void BatchServiceImpl::requestStartWork()
     workSimulator_.start();
 
     updateStatus();
+    return {};
 }
 
 void BatchServiceImpl::applicationExiting()

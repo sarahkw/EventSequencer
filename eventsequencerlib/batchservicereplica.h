@@ -25,13 +25,14 @@ public:
 
     QVariant status() const;
 
+    Q_INVOKABLE QString requestExportHtml();
+
 signals:
 
     void statusChanged(const QVariant& status);
 
 public slots:
 
-    void requestStartWork();
 
 };
 

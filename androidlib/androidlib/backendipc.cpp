@@ -42,10 +42,12 @@ BackendIpc::~BackendIpc()
     unbindService();
 }
 
-void BackendIpc::requestStartWork()
+QString BackendIpc::requestExportHtml()
 {
     QAndroidParcel data;
-    JniUtils::binderTransact(rpcBinder_, 1000, data);
+    QAndroidParcel reply;
+    JniUtils::binderTransact(rpcBinder_, 1000, data, &reply);
+    return reply.readVariant().toString();
 }
 
 bool BackendIpc::ReceiverBinder::onTransact(int code, const QAndroidParcel &data, const QAndroidParcel &reply, QAndroidBinder::CallType flags)

@@ -41,7 +41,7 @@ public:
     BackendIpc(std::function<void(const QVariant&)>&& cb);
     ~BackendIpc();
 
-    void requestStartWork();
+    QString requestExportHtml();
 
 };
 

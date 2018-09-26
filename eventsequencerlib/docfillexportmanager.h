@@ -52,7 +52,7 @@ public:
     Q_INVOKABLE static QString exportPlayToFile(Document* document, QString outputPath);
     Q_INVOKABLE static QString exportHtml(Document* document, QString outputPath);
 
-    Q_INVOKABLE void requestExportHtml();
+    Q_INVOKABLE QString requestExportHtml();
 
     // TODO Delete -- temporary as an in-between while we migrate.
     Q_INVOKABLE void tempUpdateDefaultOutputPaths();

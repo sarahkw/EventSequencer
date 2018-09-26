@@ -225,14 +225,14 @@ QString DocFillExportManager::exportHtml(Document* document, QString outputPath)
 //        return "Cannot create directory";
 //    }
 
-    //batchService_.requestStartWork();
+    //batchService_.requestExportHtml();
     //updateDefaultOutputPaths();
     return "";
 }
 
-void DocFillExportManager::requestExportHtml()
+QString DocFillExportManager::requestExportHtml()
 {
-    batchService_.requestStartWork();
+    return batchService_.requestExportHtml();
 }
 
 void DocFillExportManager::tempUpdateDefaultOutputPaths()

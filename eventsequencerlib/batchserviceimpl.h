@@ -26,6 +26,8 @@ private:
     void updateStatus();
 public:
 
+    Q_INVOKABLE QString requestExportHtml();
+
 signals:
 
     void statusChanged(const QVariant& status);
@@ -34,8 +36,6 @@ signals:
     void androidStopService();
 
 public slots:
-
-    void requestStartWork();
 
     void applicationExiting();
 
