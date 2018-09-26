@@ -1,6 +1,6 @@
 #include "docfilltextcontenteditor.h"
 
-#include "channel/docfillchannel.h"
+#include "docfillstructure.h"
 #include "channel/textchannel.h"
 #include "collides.h"
 
@@ -12,12 +12,11 @@ DocFillTextContentEditor::DocFillTextContentEditor(QObject *parent) : QObject(pa
 QVariantList DocFillTextContentEditor::appendText(Document *document, QString text, bool autoNewLines)
 {
     Q_ASSERT(document);
-    auto* docFillChannel = qobject_cast<channel::DocFillChannel*>(document->defaultProgramChannel());
-    Q_ASSERT(docFillChannel);
-    auto* textChannel = qobject_cast<channel::TextChannel*>(document->getChannelByIndex(docFillChannel->textChannel()));
-    Q_ASSERT(textChannel);
+    DocFillStructure dfstructure;
+    const bool loadResult = dfstructure.load(*document);
+    Q_ASSERT(loadResult);
 
-    QString currentContent = textChannel->content();
+    QString currentContent = dfstructure.textChannel->content();
     if (autoNewLines && !currentContent.endsWith("\n")) {
         currentContent.append("\n");
     }
@@ -27,7 +26,7 @@ QVariantList DocFillTextContentEditor::appendText(Document *document, QString te
         currentContent.append("\n");
     }
     int rangeEnd = currentContent.size();
-    textChannel->setContent(currentContent);
+    dfstructure.textChannel->setContent(currentContent);
     document->setEndFrame(currentContent.size());
     return {rangeBegin, rangeEnd};
 }
@@ -35,10 +34,9 @@ QVariantList DocFillTextContentEditor::appendText(Document *document, QString te
 bool DocFillTextContentEditor::truncateInternal(Document *document, int cursorFrame, bool dryRun, QString *previewText)
 {
     Q_ASSERT(document);
-    auto* docFillChannel = qobject_cast<channel::DocFillChannel*>(document->defaultProgramChannel());
-    Q_ASSERT(docFillChannel);
-    auto* textChannel = qobject_cast<channel::TextChannel*>(document->getChannelByIndex(docFillChannel->textChannel()));
-    Q_ASSERT(textChannel);
+    DocFillStructure dfstructure;
+    const bool loadResult = dfstructure.load(*document);
+    Q_ASSERT(loadResult);
 
     if (cursorFrame < 0 || cursorFrame > document->endFrame()) {
         if (previewText) *previewText = "*ERROR* Cursor not within range of document";
@@ -63,13 +61,13 @@ bool DocFillTextContentEditor::truncateInternal(Document *document, int cursorFr
     }
 
     if (previewText) {
-        *previewText = textChannel->content().mid(cursorFrame);
+        *previewText = dfstructure.textChannel->content().mid(cursorFrame);
     }
 
     if (!dryRun) {
-        QString currentContent = textChannel->content();
+        QString currentContent = dfstructure.textChannel->content();
         currentContent.resize(cursorFrame);
-        textChannel->setContent(currentContent);
+        dfstructure.textChannel->setContent(currentContent);
         document->setEndFrame(currentContent.size());
     }
     return true;

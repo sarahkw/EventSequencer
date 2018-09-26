@@ -104,7 +104,8 @@ SOURCES += \
     batchserviceimpl.cpp \
     batchservicereplica.cpp \
     batchservicefactory.cpp \
-    batchservicestatus.cpp
+    batchservicestatus.cpp \
+    docfillstructure.cpp
 
 
 HEADERS += \
@@ -185,7 +186,8 @@ HEADERS += \
     batchserviceimpl.h \
     batchservicereplica.h \
     batchservicefactory.h \
-    batchservicestatus.h
+    batchservicestatus.h \
+    docfillstructure.h
 
 unix {
     target.path = /usr/lib

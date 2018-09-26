@@ -1,7 +1,7 @@
 #include "docfillbackfillstats.h"
 
-#include "channel/docfillchannel.h"
-#include "channel/collatechannel.h"
+#include "channel/channelbase.h"
+#include "docfillstructure.h"
 #include "qmlresourcemetadatagetter.h"
 #include "describeduration.h"
 
@@ -71,22 +71,17 @@ void DocFillBackfillStats::updateReport()
     QmlResourceMetaDataGetter metaGet;
     metaGet.setFileResourceDirectory(document_.fileResourceDirectory());
 
-#define DOCUMENT_INVALID_IF(cond) do { if (cond) { report_ = "Invalid document"; emit reportChanged(); return; } } while (false)
-
-    auto* programChannel = qobject_cast<channel::DocFillChannel*>(document_.defaultProgramChannel());
-    DOCUMENT_INVALID_IF(programChannel == nullptr);
-
-    auto* collateChannel = qobject_cast<channel::CollateChannel*>(document_.getChannelByIndex(programChannel->resourceChannel()));
-    DOCUMENT_INVALID_IF(collateChannel == nullptr);
-
-    auto* stripSource = qobject_cast<channel::ChannelBase*>(document_.getChannelByIndex(collateChannel->channel()));
-    DOCUMENT_INVALID_IF(stripSource == nullptr);
-#undef DOCUMENT_INVALID_IF
+    DocFillStructure dfstructure;
+    if (!dfstructure.load(document_)) {
+        report_ = "Invalid document";
+        emit reportChanged();
+        return;
+    }
 
     size_t numSuccess = 0;
     size_t numFailure = 0;
 
-    for (Strip* s : stripSource->multiChannelStrips()) {
+    for (Strip* s : dfstructure.stripSourceChannel->multiChannelStrips()) {
         auto& cache = metaGet.getRaw(s->resourceUrl());
         if (cache.success_ && cache.createTime.isValid()) {
             ++numSuccess;
