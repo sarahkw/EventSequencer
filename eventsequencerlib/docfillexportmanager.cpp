@@ -1,12 +1,14 @@
 #include "docfillexportmanager.h"
 
 #include "document.h"
+#include "docfillstructure.h"
 #include "channel/textchannel.h"
 #include "channel/collatechannel.h"
 #include "managedresources.h"
 #include "aufileheader.h"
 #include "audioformatholder.h"
 #include "resourcemetadata.h"
+#include "playable/stripslist.h"
 
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -60,31 +62,18 @@ QString DocFillExportManager::defaultExportHtmlOutputPath() const
     return defaultExportHtmlOutputPath_;
 }
 
-QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
-                                         channel::ChannelBase* resourceChannel)
+QString DocFillExportManager::exportJson(Document* document, QString outputPath)
 {
-    if (textChannel == nullptr || resourceChannel == nullptr) {
-        qWarning("Missing channel(s)");
+    DocFillStructure dfstructure;
+    if (!dfstructure.load(*document)) {
         return "Internal error";
     }
 
-    auto* castTextChannel = qobject_cast<channel::TextChannel*>(textChannel);
-    if (castTextChannel == nullptr) {
-        qWarning("Unsupported text channel type");
-        return "Internal error";
-    }
-
-    auto* castResourceChannel = qobject_cast<channel::CollateChannel*>(resourceChannel);
-    if (castResourceChannel == nullptr) {
-        qWarning("Unsupported resource channel type");
-        return "Internal error";
-    }
-
-    QString content = castTextChannel->content();
+    QString content = dfstructure.textChannel->content();
 
     QJsonArray jsonSegments;
 
-    for (auto& segment : castResourceChannel->segments()) {
+    for (auto& segment : dfstructure.collateChannel->segments()) {
         QJsonObject obj;
         Strip* s = segment.strip;
         obj["startPosition"] = segment.segmentStart;
@@ -103,7 +92,7 @@ QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
                 // etc.
                 {
                     QString filePath;
-                    ManagedResources mr(document_->fileResourceDirectory());
+                    ManagedResources mr(document->fileResourceDirectory());
                     if (mr.urlConvertToFilePath(url, &filePath)) {
                         std::string createTime;
                         if (ResourceMetaData::readFromFile(filePath, &createTime)) {
@@ -117,7 +106,7 @@ QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
         jsonSegments.push_back(obj);
     }
 
-    QFile file(defaultExportJsonOutputPath_);
+    QFile file(outputPath);
     if (!file.open(QFile::NewOnly)) {
         return QString("Cannot open file: %1").arg(file.errorString());
     }
@@ -135,22 +124,27 @@ QString DocFillExportManager::exportJson(channel::ChannelBase* textChannel,
         file.close();
     }
 
-    updateDefaultOutputPaths();
+    //updateDefaultOutputPaths();
     return error;
 }
 
-QString DocFillExportManager::exportPlayToFile(playable::PlayableBase *playable)
+QString DocFillExportManager::exportPlayToFile(Document* document, QString outputPath)
 {
-    if (playable == nullptr || document_ == nullptr || !document_->audioFormatHolderSet()) {
+    DocFillStructure dfstructure;
+    if (!dfstructure.load(*document)) {
         return "Internal error";
     }
 
-    if (!playable->isFinite()) {
-        return "Cannot export from infinite audio input";
+    playable::StripsList playable;
+    playable.setFileResourceDirectory(document->fileResourceDirectory());
+    playable.setSelectedChannel(dfstructure.collateChannel);
+    playable.setSelectionMode(playable::StripsList::SelectionMode::ChannelFromBegin);
+    
+    AudioFormatHolder* audioFormatHolder = nullptr;
+    if (document->audioFormatHolderSet()) {
+        audioFormatHolder =
+            qobject_cast<AudioFormatHolder*>(document->audioFormatHolderQObject());
     }
-
-    auto* audioFormatHolder =
-        qobject_cast<AudioFormatHolder*>(document_->audioFormatHolderQObject());
     if (audioFormatHolder == nullptr) {
         return "Internal error";
     }
@@ -159,13 +153,13 @@ QString DocFillExportManager::exportPlayToFile(playable::PlayableBase *playable)
     // .au's have big endian samples
     audioFormat.setByteOrder(QAudioFormat::BigEndian);
 
-    std::unique_ptr<QIODevice> source{playable->createPlayableDevice(audioFormat)};
+    std::unique_ptr<QIODevice> source{playable.createPlayableDevice(audioFormat)};
     if (!source) {
-        return playable->error();
+        return playable.error();
     }
     source->open(QIODevice::ReadOnly);
 
-    QFile file(defaultPlayToFileOutputPath_);
+    QFile file(outputPath);
     if (!file.open(QFile::NewOnly)) {
         return QString("Cannot open file: %1").arg(file.errorString());
     }
@@ -216,14 +210,13 @@ QString DocFillExportManager::exportPlayToFile(playable::PlayableBase *playable)
     }
 
 done:
-    updateDefaultOutputPaths();
+    //updateDefaultOutputPaths();
     return error;
 }
 
-QString DocFillExportManager::exportHtml(channel::ChannelBase* textChannel,
-                                         channel::ChannelBase* resourceChannel)
+QString DocFillExportManager::exportHtml(Document* document, QString outputPath)
 {
-    QDir dir(defaultExportHtmlOutputPath_);
+    QDir dir(outputPath);
     if (dir.exists()) {
         return "Already exists!";
     }
@@ -232,11 +225,15 @@ QString DocFillExportManager::exportHtml(channel::ChannelBase* textChannel,
 //        return "Cannot create directory";
 //    }
 
-    batchService_.requestStartWork();
+    //batchService_.requestStartWork();
     //updateDefaultOutputPaths();
     return "";
 }
 
+void DocFillExportManager::tempUpdateDefaultOutputPaths()
+{
+    updateDefaultOutputPaths();
+}
 
 bool DocFillExportManager::defaultExportJsonOutputPathExists() const
 {

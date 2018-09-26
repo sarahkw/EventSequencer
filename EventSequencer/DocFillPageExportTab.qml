@@ -50,7 +50,8 @@ ScrollView {
             defaultOutputPath: exportManager.defaultExportHtmlOutputPath
             defaultOutputPathExists: exportManager.defaultExportHtmlOutputPathExists
             onExportActivated: {
-                var result = exportManager.exportHtml(cppTextChannel, cppResourceChannel)
+                var result = exportManager.exportHtml(document, exportManager.defaultExportHtmlOutputPath)
+                exportManager.tempUpdateDefaultOutputPaths()
                 if (result !== "") {
                     msgbox.msgbox(result, "Export")
                 }
@@ -71,7 +72,8 @@ ScrollView {
             defaultOutputPath: exportManager.defaultExportJsonOutputPath
             defaultOutputPathExists: exportManager.defaultExportJsonOutputPathExists
             onExportActivated: {
-                var result = exportManager.exportJson(cppTextChannel, cppResourceChannel)
+                var result = exportManager.exportJson(document, exportManager.defaultExportJsonOutputPath)
+                exportManager.tempUpdateDefaultOutputPaths()
                 msgbox.msgbox(result, "Export")
             }
             onDeleteActivated: {
@@ -91,7 +93,8 @@ Current selection: %1".arg(cmbSelectionMode.currentText)
             defaultOutputPath: exportManager.defaultPlayToFileOutputPath
             defaultOutputPathExists: exportManager.defaultPlayToFileOutputPathExists
             onExportActivated: {
-                var result = exportManager.exportPlayToFile(playerControl.playable)
+                var result = exportManager.exportPlayToFile(document, exportManager.defaultPlayToFileOutputPath)
+                exportManager.tempUpdateDefaultOutputPaths()
                 msgbox.msgbox(result, "Export")
             }
             onDeleteActivated: {

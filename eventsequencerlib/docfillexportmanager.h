@@ -2,8 +2,7 @@
 #define DOCFILLEXPORTMANAGER_H
 
 #include "batchservicefactory.h"
-#include "channel/channelbase.h"
-#include "playable/playablebase.h"
+#include "document.h"
 
 #include <QObject>
 
@@ -49,11 +48,12 @@ public:
     QString defaultPlayToFileOutputPath() const;
     QString defaultExportHtmlOutputPath() const;
 
-    Q_INVOKABLE QString exportJson(channel::ChannelBase* textChannel,
-                                   channel::ChannelBase* resourceChannel);
-    Q_INVOKABLE QString exportPlayToFile(playable::PlayableBase* playable);
-    Q_INVOKABLE QString exportHtml(channel::ChannelBase* textChannel,
-                                   channel::ChannelBase* resourceChannel);
+    Q_INVOKABLE static QString exportJson(Document* document, QString outputPath);
+    Q_INVOKABLE static QString exportPlayToFile(Document* document, QString outputPath);
+    Q_INVOKABLE static QString exportHtml(Document* document, QString outputPath);
+
+    // TODO Delete -- temporary as an in-between while we migrate.
+    Q_INVOKABLE void tempUpdateDefaultOutputPaths();
 
     bool defaultExportJsonOutputPathExists() const;
     bool defaultPlayToFileOutputPathExists() const;
