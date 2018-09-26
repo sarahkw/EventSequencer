@@ -33,7 +33,7 @@ bool ServiceBinder::onTransact(int code, const QAndroidParcel& data,
     auto service = service_;
 
     if (code == 1000) {
-        // 2 invokeMethod in order to get a copy of the shared pointer onto the
+        // 2x invokeMethod in order to get a copy of the shared pointer onto the
         // queue.
         QMetaObject::invokeMethod(service.get(), [service]() {
             QMetaObject::invokeMethod(service.get(), "requestStartWork");
