@@ -4,6 +4,7 @@
 #include <QAndroidServiceConnection>
 #include <QAndroidBinder>
 #include <QVariant>
+#include <QUrl>
 #include <functional>
 
 namespace androidlib {
@@ -41,7 +42,7 @@ public:
     BackendIpc(std::function<void(const QVariant&)>&& cb);
     ~BackendIpc();
 
-    QString requestExportHtml();
+    QString requestExportHtml(QUrl documentUrl);
 
 };
 

@@ -230,9 +230,9 @@ QString DocFillExportManager::exportHtml(Document* document, QString outputPath)
     return "";
 }
 
-QString DocFillExportManager::requestExportHtml()
+QString DocFillExportManager::requestExportHtml(Document* document)
 {
-    return batchService_.requestExportHtml();
+    return batchService_.requestExportHtml(document->currentUrl());
 }
 
 void DocFillExportManager::tempUpdateDefaultOutputPaths()

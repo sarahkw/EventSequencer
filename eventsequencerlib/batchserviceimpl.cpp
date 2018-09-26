@@ -2,6 +2,8 @@
 
 #include "batchservicestatus.h"
 
+#include <QDebug>
+
 BatchServiceImpl::BatchServiceImpl()
 {
     workSimulator_.setInterval(1000);
@@ -27,11 +29,13 @@ void BatchServiceImpl::updateStatus()
     emit statusChanged(status());
 }
 
-QString BatchServiceImpl::requestExportHtml()
+QString BatchServiceImpl::requestExportHtml(QUrl documentUrl)
 {
     if (workSimulator_.isActive()) {
         return "Work is already running!!";
     }
+
+    qInfo() << "requestExportHtml" << documentUrl;
 
     workLeft_ = 30;
     emit statusChanged(workLeft_);

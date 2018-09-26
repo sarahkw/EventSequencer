@@ -25,7 +25,7 @@ public:
 
     QVariant status() const;
 
-    Q_INVOKABLE QString requestExportHtml();
+    Q_INVOKABLE QString requestExportHtml(QUrl documentUrl);
 
 signals:
 

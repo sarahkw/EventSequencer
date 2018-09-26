@@ -16,9 +16,9 @@ QVariant BatchServiceReplica::status() const
     return status_;
 }
 
-QString BatchServiceReplica::requestExportHtml()
+QString BatchServiceReplica::requestExportHtml(QUrl documentUrl)
 {
-    return ipc_.requestExportHtml();
+    return ipc_.requestExportHtml(documentUrl);
 }
 
 #endif // Q_OS_ANDROID

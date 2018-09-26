@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QVariant>
+#include <QUrl>
 
 class BatchServiceImpl : public QObject
 {
@@ -26,7 +27,7 @@ private:
     void updateStatus();
 public:
 
-    Q_INVOKABLE QString requestExportHtml();
+    Q_INVOKABLE QString requestExportHtml(QUrl documentUrl);
 
 signals:
 

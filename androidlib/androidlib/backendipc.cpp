@@ -42,10 +42,11 @@ BackendIpc::~BackendIpc()
     unbindService();
 }
 
-QString BackendIpc::requestExportHtml()
+QString BackendIpc::requestExportHtml(QUrl documentUrl)
 {
     QAndroidParcel data;
     QAndroidParcel reply;
+    data.writeVariant(documentUrl);
     JniUtils::binderTransact(rpcBinder_, 1000, data, &reply);
     return reply.readVariant().toString();
 }

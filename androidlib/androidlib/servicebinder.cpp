@@ -7,6 +7,7 @@
 #include <QtAndroid>
 #include <QCoreApplication>
 #include <QDebug>
+#include <QUrl>
 
 namespace androidlib {
 
@@ -34,9 +35,13 @@ bool ServiceBinder::onTransact(int code, const QAndroidParcel& data,
 
     if (code == 1000) {
         QString retval;
+
+        QUrl documentUrl = data.readVariant().toString();
+
         if (!QMetaObject::invokeMethod(service.get(), "requestExportHtml",
                                        Qt::BlockingQueuedConnection,
-                                       Q_RETURN_ARG(QString, retval))) {
+                                       Q_RETURN_ARG(QString, retval),
+                                       Q_ARG(QUrl, documentUrl))) {
             return false;
         }
         reply.writeVariant(retval);

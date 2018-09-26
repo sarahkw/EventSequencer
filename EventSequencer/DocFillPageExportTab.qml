@@ -49,7 +49,7 @@ ScrollView {
             defaultOutputPath: exportManager.defaultExportHtmlOutputPath
             defaultOutputPathExists: exportManager.defaultExportHtmlOutputPathExists
             onExportActivated: {
-                var result = exportManager.requestExportHtml()
+                var result = exportManager.requestExportHtml(document)
 //                var result = exportManager.exportHtml(document, exportManager.defaultExportHtmlOutputPath)
 //                exportManager.tempUpdateDefaultOutputPaths()
                 if (result !== "") {
