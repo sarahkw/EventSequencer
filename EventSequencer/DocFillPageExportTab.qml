@@ -41,6 +41,7 @@ ScrollView {
             }
         }
 
+        /*
         DocFillPageExportSection {
             anchors.left: parent.left
             anchors.right: parent.right
@@ -60,6 +61,7 @@ ScrollView {
                 }
             }
         }
+        */
 
         DocFillPageExportSection {
             anchors.left: parent.left
