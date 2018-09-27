@@ -6,7 +6,29 @@
 
 namespace {
 
-class WorkerThread : public BatchServiceImplThread {
+class ExportJsonWorkerThread : public BatchServiceImplThread {
+protected:
+    void run() override
+    {
+        for (int i = 5; i > 0; --i) {
+            emit statusTextChanged(QString("Export JSON: %1").arg(i));
+            QThread::sleep(1);
+        }
+    }
+};
+
+class ExportPlayToFileWorkerThread : public BatchServiceImplThread {
+protected:
+    void run() override
+    {
+        for (int i = 10; i > 0; --i) {
+            emit statusTextChanged(QString("Export Play to File: %1").arg(i));
+            QThread::sleep(1);
+        }
+    }
+};
+
+class ExportHtmlWorkerThread : public BatchServiceImplThread {
 protected:
     void run() override
     {
@@ -26,6 +48,31 @@ BatchServiceImpl::BatchServiceImpl()
 QVariant BatchServiceImpl::status() const
 {
     return QVariant::fromValue(status_);
+}
+
+QString BatchServiceImpl::startRequestedExport(std::function<BatchServiceImplThread *()> creator)
+{
+    if (!!workerThread_) {
+        return "Work is already running!!";
+    }
+
+    workerThread_ = decltype(workerThread_)(creator());
+
+    QObject::connect(workerThread_.get(), &BatchServiceImplThread::finished,
+                     this, &BatchServiceImpl::workerFinished,
+                     Qt::QueuedConnection);
+    QObject::connect(workerThread_.get(), &BatchServiceImplThread::statusTextChanged,
+                     this, &BatchServiceImpl::workerStatusTextChanged,
+                     Qt::QueuedConnection);
+
+    status_.isWorking_ = true;
+    status_.statusText_.clear();
+    emit statusChanged(QVariant::fromValue(status_));
+    emit androidStartService();
+
+    workerThread_->start();
+
+    return {};
 }
 
 QString BatchServiceImpl::requestExportJson(QUrl documentUrl)
@@ -68,27 +115,7 @@ QString BatchServiceImpl::requestExportPlayToFile(QUrl documentUrl)
 
 QString BatchServiceImpl::requestExportHtml(QUrl documentUrl)
 {
-    if (!!workerThread_) {
-        return "Work is already running!!";
-    }
-
-    workerThread_ = decltype(workerThread_)(new WorkerThread);
-
-    QObject::connect(workerThread_.get(), &WorkerThread::finished,
-                     this, &BatchServiceImpl::workerFinished,
-                     Qt::QueuedConnection);
-    QObject::connect(workerThread_.get(), &WorkerThread::statusTextChanged,
-                     this, &BatchServiceImpl::workerStatusTextChanged,
-                     Qt::QueuedConnection);
-
-    status_.isWorking_ = true;
-    status_.statusText_.clear();
-    emit statusChanged(QVariant::fromValue(status_));
-    emit androidStartService();
-
-    workerThread_->start();
-
-    return {};
+    return startRequestedExport([]() { return new ExportHtmlWorkerThread; });
 }
 
 void BatchServiceImpl::applicationExiting()

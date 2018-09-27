@@ -32,6 +32,10 @@ public:
 
     QVariant status() const;
 
+private:
+    QString startRequestedExport(std::function<BatchServiceImplThread*()> creator);
+public:
+
     Q_INVOKABLE QString requestExportJson(QUrl documentUrl);
     Q_INVOKABLE QString requestExportPlayToFile(QUrl documentUrl);
     Q_INVOKABLE QString requestExportHtml(QUrl documentUrl);
