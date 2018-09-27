@@ -25,7 +25,7 @@ void BackendIpc::bindService()
 
 void BackendIpc::unbindService()
 {
-    QAndroidJniExceptionCleaner cleaner;
+    QAndroidJniExceptionCleaner cleaner(QAndroidJniExceptionCleaner::OutputMode::Verbose);
     QtAndroid::androidContext().callMethod<void>(
         "unbindService", "(Landroid/content/ServiceConnection;)V",
         serviceConnection_.handle().object());
