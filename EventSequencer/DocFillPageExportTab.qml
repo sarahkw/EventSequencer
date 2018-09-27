@@ -75,9 +75,12 @@ ScrollView {
             defaultOutputPath: exportManager.defaultExportJsonOutputPath
             defaultOutputPathExists: exportManager.defaultExportJsonOutputPathExists
             onExportActivated: {
-                var result = exportManager.exportJson(document, exportManager.defaultExportJsonOutputPath)
-                exportManager.tempUpdateDefaultOutputPaths()
-                msgbox.msgbox(result, "Export")
+                var result = exportManager.requestExportJson(document)
+                //var result = exportManager.exportJson(document, exportManager.defaultExportJsonOutputPath)
+                //exportManager.tempUpdateDefaultOutputPaths()
+                if (result !== "") {
+                    msgbox.msgbox(result, "Export")
+                }
             }
             onDeleteActivated: {
                 if (!exportManager.deleteDefaultExportJsonOutputPath()) {

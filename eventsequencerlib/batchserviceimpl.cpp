@@ -1,21 +1,114 @@
 #include "batchserviceimpl.h"
 
 #include "batchservicestatus.h"
+#include "document.h"
+#include "docfillstructure.h"
+#include "managedresources.h"
+#include "resourcemetadata.h"
+#include "channel/textchannel.h"
+#include "channel/collatechannel.h"
 
 #include <QDebug>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonDocument>
 
 namespace {
 
 class ExportJsonWorkerThread : public BatchServiceImplThread {
+    QUrl documentUrl_;
+public:
+    ExportJsonWorkerThread(QUrl documentUrl) : documentUrl_(documentUrl) {}
 protected:
-    void run() override
+    void run() override;
+};
+
+void ExportJsonWorkerThread::run()
+{
+    Document document;
     {
-        for (int i = 5; i > 0; --i) {
-            emit statusTextChanged(QString("Export JSON: %1").arg(i));
-            QThread::sleep(1);
+        auto result = document.load(documentUrl_);
+        if (!result[0].toBool()) {
+            emit statusTextChanged(QString("Cannot open: %1").arg(result[1].toString()));
+            return;
         }
     }
-};
+    QString outputPath;
+    {
+        DocumentPathsResponse pathResponse;
+        if (document.pathQuery(DocumentPaths::PathRequest::JSON_EXPORT, &pathResponse)) {
+            outputPath = pathResponse.filePath;
+        } else {
+            emit statusTextChanged("Internal error");
+            return;
+        }
+    }
+
+    DocFillStructure dfstructure;
+    if (!dfstructure.load(document)) {
+        emit statusTextChanged("Internal error");
+        return;
+    }
+
+    QString content = dfstructure.textChannel->content();
+
+    QJsonArray jsonSegments;
+
+    for (auto& segment : dfstructure.collateChannel->segments()) {
+        QJsonObject obj;
+        Strip* s = segment.strip;
+        obj["startPosition"] = segment.segmentStart;
+        obj["length"] = segment.segmentLength;
+        obj["text"] = content.mid(segment.segmentStart, segment.segmentLength);
+        if (segment.segmentType == channel::CollateChannel::SegmentType::Conflict) {
+            obj["hasConflict"] = true;
+        }
+        if (s != nullptr) {
+            QUrl url = s->resourceUrl();
+            if (!url.isEmpty()) {
+                obj["file"] = ManagedResources::urlConvertToFileName(url.toString());
+
+                // Let's make an attempt to read meta-data. Failures are silently
+                // ignored because files may not have meta-data, may be missing,
+                // etc.
+                {
+                    QString filePath;
+                    ManagedResources mr(document.fileResourceDirectory());
+                    if (mr.urlConvertToFilePath(url, &filePath)) {
+                        std::string createTime;
+                        if (ResourceMetaData::readFromFile(filePath, &createTime)) {
+                            obj["fileCreateTime"] = QString::fromStdString(createTime);
+                        }
+                    }
+                    // RAII to clean up
+                }
+            }
+        }
+        jsonSegments.push_back(obj);
+    }
+
+    QFile file(outputPath);
+    if (!file.open(QFile::NewOnly)) {
+        emit statusTextChanged(QString("Cannot open file: %1").arg(file.errorString()));
+        return;
+    }
+
+    QString error = "Success";
+
+    QJsonDocument jsonDoc(jsonSegments);
+    QByteArray toWrite = jsonDoc.toJson();
+    qint64 written = file.write(toWrite);
+    if (written != toWrite.size()) {
+        error = QString("Cannot completely write file: %1").arg(file.errorString());
+    } else if (!file.flush()) {
+        error = QString("Cannot flush: %1").arg(file.errorString());
+    } else {
+        file.close();
+    }
+
+    emit statusTextChanged(error);
+    return;
+}
 
 class ExportPlayToFileWorkerThread : public BatchServiceImplThread {
 protected:
@@ -89,21 +182,8 @@ QString BatchServiceImpl::startRequestedExport(std::function<BatchServiceImplThr
 
 QString BatchServiceImpl::requestExportJson(QUrl documentUrl)
 {
-    /*
-    if (workSimulator_.isActive()) {
-        return "Work is already running!!";
-    }
-
-    qInfo() << "requestExportJson" << documentUrl;
-
-    workLeft_ = 30;
-    emit statusChanged(workLeft_);
-    emit androidStartService();
-    workSimulator_.start();
-
-    updateStatus();
-    */
-    return {};
+    return startRequestedExport(
+        [documentUrl]() { return new ExportJsonWorkerThread(documentUrl); });
 }
 
 QString BatchServiceImpl::requestExportPlayToFile(QUrl documentUrl)

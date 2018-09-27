@@ -4,15 +4,10 @@
 #include "docfillstructure.h"
 #include "channel/textchannel.h"
 #include "channel/collatechannel.h"
-#include "managedresources.h"
 #include "aufileheader.h"
 #include "audioformatholder.h"
-#include "resourcemetadata.h"
 #include "playable/stripslist.h"
 
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <QJsonObject>
 #include <QDir>
 
 #include <memory>
@@ -64,68 +59,7 @@ QString DocFillExportManager::defaultExportHtmlOutputPath() const
 
 QString DocFillExportManager::exportJson(Document* document, QString outputPath)
 {
-    DocFillStructure dfstructure;
-    if (!dfstructure.load(*document)) {
-        return "Internal error";
-    }
-
-    QString content = dfstructure.textChannel->content();
-
-    QJsonArray jsonSegments;
-
-    for (auto& segment : dfstructure.collateChannel->segments()) {
-        QJsonObject obj;
-        Strip* s = segment.strip;
-        obj["startPosition"] = segment.segmentStart;
-        obj["length"] = segment.segmentLength;
-        obj["text"] = content.mid(segment.segmentStart, segment.segmentLength);
-        if (segment.segmentType == channel::CollateChannel::SegmentType::Conflict) {
-            obj["hasConflict"] = true;
-        }
-        if (s != nullptr) {
-            QUrl url = s->resourceUrl();
-            if (!url.isEmpty()) {
-                obj["file"] = ManagedResources::urlConvertToFileName(url.toString());
-
-                // Let's make an attempt to read meta-data. Failures are silently
-                // ignored because files may not have meta-data, may be missing,
-                // etc.
-                {
-                    QString filePath;
-                    ManagedResources mr(document->fileResourceDirectory());
-                    if (mr.urlConvertToFilePath(url, &filePath)) {
-                        std::string createTime;
-                        if (ResourceMetaData::readFromFile(filePath, &createTime)) {
-                            obj["fileCreateTime"] = QString::fromStdString(createTime);
-                        }
-                    }
-                    // RAII to clean up
-                }
-            }
-        }
-        jsonSegments.push_back(obj);
-    }
-
-    QFile file(outputPath);
-    if (!file.open(QFile::NewOnly)) {
-        return QString("Cannot open file: %1").arg(file.errorString());
-    }
-
-    QString error = "Success";
-
-    QJsonDocument jsonDoc(jsonSegments);
-    QByteArray toWrite = jsonDoc.toJson();
-    qint64 written = file.write(toWrite);
-    if (written != toWrite.size()) {
-        error = QString("Cannot completely write file: %1").arg(file.errorString());
-    } else if (!file.flush()) {
-        error = QString("Cannot flush: %1").arg(file.errorString());
-    } else {
-        file.close();
-    }
-
-    //updateDefaultOutputPaths();
-    return error;
+    return "Deprecated";
 }
 
 QString DocFillExportManager::exportPlayToFile(Document* document, QString outputPath)
