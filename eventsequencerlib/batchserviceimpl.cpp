@@ -75,9 +75,11 @@ QString BatchServiceImpl::requestExportHtml(QUrl documentUrl)
     workerThread_ = decltype(workerThread_)(new WorkerThread);
 
     QObject::connect(workerThread_.get(), &WorkerThread::finished,
-                     this, &BatchServiceImpl::workerFinished);
+                     this, &BatchServiceImpl::workerFinished,
+                     Qt::QueuedConnection);
     QObject::connect(workerThread_.get(), &WorkerThread::statusTextChanged,
-                     this, &BatchServiceImpl::workerStatusTextChanged);
+                     this, &BatchServiceImpl::workerStatusTextChanged,
+                     Qt::QueuedConnection);
 
     status_.isWorking_ = true;
     status_.statusText_.clear();
@@ -96,7 +98,10 @@ void BatchServiceImpl::applicationExiting()
 
 void BatchServiceImpl::workerFinished()
 {
+    // XXX I *think* but am not positive it's okay to delete the thread now,
+    //     since this is a queued connection.
     workerThread_.reset();
+
     status_.isWorking_ = false;
     emit statusChanged(QVariant::fromValue(status_));
     emit androidStopService();
