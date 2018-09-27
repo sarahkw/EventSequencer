@@ -242,6 +242,14 @@ protected:
             }
         }
         emit statusTextChanged(QString("Export HTML: Success"));
+
+        //    QDir dir(outputPath);
+        //    if (dir.exists()) {
+        //        return "Already exists!";
+        //    }
+        //    if (!dir.mkpath(".")) {
+        //        return "Cannot create directory";
+        //    }
     }
 };
 

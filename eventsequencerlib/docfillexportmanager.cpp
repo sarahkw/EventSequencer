@@ -4,20 +4,18 @@
 
 #include <memory>
 
-QObject *DocFillExportManager::document() const
+Document *DocFillExportManager::document() const
 {
     return document_;
 }
 
-void DocFillExportManager::setDocument(QObject *document)
+void DocFillExportManager::setDocument(Document *document)
 {
-    Document* castDocument = qobject_cast<Document*>(document);
-
-    if (document_ != castDocument) {
+    if (document_ != document) {
         if (document_ != nullptr) {
             document_->disconnect(this);
         }
-        document_ = castDocument;
+        document_ = document;
         if (document_ != nullptr) {
             QObject::connect(document_, &QObject::destroyed,
                              this, &DocFillExportManager::clearDocument);
@@ -47,32 +45,6 @@ QString DocFillExportManager::defaultPlayToFileOutputPath() const
 QString DocFillExportManager::defaultExportHtmlOutputPath() const
 {
     return defaultExportHtmlOutputPath_;
-}
-
-QString DocFillExportManager::exportJson(Document* document, QString outputPath)
-{
-    return "Deprecated";
-}
-
-QString DocFillExportManager::exportPlayToFile(Document* document, QString outputPath)
-{
-    return "Deprecated";
-}
-
-QString DocFillExportManager::exportHtml(Document* document, QString outputPath)
-{
-    QDir dir(outputPath);
-    if (dir.exists()) {
-        return "Already exists!";
-    }
-
-//    if (!dir.mkpath(".")) {
-//        return "Cannot create directory";
-//    }
-
-    //batchService_.requestExportHtml();
-    //updateDefaultOutputPaths();
-    return "";
 }
 
 QString DocFillExportManager::requestExportJson(Document* document)

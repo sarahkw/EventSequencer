@@ -16,8 +16,7 @@ class DocFillExportManager : public QObject
     Q_PROPERTY(QVariant batchServiceStatus READ batchServiceStatus NOTIFY batchServiceStatusChanged)
 
     Document* document_ = nullptr;
-    // Using QObject* just so that Document* can stay an incomplete type.
-    Q_PROPERTY(QObject* document READ document WRITE setDocument NOTIFY documentChanged)
+    Q_PROPERTY(Document* document READ document WRITE setDocument NOTIFY documentChanged)
 
     QString defaultExportJsonOutputPath_;
     QString defaultPlayToFileOutputPath_;
@@ -40,17 +39,13 @@ public:
 
     QVariant batchServiceStatus();
 
-    QObject *document() const;
-    void setDocument(QObject *document);
+    Document *document() const;
+    void setDocument(Document *document);
     void clearDocument();
 
     QString defaultExportJsonOutputPath() const;
     QString defaultPlayToFileOutputPath() const;
     QString defaultExportHtmlOutputPath() const;
-
-    Q_INVOKABLE static QString exportJson(Document* document, QString outputPath);
-    Q_INVOKABLE static QString exportPlayToFile(Document* document, QString outputPath);
-    Q_INVOKABLE static QString exportHtml(Document* document, QString outputPath);
 
     Q_INVOKABLE QString requestExportJson(Document* document);
     Q_INVOKABLE QString requestExportPlayToFile(Document* document);

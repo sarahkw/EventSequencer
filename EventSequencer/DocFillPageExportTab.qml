@@ -54,8 +54,6 @@ ScrollView {
             defaultOutputPathExists: exportManager.defaultExportHtmlOutputPathExists
             onExportActivated: {
                 var result = exportManager.requestExportHtml(document)
-//                var result = exportManager.exportHtml(document, exportManager.defaultExportHtmlOutputPath)
-//                exportManager.tempUpdateDefaultOutputPaths()
                 if (result !== "") {
                     msgbox.msgbox(result, "Export")
                 }
@@ -76,8 +74,6 @@ ScrollView {
             defaultOutputPathExists: exportManager.defaultExportJsonOutputPathExists
             onExportActivated: {
                 var result = exportManager.requestExportJson(document)
-                //var result = exportManager.exportJson(document, exportManager.defaultExportJsonOutputPath)
-                //exportManager.tempUpdateDefaultOutputPaths()
                 if (result !== "") {
                     msgbox.msgbox(result, "Export")
                 }
@@ -98,8 +94,6 @@ ScrollView {
             defaultOutputPathExists: exportManager.defaultPlayToFileOutputPathExists
             onExportActivated: {
                 var result = exportManager.requestExportPlayToFile(document)
-                //var result = exportManager.exportPlayToFile(document, exportManager.defaultPlayToFileOutputPath)
-                //exportManager.tempUpdateDefaultOutputPaths()
                 if (result !== "") {
                     msgbox.msgbox(result, "Export")
                 }
