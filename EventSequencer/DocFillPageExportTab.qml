@@ -97,9 +97,12 @@ ScrollView {
             defaultOutputPath: exportManager.defaultPlayToFileOutputPath
             defaultOutputPathExists: exportManager.defaultPlayToFileOutputPathExists
             onExportActivated: {
-                var result = exportManager.exportPlayToFile(document, exportManager.defaultPlayToFileOutputPath)
-                exportManager.tempUpdateDefaultOutputPaths()
-                msgbox.msgbox(result, "Export")
+                var result = exportManager.requestExportPlayToFile(document)
+                //var result = exportManager.exportPlayToFile(document, exportManager.defaultPlayToFileOutputPath)
+                //exportManager.tempUpdateDefaultOutputPaths()
+                if (result !== "") {
+                    msgbox.msgbox(result, "Export")
+                }
             }
             onDeleteActivated: {
                 if (!exportManager.deleteDefaultPlayToFileOutputPath()) {

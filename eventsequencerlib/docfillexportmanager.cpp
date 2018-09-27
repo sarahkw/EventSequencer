@@ -1,13 +1,5 @@
 #include "docfillexportmanager.h"
 
-#include "document.h"
-#include "docfillstructure.h"
-#include "channel/textchannel.h"
-#include "channel/collatechannel.h"
-#include "aufileheader.h"
-#include "audioformatholder.h"
-#include "playable/stripslist.h"
-
 #include <QDir>
 
 #include <memory>
@@ -64,88 +56,7 @@ QString DocFillExportManager::exportJson(Document* document, QString outputPath)
 
 QString DocFillExportManager::exportPlayToFile(Document* document, QString outputPath)
 {
-    DocFillStructure dfstructure;
-    if (!dfstructure.load(*document)) {
-        return "Internal error";
-    }
-
-    playable::StripsList playable;
-    playable.setFileResourceDirectory(document->fileResourceDirectory());
-    playable.setSelectedChannel(dfstructure.collateChannel);
-    playable.setSelectionMode(playable::StripsList::SelectionMode::ChannelFromBegin);
-    
-    AudioFormatHolder* audioFormatHolder = nullptr;
-    if (document->audioFormatHolderSet()) {
-        audioFormatHolder =
-            qobject_cast<AudioFormatHolder*>(document->audioFormatHolderQObject());
-    }
-    if (audioFormatHolder == nullptr) {
-        return "Internal error";
-    }
-    auto audioFormat = audioFormatHolder->toQAudioFormat();
-
-    // .au's have big endian samples
-    audioFormat.setByteOrder(QAudioFormat::BigEndian);
-
-    std::unique_ptr<QIODevice> source{playable.createPlayableDevice(audioFormat)};
-    if (!source) {
-        return playable.error();
-    }
-    source->open(QIODevice::ReadOnly);
-
-    QFile file(outputPath);
-    if (!file.open(QFile::NewOnly)) {
-        return QString("Cannot open file: %1").arg(file.errorString());
-    }
-
-    qint64 totalBytes = 0;
-    QString error = "Success";
-
-    AuFileHeader afh;
-    if (!afh.loadFormat(audioFormat)) {
-        qCritical("??? Format was good but now is not?");
-        error = "Internal error";
-        goto done;
-    }
-
-    if (!afh.writeFile(file)) {
-        error = QString("Cannot write header: %1").arg(file.errorString());
-        goto done;
-    }
-
-    char buffer[4096];
-    for (;;) {
-        qint64 gotBytes = source->read(buffer, sizeof(buffer));
-
-        if (gotBytes > 0) {
-            totalBytes += gotBytes;
-            if (gotBytes != file.write(buffer, gotBytes)) {
-                error = "Incomplete write";
-                goto done;
-            }
-        } else if (gotBytes < 0) {
-            error = "Read error";
-            goto done;
-        } else {
-            // EOF
-            break;
-        }
-    }
-
-    if (!file.flush()) {
-        error = QString("Cannot flush: %1").arg(file.errorString());
-        goto done;
-    }
-
-    file.close();
-
-    if (totalBytes == 0) {
-        error = "Success, but the audio file has no data";
-    }
-
-done:
-    //updateDefaultOutputPaths();
-    return error;
+    return "Deprecated";
 }
 
 QString DocFillExportManager::exportHtml(Document* document, QString outputPath)

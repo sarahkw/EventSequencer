@@ -1,5 +1,6 @@
 #include "batchserviceimpl.h"
 
+#include "audioformatholder.h"
 #include "batchservicestatus.h"
 #include "document.h"
 #include "docfillstructure.h"
@@ -7,6 +8,7 @@
 #include "resourcemetadata.h"
 #include "channel/textchannel.h"
 #include "channel/collatechannel.h"
+#include "playable/stripslist.h"
 
 #include <QDebug>
 #include <QJsonArray>
@@ -111,15 +113,122 @@ void ExportJsonWorkerThread::run()
 }
 
 class ExportPlayToFileWorkerThread : public BatchServiceImplThread {
+    QUrl documentUrl_;
+public:
+    ExportPlayToFileWorkerThread(QUrl documentUrl) : documentUrl_(documentUrl) {}
 protected:
-    void run() override
+    void run() override;
+};
+
+void ExportPlayToFileWorkerThread::run()
+{
+    Document document;
     {
-        for (int i = 10; i > 0; --i) {
-            emit statusTextChanged(QString("Export Play to File: %1").arg(i));
-            QThread::sleep(1);
+        auto result = document.load(documentUrl_);
+        if (!result[0].toBool()) {
+            emit statusTextChanged(QString("Cannot open: %1").arg(result[1].toString()));
+            return;
         }
     }
-};
+    QString outputPath;
+    {
+        DocumentPathsResponse pathResponse;
+        if (document.pathQuery(DocumentPaths::PathRequest::PLAYTOFILE_EXPORT, &pathResponse)) {
+            outputPath = pathResponse.filePath;
+        } else {
+            emit statusTextChanged("Internal error");
+            return;
+        }
+    }
+
+    DocFillStructure dfstructure;
+    if (!dfstructure.load(document)) {
+        emit statusTextChanged("Internal error");
+        return;
+    }
+
+    playable::StripsList playable;
+    playable.setFileResourceDirectory(document.fileResourceDirectory());
+    playable.setSelectedChannel(dfstructure.collateChannel);
+    playable.setSelectionMode(playable::StripsList::SelectionMode::ChannelFromBegin);
+
+    AudioFormatHolder* audioFormatHolder = nullptr;
+    if (document.audioFormatHolderSet()) {
+        audioFormatHolder =
+            qobject_cast<AudioFormatHolder*>(document.audioFormatHolderQObject());
+    }
+    if (audioFormatHolder == nullptr) {
+        emit statusTextChanged("Internal error");
+        return;
+    }
+    auto audioFormat = audioFormatHolder->toQAudioFormat();
+
+    // .au's have big endian samples
+    audioFormat.setByteOrder(QAudioFormat::BigEndian);
+
+    std::unique_ptr<QIODevice> source{playable.createPlayableDevice(audioFormat)};
+    if (!source) {
+        emit statusTextChanged(playable.error());
+        return;
+    }
+    source->open(QIODevice::ReadOnly);
+
+    QFile file(outputPath);
+    if (!file.open(QFile::NewOnly)) {
+        emit statusTextChanged(QString("Cannot open file: %1").arg(file.errorString()));
+        return;
+    }
+
+    qint64 totalBytes = 0;
+    QString error = "Success";
+
+    AuFileHeader afh;
+    if (!afh.loadFormat(audioFormat)) {
+        qCritical("??? Format was good but now is not?");
+        error = "Internal error";
+        goto done;
+    }
+
+    if (!afh.writeFile(file)) {
+        error = QString("Cannot write header: %1").arg(file.errorString());
+        goto done;
+    }
+
+    char buffer[4096];
+    for (;;) {
+        qint64 gotBytes = source->read(buffer, sizeof(buffer));
+
+        if (gotBytes > 0) {
+            totalBytes += gotBytes;
+            if (gotBytes != file.write(buffer, gotBytes)) {
+                error = "Incomplete write";
+                goto done;
+            }
+        } else if (gotBytes < 0) {
+            error = "Read error";
+            goto done;
+        } else {
+            // EOF
+            break;
+        }
+    }
+
+    if (!file.flush()) {
+        error = QString("Cannot flush: %1").arg(file.errorString());
+        goto done;
+    }
+
+    file.close();
+
+    if (totalBytes == 0) {
+        error = "Success, but the audio file has no data";
+    }
+
+done:
+    //updateDefaultOutputPaths();
+    emit statusTextChanged(error);
+    return;
+}
 
 class ExportHtmlWorkerThread : public BatchServiceImplThread {
 protected:
@@ -188,21 +297,8 @@ QString BatchServiceImpl::requestExportJson(QUrl documentUrl)
 
 QString BatchServiceImpl::requestExportPlayToFile(QUrl documentUrl)
 {
-    /*
-    if (workSimulator_.isActive()) {
-        return "Work is already running!!";
-    }
-
-    qInfo() << "requestExportPlayToFile" << documentUrl;
-
-    workLeft_ = 30;
-    emit statusChanged(workLeft_);
-    emit androidStartService();
-    workSimulator_.start();
-
-    updateStatus();
-    */
-    return {};
+    return startRequestedExport(
+        [documentUrl]() { return new ExportPlayToFileWorkerThread(documentUrl); });
 }
 
 QString BatchServiceImpl::requestExportHtml(QUrl documentUrl)
