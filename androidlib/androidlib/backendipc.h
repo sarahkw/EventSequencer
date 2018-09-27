@@ -42,6 +42,8 @@ public:
     BackendIpc(std::function<void(const QVariant&)>&& cb);
     ~BackendIpc();
 
+    QString requestExportJson(QUrl documentUrl);
+    QString requestExportPlayToFile(QUrl documentUrl);
     QString requestExportHtml(QUrl documentUrl);
 
 };

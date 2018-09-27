@@ -52,6 +52,8 @@ public:
     Q_INVOKABLE static QString exportPlayToFile(Document* document, QString outputPath);
     Q_INVOKABLE static QString exportHtml(Document* document, QString outputPath);
 
+    Q_INVOKABLE QString requestExportJson(Document* document);
+    Q_INVOKABLE QString requestExportPlayToFile(Document* document);
     Q_INVOKABLE QString requestExportHtml(Document* document);
 
     // TODO Delete -- temporary as an in-between while we migrate.

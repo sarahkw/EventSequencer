@@ -29,6 +29,40 @@ void BatchServiceImpl::updateStatus()
     emit statusChanged(status());
 }
 
+QString BatchServiceImpl::requestExportJson(QUrl documentUrl)
+{
+    if (workSimulator_.isActive()) {
+        return "Work is already running!!";
+    }
+
+    qInfo() << "requestExportJson" << documentUrl;
+
+    workLeft_ = 30;
+    emit statusChanged(workLeft_);
+    emit androidStartService();
+    workSimulator_.start();
+
+    updateStatus();
+    return {};
+}
+
+QString BatchServiceImpl::requestExportPlayToFile(QUrl documentUrl)
+{
+    if (workSimulator_.isActive()) {
+        return "Work is already running!!";
+    }
+
+    qInfo() << "requestExportPlayToFile" << documentUrl;
+
+    workLeft_ = 30;
+    emit statusChanged(workLeft_);
+    emit androidStartService();
+    workSimulator_.start();
+
+    updateStatus();
+    return {};
+}
+
 QString BatchServiceImpl::requestExportHtml(QUrl documentUrl)
 {
     if (workSimulator_.isActive()) {

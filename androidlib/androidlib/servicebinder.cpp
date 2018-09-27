@@ -31,14 +31,36 @@ bool ServiceBinder::onTransact(int code, const QAndroidParcel& data,
     }
 
     // Custom methods.
-    auto service = service_;
-
     if (code == 1000) {
         QString retval;
 
         QUrl documentUrl = data.readVariant().toString();
 
-        if (!QMetaObject::invokeMethod(service.get(), "requestExportHtml",
+        if (!QMetaObject::invokeMethod(service_.get(), "requestExportJson",
+                                       Qt::BlockingQueuedConnection,
+                                       Q_RETURN_ARG(QString, retval),
+                                       Q_ARG(QUrl, documentUrl))) {
+            return false;
+        }
+        reply.writeVariant(retval);
+    } else if (code == 1001) {
+        QString retval;
+
+        QUrl documentUrl = data.readVariant().toString();
+
+        if (!QMetaObject::invokeMethod(service_.get(), "requestExportPlayToFile",
+                                       Qt::BlockingQueuedConnection,
+                                       Q_RETURN_ARG(QString, retval),
+                                       Q_ARG(QUrl, documentUrl))) {
+            return false;
+        }
+        reply.writeVariant(retval);
+    } else if (code == 1002) {
+        QString retval;
+
+        QUrl documentUrl = data.readVariant().toString();
+
+        if (!QMetaObject::invokeMethod(service_.get(), "requestExportHtml",
                                        Qt::BlockingQueuedConnection,
                                        Q_RETURN_ARG(QString, retval),
                                        Q_ARG(QUrl, documentUrl))) {

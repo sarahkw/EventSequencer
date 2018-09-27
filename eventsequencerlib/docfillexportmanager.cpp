@@ -230,6 +230,16 @@ QString DocFillExportManager::exportHtml(Document* document, QString outputPath)
     return "";
 }
 
+QString DocFillExportManager::requestExportJson(Document* document)
+{
+    return batchService_.requestExportJson(document->currentUrl());
+}
+
+QString DocFillExportManager::requestExportPlayToFile(Document* document)
+{
+    return batchService_.requestExportPlayToFile(document->currentUrl());
+}
+
 QString DocFillExportManager::requestExportHtml(Document* document)
 {
     return batchService_.requestExportHtml(document->currentUrl());

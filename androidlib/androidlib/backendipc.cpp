@@ -42,12 +42,30 @@ BackendIpc::~BackendIpc()
     unbindService();
 }
 
-QString BackendIpc::requestExportHtml(QUrl documentUrl)
+QString BackendIpc::requestExportJson(QUrl documentUrl)
 {
     QAndroidParcel data;
     QAndroidParcel reply;
     data.writeVariant(documentUrl);
     JniUtils::binderTransact(rpcBinder_, 1000, data, &reply);
+    return reply.readVariant().toString();
+}
+
+QString BackendIpc::requestExportPlayToFile(QUrl documentUrl)
+{
+    QAndroidParcel data;
+    QAndroidParcel reply;
+    data.writeVariant(documentUrl);
+    JniUtils::binderTransact(rpcBinder_, 1001, data, &reply);
+    return reply.readVariant().toString();
+}
+
+QString BackendIpc::requestExportHtml(QUrl documentUrl)
+{
+    QAndroidParcel data;
+    QAndroidParcel reply;
+    data.writeVariant(documentUrl);
+    JniUtils::binderTransact(rpcBinder_, 1002, data, &reply);
     return reply.readVariant().toString();
 }
 

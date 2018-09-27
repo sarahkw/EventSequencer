@@ -16,6 +16,16 @@ QVariant BatchServiceReplica::status() const
     return status_;
 }
 
+QString BatchServiceReplica::requestExportJson(QUrl documentUrl)
+{
+    return ipc_.requestExportJson(documentUrl);
+}
+
+QString BatchServiceReplica::requestExportPlayToFile(QUrl documentUrl)
+{
+    return ipc_.requestExportPlayToFile(documentUrl);
+}
+
 QString BatchServiceReplica::requestExportHtml(QUrl documentUrl)
 {
     return ipc_.requestExportHtml(documentUrl);
