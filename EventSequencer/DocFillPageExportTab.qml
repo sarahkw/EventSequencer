@@ -20,6 +20,15 @@ ScrollView {
         ES.DocFillExportManager {
             id: exportManager
             document: unnamedParent_6e26.document_rebind
+
+            // Can be undefined before Android service provides status.
+            property bool watchForStopWorking: batchServiceStatus !== undefined ? batchServiceStatus.isWorking : false
+            onWatchForStopWorkingChanged: {
+                if (!watchForStopWorking) {
+                    // Just stopped working.
+                    tempUpdateDefaultOutputPaths()
+                }
+            }
         }
 
         GroupBox {
