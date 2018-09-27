@@ -4,17 +4,23 @@
 
 #include <QDebug>
 
+namespace {
+
+class WorkerThread : public BatchServiceImplThread {
+protected:
+    void run() override
+    {
+        for (int i = 30; i > 0; --i) {
+            emit statusTextChanged(QString("Export HTML: %1").arg(i));
+            QThread::sleep(1);
+        }
+    }
+};
+
+} // namespace anonymous
+
 BatchServiceImpl::BatchServiceImpl()
 {
-    workSimulator_.setInterval(1000);
-    QObject::connect(&workSimulator_, &QTimer::timeout, [this]() {
-        workLeft_--;
-        if (workLeft_ == 0) {
-            workSimulator_.stop();
-            emit androidStopService();
-        }
-        updateStatus();
-    });
 }
 
 QVariant BatchServiceImpl::status() const
@@ -22,15 +28,9 @@ QVariant BatchServiceImpl::status() const
     return QVariant::fromValue(status_);
 }
 
-void BatchServiceImpl::updateStatus()
-{
-    status_.isWorking_ = workSimulator_.isActive();
-    status_.statusText_ = QString("Working: %1").arg(workLeft_);
-    emit statusChanged(status());
-}
-
 QString BatchServiceImpl::requestExportJson(QUrl documentUrl)
 {
+    /*
     if (workSimulator_.isActive()) {
         return "Work is already running!!";
     }
@@ -43,11 +43,13 @@ QString BatchServiceImpl::requestExportJson(QUrl documentUrl)
     workSimulator_.start();
 
     updateStatus();
+    */
     return {};
 }
 
 QString BatchServiceImpl::requestExportPlayToFile(QUrl documentUrl)
 {
+    /*
     if (workSimulator_.isActive()) {
         return "Work is already running!!";
     }
@@ -60,27 +62,48 @@ QString BatchServiceImpl::requestExportPlayToFile(QUrl documentUrl)
     workSimulator_.start();
 
     updateStatus();
+    */
     return {};
 }
 
 QString BatchServiceImpl::requestExportHtml(QUrl documentUrl)
 {
-    if (workSimulator_.isActive()) {
+    if (!!workerThread_) {
         return "Work is already running!!";
     }
 
-    qInfo() << "requestExportHtml" << documentUrl;
+    workerThread_ = decltype(workerThread_)(new WorkerThread);
 
-    workLeft_ = 30;
-    emit statusChanged(workLeft_);
+    QObject::connect(workerThread_.get(), &WorkerThread::finished,
+                     this, &BatchServiceImpl::workerFinished);
+    QObject::connect(workerThread_.get(), &WorkerThread::statusTextChanged,
+                     this, &BatchServiceImpl::workerStatusTextChanged);
+
+    status_.isWorking_ = true;
+    status_.statusText_.clear();
+    emit statusChanged(QVariant::fromValue(status_));
     emit androidStartService();
-    workSimulator_.start();
 
-    updateStatus();
+    workerThread_->start();
+
     return {};
 }
 
 void BatchServiceImpl::applicationExiting()
 {
 
+}
+
+void BatchServiceImpl::workerFinished()
+{
+    workerThread_.reset();
+    status_.isWorking_ = false;
+    emit statusChanged(QVariant::fromValue(status_));
+    emit androidStopService();
+}
+
+void BatchServiceImpl::workerStatusTextChanged(const QString &statusText)
+{
+    status_.statusText_ = statusText;
+    emit statusChanged(QVariant::fromValue(status_));
 }
