@@ -35,6 +35,9 @@ protected:
         for (int i = 30; i > 0; --i) {
             emit statusTextChanged(QString("Export HTML: %1").arg(i));
             QThread::sleep(1);
+            if (isInterruptionRequested()) {
+                return;
+            }
         }
         emit statusTextChanged(QString("Export HTML: Success"));
     }
@@ -44,6 +47,14 @@ protected:
 
 BatchServiceImpl::BatchServiceImpl()
 {
+}
+
+BatchServiceImpl::~BatchServiceImpl()
+{
+    if (!!workerThread_) {
+        workerThread_->requestInterruption();
+        workerThread_->wait();
+    }
 }
 
 QVariant BatchServiceImpl::status() const

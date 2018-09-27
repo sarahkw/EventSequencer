@@ -29,6 +29,7 @@ class BatchServiceImpl : public QObject
 public:
 
     BatchServiceImpl();
+    ~BatchServiceImpl() override;
 
     QVariant status() const;
 
