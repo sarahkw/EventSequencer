@@ -36,6 +36,7 @@ protected:
             emit statusTextChanged(QString("Export HTML: %1").arg(i));
             QThread::sleep(1);
         }
+        emit statusTextChanged(QString("Export HTML: Success"));
     }
 };
 

@@ -33,7 +33,11 @@ ScrollView {
                     if (exportManager.batchServiceStatus === undefined) {
                         return "Offline"
                     } else if (!exportManager.batchServiceStatus.isWorking) {
-                        return "Idle"
+                        if (exportManager.batchServiceStatus.statusText !== "") {
+                            return "Finished: %1".arg(exportManager.batchServiceStatus.statusText)
+                        } else {
+                            return "Idle"
+                        }
                     } else {
                         return exportManager.batchServiceStatus.statusText
                     }
