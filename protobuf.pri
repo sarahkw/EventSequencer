@@ -1,14 +1,22 @@
-#unix: CONFIG += link_pkgconfig
-#unix: PKGCONFIG += protobuf
 android: PROTOBUF_THING = android
 !android: PROTOBUF_THING = desktop
+
 INCLUDEPATH += /home/sarah/protobuf-cross-compile/$$PROTOBUF_THING/include
-LIBS += -L/home/sarah/protobuf-cross-compile/$$PROTOBUF_THING/lib -lprotobuf
+LIBS += -L/home/sarah/protobuf-cross-compile/$$PROTOBUF_THING/lib -lprotobuf -lmp3lame
+# XXX on desktop it does pick up the system one.
 
 contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
     ANDROID_EXTRA_LIBS = \
-        $$PWD/../protobuf-cross-compile/android/lib/libprotobuf.so
+        $$PWD/../protobuf-cross-compile/android/lib/libprotobuf.so \
+        $$PWD/../protobuf-cross-compile/android/lib/libmp3lame.so
 }
+
+
+########################################################################
+# BUILD INSTRUCTIONS
+########################################################################
+
+# PROTOBUF:
 
 # First, compile/install x86 version:
 # 
@@ -60,3 +68,19 @@ contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
 # 
 # ./configure --host=arm-linux-androideabi --with-protoc=/home/sarah/protobuf-cross-compile/desktop/bin/protoc --prefix=/home/sarah/protobuf-cross-compile/android
 # [sarah@slappy protobuf]$ make -j4 install
+
+# LAME:
+
+# DESKTOP
+# 
+# [sarah@slappy lame-3.100]$ ./configure --prefix=/home/sarah/protobuf-cross-compile/desktop --disable-analyzer-hooks --disable-decoder
+# [sarah@slappy lame-3.100]$ make -j4
+# [sarah@slappy lame-3.100]$ make install
+# 
+# ANDROID
+# 
+# Use the exports from the protobuf section, and then:
+# 
+# [sarah@slappy lame-3.100]$ ./configure --host=arm-linux-androideabi --prefix=/home/sarah/protobuf-cross-compile/android --disable-analyzer-hooks --disable-decoder --disable-frontend
+# [sarah@slappy lame-3.100]$ make -j4
+# [sarah@slappy lame-3.100]$ make install

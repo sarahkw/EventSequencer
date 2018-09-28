@@ -15,6 +15,8 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 
+#include <lame/lame.h>
+
 namespace {
 
 class ExportJsonWorkerThread : public BatchServiceImplThread {
@@ -235,13 +237,13 @@ protected:
     void run() override
     {
         for (int i = 30; i > 0; --i) {
-            emit statusTextChanged(QString("Export HTML: %1").arg(i));
+            emit statusTextChanged(QString("%1: %2").arg(get_lame_version()).arg(i));
             QThread::sleep(1);
             if (isInterruptionRequested()) {
                 return;
             }
         }
-        emit statusTextChanged(QString("Export HTML: Success"));
+        emit statusTextChanged(QString("%1: Success").arg(get_lame_version()));
 
         //    QDir dir(outputPath);
         //    if (dir.exists()) {
