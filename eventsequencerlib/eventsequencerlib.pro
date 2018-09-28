@@ -194,7 +194,7 @@ unix {
     INSTALLS += target
 }
 
-include(../protobuf.pri)
+include(../crosscompilelibs.pri)
 
 ########################################################################
 # Begin androidlib

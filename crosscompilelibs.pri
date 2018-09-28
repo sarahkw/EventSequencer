@@ -1,3 +1,4 @@
+# XXX Yeah, you can see this was for protobuf first, with mp3lame added after.
 android: PROTOBUF_THING = android
 !android: PROTOBUF_THING = desktop
 
