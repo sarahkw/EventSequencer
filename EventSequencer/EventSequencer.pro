@@ -79,7 +79,7 @@ PRE_TARGETDEPS += $$OUT_PWD/../androidlib/libandroidlib.a
 ########################################################################
 
 
-include(../protobuf.pri)
+include(../crosscompilelibs.pri)
 
 DISTFILES += \
     android/AndroidManifest.xml \
