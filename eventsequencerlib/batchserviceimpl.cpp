@@ -10,6 +10,7 @@
 #include "channel/collatechannel.h"
 #include "playable/stripslist.h"
 
+#include <QDir>
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -233,25 +234,67 @@ done:
 }
 
 class ExportHtmlWorkerThread : public BatchServiceImplThread {
+    QUrl documentUrl_;
+public:
+    ExportHtmlWorkerThread(QUrl documentUrl) : documentUrl_(documentUrl) {}
 protected:
     void run() override
     {
-        for (int i = 30; i > 0; --i) {
-            emit statusTextChanged(QString("%1: %2").arg(get_lame_version()).arg(i));
-            QThread::sleep(1);
+        Document document;
+        {
+            auto result = document.load(documentUrl_);
+            if (!result[0].toBool()) {
+                emit statusTextChanged(QString("Cannot open: %1").arg(result[1].toString()));
+                return;
+            }
+        }
+        QString outputPath;
+        {
+            DocumentPathsResponse pathResponse;
+            if (document.pathQuery(DocumentPaths::PathRequest::HTML_EXPORT, &pathResponse)) {
+                outputPath = pathResponse.filePath;
+            } else {
+                emit statusTextChanged("Internal error");
+                return;
+            }
+        }
+
+        DocFillStructure dfstructure;
+        if (!dfstructure.load(document)) {
+            emit statusTextChanged("Internal error");
+            return;
+        }
+
+        QDir dir(outputPath);
+        if (dir.exists()) {
+            emit statusTextChanged("Already exists!");
+            return;
+        }
+        if (!dir.mkpath(".")) {
+            emit statusTextChanged("Cannot create directory");
+            return;
+        }
+
+        auto allSegments = dfstructure.collateChannel->segments();
+        std::vector<channel::CollateChannel::Segment> processableSegments;
+        for (auto& s : allSegments) {
+            if (s.strip != nullptr) {
+                if (!s.strip->resourceUrl().isEmpty()) {
+                    processableSegments.push_back(s);
+                }
+            }
+        }
+
+        for (size_t i = 0; i < processableSegments.size(); ++i) {
+            Strip* s = processableSegments[i].strip;
+            emit statusTextChanged(QString("%1 of %2").arg(i).arg(processableSegments.size()));
+            QThread::msleep(500);
             if (isInterruptionRequested()) {
                 return;
             }
         }
-        emit statusTextChanged(QString("%1: Success").arg(get_lame_version()));
 
-        //    QDir dir(outputPath);
-        //    if (dir.exists()) {
-        //        return "Already exists!";
-        //    }
-        //    if (!dir.mkpath(".")) {
-        //        return "Cannot create directory";
-        //    }
+        emit statusTextChanged(QString("%1: Success").arg(get_lame_version()));
     }
 };
 
@@ -313,7 +356,8 @@ QString BatchServiceImpl::requestExportPlayToFile(QUrl documentUrl)
 
 QString BatchServiceImpl::requestExportHtml(QUrl documentUrl)
 {
-    return startRequestedExport([]() { return new ExportHtmlWorkerThread; });
+    return startRequestedExport(
+        [documentUrl]() { return new ExportHtmlWorkerThread(documentUrl); });
 }
 
 void BatchServiceImpl::applicationExiting()
