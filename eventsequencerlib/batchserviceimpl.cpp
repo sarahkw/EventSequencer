@@ -345,6 +345,11 @@ protected:
                 }
             }
 
+            const auto bytesPerSample = audioFormat.sampleSize() / 8;
+            const auto bufferSize = 16384; // QIODEVICE_BUFFERSIZE, but that's in a private header.
+            const auto sampleCount = bufferSize / bytesPerSample;
+            const auto mp3buffer_size = size_t(1.25 * sampleCount + 7200); // "worst case" from docs
+            std::vector<char> mp3buffer(mp3buffer_size);
 
             QThread::msleep(500);
             if (isInterruptionRequested()) {
