@@ -41,7 +41,7 @@ struct StartReadingFromBuffer {
 };
 } // namespace anonymous
 
-qint64 SampleModifyingIODevice::readFromBufferAndIODevice(
+qint64 SampleModifyingIODevice::readFromInferior(
     char* output, qint64 outputBytes, qint64 multiplesOf)
 {
     Q_ASSERT(outputBytes % multiplesOf == 0);
@@ -73,12 +73,12 @@ qint64 SampleModifyingIODevice::readFromBufferAndIODevice(
     }
 }
 
-void SampleModifyingIODevice::read2FromBufferAndIODevice(
+void SampleModifyingIODevice::read2FromInferior(
     char* output1, qint64 output1len, qint64* output1read,
     char* output2, qint64 output2len, qint64* output2read,
     qint64 multiplesOf)
 {
-    *output1read = readFromBufferAndIODevice(output1, output1len, multiplesOf);
+    *output1read = readFromInferior(output1, output1len, multiplesOf);
     *output2read = 0;
 
     if (inferiorFlaggedError_ || *output1read != output1len) {
@@ -88,7 +88,7 @@ void SampleModifyingIODevice::read2FromBufferAndIODevice(
         // No-op: Can't fill output1, so don't try output2
     } else {
         COVERAGE_COOKIE("COOKIE-4f22b");
-        *output2read = readFromBufferAndIODevice(output2, output2len, multiplesOf);
+        *output2read = readFromInferior(output2, output2len, multiplesOf);
         COVERAGE_COOKIE_COND(inferiorFlaggedError_, "COOKIE-16c18");
         COVERAGE_COOKIE_COND(!inferiorFlaggedError_ && *output2read != output2len, "COOKIE-16c19");
         COVERAGE_COOKIE_COND(!inferiorFlaggedError_ && *output2read < output2len, "COOKIE-16c1a");
@@ -120,7 +120,7 @@ qint64 SampleModifyingIODevice::readData(char *data, qint64 maxlen)
     qint64 directReadBytes = 0;
     qint64 extraUnitReadBytes = 0;
 
-    read2FromBufferAndIODevice(
+    read2FromInferior(
         srfb.continueWritingAt, unitsRequestedLen, &directReadBytes,
         extraUnit.data(), qint64(extraUnit.size()), &extraUnitReadBytes,
                 bytesPerUnit_);

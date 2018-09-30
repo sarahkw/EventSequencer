@@ -17,9 +17,9 @@ class SampleModifyingIODevice : public QIODevice
 
     std::vector<char> incompleteWriteBuffer_;
 
-    qint64 readFromBufferAndIODevice(
+    qint64 readFromInferior(
         char* output, qint64 outputBytes, qint64 multiplesOf);
-    void read2FromBufferAndIODevice(
+    void read2FromInferior(
         char* output1, qint64 output1len, qint64* output1read,
         char* output2, qint64 output2len, qint64* output2read,
         qint64 multiplesOf);
