@@ -10,6 +10,7 @@
 #include "channel/collatechannel.h"
 #include "playable/stripslist.h"
 #include "endianmodifyingiodevice.h"
+#include "supportedaudioformat.h"
 
 #include <QDir>
 #include <QDebug>
@@ -350,6 +351,18 @@ protected:
             const auto sampleCount = bufferSize / bytesPerSample;
             const auto mp3buffer_size = size_t(1.25 * sampleCount + 7200); // "worst case" from docs
             std::vector<char> mp3buffer(mp3buffer_size);
+
+            switch (SupportedAudioFormat::classify(audioFormat)) {
+            case SupportedAudioFormat::Type::NotSupported:
+                emit statusTextChanged(QString("Unsupported audio format for encoding"));
+                break;
+            case SupportedAudioFormat::Type::Float:
+                break;
+            case SupportedAudioFormat::Type::Short:
+                break;
+            case SupportedAudioFormat::Type::Int:
+                break;
+            }
 
             QThread::msleep(500);
             if (isInterruptionRequested()) {
