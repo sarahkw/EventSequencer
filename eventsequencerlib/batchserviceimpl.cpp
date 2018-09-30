@@ -20,6 +20,8 @@
 
 #include <lame/lame.h>
 
+#include <cmath>
+
 namespace {
 
 class ExportJsonWorkerThread : public BatchServiceImplThread {
@@ -353,7 +355,10 @@ protected:
             const auto bufferSize = 16384; // QIODEVICE_BUFFERSIZE, but that's in a private header.
             const auto frameCount = bufferSize / bytesPerSample / audioFormat.channelCount();
             const auto sampleCount = frameCount * audioFormat.channelCount();
-            const auto mp3buffer_size = size_t(1.25 * sampleCount + 7200); // "worst case" from docs
+
+            // "worst case" from docs. I add ceil just to be safe, since the doc isn't clear.
+            const auto mp3buffer_size = size_t(std::ceil(1.25 * sampleCount + 7200));
+
             std::vector<char> mp3buffer(mp3buffer_size);
 
             switch (SupportedAudioFormat::classify(audioFormat)) {
