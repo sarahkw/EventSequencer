@@ -333,10 +333,13 @@ protected:
             Q_ASSERT(!!gfp); // TODO error handling
 
             lame_set_in_samplerate(&*gfp, audioFormat.sampleRate());
-            if (audioFormat.channelCount() == 1) {
-                lame_set_num_channels(&*gfp, 1);
+            if (audioFormat.channelCount() == 1 || audioFormat.channelCount() == 2) {
+                lame_set_num_channels(&*gfp, audioFormat.channelCount());
             } else {
-                lame_set_num_channels(&*gfp, 2);
+                // I guess if we wanted to support more channels, we could just take
+                // the first 2 channels. But I don't think anyone will do that.
+                emit statusTextChanged(QString("Can only encode with 1 or 2 channels"));
+                return;
             }
             {
                 int rcode = lame_init_params(&*gfp);
@@ -348,7 +351,8 @@ protected:
 
             const auto bytesPerSample = audioFormat.sampleSize() / 8;
             const auto bufferSize = 16384; // QIODEVICE_BUFFERSIZE, but that's in a private header.
-            const auto sampleCount = bufferSize / bytesPerSample;
+            const auto frameCount = bufferSize / bytesPerSample / audioFormat.channelCount();
+            const auto sampleCount = frameCount * audioFormat.channelCount();
             const auto mp3buffer_size = size_t(1.25 * sampleCount + 7200); // "worst case" from docs
             std::vector<char> mp3buffer(mp3buffer_size);
 
@@ -359,6 +363,13 @@ protected:
             case SupportedAudioFormat::Type::Float:
                 break;
             case SupportedAudioFormat::Type::Short:
+                if (audioFormat.channelCount() == 1) {
+
+                } else if (audioFormat.channelCount() == 2) {
+
+                } else {
+                    Q_ASSERT(false);
+                }
                 break;
             case SupportedAudioFormat::Type::Int:
                 break;
