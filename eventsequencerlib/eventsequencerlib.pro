@@ -105,7 +105,8 @@ SOURCES += \
     batchservicereplica.cpp \
     batchservicefactory.cpp \
     batchservicestatus.cpp \
-    docfillstructure.cpp
+    docfillstructure.cpp \
+    supportedaudioformat.cpp
 
 
 HEADERS += \
@@ -187,7 +188,8 @@ HEADERS += \
     batchservicereplica.h \
     batchservicefactory.h \
     batchservicestatus.h \
-    docfillstructure.h
+    docfillstructure.h \
+    supportedaudioformat.h
 
 unix {
     target.path = /usr/lib

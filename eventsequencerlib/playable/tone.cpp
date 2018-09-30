@@ -1,5 +1,7 @@
 #include "tone.h"
 
+#include "supportedaudioformat.h"
+
 #include <QAudioFormat>
 #include <QIODevice>
 
@@ -118,33 +120,26 @@ QIODevice *Tone::createPlayableDevice(const QAudioFormat &outputFormat)
 
     std::vector<char> sampleBytes;
 
-    // These are the common ones, I think.
-    if (outputFormat.sampleType() == QAudioFormat::Float) {
-        if (outputFormat.sampleSize() == 32) {
-            writeSquareWaveData<float>(amplitude, -1, 1, periodInSamplesInteger,
-                                outputFormat.channelCount(), sampleBytes);
-        } else {
-            setError("Only 32 bits supported for float");
-            return nullptr;
-        }
-    } else if (outputFormat.sampleType() == QAudioFormat::SignedInt) {
-        if (outputFormat.sampleSize() == 16) {
-            writeSquareWaveData<short>(amplitude, std::numeric_limits<short>::min(),
-                                std::numeric_limits<short>::max(),
-                                periodInSamplesInteger,
-                                outputFormat.channelCount(), sampleBytes);
-        } else if (outputFormat.sampleSize() == 32) {
-            writeSquareWaveData<int>(amplitude, std::numeric_limits<int>::min(),
-                              std::numeric_limits<int>::max(),
-                              periodInSamplesInteger,
-                              outputFormat.channelCount(), sampleBytes);
-        } else {
-            setError("Only 16 or 32 bits supported for signed int");
-            return nullptr;
-        }
-    } else {
-        setError("Only signed int and float are supported");
-        return nullptr;
+    switch (SupportedAudioFormat::classify(outputFormat)) {
+    case SupportedAudioFormat::Type::NotSupported:
+        setError("Audio format not supported");
+        break;
+    case SupportedAudioFormat::Type::Float:
+        writeSquareWaveData<float>(amplitude, -1, 1, periodInSamplesInteger,
+                            outputFormat.channelCount(), sampleBytes);
+        break;
+    case SupportedAudioFormat::Type::Short:
+        writeSquareWaveData<short>(amplitude, std::numeric_limits<short>::min(),
+                            std::numeric_limits<short>::max(),
+                            periodInSamplesInteger,
+                            outputFormat.channelCount(), sampleBytes);
+        break;
+    case SupportedAudioFormat::Type::Int:
+        writeSquareWaveData<int>(amplitude, std::numeric_limits<int>::min(),
+                          std::numeric_limits<int>::max(),
+                          periodInSamplesInteger,
+                          outputFormat.channelCount(), sampleBytes);
+        break;
     }
 
     return new LoopedBytesIODevice(std::move(sampleBytes));
