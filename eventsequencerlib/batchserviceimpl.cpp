@@ -9,6 +9,7 @@
 #include "channel/textchannel.h"
 #include "channel/collatechannel.h"
 #include "playable/stripslist.h"
+#include "endianmodifyingiodevice.h"
 
 #include <QDir>
 #include <QDebug>
@@ -275,6 +276,22 @@ protected:
             return;
         }
 
+        AudioFormatHolder* audioFormatHolder = nullptr;
+        if (document.audioFormatHolderSet()) {
+            audioFormatHolder =
+                qobject_cast<AudioFormatHolder*>(document.audioFormatHolderQObject());
+        }
+        if (audioFormatHolder == nullptr) {
+            emit statusTextChanged("Internal error");
+            return;
+        }
+        auto audioFormat = audioFormatHolder->toQAudioFormat();
+
+        // I think LAME expects the byte order of the device.
+        static_assert (static_cast<QAudioFormat::Endian>(QSysInfo::BigEndian) == QAudioFormat::BigEndian, "");
+        static_assert (static_cast<QAudioFormat::Endian>(QSysInfo::LittleEndian) == QAudioFormat::LittleEndian, "");
+        audioFormat.setByteOrder(static_cast<QAudioFormat::Endian>(QSysInfo::ByteOrder));
+
         auto allSegments = dfstructure.collateChannel->segments();
         std::vector<channel::CollateChannel::Segment> processableSegments;
         for (auto& s : allSegments) {
@@ -288,6 +305,26 @@ protected:
         for (size_t i = 0; i < processableSegments.size(); ++i) {
             Strip* s = processableSegments[i].strip;
             emit statusTextChanged(QString("%1 of %2").arg(i).arg(processableSegments.size()));
+
+            std::unique_ptr<SampleModifyingIODevice> resource;
+            {
+                EndianModifyingIODevice* emiod{};
+                QString errorMessage;
+                if (playable::PlayableBase::buildEmiod(document.fileResourceDirectory(),
+                                                       s->resourceUrl(),
+                                                       audioFormat, &emiod, &errorMessage)) {
+                    resource.reset(emiod);
+                } else {
+                    emit statusTextChanged(QString("Error: %1: %2").arg(s->resourceUrl().toString()).arg(errorMessage));
+                    return;
+                }
+            }
+
+            {
+                const bool ok = resource->open(QIODevice::ReadOnly);
+                Q_ASSERT(ok); // Can't happen, but just make sure.
+            }
+
             QThread::msleep(500);
             if (isInterruptionRequested()) {
                 return;
