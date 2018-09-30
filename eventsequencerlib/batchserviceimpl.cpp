@@ -325,6 +325,27 @@ protected:
                 Q_ASSERT(ok); // Can't happen, but just make sure.
             }
 
+            auto lameCloser = [](lame_global_flags* gfp) {
+                lame_close(gfp);
+            };
+            std::unique_ptr<lame_global_flags, decltype(lameCloser)> gfp(lame_init(), lameCloser);
+            Q_ASSERT(!!gfp); // TODO error handling
+
+            lame_set_in_samplerate(&*gfp, audioFormat.sampleRate());
+            if (audioFormat.channelCount() == 1) {
+                lame_set_num_channels(&*gfp, 1);
+            } else {
+                lame_set_num_channels(&*gfp, 2);
+            }
+            {
+                int rcode = lame_init_params(&*gfp);
+                if (rcode < 0) {
+                    emit statusTextChanged(QString("Error: %1: LAME Error: %2").arg(s->resourceUrl().toString()).arg(rcode));
+                    return;
+                }
+            }
+
+
             QThread::msleep(500);
             if (isInterruptionRequested()) {
                 return;
