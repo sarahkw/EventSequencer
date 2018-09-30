@@ -9,6 +9,7 @@
 class QIODevice;
 class QAudioFormat;
 class ConcatIODevice;
+class EndianModifyingIODevice;
 
 namespace playable {
 
@@ -37,6 +38,13 @@ public:
 
     QString fileResourceDirectory() const;
     void setFileResourceDirectory(const QString &fileResourceDirectory);
+
+public:
+    static bool buildEmiod(QString fileResourceDirectory,
+                           QUrl url,
+                           const QAudioFormat& outputFormat,
+                           EndianModifyingIODevice** output,
+                           QString* errorMessage);
 
 protected:
     // Return false on error, setting errorMessage().

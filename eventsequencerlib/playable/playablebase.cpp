@@ -39,6 +39,44 @@ void PlayableBase::setFileResourceDirectory(const QString &fileResourceDirectory
     }
 }
 
+bool PlayableBase::buildEmiod(QString fileResourceDirectory, QUrl url,
+                              const QAudioFormat& outputFormat,
+                              EndianModifyingIODevice** output,
+                              QString* errorMessage)
+{
+    Q_ASSERT(output);
+    Q_ASSERT(errorMessage);
+
+    ManagedResources managedResources(fileResourceDirectory);
+
+    QString fileName;
+    if (!managedResources.urlConvertToFilePath(url, &fileName)) {
+        *errorMessage = "Missing file resource directory";
+        return false;
+    }
+
+    std::shared_ptr<QFile> muhFile(new QFile(fileName));
+    if (!muhFile->open(QFile::ReadOnly)) {
+        *errorMessage = QString("Cannot open: %1").arg(muhFile->errorString());
+        return false;
+    }
+
+    AuFileHeader afh;
+    if (!afh.loadFileAndSeek(*muhFile)) {
+        // TODO Compare the format
+        *errorMessage = "Cannot load AU file and seek";
+        return false;
+    }
+
+    *output = new EndianModifyingIODevice(
+        muhFile, unsigned(outputFormat.sampleSize() / 8),
+        EndianModifyingIODevice::Big,
+        outputFormat.byteOrder() == QAudioFormat::BigEndian
+            ? EndianModifyingIODevice::Big
+            : EndianModifyingIODevice::Little);
+    return true;
+}
+
 bool PlayableBase::appendUrlToConcatIODevice(ConcatIODevice& playingDevice,
                                              QUrl url,
                                              const QAudioFormat& outputFormat,
@@ -46,33 +84,12 @@ bool PlayableBase::appendUrlToConcatIODevice(ConcatIODevice& playingDevice,
 {
     setError("");
 
-    ManagedResources managedResources(fileResourceDirectory());
-
-    QString fileName;
-    if (!managedResources.urlConvertToFilePath(url, &fileName)) {
-        setError("Missing file resource directory");
+    EndianModifyingIODevice* emiod{};
+    QString errorMessage;
+    if (!buildEmiod(fileResourceDirectory_, url, outputFormat, &emiod, &errorMessage)) {
+        setError(errorMessage);
         return false;
     }
-
-    std::shared_ptr<QFile> muhFile(new QFile(fileName));
-    if (!muhFile->open(QFile::ReadOnly)) {
-        setError(QString("Cannot open: %1").arg(muhFile->errorString()));
-        return false;
-    }
-
-    AuFileHeader afh;
-    if (!afh.loadFileAndSeek(*muhFile)) {
-        // TODO Compare the format
-        setError("Cannot load AU file and seek");
-        return false;
-    }
-
-    auto* emiod = new EndianModifyingIODevice(
-        muhFile, unsigned(outputFormat.sampleSize() / 8),
-        EndianModifyingIODevice::Big,
-        outputFormat.byteOrder() == QAudioFormat::BigEndian
-            ? EndianModifyingIODevice::Big
-            : EndianModifyingIODevice::Little);
 
     const bool success = emiod->open(QIODevice::ReadOnly);
     Q_ASSERT(success); // This can't fail because inferior is already open
