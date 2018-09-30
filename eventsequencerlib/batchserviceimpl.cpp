@@ -360,6 +360,7 @@ protected:
             const auto mp3buffer_size = size_t(std::ceil(1.25 * sampleCount + 7200));
 
             std::vector<char> mp3buffer(mp3buffer_size);
+            std::vector<char> tmpbuf(bufferSize); // For readSamples
 
             switch (SupportedAudioFormat::classify(audioFormat)) {
             case SupportedAudioFormat::Type::NotSupported:
@@ -367,15 +368,33 @@ protected:
                 break;
             case SupportedAudioFormat::Type::Float:
                 break;
-            case SupportedAudioFormat::Type::Short:
-                if (audioFormat.channelCount() == 1) {
+            case SupportedAudioFormat::Type::Short: {
+                std::vector<short> samples(sampleCount);
 
-                } else if (audioFormat.channelCount() == 2) {
+                for (;;) {
+                    auto result = resource->readSamples<short>(
+                        samples.data(), samples.size(), tmpbuf.data(),
+                        tmpbuf.size());
+                    if (result > 0) {
 
-                } else {
-                    Q_ASSERT(false);
+                    } else if (result == 0) {
+                        break;
+                    } else {
+                        emit statusTextChanged("ERROR!!!");
+                        return;
+                    }
+
+
+                    if (audioFormat.channelCount() == 1) {
+
+                    } else if (audioFormat.channelCount() == 2) {
+
+                    } else {
+                        Q_ASSERT(false);
+                    }
                 }
                 break;
+            }
             case SupportedAudioFormat::Type::Int:
                 break;
             }
