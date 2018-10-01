@@ -40,20 +40,6 @@ protected:
 
 public:
 
-    template <typename T>
-    ssize_t readSamples(T* samples, size_t count, char* tmpbuf, size_t tmpbuf_size)
-    {
-        Q_ASSERT(sizeof(T) * count <= tmpbuf_size);
-        auto result = readData(tmpbuf, count * sizeof(T));
-        if (result > 0) {
-            memcpy(samples, tmpbuf, result);
-            Q_ASSERT(result % sizeof(T) == 0);
-            return result / sizeof(T);
-        } else {
-            return result;
-        }
-    }
-
     bool open(OpenMode mode) override;
     void close() override;
     bool flush();
