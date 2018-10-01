@@ -5,6 +5,14 @@
 #include <functional>
 #include <memory>
 
+// This class has a lot of complexity due to its laziness -- it will not call
+// the inferior stream's read/write on a loop in order to service the caller's
+// request. This is so that we can avoid adding any delays due to blocking. In
+// other words, let's assume that if the inferior stream doesn't return the
+// entire request, it's because there isn't enough data yet to do so.
+//
+// Looking back, I do not think this effort was worth it.
+
 class SampleModifyingIODevice : public QIODevice
 {
     // Is shared_ptr because if we're a writer, we shouldn't need to take
