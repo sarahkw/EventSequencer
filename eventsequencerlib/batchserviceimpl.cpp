@@ -11,6 +11,7 @@
 #include "playable/stripslist.h"
 #include "endianmodifyingiodevice.h"
 #include "supportedaudioformat.h"
+#include "entireunitreader.h"
 
 #include <QDir>
 #include <QDebug>
@@ -289,6 +290,14 @@ protected:
             return;
         }
         auto audioFormat = audioFormatHolder->toQAudioFormat();
+        if (!audioFormat.isValid()) {
+            emit statusTextChanged("Internal error");
+            return;
+        }
+        if (audioFormat.channelCount() != 1 && audioFormat.channelCount() != 2) {
+            emit statusTextChanged("Only mono and stereo supported");
+            return;
+        }
 
         // I think LAME expects the byte order of the device.
         static_assert (static_cast<QAudioFormat::Endian>(QSysInfo::BigEndian) == QAudioFormat::BigEndian, "");
@@ -351,15 +360,17 @@ protected:
                 }
             }
 
-            const auto bytesPerSample = audioFormat.sampleSize() / 8;
-            const auto bufferSize = 16384; // QIODEVICE_BUFFERSIZE, but that's in a private header.
-            const auto frameCount = bufferSize / bytesPerSample / audioFormat.channelCount();
-            const auto sampleCount = frameCount * audioFormat.channelCount();
+            Q_ASSERT(audioFormat.sampleSize() > 0);
+            const size_t bytesPerSample = size_t(audioFormat.sampleSize()) / 8;
+            const size_t bufferSize = 16384; // QIODEVICE_BUFFERSIZE, but that's in a private header.
+            Q_ASSERT(audioFormat.channelCount() > 0);
+            const size_t frameCount = bufferSize / bytesPerSample / size_t(audioFormat.channelCount());
+            const size_t sampleCount = frameCount * size_t(audioFormat.channelCount());
 
             // "worst case" from docs. I add ceil just to be safe, since the doc isn't clear.
             const auto mp3buffer_size = size_t(std::ceil(1.25 * sampleCount + 7200));
 
-            std::vector<char> mp3buffer(mp3buffer_size);
+            std::vector<unsigned char> mp3buffer(mp3buffer_size);
             std::vector<char> tmpbuf(bufferSize); // For readSamples
 
             switch (SupportedAudioFormat::classify(audioFormat)) {
@@ -372,34 +383,61 @@ protected:
                 std::vector<short> samples(sampleCount);
 
                 for (;;) {
-                    auto result = resource->readSamples<short>(
-                        samples.data(), samples.size(), tmpbuf.data(),
-                        tmpbuf.size());
-                    if (result > 0) {
+                    EntireUnitReader::Error error{};
 
-                    } else if (result == 0) {
-                        break;
-                    } else {
+                    size_t framesRead = EntireUnitReader::readUnitGroups<short>(
+                        [&resource](char* data, qint64 maxlen) -> qint64 {
+                            return resource->read(data, maxlen);
+                        },
+                        samples.data(), samples.size(), frameCount,
+                        size_t(audioFormat.channelCount()), &error);
+
+                    if (error & EntireUnitReader::NegativeOneError) {
                         emit statusTextChanged("ERROR!!!");
                         return;
                     }
+                    if (error & EntireUnitReader::DiscardedDataDueToEofError) {
+                        qWarning("Discarded data while encoding mp3!");
+                    }
 
-
+                    int encodeBufferResult{};
                     if (audioFormat.channelCount() == 1) {
-
+                        encodeBufferResult = lame_encode_buffer(gfp.get(), samples.data(), nullptr,
+                                           int(framesRead), mp3buffer.data(),
+                                           int(mp3buffer.size()));
                     } else if (audioFormat.channelCount() == 2) {
-
+                        encodeBufferResult = lame_encode_buffer_interleaved(gfp.get(), samples.data(),
+                                           int(framesRead), mp3buffer.data(),
+                                           int(mp3buffer.size()));
                     } else {
                         Q_ASSERT(false);
                     }
+
+                    if (encodeBufferResult < 0) {
+                        emit statusTextChanged(QString("Lame Error: %1").arg(encodeBufferResult));
+                        return;
+                    }
+
+                    // TODO Write to disk!
+
+                    if (framesRead < frameCount) {
+                        break; // EOF
+                    }
                 }
+
+                const int flushBufferResult = lame_encode_flush(gfp.get(), mp3buffer.data(), int(mp3buffer.size()));
+                if (flushBufferResult < 0) {
+                    emit statusTextChanged(QString("Lame Error: %1").arg(flushBufferResult));
+                    return;
+                }
+                // TODO Write to disk!
+
                 break;
             }
             case SupportedAudioFormat::Type::Int:
                 break;
             }
 
-            QThread::msleep(500);
             if (isInterruptionRequested()) {
                 return;
             }
