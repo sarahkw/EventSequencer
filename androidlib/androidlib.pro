@@ -10,6 +10,7 @@ QT += androidextras
 TARGET = androidlib
 TEMPLATE = lib
 CONFIG += staticlib
+CONFIG += c++14
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings

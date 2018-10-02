@@ -8,7 +8,7 @@ QT += sql
 android {
 QT += androidextras
 }
-CONFIG += c++11
+CONFIG += c++14
 
 android {
 TARGET = DocFill
