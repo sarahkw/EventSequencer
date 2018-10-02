@@ -314,27 +314,38 @@ protected:
             }
         }
 
+        const auto digitCount = QString::number(processableSegments.size()).length();
+
         for (size_t i = 0; i < processableSegments.size(); ++i) {
             Strip* s = processableSegments[i].strip;
             emit statusTextChanged(QString("%1 of %2").arg(i).arg(processableSegments.size()));
 
             std::unique_ptr<SampleModifyingIODevice> resource;
+            QString outputFilePath;
             {
                 EndianModifyingIODevice* emiod{};
                 QString errorMessage;
-                if (playable::PlayableBase::buildEmiod(document.fileResourceDirectory(),
-                                                       s->resourceUrl(),
-                                                       audioFormat, &emiod, &errorMessage)) {
+                if (playable::PlayableBase::buildEmiod(
+                        document.fileResourceDirectory(), s->resourceUrl(),
+                        audioFormat, &emiod, &errorMessage)) {
                     resource.reset(emiod);
                 } else {
                     emit statusTextChanged(QString("Error: %1: %2").arg(s->resourceUrl().toString()).arg(errorMessage));
                     return;
                 }
+
+                outputFilePath = QString("%1/%2.mp3").arg(outputPath).arg(i, digitCount, 10, QChar('0'));
             }
 
             {
                 const bool ok = resource->open(QIODevice::ReadOnly);
                 Q_ASSERT(ok); // Can't happen, but just make sure.
+            }
+
+            QFile writeFile(outputFilePath);
+            if (!writeFile.open(QFile::WriteOnly)) {
+                emit statusTextChanged(QString("Error: %1: %2").arg(outputFilePath).arg(writeFile.errorString()));
+                return;
             }
 
             auto lameCloser = [](lame_global_flags* gfp) {
@@ -418,7 +429,10 @@ protected:
                         return;
                     }
 
-                    // TODO Write to disk!
+                    if (encodeBufferResult != writeFile.write(reinterpret_cast<char*>(mp3buffer.data()), encodeBufferResult)) {
+                        emit statusTextChanged(QString("Write Error"));
+                        return;
+                    }
 
                     if (framesRead < frameCount) {
                         break; // EOF
@@ -430,8 +444,16 @@ protected:
                     emit statusTextChanged(QString("Lame Error: %1").arg(flushBufferResult));
                     return;
                 }
-                // TODO Write to disk!
+                if (flushBufferResult != writeFile.write(reinterpret_cast<char*>(mp3buffer.data()), flushBufferResult)) {
+                    emit statusTextChanged(QString("Write Error"));
+                    return;
+                }
 
+                if (!writeFile.flush()) {
+                    emit statusTextChanged(QString("Write Error"));
+                    return;
+                }
+                writeFile.close();
                 break;
             }
             case SupportedAudioFormat::Type::Int:
