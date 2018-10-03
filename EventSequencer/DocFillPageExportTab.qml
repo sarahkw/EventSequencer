@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
+import QtQuick.Layouts 1.3
 
 import eventsequencer 1.0 as ES
 
@@ -35,22 +36,31 @@ ScrollView {
             anchors.left: parent.left
             anchors.right: parent.right
             title: "Worker Status"
-            Label {
+            RowLayout {
                 anchors.left: parent.left
                 anchors.right: parent.right
-                text: "%1".arg((function () {
-                    if (exportManager.batchServiceStatus === undefined) {
-                        return "Offline"
-                    } else if (!exportManager.batchServiceStatus.isWorking) {
-                        if (exportManager.batchServiceStatus.statusText !== "") {
-                            return "Finished: %1".arg(exportManager.batchServiceStatus.statusText)
+                Label {
+                    Layout.fillWidth: true
+                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                    text: "%1".arg((function () {
+                        if (exportManager.batchServiceStatus === undefined) {
+                            return "Offline"
+                        } else if (!exportManager.batchServiceStatus.isWorking) {
+                            if (exportManager.batchServiceStatus.statusText !== "") {
+                                return "Finished: %1".arg(exportManager.batchServiceStatus.statusText)
+                            } else {
+                                return "Idle"
+                            }
                         } else {
-                            return "Idle"
+                            return exportManager.batchServiceStatus.statusText
                         }
-                    } else {
-                        return exportManager.batchServiceStatus.statusText
-                    }
-                })())
+                    })())
+                }
+                Button {
+                    text: "Cancel"
+                    enabled: exportManager.watchForStopWorking
+                    onClicked: exportManager.requestCancelWorker()
+                }
             }
         }
 

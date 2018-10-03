@@ -69,6 +69,13 @@ QString BackendIpc::requestExportHtml(QUrl documentUrl)
     return reply.readVariant().toString();
 }
 
+void BackendIpc::requestCancelWorker()
+{
+    QAndroidParcel data;
+    JniUtils::binderTransact(rpcBinder_, 1003, data, nullptr,
+                             QAndroidBinder::CallType::OneWay);
+}
+
 bool BackendIpc::ReceiverBinder::onTransact(int code, const QAndroidParcel &data, const QAndroidParcel &reply, QAndroidBinder::CallType flags)
 {
     // Called from Binder thread pool.

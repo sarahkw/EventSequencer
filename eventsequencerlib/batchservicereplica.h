@@ -28,6 +28,7 @@ public:
     Q_INVOKABLE QString requestExportJson(QUrl documentUrl);
     Q_INVOKABLE QString requestExportPlayToFile(QUrl documentUrl);
     Q_INVOKABLE QString requestExportHtml(QUrl documentUrl);
+    Q_INVOKABLE void requestCancelWorker();
 
 signals:
 

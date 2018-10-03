@@ -530,7 +530,12 @@ QString BatchServiceImpl::requestExportPlayToFile(QUrl documentUrl)
 QString BatchServiceImpl::requestExportHtml(QUrl documentUrl)
 {
     return startRequestedExport(
-        [documentUrl]() { return new ExportHtmlWorkerThread(documentUrl); });
+                [documentUrl]() { return new ExportHtmlWorkerThread(documentUrl); });
+}
+
+void BatchServiceImpl::requestCancelWorker()
+{
+    qWarning("Request to cancel worker not yet implemented!");
 }
 
 void BatchServiceImpl::applicationExiting()

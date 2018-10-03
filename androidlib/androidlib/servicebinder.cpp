@@ -67,6 +67,11 @@ bool ServiceBinder::onTransact(int code, const QAndroidParcel& data,
             return false;
         }
         reply.writeVariant(retval);
+    } else if (code == 1003) {
+        if (!QMetaObject::invokeMethod(service_.get(), "requestCancelWorker",
+                                       Qt::QueuedConnection)) {
+            return false;
+        }
     } else {
         return false;
     }

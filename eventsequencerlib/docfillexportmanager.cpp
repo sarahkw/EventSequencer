@@ -62,6 +62,11 @@ QString DocFillExportManager::requestExportHtml(Document* document)
     return batchService_.requestExportHtml(document->currentUrl());
 }
 
+void DocFillExportManager::requestCancelWorker()
+{
+    batchService_.requestCancelWorker();
+}
+
 void DocFillExportManager::tempUpdateDefaultOutputPaths()
 {
     updateDefaultOutputPaths();

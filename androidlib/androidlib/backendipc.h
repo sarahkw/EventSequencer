@@ -45,6 +45,7 @@ public:
     QString requestExportJson(QUrl documentUrl);
     QString requestExportPlayToFile(QUrl documentUrl);
     QString requestExportHtml(QUrl documentUrl);
+    void requestCancelWorker();
 
 };
 

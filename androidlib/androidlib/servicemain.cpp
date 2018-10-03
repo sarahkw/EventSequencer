@@ -10,9 +10,16 @@
 
 namespace {
 
+static std::weak_ptr<QObject> SERVICE_PTR;
+
 void notificationCancelWorker(JNIEnv *env, jobject objectOrClass)
 {
-    qInfo("Cancel worker!");
+    Q_UNUSED(env);
+    Q_UNUSED(objectOrClass);
+    if (auto ptr = SERVICE_PTR.lock()) {
+        QMetaObject::invokeMethod(ptr.get(), "requestCancelWorker",
+                                  Qt::QueuedConnection);
+    }
 }
 
 void registerNativeMethods()
@@ -38,6 +45,7 @@ int ServiceMain::serviceMain(QObject* service, int &argc, char **argv)
 {
     std::shared_ptr<QObject> serviceSp(service);
 
+    SERVICE_PTR = serviceSp;
     registerNativeMethods();
 
     QAndroidService app(argc, argv, [serviceSp](const QAndroidIntent&) -> QAndroidBinder* {

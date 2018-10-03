@@ -31,4 +31,9 @@ QString BatchServiceReplica::requestExportHtml(QUrl documentUrl)
     return ipc_.requestExportHtml(documentUrl);
 }
 
+void BatchServiceReplica::requestCancelWorker()
+{
+    return ipc_.requestCancelWorker();
+}
+
 #endif // Q_OS_ANDROID

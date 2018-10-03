@@ -50,6 +50,7 @@ public:
     Q_INVOKABLE QString requestExportJson(Document* document);
     Q_INVOKABLE QString requestExportPlayToFile(Document* document);
     Q_INVOKABLE QString requestExportHtml(Document* document);
+    Q_INVOKABLE void requestCancelWorker();
 
     // TODO Delete -- temporary as an in-between while we migrate.
     Q_INVOKABLE void tempUpdateDefaultOutputPaths();
