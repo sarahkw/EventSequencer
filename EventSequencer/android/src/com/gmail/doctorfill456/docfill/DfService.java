@@ -64,7 +64,7 @@ public class DfService extends QtService
                         .setContentTitle("DocFill")
                         .setContentText("Processing...")
                         .setSmallIcon(R.drawable.ic_stat_docfill)
-                        .addAction(R.drawable.ic_stat_docfill, "Cancel", cancelBroadcast);
+                        .addAction(0, "Cancel", cancelBroadcast);
 
         startForeground(ONGOING_NOTIFICATION_ID, notificationBuilder.build());
 
