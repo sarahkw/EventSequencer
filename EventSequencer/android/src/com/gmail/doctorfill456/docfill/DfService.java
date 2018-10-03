@@ -15,6 +15,8 @@ import org.qtproject.qt5.android.bindings.QtService;
 
 public class DfService extends QtService
 {
+    private static native void notificationCancelWorker();
+
     public static void startMyService(Context ctx) {
         // Would prefer startForegroundService, but not doing so for compat reasons.
         ctx.startService(new Intent(ctx, DfService.class));
@@ -29,7 +31,7 @@ public class DfService extends QtService
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(CANCEL_WORKER_ACTION)) {
-                Log.i("DOCFILL", "Cancel not yet implemented.");
+                notificationCancelWorker();
             }
         }
     };
