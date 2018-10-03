@@ -1,41 +1,51 @@
 package com.gmail.doctorfill456.docfill;
 
-import android.content.Context;
-import android.content.Intent;
-import org.qtproject.qt5.android.bindings.QtService;
-
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.NotificationCompat;
+
+import org.qtproject.qt5.android.bindings.QtService;
 
 public class DfService extends QtService
 {
     public static void startMyService(Context ctx) {
-        ctx.startForegroundService(new Intent(ctx, DfService.class));
+        // Would prefer startForegroundService, but not doing so for compat reasons.
+        ctx.startService(new Intent(ctx, DfService.class));
     }
 
     private static final int ONGOING_NOTIFICATION_ID = 10;
+    private static String CHANNEL_ID = "CHANNEL_BACKGROUND_WORKER";
 
-    private void createChannel() {
-        NotificationChannel channel =
-            new NotificationChannel("CHANNEL_BACKGROUND_WORKER", "Background Worker",
-                                    NotificationManager.IMPORTANCE_LOW);
-        NotificationManager nm = getSystemService(NotificationManager.class);
-        nm.createNotificationChannel(channel);
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Background Worker";
+            //String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            //channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        createChannel();
+        createNotificationChannel();
 
-        Notification notification =
-            new Notification.Builder(this, "CHANNEL_BACKGROUND_WORKER")
-            .setContentTitle("DocFill")
-            .setContentText("Processing...")
-            .setSmallIcon(R.drawable.ic_stat_docfill)
-            .build();
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, CHANNEL_ID)
+                        .setContentTitle("DocFill")
+                        .setContentText("Processing...")
+                        .setSmallIcon(R.drawable.ic_stat_docfill);
 
-        startForeground(ONGOING_NOTIFICATION_ID, notification);
+        startForeground(ONGOING_NOTIFICATION_ID, notificationBuilder.build());
 
         return START_STICKY;
     }

@@ -90,9 +90,8 @@ void ServiceBinder::androidStartService()
 void ServiceBinder::androidStopService()
 {
     // XXX Run from Qt thread. I think Android is fine with this?
-    static const int STOP_FOREGROUND_REMOVE = 1;
     QtAndroid::androidService().callMethod<void>(
-                "stopForeground", "(I)V", STOP_FOREGROUND_REMOVE);
+                "stopForeground", "(Z)V", true);
     QtAndroid::androidService().callMethod<void>("stopSelf");
 }
 
