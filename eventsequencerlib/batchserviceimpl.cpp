@@ -535,7 +535,9 @@ QString BatchServiceImpl::requestExportHtml(QUrl documentUrl)
 
 void BatchServiceImpl::requestCancelWorker()
 {
-    qWarning("Request to cancel worker not yet implemented!");
+    if (!!workerThread_) {
+        workerThread_->requestInterruption();
+    }
 }
 
 void BatchServiceImpl::applicationExiting()
