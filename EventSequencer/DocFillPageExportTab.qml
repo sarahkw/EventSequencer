@@ -23,9 +23,9 @@ ScrollView {
             document: unnamedParent_6e26.document_rebind
 
             // Can be undefined before Android service provides status.
-            property bool watchForStopWorking: batchServiceStatus !== undefined ? batchServiceStatus.isWorking : false
-            onWatchForStopWorkingChanged: {
-                if (!watchForStopWorking) {
+            property bool serviceIsWorking: batchServiceStatus !== undefined ? batchServiceStatus.isWorking : false
+            onServiceIsWorkingChanged: {
+                if (!serviceIsWorking) {
                     // Just stopped working.
                     tempUpdateDefaultOutputPaths()
                 }
@@ -41,9 +41,7 @@ ScrollView {
                 }
                 return exportManager.batchServiceStatus.fileName
             })())
-            visible: (lblStatusText.text !== "" ||
-                      (exportManager.batchServiceStatus !== undefined &&
-                       exportManager.batchServiceStatus.isWorking))
+            visible: (lblStatusText.text !== "" || exportManager.serviceIsWorking)
             RowLayout {
                 anchors.left: parent.left
                 anchors.right: parent.right
@@ -64,8 +62,7 @@ ScrollView {
                     onClicked: exportManager.requestClearStatus()
                     states: [
                         State {
-                            when: exportManager.batchServiceStatus !== undefined &&
-                                  exportManager.batchServiceStatus.isWorking
+                            when: exportManager.serviceIsWorking
                             PropertyChanges {
                                 target: btnAction
                                 text: "Cancel"
