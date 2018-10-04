@@ -88,6 +88,7 @@ public class DfService extends QtService
                 .setContentTitle(title == null ? "DocFill" : String.format("Exporting: %s", title))
                 .setContentText(text == null ? "Processing..." : text)
                 .setSmallIcon(R.drawable.ic_stat_docfill)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
                 .addAction(0, "Cancel", cancelBroadcast_);
     }
 
