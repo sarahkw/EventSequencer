@@ -13,8 +13,27 @@
 class BatchServiceImplThread : public QThread
 {
     Q_OBJECT
+
+    QString fileName_;
+
+protected:
+
+    BatchServiceImplThread(QUrl initialUrl);
+
+    void run() override final;
+
+    struct FinalStatus {
+        bool success;
+        QString message;
+    };
+
+    virtual FinalStatus process() = 0;
+
+    void setFileNameFromPath(QString filePath);
+    void reportStatus(QString status);
+
 signals:
-    void statusTextChanged(const QString& statusText);
+    void statusTextChanged(const QString& fileName, const QString& statusText);
 };
 
 class BatchServiceImpl : public QObject
@@ -56,7 +75,7 @@ public slots:
 private slots:
 
     void workerFinished();
-    void workerStatusTextChanged(const QString& statusText);
+    void workerStatusTextChanged(const QString& fileName, const QString& statusText);
 
 };
 

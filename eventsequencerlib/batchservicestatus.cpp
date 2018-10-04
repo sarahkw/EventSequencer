@@ -2,12 +2,12 @@
 
 QDataStream &operator<<(QDataStream &out, const BatchServiceStatus &val)
 {
-    out << val.isWorking_ << val.statusText_;
+    out << val.isWorking_ << val.fileName_ << val.statusText_;
     return out;
 }
 
 QDataStream &operator>>(QDataStream &in, BatchServiceStatus &val)
 {
-    in >> val.isWorking_ >> val.statusText_;
+    in >> val.isWorking_ >> val.fileName_ >> val.statusText_;
     return in;
 }

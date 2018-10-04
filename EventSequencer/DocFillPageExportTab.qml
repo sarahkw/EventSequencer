@@ -35,30 +35,32 @@ ScrollView {
         GroupBox {
             anchors.left: parent.left
             anchors.right: parent.right
-            title: "Worker Status"
+            title: "Export: %1".arg((function () {
+                if (exportManager.batchServiceStatus === undefined) {
+                    return ""
+                }
+                return exportManager.batchServiceStatus.fileName
+            })())
+            visible: lblStatusText.text !== "" || btnCancel.visible
             RowLayout {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 Label {
                     Layout.fillWidth: true
+                    id: lblStatusText
                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                    text: "%1".arg((function () {
+                    text: {
                         if (exportManager.batchServiceStatus === undefined) {
-                            return "Offline"
-                        } else if (!exportManager.batchServiceStatus.isWorking) {
-                            if (exportManager.batchServiceStatus.statusText !== "") {
-                                return "Finished: %1".arg(exportManager.batchServiceStatus.statusText)
-                            } else {
-                                return "Idle"
-                            }
-                        } else {
-                            return exportManager.batchServiceStatus.statusText
+                            return ""
                         }
-                    })())
+                        return exportManager.batchServiceStatus.statusText
+                    }
                 }
                 Button {
+                    id: btnCancel
                     text: "Cancel"
-                    enabled: exportManager.watchForStopWorking
+                    visible: exportManager.batchServiceStatus !== undefined &&
+                             exportManager.batchServiceStatus.isWorking
                     onClicked: exportManager.requestCancelWorker()
                 }
             }

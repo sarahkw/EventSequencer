@@ -23,24 +23,52 @@
 
 #include <cmath>
 
+BatchServiceImplThread::BatchServiceImplThread(QUrl initialUrl)
+{
+    fileName_ = QFileInfo(initialUrl.toLocalFile()).completeBaseName();
+}
+
+void BatchServiceImplThread::run()
+{
+    auto result = process();
+    if (result.success) {
+        if (result.message.isEmpty()) {
+            emit statusTextChanged(fileName_, QString("Success"));
+        } else {
+            emit statusTextChanged(fileName_, QString("Success: %1").arg(result.message));
+        }
+    } else {
+        emit statusTextChanged(fileName_, QString("Failure: %1").arg(result.message));
+    }
+}
+
+void BatchServiceImplThread::setFileNameFromPath(QString filePath)
+{
+    fileName_ = QFileInfo(filePath).fileName();
+}
+
+void BatchServiceImplThread::reportStatus(QString status)
+{
+    emit statusTextChanged(fileName_, status);
+}
+
 namespace {
 
 class ExportJsonWorkerThread : public BatchServiceImplThread {
     QUrl documentUrl_;
 public:
-    ExportJsonWorkerThread(QUrl documentUrl) : documentUrl_(documentUrl) {}
+    ExportJsonWorkerThread(QUrl documentUrl) : BatchServiceImplThread(documentUrl), documentUrl_(documentUrl) {}
 protected:
-    void run() override;
+    FinalStatus process() override;
 };
 
-void ExportJsonWorkerThread::run()
+BatchServiceImplThread::FinalStatus ExportJsonWorkerThread::process()
 {
     Document document;
     {
         auto result = document.load(documentUrl_);
         if (!result[0].toBool()) {
-            emit statusTextChanged(QString("Cannot open: %1").arg(result[1].toString()));
-            return;
+            return {false, QString("Cannot open: %1").arg(result[1].toString())};
         }
     }
     QString outputPath;
@@ -49,15 +77,14 @@ void ExportJsonWorkerThread::run()
         if (document.pathQuery(DocumentPaths::PathRequest::JSON_EXPORT, &pathResponse)) {
             outputPath = pathResponse.filePath;
         } else {
-            emit statusTextChanged("Internal error");
-            return;
+            return {false, "Internal error"};
         }
     }
+    setFileNameFromPath(outputPath);
 
     DocFillStructure dfstructure;
     if (!dfstructure.load(document)) {
-        emit statusTextChanged("Internal error");
-        return;
+        return {false, "Internal error"};
     }
 
     QString content = dfstructure.textChannel->content();
@@ -99,8 +126,7 @@ void ExportJsonWorkerThread::run()
 
     QFile file(outputPath);
     if (!file.open(QFile::NewOnly)) {
-        emit statusTextChanged(QString("Cannot open file: %1").arg(file.errorString()));
-        return;
+        return {false, QString("Cannot open file: %1").arg(file.errorString())};
     }
 
     QString error = "Success";
@@ -109,33 +135,31 @@ void ExportJsonWorkerThread::run()
     QByteArray toWrite = jsonDoc.toJson();
     qint64 written = file.write(toWrite);
     if (written != toWrite.size()) {
-        error = QString("Cannot completely write file: %1").arg(file.errorString());
+        return {false, QString("Cannot completely write file: %1").arg(file.errorString())};
     } else if (!file.flush()) {
-        error = QString("Cannot flush: %1").arg(file.errorString());
+        return {false, QString("Cannot flush: %1").arg(file.errorString())};
     } else {
         file.close();
     }
 
-    emit statusTextChanged(error);
-    return;
+    return {true, ""};
 }
 
 class ExportPlayToFileWorkerThread : public BatchServiceImplThread {
     QUrl documentUrl_;
 public:
-    ExportPlayToFileWorkerThread(QUrl documentUrl) : documentUrl_(documentUrl) {}
+    ExportPlayToFileWorkerThread(QUrl documentUrl) : BatchServiceImplThread(documentUrl), documentUrl_(documentUrl) {}
 protected:
-    void run() override;
+    FinalStatus process() override;
 };
 
-void ExportPlayToFileWorkerThread::run()
+BatchServiceImplThread::FinalStatus ExportPlayToFileWorkerThread::process()
 {
     Document document;
     {
         auto result = document.load(documentUrl_);
         if (!result[0].toBool()) {
-            emit statusTextChanged(QString("Cannot open: %1").arg(result[1].toString()));
-            return;
+            return {false, QString("Cannot open: %1").arg(result[1].toString())};
         }
     }
     QString outputPath;
@@ -144,15 +168,14 @@ void ExportPlayToFileWorkerThread::run()
         if (document.pathQuery(DocumentPaths::PathRequest::PLAYTOFILE_EXPORT, &pathResponse)) {
             outputPath = pathResponse.filePath;
         } else {
-            emit statusTextChanged("Internal error");
-            return;
+            return {false, "Internal error"};
         }
     }
+    setFileNameFromPath(outputPath);
 
     DocFillStructure dfstructure;
     if (!dfstructure.load(document)) {
-        emit statusTextChanged("Internal error");
-        return;
+        return {false, "Internal error"};
     }
 
     playable::StripsList playable;
@@ -166,8 +189,7 @@ void ExportPlayToFileWorkerThread::run()
             qobject_cast<AudioFormatHolder*>(document.audioFormatHolderQObject());
     }
     if (audioFormatHolder == nullptr) {
-        emit statusTextChanged("Internal error");
-        return;
+        return {false, "Internal error"};
     }
     auto audioFormat = audioFormatHolder->toQAudioFormat();
 
@@ -176,30 +198,25 @@ void ExportPlayToFileWorkerThread::run()
 
     std::unique_ptr<QIODevice> source{playable.createPlayableDevice(audioFormat)};
     if (!source) {
-        emit statusTextChanged(playable.error());
-        return;
+        return {false, playable.error()};
     }
     source->open(QIODevice::ReadOnly);
 
     QFile file(outputPath);
     if (!file.open(QFile::NewOnly)) {
-        emit statusTextChanged(QString("Cannot open file: %1").arg(file.errorString()));
-        return;
+        return {false, QString("Cannot open file: %1").arg(file.errorString())};
     }
 
     qint64 totalBytes = 0;
-    QString error = "Success";
 
     AuFileHeader afh;
     if (!afh.loadFormat(audioFormat)) {
         qCritical("??? Format was good but now is not?");
-        error = "Internal error";
-        goto done;
+        return {false, "Internal error"};
     }
 
     if (!afh.writeFile(file)) {
-        error = QString("Cannot write header: %1").arg(file.errorString());
-        goto done;
+        return {false, QString("Cannot write header: %1").arg(file.errorString())};
     }
 
     char buffer[4096];
@@ -209,12 +226,10 @@ void ExportPlayToFileWorkerThread::run()
         if (gotBytes > 0) {
             totalBytes += gotBytes;
             if (gotBytes != file.write(buffer, gotBytes)) {
-                error = "Incomplete write";
-                goto done;
+                return {false, "Incomplete write"};
             }
         } else if (gotBytes < 0) {
-            error = "Read error";
-            goto done;
+            return {false, "Read error"};
         } else {
             // EOF
             break;
@@ -222,38 +237,29 @@ void ExportPlayToFileWorkerThread::run()
     }
 
     if (!file.flush()) {
-        error = QString("Cannot flush: %1").arg(file.errorString());
-        goto done;
+        return {false, QString("Cannot flush: %1").arg(file.errorString())};
     }
 
     file.close();
 
-    if (totalBytes == 0) {
-        error = "Success, but the audio file has no data";
-    }
-
-done:
-    //updateDefaultOutputPaths();
-    emit statusTextChanged(error);
-    return;
+    return {true, ""};
 }
 
 class ExportHtmlWorkerThread : public BatchServiceImplThread {
     QUrl documentUrl_;
 public:
-    ExportHtmlWorkerThread(QUrl documentUrl) : documentUrl_(documentUrl) {}
+    ExportHtmlWorkerThread(QUrl documentUrl) : BatchServiceImplThread(documentUrl), documentUrl_(documentUrl) {}
 protected:
-    void run() override;
+    FinalStatus process() override;
 };
 
-void ExportHtmlWorkerThread::run()
+BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
 {
     Document document;
     {
         auto result = document.load(documentUrl_);
         if (!result[0].toBool()) {
-            emit statusTextChanged(QString("Cannot open: %1").arg(result[1].toString()));
-            return;
+            return {false, QString("Cannot open: %1").arg(result[1].toString())};
         }
     }
     QString outputPath;
@@ -262,25 +268,22 @@ void ExportHtmlWorkerThread::run()
         if (document.pathQuery(DocumentPaths::PathRequest::HTML_EXPORT, &pathResponse)) {
             outputPath = pathResponse.filePath;
         } else {
-            emit statusTextChanged("Internal error");
-            return;
+            return {false, "Internal error"};
         }
     }
+    setFileNameFromPath(outputPath);
 
     DocFillStructure dfstructure;
     if (!dfstructure.load(document)) {
-        emit statusTextChanged("Internal error");
-        return;
+        return {false, "Internal error"};
     }
 
     QDir dir(outputPath);
     if (dir.exists()) {
-        emit statusTextChanged("Already exists!");
-        return;
+        return {false, "Already exists!"};
     }
     if (!dir.mkpath(".")) {
-        emit statusTextChanged("Cannot create directory");
-        return;
+        return {false, "Cannot create directory"};
     }
 
     AudioFormatHolder* audioFormatHolder = nullptr;
@@ -289,17 +292,14 @@ void ExportHtmlWorkerThread::run()
             qobject_cast<AudioFormatHolder*>(document.audioFormatHolderQObject());
     }
     if (audioFormatHolder == nullptr) {
-        emit statusTextChanged("Internal error");
-        return;
+        return {false, "Internal error"};
     }
     auto audioFormat = audioFormatHolder->toQAudioFormat();
     if (!audioFormat.isValid()) {
-        emit statusTextChanged("Internal error");
-        return;
+        return {false, "Internal error"};
     }
     if (audioFormat.channelCount() != 1 && audioFormat.channelCount() != 2) {
-        emit statusTextChanged("Only mono and stereo supported");
-        return;
+        return {false, "Only mono and stereo supported"};
     }
 
     // I think LAME expects the byte order of the device.
@@ -321,7 +321,7 @@ void ExportHtmlWorkerThread::run()
 
     for (size_t i = 0; i < processableSegments.size(); ++i) {
         Strip* s = processableSegments[i].strip;
-        emit statusTextChanged(QString("%1 of %2").arg(i).arg(processableSegments.size()));
+        reportStatus(QString("%1 of %2").arg(i).arg(processableSegments.size()));
 
         std::unique_ptr<SampleModifyingIODevice> resource;
         QString outputFilePath;
@@ -333,8 +333,7 @@ void ExportHtmlWorkerThread::run()
                     audioFormat, &emiod, &errorMessage)) {
                 resource.reset(emiod);
             } else {
-                emit statusTextChanged(QString("Error: %1: %2").arg(s->resourceUrl().toString()).arg(errorMessage));
-                return;
+                return {false, QString("Error: %1: %2").arg(s->resourceUrl().toString()).arg(errorMessage)};
             }
 
             outputFilePath = QString("%1/%2.mp3").arg(outputPath).arg(i, digitCount, 10, QChar('0'));
@@ -347,8 +346,7 @@ void ExportHtmlWorkerThread::run()
 
         QFile writeFile(outputFilePath);
         if (!writeFile.open(QFile::WriteOnly)) {
-            emit statusTextChanged(QString("Error: %1: %2").arg(outputFilePath).arg(writeFile.errorString()));
-            return;
+            return {false, QString("Error: %1: %2").arg(outputFilePath).arg(writeFile.errorString())};
         }
 
         auto lameCloser = [](lame_global_flags* gfp) {
@@ -363,14 +361,12 @@ void ExportHtmlWorkerThread::run()
         } else {
             // I guess if we wanted to support more channels, we could just take
             // the first 2 channels. But I don't think anyone will do that.
-            emit statusTextChanged(QString("Can only encode with 1 or 2 channels"));
-            return;
+            return {false, QString("Can only encode with 1 or 2 channels")};
         }
         {
             int rcode = lame_init_params(&*gfp);
             if (rcode < 0) {
-                emit statusTextChanged(QString("Error: %1: LAME Error: %2").arg(s->resourceUrl().toString()).arg(rcode));
-                return;
+                return {false, QString("Error: %1: LAME Error: %2").arg(s->resourceUrl().toString()).arg(rcode)};
             }
         }
 
@@ -389,8 +385,7 @@ void ExportHtmlWorkerThread::run()
 
         switch (SupportedAudioFormat::classify(audioFormat)) {
         case SupportedAudioFormat::Type::NotSupported:
-            emit statusTextChanged(QString("Unsupported audio format for encoding"));
-            break;
+            return {false, QString("Unsupported audio format for encoding")};
         case SupportedAudioFormat::Type::Float:
             break;
         case SupportedAudioFormat::Type::Short: {
@@ -407,8 +402,7 @@ void ExportHtmlWorkerThread::run()
                     size_t(audioFormat.channelCount()), &error);
 
                 if (error & EntireUnitReader::NegativeOneError) {
-                    emit statusTextChanged("ERROR!!!");
-                    return;
+                    return {false, "ERROR!!!"};
                 }
                 if (error & EntireUnitReader::DiscardedDataDueToEofError) {
                     qWarning("Discarded data while encoding mp3!");
@@ -428,13 +422,11 @@ void ExportHtmlWorkerThread::run()
                 }
 
                 if (encodeBufferResult < 0) {
-                    emit statusTextChanged(QString("Lame Error: %1").arg(encodeBufferResult));
-                    return;
+                    return {false, QString("Lame Error: %1").arg(encodeBufferResult)};
                 }
 
                 if (encodeBufferResult != writeFile.write(reinterpret_cast<char*>(mp3buffer.data()), encodeBufferResult)) {
-                    emit statusTextChanged(QString("Write Error"));
-                    return;
+                    return {false, QString("Write Error")};
                 }
 
                 if (framesRead < frameCount) {
@@ -444,17 +436,14 @@ void ExportHtmlWorkerThread::run()
 
             const int flushBufferResult = lame_encode_flush(gfp.get(), mp3buffer.data(), int(mp3buffer.size()));
             if (flushBufferResult < 0) {
-                emit statusTextChanged(QString("Lame Error: %1").arg(flushBufferResult));
-                return;
+                return {false, QString("Lame Error: %1").arg(flushBufferResult)};
             }
             if (flushBufferResult != writeFile.write(reinterpret_cast<char*>(mp3buffer.data()), flushBufferResult)) {
-                emit statusTextChanged(QString("Write Error"));
-                return;
+                return {false, QString("Write Error")};
             }
 
             if (!writeFile.flush()) {
-                emit statusTextChanged(QString("Write Error"));
-                return;
+                return {false, QString("Write Error")};
             }
             writeFile.close();
             break;
@@ -464,11 +453,11 @@ void ExportHtmlWorkerThread::run()
         }
 
         if (isInterruptionRequested()) {
-            return;
+            return {false, "Canceled"};
         }
     }
 
-    emit statusTextChanged(QString("%1: Success").arg(get_lame_version()));
+    return {true, ""};
 }
 
 } // namespace anonymous
@@ -556,8 +545,10 @@ void BatchServiceImpl::workerFinished()
     emit androidStopService();
 }
 
-void BatchServiceImpl::workerStatusTextChanged(const QString &statusText)
+void BatchServiceImpl::workerStatusTextChanged(const QString& fileName,
+                                               const QString& statusText)
 {
+    status_.fileName_ = fileName;
     status_.statusText_ = statusText;
     emit statusChanged(QVariant::fromValue(status_));
 }
