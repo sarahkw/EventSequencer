@@ -2,6 +2,8 @@
 
 #include "servicebinder.h"
 
+#include <batchservicelib/batchservicestatus.h>
+
 #include <QAndroidService>
 #include <QAndroidJniObject>
 #include <QAndroidJniEnvironment>
@@ -53,7 +55,12 @@ int ServiceMain::serviceMain(batchservicelib::BatchServiceImplBase* service,
 
     QObject::connect(serviceSp.get(), &batchservicelib::BatchServiceImplBase::parentStatusChanged,
                      [](const QVariant& status) {
-        qWarning("Not yet implemented status thing!");
+        Q_ASSERT(status.canConvert<batchservicelib::BatchServiceStatus>());
+        auto status2 = status.value<batchservicelib::BatchServiceStatus>();
+
+        qInfo("Status update! isWorking = %d fileName = %s statusText = %s",
+              status2.isWorking_, qPrintable(status2.fileName_),
+              qPrintable(status2.statusText_));
     });
 
     QAndroidService app(argc, argv, [serviceSp](const QAndroidIntent&) -> QAndroidBinder* {
