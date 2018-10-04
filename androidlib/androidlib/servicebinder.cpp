@@ -30,7 +30,7 @@ bool ServiceBinder::onTransact(int code, const QAndroidParcel& data,
         return true;
     }
 
-    // Custom methods.
+    // SERVICEREQUESTS VERSION 01
     if (code == 1000) {
         QString retval;
 

@@ -42,6 +42,7 @@ public:
     BackendIpc(std::function<void(const QVariant&)>&& cb);
     ~BackendIpc();
 
+    // SERVICEREQUESTS VERSION 01
     QString requestExportJson(QUrl documentUrl);
     QString requestExportPlayToFile(QUrl documentUrl);
     QString requestExportHtml(QUrl documentUrl);

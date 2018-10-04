@@ -47,6 +47,7 @@ public:
     QString defaultPlayToFileOutputPath() const;
     QString defaultExportHtmlOutputPath() const;
 
+    // SERVICEREQUESTS VERSION 01
     Q_INVOKABLE QString requestExportJson(Document* document);
     Q_INVOKABLE QString requestExportPlayToFile(Document* document);
     Q_INVOKABLE QString requestExportHtml(Document* document);
