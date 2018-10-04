@@ -33,50 +33,39 @@ bool ServiceBinder::onTransact(int code, const QAndroidParcel& data,
     // SERVICEREQUESTS VERSION 02
     if (code == 1000) {
         QString retval;
-
         QUrl documentUrl = data.readVariant().toString();
 
-        if (!QMetaObject::invokeMethod(service_.get(), "requestExportJson",
-                                       Qt::BlockingQueuedConnection,
-                                       Q_RETURN_ARG(QString, retval),
-                                       Q_ARG(QUrl, documentUrl))) {
-            return false;
-        }
+        QMetaObject::invokeMethod(service_.get(), [&]() {
+            retval = service_->requestExportJson(documentUrl);
+        }, Qt::BlockingQueuedConnection);
+
         reply.writeVariant(retval);
     } else if (code == 1001) {
         QString retval;
-
         QUrl documentUrl = data.readVariant().toString();
 
-        if (!QMetaObject::invokeMethod(service_.get(), "requestExportPlayToFile",
-                                       Qt::BlockingQueuedConnection,
-                                       Q_RETURN_ARG(QString, retval),
-                                       Q_ARG(QUrl, documentUrl))) {
-            return false;
-        }
+        QMetaObject::invokeMethod(service_.get(), [&]() {
+            retval = service_->requestExportPlayToFile(documentUrl);
+        }, Qt::BlockingQueuedConnection);
+
         reply.writeVariant(retval);
     } else if (code == 1002) {
         QString retval;
-
         QUrl documentUrl = data.readVariant().toString();
 
-        if (!QMetaObject::invokeMethod(service_.get(), "requestExportHtml",
-                                       Qt::BlockingQueuedConnection,
-                                       Q_RETURN_ARG(QString, retval),
-                                       Q_ARG(QUrl, documentUrl))) {
-            return false;
-        }
+        QMetaObject::invokeMethod(service_.get(), [&]() {
+            retval = service_->requestExportHtml(documentUrl);
+        }, Qt::BlockingQueuedConnection);
+
         reply.writeVariant(retval);
     } else if (code == 1003) {
-        if (!QMetaObject::invokeMethod(service_.get(), "requestCancelWorker",
-                                       Qt::QueuedConnection)) {
-            return false;
-        }
+        QMetaObject::invokeMethod(service_.get(), [&]() {
+            service_->requestCancelWorker();
+        }, Qt::QueuedConnection);
     } else if (code == 1004) {
-        if (!QMetaObject::invokeMethod(service_.get(), "requestClearStatus",
-                                       Qt::QueuedConnection)) {
-            return false;
-        }
+        QMetaObject::invokeMethod(service_.get(), [&]() {
+            service_->requestClearStatus();
+        }, Qt::QueuedConnection);
     } else {
         return false;
     }
@@ -131,7 +120,9 @@ void ServiceBinder::broadcastServiceState(const QVariant &serviceState)
     }
 }
 
-ServiceBinder::ServiceBinder(std::shared_ptr<QObject> service) : service_(service)
+ServiceBinder::ServiceBinder(
+    std::shared_ptr<batchservicelib::BatchServiceImplBase> service)
+    : service_(service)
 {
     QObject::connect(service.get(),
                      SIGNAL(statusChanged(QVariant)), this,

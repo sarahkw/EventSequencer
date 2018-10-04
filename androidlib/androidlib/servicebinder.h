@@ -1,6 +1,8 @@
 #ifndef ANDROIDLIB_SERVICEBINDER_H
 #define ANDROIDLIB_SERVICEBINDER_H
 
+#include <batchservicelib/batchserviceimplbase.h>
+
 #include <QAndroidBinder>
 #include <QVariant>
 
@@ -14,7 +16,7 @@ class ServiceBinder : public QObject, public QAndroidBinder
 {
     Q_OBJECT
 
-    std::shared_ptr<QObject> service_;
+    std::shared_ptr<batchservicelib::BatchServiceImplBase> service_;
 
     std::vector<QAndroidBinder> serviceStateSubscribers_;
     std::mutex serviceStateSubscribersMutex_;
@@ -24,7 +26,7 @@ class ServiceBinder : public QObject, public QAndroidBinder
 
 public:
 
-    ServiceBinder(std::shared_ptr<QObject> service);
+    ServiceBinder(std::shared_ptr<batchservicelib::BatchServiceImplBase> service);
     ~ServiceBinder() override;
 
     bool onTransact(int code, const QAndroidParcel& data,
