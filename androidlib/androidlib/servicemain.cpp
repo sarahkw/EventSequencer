@@ -12,6 +12,7 @@ namespace {
 
 static std::weak_ptr<batchservicelib::BatchServiceImplBase> SERVICE_PTR;
 
+// Called by Android thread.
 void notificationCancelWorker(JNIEnv *env, jobject objectOrClass)
 {
     Q_UNUSED(env);
