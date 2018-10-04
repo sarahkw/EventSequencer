@@ -30,6 +30,10 @@ BatchServiceImplThread::BatchServiceImplThread(QUrl initialUrl)
 
 void BatchServiceImplThread::run()
 {
+    // Some exporters don't report progress. Try not to have a blank status
+    // when it's running.
+    reportStatus("Exporting");
+
     auto result = process();
     if (result.success) {
         if (result.message.isEmpty()) {
