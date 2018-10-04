@@ -440,6 +440,13 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
                 }
             }
 
+            break;
+        }
+        case SupportedAudioFormat::Type::Int:
+            break;
+        }
+
+        {
             const int flushBufferResult = lame_encode_flush(
                 gfp.get(), mp3buffer.data(), int(mp3buffer.size()));
             if (flushBufferResult < 0) {
@@ -451,16 +458,12 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
                                 flushBufferResult)) {
                 return {false, QString("Write Error")};
             }
+        }
 
-            if (!writeFile.flush()) {
-                return {false, QString("Write Error")};
-            }
-            writeFile.close();
-            break;
+        if (!writeFile.flush()) {
+            return {false, QString("Write Error")};
         }
-        case SupportedAudioFormat::Type::Int:
-            break;
-        }
+        writeFile.close();
 
         if (isInterruptionRequested()) {
             return {false, "Canceled"};
