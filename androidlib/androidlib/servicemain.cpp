@@ -50,6 +50,11 @@ int ServiceMain::serviceMain(batchservicelib::BatchServiceImplBase* service,
     SERVICE_PTR = serviceSp;
     registerNativeMethods();
 
+    QObject::connect(serviceSp.get(), &batchservicelib::BatchServiceImplBase::parentStatusChanged,
+                     [](const QVariant& status) {
+        qWarning("Not yet implemented status thing!");
+    });
+
     QAndroidService app(argc, argv, [serviceSp](const QAndroidIntent&) -> QAndroidBinder* {
         return new ServiceBinder(serviceSp);
     });
