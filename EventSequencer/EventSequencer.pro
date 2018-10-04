@@ -78,6 +78,19 @@ PRE_TARGETDEPS += $$OUT_PWD/../androidlib/libandroidlib.a
 # End androidlib
 ########################################################################
 
+########################################################################
+# Begin batchservicelib
+
+unix:!macx: LIBS += -L$$OUT_PWD/../batchservicelib/ -lbatchservicelib
+
+INCLUDEPATH += $$PWD/../batchservicelib
+DEPENDPATH += $$PWD/../batchservicelib
+
+unix:!macx: PRE_TARGETDEPS += $$OUT_PWD/../batchservicelib/libbatchservicelib.a
+
+# End batchservicelib
+########################################################################
+
 
 include(../crosscompilelibs.pri)
 

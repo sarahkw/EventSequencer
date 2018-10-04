@@ -1,5 +1,7 @@
 TEMPLATE = subdirs
 
+SUBDIRS += batchservicelib
+
 ANDROIDLIB_STR = "androidlib"
 !android: ANDROIDLIB_STR = ""
 SUBDIRS += $$ANDROIDLIB_STR

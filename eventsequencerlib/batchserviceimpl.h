@@ -1,7 +1,7 @@
 #ifndef BATCHSERVICEIMPL_H
 #define BATCHSERVICEIMPL_H
 
-#include "batchservicestatus.h"
+#include <batchservicelib/batchservicestatus.h>
 
 #include <QObject>
 #include <QThread>
@@ -42,7 +42,7 @@ class BatchServiceImpl : public QObject
 
     std::unique_ptr<BatchServiceImplThread> workerThread_;
 
-    BatchServiceStatus status_;
+    batchservicelib::BatchServiceStatus status_;
     Q_PROPERTY(QVariant status READ status NOTIFY statusChanged)
 
 public:

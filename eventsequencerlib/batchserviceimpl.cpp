@@ -1,7 +1,6 @@
 #include "batchserviceimpl.h"
 
 #include "audioformatholder.h"
-#include "batchservicestatus.h"
 #include "document.h"
 #include "docfillstructure.h"
 #include "managedresources.h"

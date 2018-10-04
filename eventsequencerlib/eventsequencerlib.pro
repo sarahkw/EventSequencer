@@ -105,7 +105,6 @@ SOURCES += \
     batchserviceimpl.cpp \
     batchservicereplica.cpp \
     batchservicefactory.cpp \
-    batchservicestatus.cpp \
     docfillstructure.cpp \
     supportedaudioformat.cpp \
     entireunitreader.cpp
@@ -189,7 +188,6 @@ HEADERS += \
     batchserviceimpl.h \
     batchservicereplica.h \
     batchservicefactory.h \
-    batchservicestatus.h \
     docfillstructure.h \
     supportedaudioformat.h \
     entireunitreader.h
@@ -214,4 +212,17 @@ PRE_TARGETDEPS += $$OUT_PWD/../androidlib/libandroidlib.a
 }
 
 # End androidlib
+########################################################################
+
+########################################################################
+# Begin batchservicelib
+
+unix:!macx: LIBS += -L$$OUT_PWD/../batchservicelib/ -lbatchservicelib
+
+INCLUDEPATH += $$PWD/../batchservicelib
+DEPENDPATH += $$PWD/../batchservicelib
+
+unix:!macx: PRE_TARGETDEPS += $$OUT_PWD/../batchservicelib/libbatchservicelib.a
+
+# End batchservicelib
 ########################################################################

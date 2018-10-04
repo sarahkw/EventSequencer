@@ -21,11 +21,11 @@
 
 #include "registerqmltypes.h"
 #include "constrainedmetricsfontutil.h" // XXX Sucks to include this.
-#include "batchservicestatus.h"
+#include <batchservicelib/batchservicestatus.h>
 
 int main(int argc, char *argv[])
 {
-    qRegisterMetaTypeStreamOperators<BatchServiceStatus>();
+    qRegisterMetaTypeStreamOperators<batchservicelib::BatchServiceStatus>();
 
 #ifdef Q_OS_ANDROID
     if (argc > 1 && argv[1] == QString("-service")) {
