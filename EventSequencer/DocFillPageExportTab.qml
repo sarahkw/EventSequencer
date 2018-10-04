@@ -100,26 +100,6 @@ ScrollView {
         DocFillPageExportSection {
             anchors.left: parent.left
             anchors.right: parent.right
-            title: "Export JSON"
-            description: "Write a JSON file that lists the parts of the document along with the assigned audio file."
-            defaultOutputPath: exportManager.defaultExportJsonOutputPath
-            defaultOutputPathExists: exportManager.defaultExportJsonOutputPathExists
-            onExportActivated: {
-                var result = exportManager.requestExportJson(document)
-                if (result !== "") {
-                    msgbox.msgbox(result, "Export")
-                }
-            }
-            onDeleteActivated: {
-                if (!exportManager.deleteDefaultExportJsonOutputPath()) {
-                    msgbox.msgbox("Delete failure", "Export")
-                }
-            }
-        }
-
-        DocFillPageExportSection {
-            anchors.left: parent.left
-            anchors.right: parent.right
             title: "Play to File"
             description: "Concatenate all individual recordings into a single audio file."
             defaultOutputPath: exportManager.defaultPlayToFileOutputPath
@@ -132,6 +112,26 @@ ScrollView {
             }
             onDeleteActivated: {
                 if (!exportManager.deleteDefaultPlayToFileOutputPath()) {
+                    msgbox.msgbox("Delete failure", "Export")
+                }
+            }
+        }
+
+        DocFillPageExportSection {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            title: "Export JSON"
+            description: "Write a JSON file that lists the parts of the document along with the assigned audio file."
+            defaultOutputPath: exportManager.defaultExportJsonOutputPath
+            defaultOutputPathExists: exportManager.defaultExportJsonOutputPathExists
+            onExportActivated: {
+                var result = exportManager.requestExportJson(document)
+                if (result !== "") {
+                    msgbox.msgbox(result, "Export")
+                }
+            }
+            onDeleteActivated: {
+                if (!exportManager.deleteDefaultExportJsonOutputPath()) {
                     msgbox.msgbox("Delete failure", "Export")
                 }
             }
