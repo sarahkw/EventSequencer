@@ -59,12 +59,14 @@ int ServiceMain::serviceMain(batchservicelib::BatchServiceImplBase* service,
         Q_ASSERT(status.canConvert<batchservicelib::BatchServiceStatus>());
         auto status2 = status.value<batchservicelib::BatchServiceStatus>();
 
-        auto s1 = QAndroidJniObject::fromString(status2.fileName_);
-        auto s2 = QAndroidJniObject::fromString(status2.statusText_);
+        QtAndroid::runOnAndroidThread([status2]() {
+            auto s1 = QAndroidJniObject::fromString(status2.fileName_);
+            auto s2 = QAndroidJniObject::fromString(status2.statusText_);
 
-        QtAndroid::androidService().callMethod<void>(
-            "workerStatusChanged", "(Ljava/lang/String;Ljava/lang/String;)V",
-            s1.object<jstring>(), s2.object<jstring>());
+            QtAndroid::androidService().callMethod<void>(
+                        "workerStatusChanged", "(Ljava/lang/String;Ljava/lang/String;)V",
+                        s1.object<jstring>(), s2.object<jstring>());
+        });
     });
 
     QAndroidService app(argc, argv, [serviceSp](const QAndroidIntent&) -> QAndroidBinder* {

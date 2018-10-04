@@ -558,9 +558,9 @@ void BatchServiceImpl::workerFinished()
     //     since this is a queued connection.
     workerThread_.reset();
 
+    emit androidStopService();
     status_.isWorking_ = false;
     emit statusChanged(QVariant::fromValue(status_));
-    emit androidStopService();
 }
 
 void BatchServiceImpl::workerStatusTextChanged(const QString& fileName,

@@ -92,17 +92,16 @@ void ServiceBinder::androidStartService()
 {
     // XXX Run from Qt thread. I think Android is fine with this?
     QAndroidJniObject::callStaticMethod<void>(
-        "com/gmail/doctorfill456/docfill/DfService", "startMyService",
+        "com/gmail/doctorfill456/docfill/DfService", "androidStartService",
         "(Landroid/content/Context;)V",
         QtAndroid::androidContext().object());
 }
 
 void ServiceBinder::androidStopService()
 {
-    // XXX Run from Qt thread. I think Android is fine with this?
-    QtAndroid::androidService().callMethod<void>(
-                "stopForeground", "(Z)V", true);
-    QtAndroid::androidService().callMethod<void>("stopSelf");
+    QtAndroid::runOnAndroidThread([]() {
+        QtAndroid::androidService().callMethod<void>("androidStopService");
+    });
 }
 
 void ServiceBinder::broadcastServiceState(const QVariant &serviceState)
