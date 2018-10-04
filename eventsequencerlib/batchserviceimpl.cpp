@@ -413,22 +413,25 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
 
                 int encodeBufferResult{};
                 if (audioFormat.channelCount() == 1) {
-                    encodeBufferResult = lame_encode_buffer(gfp.get(), samples.data(), nullptr,
-                                       int(framesRead), mp3buffer.data(),
-                                       int(mp3buffer.size()));
+                    encodeBufferResult = lame_encode_buffer(
+                        gfp.get(), samples.data(), nullptr, int(framesRead),
+                        mp3buffer.data(), int(mp3buffer.size()));
                 } else if (audioFormat.channelCount() == 2) {
-                    encodeBufferResult = lame_encode_buffer_interleaved(gfp.get(), samples.data(),
-                                       int(framesRead), mp3buffer.data(),
-                                       int(mp3buffer.size()));
+                    encodeBufferResult = lame_encode_buffer_interleaved(
+                        gfp.get(), samples.data(), int(framesRead),
+                        mp3buffer.data(), int(mp3buffer.size()));
                 } else {
                     Q_ASSERT(false);
                 }
 
                 if (encodeBufferResult < 0) {
-                    return {false, QString("Lame Error: %1").arg(encodeBufferResult)};
+                    return {false,
+                            QString("Lame Error: %1").arg(encodeBufferResult)};
                 }
 
-                if (encodeBufferResult != writeFile.write(reinterpret_cast<char*>(mp3buffer.data()), encodeBufferResult)) {
+                if (encodeBufferResult !=
+                    writeFile.write(reinterpret_cast<char*>(mp3buffer.data()),
+                                    encodeBufferResult)) {
                     return {false, QString("Write Error")};
                 }
 
@@ -437,11 +440,15 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
                 }
             }
 
-            const int flushBufferResult = lame_encode_flush(gfp.get(), mp3buffer.data(), int(mp3buffer.size()));
+            const int flushBufferResult = lame_encode_flush(
+                gfp.get(), mp3buffer.data(), int(mp3buffer.size()));
             if (flushBufferResult < 0) {
-                return {false, QString("Lame Error: %1").arg(flushBufferResult)};
+                return {false,
+                        QString("Lame Error: %1").arg(flushBufferResult)};
             }
-            if (flushBufferResult != writeFile.write(reinterpret_cast<char*>(mp3buffer.data()), flushBufferResult)) {
+            if (flushBufferResult !=
+                writeFile.write(reinterpret_cast<char*>(mp3buffer.data()),
+                                flushBufferResult)) {
                 return {false, QString("Write Error")};
             }
 
