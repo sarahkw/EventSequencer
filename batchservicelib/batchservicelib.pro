@@ -23,10 +23,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    batchservicelib/batchservicestatus.cpp
+    batchservicelib/batchservicestatus.cpp \
+    batchservicelib/batchserviceimplbase.cpp
 
 HEADERS += \
-    batchservicelib/batchservicestatus.h
+    batchservicelib/batchservicestatus.h \
+    batchservicelib/batchserviceimplbase.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

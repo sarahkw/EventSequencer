@@ -2,6 +2,7 @@
 #define BATCHSERVICEIMPL_H
 
 #include <batchservicelib/batchservicestatus.h>
+#include <batchservicelib/batchserviceimplbase.h>
 
 #include <QObject>
 #include <QThread>
@@ -36,7 +37,7 @@ signals:
     void statusTextChanged(const QString& fileName, const QString& statusText);
 };
 
-class BatchServiceImpl : public QObject
+class BatchServiceImpl : public batchservicelib::BatchServiceImplBase
 {
     Q_OBJECT
 
@@ -57,11 +58,11 @@ private:
 public:
 
     // SERVICEREQUESTS VERSION 02
-    Q_INVOKABLE QString requestExportJson(QUrl documentUrl);
-    Q_INVOKABLE QString requestExportPlayToFile(QUrl documentUrl);
-    Q_INVOKABLE QString requestExportHtml(QUrl documentUrl);
-    Q_INVOKABLE void requestCancelWorker();
-    Q_INVOKABLE void requestClearStatus();
+    Q_INVOKABLE QString requestExportJson(QUrl documentUrl) override;
+    Q_INVOKABLE QString requestExportPlayToFile(QUrl documentUrl) override;
+    Q_INVOKABLE QString requestExportHtml(QUrl documentUrl) override;
+    Q_INVOKABLE void requestCancelWorker() override;
+    Q_INVOKABLE void requestClearStatus() override;
 
 signals:
 

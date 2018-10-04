@@ -10,15 +10,16 @@
 
 namespace {
 
-static std::weak_ptr<QObject> SERVICE_PTR;
+static std::weak_ptr<batchservicelib::BatchServiceImplBase> SERVICE_PTR;
 
 void notificationCancelWorker(JNIEnv *env, jobject objectOrClass)
 {
     Q_UNUSED(env);
     Q_UNUSED(objectOrClass);
     if (auto ptr = SERVICE_PTR.lock()) {
-        QMetaObject::invokeMethod(ptr.get(), "requestCancelWorker",
-                                  Qt::QueuedConnection);
+        QMetaObject::invokeMethod(ptr.get(), [ptr]() {
+            ptr->requestCancelWorker();
+        }, Qt::QueuedConnection);
     }
 }
 
@@ -41,9 +42,10 @@ void registerNativeMethods()
 
 namespace androidlib {
 
-int ServiceMain::serviceMain(QObject* service, int &argc, char **argv)
+int ServiceMain::serviceMain(batchservicelib::BatchServiceImplBase* service,
+                             int &argc, char **argv)
 {
-    std::shared_ptr<QObject> serviceSp(service);
+    std::shared_ptr<batchservicelib::BatchServiceImplBase> serviceSp(service);
 
     SERVICE_PTR = serviceSp;
     registerNativeMethods();

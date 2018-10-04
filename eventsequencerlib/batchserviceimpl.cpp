@@ -467,6 +467,8 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
 
 BatchServiceImpl::BatchServiceImpl()
 {
+    QObject::connect(this, &BatchServiceImpl::statusChanged,
+                     this, &BatchServiceImplBase::parentStatusChanged);
 }
 
 BatchServiceImpl::~BatchServiceImpl()
