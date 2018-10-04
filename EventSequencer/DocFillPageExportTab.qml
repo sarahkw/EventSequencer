@@ -81,6 +81,7 @@ ScrollView {
             description: "Write a HTML file with MP3-encoded resources for you to share on the world wide web."
             defaultOutputPath: exportManager.defaultExportHtmlOutputPath
             defaultOutputPathExists: exportManager.defaultExportHtmlOutputPathExists
+            actionEnabled: !exportManager.serviceIsWorking
             onExportActivated: {
                 var result = exportManager.requestExportHtml(document)
                 if (result !== "") {
@@ -101,6 +102,7 @@ ScrollView {
             description: "Concatenate all individual recordings into a single audio file."
             defaultOutputPath: exportManager.defaultPlayToFileOutputPath
             defaultOutputPathExists: exportManager.defaultPlayToFileOutputPathExists
+            actionEnabled: !exportManager.serviceIsWorking
             onExportActivated: {
                 var result = exportManager.requestExportPlayToFile(document)
                 if (result !== "") {
@@ -121,6 +123,7 @@ ScrollView {
             description: "Write a JSON file that lists the parts of the document along with the assigned audio file."
             defaultOutputPath: exportManager.defaultExportJsonOutputPath
             defaultOutputPathExists: exportManager.defaultExportJsonOutputPathExists
+            actionEnabled: !exportManager.serviceIsWorking
             onExportActivated: {
                 var result = exportManager.requestExportJson(document)
                 if (result !== "") {

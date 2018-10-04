@@ -7,6 +7,7 @@ GroupBox {
     property string defaultOutputPath
     property alias outputPath: txtOutputPath.text
     property bool defaultOutputPathExists
+    property alias actionEnabled: btnExport.enabled
 
     signal exportActivated()
     signal deleteActivated()
