@@ -7,6 +7,7 @@
 #include <QAndroidService>
 #include <QAndroidJniObject>
 #include <QAndroidJniEnvironment>
+#include <QtAndroid>
 
 #include <memory>
 
@@ -58,9 +59,12 @@ int ServiceMain::serviceMain(batchservicelib::BatchServiceImplBase* service,
         Q_ASSERT(status.canConvert<batchservicelib::BatchServiceStatus>());
         auto status2 = status.value<batchservicelib::BatchServiceStatus>();
 
-        qInfo("Status update! isWorking = %d fileName = %s statusText = %s",
-              status2.isWorking_, qPrintable(status2.fileName_),
-              qPrintable(status2.statusText_));
+        auto s1 = QAndroidJniObject::fromString(status2.fileName_);
+        auto s2 = QAndroidJniObject::fromString(status2.statusText_);
+
+        QtAndroid::androidService().callMethod<void>(
+            "workerStatusChanged", "(Ljava/lang/String;Ljava/lang/String;)V",
+            s1.object<jstring>(), s2.object<jstring>());
     });
 
     QAndroidService app(argc, argv, [serviceSp](const QAndroidIntent&) -> QAndroidBinder* {

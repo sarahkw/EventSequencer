@@ -17,6 +17,11 @@ public class DfService extends QtService
 {
     private static native void notificationCancelWorker();
 
+    // Called from Qt thread
+    public void workerStatusChanged(String fileName, String statusText) {
+        Log.i("SARAHMSG", String.format("workerStatusChanged %s %s", fileName, statusText));
+    }
+
     public static void startMyService(Context ctx) {
         // Would prefer startForegroundService, but not doing so for compat reasons.
         ctx.startService(new Intent(ctx, DfService.class));
