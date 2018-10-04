@@ -67,6 +67,11 @@ void DocFillExportManager::requestCancelWorker()
     batchService_.requestCancelWorker();
 }
 
+void DocFillExportManager::requestClearStatus()
+{
+    batchService_.requestClearStatus();
+}
+
 void DocFillExportManager::tempUpdateDefaultOutputPaths()
 {
     updateDefaultOutputPaths();

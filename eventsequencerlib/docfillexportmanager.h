@@ -47,11 +47,12 @@ public:
     QString defaultPlayToFileOutputPath() const;
     QString defaultExportHtmlOutputPath() const;
 
-    // SERVICEREQUESTS VERSION 01
+    // SERVICEREQUESTS VERSION 02
     Q_INVOKABLE QString requestExportJson(Document* document);
     Q_INVOKABLE QString requestExportPlayToFile(Document* document);
     Q_INVOKABLE QString requestExportHtml(Document* document);
     Q_INVOKABLE void requestCancelWorker();
+    Q_INVOKABLE void requestClearStatus();
 
     // TODO Delete -- temporary as an in-between while we migrate.
     Q_INVOKABLE void tempUpdateDefaultOutputPaths();

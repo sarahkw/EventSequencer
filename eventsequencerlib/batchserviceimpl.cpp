@@ -529,6 +529,19 @@ void BatchServiceImpl::requestCancelWorker()
     }
 }
 
+void BatchServiceImpl::requestClearStatus()
+{
+    if (!!workerThread_) {
+        qWarning("Refusing to clear status when worker is running");
+        return;
+    }
+
+    status_.isWorking_ = false;
+    status_.fileName_.clear();
+    status_.statusText_.clear();
+    emit statusChanged(QVariant::fromValue(status_));
+}
+
 void BatchServiceImpl::applicationExiting()
 {
 

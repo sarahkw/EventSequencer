@@ -56,11 +56,12 @@ private:
     QString startRequestedExport(std::function<BatchServiceImplThread*()> creator);
 public:
 
-    // SERVICEREQUESTS VERSION 01
+    // SERVICEREQUESTS VERSION 02
     Q_INVOKABLE QString requestExportJson(QUrl documentUrl);
     Q_INVOKABLE QString requestExportPlayToFile(QUrl documentUrl);
     Q_INVOKABLE QString requestExportHtml(QUrl documentUrl);
     Q_INVOKABLE void requestCancelWorker();
+    Q_INVOKABLE void requestClearStatus();
 
 signals:
 

@@ -36,4 +36,9 @@ void BatchServiceReplica::requestCancelWorker()
     return ipc_.requestCancelWorker();
 }
 
+void BatchServiceReplica::requestClearStatus()
+{
+    return ipc_.requestClearStatus();
+}
+
 #endif // Q_OS_ANDROID

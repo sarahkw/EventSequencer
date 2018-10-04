@@ -76,6 +76,13 @@ void BackendIpc::requestCancelWorker()
                              QAndroidBinder::CallType::OneWay);
 }
 
+void BackendIpc::requestClearStatus()
+{
+    QAndroidParcel data;
+    JniUtils::binderTransact(rpcBinder_, 1004, data, nullptr,
+                             QAndroidBinder::CallType::OneWay);
+}
+
 bool BackendIpc::ReceiverBinder::onTransact(int code, const QAndroidParcel &data, const QAndroidParcel &reply, QAndroidBinder::CallType flags)
 {
     // Called from Binder thread pool.

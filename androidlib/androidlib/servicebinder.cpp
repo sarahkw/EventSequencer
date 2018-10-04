@@ -30,7 +30,7 @@ bool ServiceBinder::onTransact(int code, const QAndroidParcel& data,
         return true;
     }
 
-    // SERVICEREQUESTS VERSION 01
+    // SERVICEREQUESTS VERSION 02
     if (code == 1000) {
         QString retval;
 
@@ -69,6 +69,11 @@ bool ServiceBinder::onTransact(int code, const QAndroidParcel& data,
         reply.writeVariant(retval);
     } else if (code == 1003) {
         if (!QMetaObject::invokeMethod(service_.get(), "requestCancelWorker",
+                                       Qt::QueuedConnection)) {
+            return false;
+        }
+    } else if (code == 1004) {
+        if (!QMetaObject::invokeMethod(service_.get(), "requestClearStatus",
                                        Qt::QueuedConnection)) {
             return false;
         }
