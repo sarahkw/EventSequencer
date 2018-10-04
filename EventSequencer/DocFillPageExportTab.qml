@@ -41,7 +41,9 @@ ScrollView {
                 }
                 return exportManager.batchServiceStatus.fileName
             })())
-            visible: lblStatusText.text !== "" || btnCancel.visible
+            visible: (lblStatusText.text !== "" ||
+                      (exportManager.batchServiceStatus !== undefined &&
+                       exportManager.batchServiceStatus.isWorking))
             RowLayout {
                 anchors.left: parent.left
                 anchors.right: parent.right
@@ -57,11 +59,20 @@ ScrollView {
                     }
                 }
                 Button {
-                    id: btnCancel
-                    text: "Cancel"
-                    visible: exportManager.batchServiceStatus !== undefined &&
-                             exportManager.batchServiceStatus.isWorking
-                    onClicked: exportManager.requestCancelWorker()
+                    id: btnAction
+                    text: "Ok"
+                    onClicked: exportManager.requestClearStatus()
+                    states: [
+                        State {
+                            when: exportManager.batchServiceStatus !== undefined &&
+                                  exportManager.batchServiceStatus.isWorking
+                            PropertyChanges {
+                                target: btnAction
+                                text: "Cancel"
+                                onClicked: exportManager.requestCancelWorker()
+                            }
+                        }
+                    ]
                 }
             }
         }
