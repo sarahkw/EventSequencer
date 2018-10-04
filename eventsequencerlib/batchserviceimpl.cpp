@@ -36,12 +36,12 @@ void BatchServiceImplThread::run()
     auto result = process();
     if (result.success) {
         if (result.message.isEmpty()) {
-            emit statusTextChanged(fileName_, QString("Success"));
+            emit statusTextChanged(fileName_, QString("Success"), true);
         } else {
-            emit statusTextChanged(fileName_, QString("Success: %1").arg(result.message));
+            emit statusTextChanged(fileName_, QString("Success: %1").arg(result.message), true);
         }
     } else {
-        emit statusTextChanged(fileName_, QString("Failure: %1").arg(result.message));
+        emit statusTextChanged(fileName_, QString("Failure: %1").arg(result.message), true);
     }
 }
 
@@ -52,7 +52,7 @@ void BatchServiceImplThread::setFileNameFromPath(QString filePath)
 
 void BatchServiceImplThread::reportStatus(QString status)
 {
-    emit statusTextChanged(fileName_, status);
+    emit statusTextChanged(fileName_, status, false);
 }
 
 namespace {
@@ -542,6 +542,7 @@ void BatchServiceImpl::requestClearStatus()
     }
 
     status_.isWorking_ = false;
+    status_.isResult_ = false;
     status_.fileName_.clear();
     status_.statusText_.clear();
     emit statusChanged(QVariant::fromValue(status_));
@@ -560,12 +561,15 @@ void BatchServiceImpl::workerFinished()
 
     emit androidStopService();
     status_.isWorking_ = false;
+    status_.isResult_ = false;
     emit statusChanged(QVariant::fromValue(status_));
 }
 
 void BatchServiceImpl::workerStatusTextChanged(const QString& fileName,
-                                               const QString& statusText)
+                                               const QString& statusText,
+                                               bool isResult)
 {
+    status_.isResult_ = isResult;
     status_.fileName_ = fileName;
     status_.statusText_ = statusText;
     emit statusChanged(QVariant::fromValue(status_));

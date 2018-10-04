@@ -34,7 +34,8 @@ protected:
     void reportStatus(QString status);
 
 signals:
-    void statusTextChanged(const QString& fileName, const QString& statusText);
+    void statusTextChanged(const QString& fileName, const QString& statusText,
+                           bool isResult);
 };
 
 class BatchServiceImpl : public batchservicelib::BatchServiceImplBase
@@ -78,7 +79,9 @@ public slots:
 private slots:
 
     void workerFinished();
-    void workerStatusTextChanged(const QString& fileName, const QString& statusText);
+    void workerStatusTextChanged(const QString& fileName,
+                                 const QString& statusText,
+                                 bool isResult);
 
 };
 

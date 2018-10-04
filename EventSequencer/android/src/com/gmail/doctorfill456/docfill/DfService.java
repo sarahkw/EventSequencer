@@ -29,6 +29,16 @@ public class DfService extends QtService
         }
     }
 
+    // Called from Android thread
+    public void workerStatusResult(String fileName, String statusText) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle(String.format("Export Result: %s", fileName))
+                .setContentText(statusText)
+                .setSmallIcon(R.drawable.ic_stat_docfill);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(RESULT_NOTIFICATION_ID, builder.build());
+    }
+
     // Called from Qt thread
     public static void androidStartService(Context ctx) {
         // Would prefer startForegroundService, but not doing so for compat reasons.
@@ -43,6 +53,7 @@ public class DfService extends QtService
     }
 
     private static final int ONGOING_NOTIFICATION_ID = 10;
+    private static final int RESULT_NOTIFICATION_ID = 11;
     private static String CHANNEL_ID = "CHANNEL_BACKGROUND_WORKER";
 
     private static String CANCEL_WORKER_ACTION = "com.gmail.doctorfill456.docfill.action.CANCEL_WORKER";
@@ -74,7 +85,7 @@ public class DfService extends QtService
 
     private NotificationCompat.Builder ongoingNotificationBuilder(String title, String text) {
         return new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle(title == null ? "DocFill" : title)
+                .setContentTitle(title == null ? "DocFill" : String.format("Exporting: %s", title))
                 .setContentText(text == null ? "Processing..." : text)
                 .setSmallIcon(R.drawable.ic_stat_docfill)
                 .addAction(0, "Cancel", cancelBroadcast_);
