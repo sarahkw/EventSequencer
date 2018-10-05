@@ -375,8 +375,10 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
 
         reportStatus(QString("%1 of %2").arg(i).arg(workItems.size()));
 
+        QString partialOutputFilePath = QString("%1/%2.part").arg(outputPath).arg(wi.destFileName);
+        QString outputFilePath = QString("%1/%2").arg(outputPath).arg(wi.destFileName);
+
         std::unique_ptr<SampleModifyingIODevice> resource;
-        QString outputFilePath;
         {
             EndianModifyingIODevice* emiod{};
             QString errorMessage;
@@ -387,8 +389,6 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
             } else {
                 return {false, QString("Error: %1: %2").arg(wi.sourceUrl.toString()).arg(errorMessage)};
             }
-
-            outputFilePath = QString("%1/%2").arg(outputPath).arg(wi.destFileName);
         }
 
         {
@@ -396,7 +396,7 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
             Q_ASSERT(ok); // Can't happen, but just make sure.
         }
 
-        QFile writeFile(outputFilePath);
+        QFile writeFile(partialOutputFilePath);
         if (!writeFile.open(QFile::WriteOnly)) {
             return {false, QString("Error: %1: %2").arg(outputFilePath).arg(writeFile.errorString())};
         }
@@ -412,6 +412,10 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
             return {false, QString("Write Error")};
         }
         writeFile.close();
+
+        if (!QFile::rename(partialOutputFilePath, outputFilePath)) {
+            return {false, "Cannot rename partial file"};
+        }
 
         if (isInterruptionRequested()) {
             return {false, "Canceled"};
