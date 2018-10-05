@@ -420,7 +420,7 @@ QString BatchServiceImpl::requestExportPlayToFile(QUrl documentUrl)
         [documentUrl]() { return new ExportPlayToFileWorkerThread(documentUrl); });
 }
 
-QString BatchServiceImpl::requestExportHtml(QUrl documentUrl)
+QString BatchServiceImpl::requestExportHtml(QUrl documentUrl, bool merge)
 {
     return startRequestedExport(
                 [documentUrl]() { return new ExportHtmlWorkerThread(documentUrl); });

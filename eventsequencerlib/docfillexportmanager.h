@@ -47,10 +47,10 @@ public:
     QString defaultPlayToFileOutputPath() const;
     QString defaultExportHtmlOutputPath() const;
 
-    // SERVICEREQUESTS VERSION 02
+    // SERVICEREQUESTS VERSION 03
     Q_INVOKABLE QString requestExportJson(Document* document);
     Q_INVOKABLE QString requestExportPlayToFile(Document* document);
-    Q_INVOKABLE QString requestExportHtml(Document* document);
+    Q_INVOKABLE QString requestExportHtml(Document* document, bool merge);
     Q_INVOKABLE void requestCancelWorker();
     Q_INVOKABLE void requestClearStatus();
 

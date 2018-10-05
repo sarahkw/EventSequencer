@@ -57,9 +57,9 @@ QString DocFillExportManager::requestExportPlayToFile(Document* document)
     return batchService_.requestExportPlayToFile(document->currentUrl());
 }
 
-QString DocFillExportManager::requestExportHtml(Document* document)
+QString DocFillExportManager::requestExportHtml(Document* document, bool merge)
 {
-    return batchService_.requestExportHtml(document->currentUrl());
+    return batchService_.requestExportHtml(document->currentUrl(), merge);
 }
 
 void DocFillExportManager::requestCancelWorker()

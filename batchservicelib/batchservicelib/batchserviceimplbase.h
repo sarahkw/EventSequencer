@@ -12,10 +12,10 @@ class BatchServiceImplBase : public QObject
 public:
     explicit BatchServiceImplBase(QObject *parent = nullptr);
 
-    // SERVICEREQUESTS VERSION 02
+    // SERVICEREQUESTS VERSION 03
     virtual QString requestExportJson(QUrl documentUrl) = 0;
     virtual QString requestExportPlayToFile(QUrl documentUrl) = 0;
-    virtual QString requestExportHtml(QUrl documentUrl) = 0;
+    virtual QString requestExportHtml(QUrl documentUrl, bool merge) = 0;
     virtual void requestCancelWorker() = 0;
     virtual void requestClearStatus() = 0;
 

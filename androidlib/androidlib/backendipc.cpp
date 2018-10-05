@@ -60,11 +60,12 @@ QString BackendIpc::requestExportPlayToFile(QUrl documentUrl)
     return reply.readVariant().toString();
 }
 
-QString BackendIpc::requestExportHtml(QUrl documentUrl)
+QString BackendIpc::requestExportHtml(QUrl documentUrl, bool merge)
 {
     QAndroidParcel data;
     QAndroidParcel reply;
     data.writeVariant(documentUrl);
+    data.writeVariant(merge);
     JniUtils::binderTransact(rpcBinder_, 1002, data, &reply);
     return reply.readVariant().toString();
 }
