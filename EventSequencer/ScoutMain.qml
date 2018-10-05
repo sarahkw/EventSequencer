@@ -280,12 +280,6 @@ ApplicationWindow { // Use ApplicationWindow to support popup overlay
                                 obj.open()
                             }
                         }
-                        RoundButton {
-                            text: "Quit"
-                            radius: 5
-                            Component.onCompleted: background.color = Qt.lighter("lime", 1.8)
-                            onClicked: Qt.quit()
-                        }
                     }
                 }
 
