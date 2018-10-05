@@ -307,21 +307,41 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
     // I think LAME expects the byte order of the host.
     audioFormat.setByteOrder(static_cast<QAudioFormat::Endian>(QSysInfo::ByteOrder));
 
+    ManagedResources managedResources(document.fileResourceDirectory());
+
+    struct WorkItem {
+        QUrl sourceUrl;
+        QString sourceFilePath;
+        QString destFileName;
+    };
+    std::vector<WorkItem> workItems;
+
     auto allSegments = dfstructure.collateChannel->segments();
-    std::vector<channel::CollateChannel::Segment> processableSegments;
     for (auto& s : allSegments) {
         if (s.strip != nullptr) {
             if (!s.strip->resourceUrl().isEmpty()) {
-                processableSegments.push_back(s);
+                WorkItem wi;
+                wi.sourceUrl = s.strip->resourceUrl();
+                if (!managedResources.urlConvertToFilePath(
+                        s.strip->resourceUrl(), &wi.sourceFilePath)) {
+                    return {false, "Internal error"};
+                }
+                QFileInfo fi(wi.sourceFilePath);
+                if (!fi.isFile()) {
+                    return {false,
+                            QString("Missing file: %1").arg(wi.sourceFilePath)};
+                }
+                wi.destFileName = fi.completeBaseName() + ".mp3";
+
+                workItems.push_back(wi);
             }
         }
     }
 
-    const auto digitCount = QString::number(processableSegments.size()).length();
+    for (size_t i = 0; i < workItems.size(); ++i) {
+        WorkItem& wi = workItems[i];
 
-    for (size_t i = 0; i < processableSegments.size(); ++i) {
-        Strip* s = processableSegments[i].strip;
-        reportStatus(QString("%1 of %2").arg(i).arg(processableSegments.size()));
+        reportStatus(QString("%1 of %2").arg(i).arg(workItems.size()));
 
         std::unique_ptr<SampleModifyingIODevice> resource;
         QString outputFilePath;
@@ -329,14 +349,14 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
             EndianModifyingIODevice* emiod{};
             QString errorMessage;
             if (playable::PlayableBase::buildEmiod(
-                    document.fileResourceDirectory(), s->resourceUrl(),
+                    document.fileResourceDirectory(), wi.sourceUrl,
                     audioFormat, &emiod, &errorMessage)) {
                 resource.reset(emiod);
             } else {
-                return {false, QString("Error: %1: %2").arg(s->resourceUrl().toString()).arg(errorMessage)};
+                return {false, QString("Error: %1: %2").arg(wi.sourceUrl.toString()).arg(errorMessage)};
             }
 
-            outputFilePath = QString("%1/%2.mp3").arg(outputPath).arg(i, digitCount, 10, QChar('0'));
+            outputFilePath = QString("%1/%2").arg(outputPath).arg(wi.destFileName);
         }
 
         {
