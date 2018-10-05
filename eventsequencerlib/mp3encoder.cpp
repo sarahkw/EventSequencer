@@ -120,6 +120,9 @@ void Mp3Encoder::encodeBufferMono(size_t framesRead, int *encodeBufferResult)
         Q_ASSERT(false);
         break;
     case SupportedAudioFormat::Type::Float:
+        *encodeBufferResult = lame_encode_buffer_ieee_float(
+            lame_, samplesFloat_.data(), nullptr, int(framesRead),
+            mp3Buffer_.data(), int(mp3Buffer_.size()));
         break;
     case SupportedAudioFormat::Type::Short:
         *encodeBufferResult = lame_encode_buffer(
@@ -127,6 +130,9 @@ void Mp3Encoder::encodeBufferMono(size_t framesRead, int *encodeBufferResult)
             mp3Buffer_.data(), int(mp3Buffer_.size()));
         break;
     case SupportedAudioFormat::Type::Int:
+        *encodeBufferResult = lame_encode_buffer_int(
+            lame_, samplesInt_.data(), nullptr, int(framesRead),
+            mp3Buffer_.data(), int(mp3Buffer_.size()));
         break;
     }
 }
@@ -138,6 +144,9 @@ void Mp3Encoder::encodeBufferStereo(size_t framesRead, int *encodeBufferResult)
         Q_ASSERT(false);
         break;
     case SupportedAudioFormat::Type::Float:
+        *encodeBufferResult = lame_encode_buffer_interleaved_ieee_float(
+            lame_, samplesFloat_.data(), int(framesRead), mp3Buffer_.data(),
+            int(mp3Buffer_.size()));
         break;
     case SupportedAudioFormat::Type::Short:
         *encodeBufferResult = lame_encode_buffer_interleaved(
@@ -145,6 +154,9 @@ void Mp3Encoder::encodeBufferStereo(size_t framesRead, int *encodeBufferResult)
             int(mp3Buffer_.size()));
         break;
     case SupportedAudioFormat::Type::Int:
+        *encodeBufferResult = lame_encode_buffer_interleaved_int(
+            lame_, samplesInt_.data(), int(framesRead), mp3Buffer_.data(),
+            int(mp3Buffer_.size()));
         break;
     }
 }
