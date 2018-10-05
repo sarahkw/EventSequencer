@@ -52,7 +52,7 @@ bool ServiceBinder::onTransact(int code, const QAndroidParcel& data,
     } else if (code == 1002) {
         QString retval;
         QUrl documentUrl = data.readVariant().toString();
-        bool merge =  = data.readVariant().toBool();
+        bool merge = data.readVariant().toBool();
 
         QMetaObject::invokeMethod(service_.get(), [&]() {
             retval = service_->requestExportHtml(documentUrl, merge);
