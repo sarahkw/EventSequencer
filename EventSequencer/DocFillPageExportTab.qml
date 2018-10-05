@@ -82,6 +82,13 @@ ScrollView {
             defaultOutputPath: exportManager.defaultExportHtmlOutputPath
             defaultOutputPathExists: exportManager.defaultExportHtmlOutputPathExists
             actionEnabled: !exportManager.serviceIsWorking
+            showPreviewAndUpdate: true
+            onUpdateActivated: {
+                var result = exportManager.requestExportHtml(document, true)
+                if (result !== "") {
+                    msgbox.msgbox(result, "Update")
+                }
+            }
             onExportActivated: {
                 var result = exportManager.requestExportHtml(document, false)
                 if (result !== "") {

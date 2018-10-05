@@ -287,11 +287,13 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
         return {false, "Internal error"};
     }
 
-    QDir dir(outputPath);
-    if (dir.exists()) {
-        return {false, "Already exists!"};
+    QDir outputDir(outputPath);
+    if (!merge_) {
+        if (outputDir.exists()) {
+            return {false, "Already exists!"};
+        }
     }
-    if (!dir.mkpath(".")) {
+    if (!outputDir.mkpath(".")) {
         return {false, "Cannot create directory"};
     }
 
@@ -336,6 +338,36 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
                 workItems.push_back(wi);
             }
         }
+    }
+
+    if (merge_) {
+        std::set<QString> filesWeShouldHave;
+        for (auto& wi : workItems) {
+            filesWeShouldHave.insert(wi.destFileName);
+        }
+
+        std::set<QString> filesWeAlreadyHave;
+        std::vector<QString> filesWeShouldDelete;
+        for (auto& fi : outputDir.entryInfoList(QDir::Files)) {
+            if (filesWeShouldHave.count(fi.fileName()) == 0) {
+                // We shouldn't have this file.
+                filesWeShouldDelete.push_back(fi.fileName());
+            } else {
+                // We should have this file.
+                filesWeAlreadyHave.insert(fi.fileName());
+            }
+        }
+
+        for (auto& s : filesWeShouldDelete) {
+            QFile::remove(outputDir.filePath(s));
+        }
+
+        workItems.erase(std::remove_if(workItems.begin(), workItems.end(),
+                                       [&](WorkItem& wi) {
+                                           return filesWeAlreadyHave.count(
+                                                      wi.destFileName) != 0;
+                                       }),
+                        workItems.end());
     }
 
     for (size_t i = 0; i < workItems.size(); ++i) {

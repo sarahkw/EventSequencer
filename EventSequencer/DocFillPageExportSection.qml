@@ -8,9 +8,12 @@ GroupBox {
     property alias outputPath: txtOutputPath.text
     property bool defaultOutputPathExists
     property alias actionEnabled: btnExport.enabled
+    property bool showPreviewAndUpdate: false
 
     signal exportActivated()
     signal deleteActivated()
+    signal previewActivated()
+    signal updateActivated()
 
     states: [
         State {
@@ -19,6 +22,14 @@ GroupBox {
                 target: btnExport
                 text: "Delete"
                 onActivated: deleteActivated()
+            }
+            PropertyChanges {
+                target: btnPreview
+                visible: showPreviewAndUpdate
+            }
+            PropertyChanges {
+                target: btnUpdate
+                visible: showPreviewAndUpdate
             }
         }
     ]
@@ -44,12 +55,30 @@ GroupBox {
                 selectByMouse: true
             }
         }
-        DelayButton {
-            id: btnExport
+        RowLayout {
             Layout.fillWidth: true
-            text: "Export"
-            onActivated: exportActivated()
-            onCheckedChanged: checked = false
+            Button {
+                id: btnPreview
+                Layout.fillWidth: true
+                text: "Preview"
+                onClicked: previewActivated()
+                visible: false
+            }
+            DelayButton {
+                id: btnUpdate
+                Layout.fillWidth: true
+                text: "Update"
+                onActivated: updateActivated()
+                onCheckedChanged: checked = false
+                visible: false
+            }
+            DelayButton {
+                id: btnExport
+                Layout.fillWidth: true
+                text: "Export"
+                onActivated: exportActivated()
+                onCheckedChanged: checked = false
+            }
         }
     }
 }
