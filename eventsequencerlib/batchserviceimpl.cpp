@@ -249,8 +249,15 @@ BatchServiceImplThread::FinalStatus ExportPlayToFileWorkerThread::process()
 
 class ExportHtmlWorkerThread : public BatchServiceImplThread {
     QUrl documentUrl_;
+    bool merge_;
 public:
-    ExportHtmlWorkerThread(QUrl documentUrl) : BatchServiceImplThread(documentUrl), documentUrl_(documentUrl) {}
+    ExportHtmlWorkerThread(QUrl documentUrl, bool merge)
+        : BatchServiceImplThread(documentUrl),
+          documentUrl_(documentUrl),
+          merge_(merge)
+    {
+    }
+
 protected:
     FinalStatus process() override;
 };
@@ -422,8 +429,9 @@ QString BatchServiceImpl::requestExportPlayToFile(QUrl documentUrl)
 
 QString BatchServiceImpl::requestExportHtml(QUrl documentUrl, bool merge)
 {
-    return startRequestedExport(
-                [documentUrl]() { return new ExportHtmlWorkerThread(documentUrl); });
+    return startRequestedExport([documentUrl, merge]() {
+        return new ExportHtmlWorkerThread(documentUrl, merge);
+    });
 }
 
 void BatchServiceImpl::requestCancelWorker()
