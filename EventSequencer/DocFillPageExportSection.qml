@@ -7,7 +7,7 @@ GroupBox {
     property string defaultOutputPath
     property alias outputPath: txtOutputPath.text
     property bool defaultOutputPathExists
-    property alias actionEnabled: btnExport.enabled
+    property bool actionEnabled: true
     property bool showPreviewAndUpdate: false
 
     signal exportActivated()
@@ -63,6 +63,7 @@ GroupBox {
                 text: "Preview"
                 onClicked: previewActivated()
                 visible: false
+                enabled: actionEnabled
             }
             DelayButton {
                 id: btnUpdate
@@ -71,6 +72,7 @@ GroupBox {
                 onActivated: updateActivated()
                 onCheckedChanged: checked = false
                 visible: false
+                enabled: actionEnabled
             }
             DelayButton {
                 id: btnExport
@@ -78,6 +80,7 @@ GroupBox {
                 text: "Export"
                 onActivated: exportActivated()
                 onCheckedChanged: checked = false
+                enabled: actionEnabled
             }
         }
     }
