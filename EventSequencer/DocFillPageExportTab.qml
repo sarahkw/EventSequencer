@@ -58,7 +58,7 @@ ScrollView {
                 }
                 Button {
                     id: btnAction
-                    text: "Ok"
+                    text: "Clear"
                     onClicked: exportManager.requestClearStatus()
                     states: [
                         State {
