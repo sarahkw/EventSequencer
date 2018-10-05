@@ -11,14 +11,13 @@
 #include "endianmodifyingiodevice.h"
 #include "supportedaudioformat.h"
 #include "entireunitreader.h"
+#include "mp3encoder.h"
 
 #include <QDir>
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
-
-#include <lame/lame.h>
 
 #include <cmath>
 
@@ -298,16 +297,7 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
         return {false, "Internal error"};
     }
     auto audioFormat = audioFormatHolder->toQAudioFormat();
-    if (!audioFormat.isValid()) {
-        return {false, "Internal error"};
-    }
-    if (audioFormat.channelCount() != 1 && audioFormat.channelCount() != 2) {
-        return {false, "Only mono and stereo supported"};
-    }
-
-    // I think LAME expects the byte order of the device.
-    static_assert (static_cast<QAudioFormat::Endian>(QSysInfo::BigEndian) == QAudioFormat::BigEndian, "");
-    static_assert (static_cast<QAudioFormat::Endian>(QSysInfo::LittleEndian) == QAudioFormat::LittleEndian, "");
+    // I think LAME expects the byte order of the host.
     audioFormat.setByteOrder(static_cast<QAudioFormat::Endian>(QSysInfo::ByteOrder));
 
     auto allSegments = dfstructure.collateChannel->segments();
@@ -352,114 +342,13 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
             return {false, QString("Error: %1: %2").arg(outputFilePath).arg(writeFile.errorString())};
         }
 
-        auto lameCloser = [](lame_global_flags* gfp) {
-            lame_close(gfp);
-        };
-        std::unique_ptr<lame_global_flags, decltype(lameCloser)> gfp(lame_init(), lameCloser);
-        Q_ASSERT(!!gfp); // TODO error handling
-
-        lame_set_in_samplerate(&*gfp, audioFormat.sampleRate());
-        if (audioFormat.channelCount() == 1 || audioFormat.channelCount() == 2) {
-            lame_set_num_channels(&*gfp, audioFormat.channelCount());
-        } else {
-            // I guess if we wanted to support more channels, we could just take
-            // the first 2 channels. But I don't think anyone will do that.
-            return {false, QString("Can only encode with 1 or 2 channels")};
-        }
+        Mp3Encoder mp3enc(resource.get(), &audioFormat, &writeFile);
         {
-            int rcode = lame_init_params(&*gfp);
-            if (rcode < 0) {
-                return {false, QString("Error: %1: LAME Error: %2").arg(s->resourceUrl().toString()).arg(rcode)};
+            auto result = mp3enc.initAndEncode();
+            if (!result.success) {
+                return {false, result.errorMessage};
             }
         }
-
-        Q_ASSERT(audioFormat.sampleSize() > 0);
-        const size_t bytesPerSample = size_t(audioFormat.sampleSize()) / 8;
-        const size_t bufferSize = 16384; // QIODEVICE_BUFFERSIZE, but that's in a private header.
-        Q_ASSERT(audioFormat.channelCount() > 0);
-        const size_t frameCount = bufferSize / bytesPerSample / size_t(audioFormat.channelCount());
-        const size_t sampleCount = frameCount * size_t(audioFormat.channelCount());
-
-        // "worst case" from docs. I add ceil just to be safe, since the doc isn't clear.
-        const auto mp3buffer_size = size_t(std::ceil(1.25 * sampleCount + 7200));
-
-        std::vector<unsigned char> mp3buffer(mp3buffer_size);
-        std::vector<char> tmpbuf(bufferSize); // For readSamples
-
-        switch (SupportedAudioFormat::classify(audioFormat)) {
-        case SupportedAudioFormat::Type::NotSupported:
-            return {false, QString("Unsupported audio format for encoding")};
-        case SupportedAudioFormat::Type::Float:
-            break;
-        case SupportedAudioFormat::Type::Short: {
-            std::vector<short> samples(sampleCount);
-
-            for (;;) {
-                EntireUnitReader::Error error{};
-
-                size_t framesRead = EntireUnitReader::readUnitGroups<short>(
-                    [&resource](char* data, qint64 maxlen) -> qint64 {
-                        return resource->read(data, maxlen);
-                    },
-                    samples.data(), samples.size(), frameCount,
-                    size_t(audioFormat.channelCount()), &error);
-
-                if (error & EntireUnitReader::NegativeOneError) {
-                    return {false, "ERROR!!!"};
-                }
-                if (error & EntireUnitReader::DiscardedDataDueToEofError) {
-                    qWarning("Discarded data while encoding mp3!");
-                }
-
-                int encodeBufferResult{};
-                if (audioFormat.channelCount() == 1) {
-                    encodeBufferResult = lame_encode_buffer(
-                        gfp.get(), samples.data(), nullptr, int(framesRead),
-                        mp3buffer.data(), int(mp3buffer.size()));
-                } else if (audioFormat.channelCount() == 2) {
-                    encodeBufferResult = lame_encode_buffer_interleaved(
-                        gfp.get(), samples.data(), int(framesRead),
-                        mp3buffer.data(), int(mp3buffer.size()));
-                } else {
-                    Q_ASSERT(false);
-                }
-
-                if (encodeBufferResult < 0) {
-                    return {false,
-                            QString("Lame Error: %1").arg(encodeBufferResult)};
-                }
-
-                if (encodeBufferResult !=
-                    writeFile.write(reinterpret_cast<char*>(mp3buffer.data()),
-                                    encodeBufferResult)) {
-                    return {false, QString("Write Error")};
-                }
-
-                if (framesRead < frameCount) {
-                    break; // EOF
-                }
-            }
-
-            break;
-        }
-        case SupportedAudioFormat::Type::Int:
-            break;
-        }
-
-        {
-            const int flushBufferResult = lame_encode_flush(
-                gfp.get(), mp3buffer.data(), int(mp3buffer.size()));
-            if (flushBufferResult < 0) {
-                return {false,
-                        QString("Lame Error: %1").arg(flushBufferResult)};
-            }
-            if (flushBufferResult !=
-                writeFile.write(reinterpret_cast<char*>(mp3buffer.data()),
-                                flushBufferResult)) {
-                return {false, QString("Write Error")};
-            }
-        }
-
         if (!writeFile.flush()) {
             return {false, QString("Write Error")};
         }
