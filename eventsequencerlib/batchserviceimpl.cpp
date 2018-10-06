@@ -131,15 +131,28 @@ QJsonObject JsonExportSegment::make(JsonExportSegment::FileType ft)
 
 class JsonExportBuilder {
     QJsonArray segments_;
+    JsonExportSegment::FileType fileType_;
 public:
-    void addSegments(const QString& fileResourceDirectory,
-                     const QString& content,
-                     const std::vector<channel::CollateChannel::Segment>& segments)
+    JsonExportBuilder(JsonExportSegment::FileType fileType)
+        : fileType_(fileType)
+    {
+    }
+
+    void addSegment(const QString& fileResourceDirectory,
+                    const QString& content,
+                    const channel::CollateChannel::Segment& segment)
+    {
+        JsonExportSegment jseg;
+        jseg.load(fileResourceDirectory, content, segment);
+        segments_.push_back(jseg.make(fileType_));
+    }
+
+    void addSegments(
+        const QString& fileResourceDirectory, const QString& content,
+        const std::vector<channel::CollateChannel::Segment>& segments)
     {
         for (auto& segment : segments) {
-            JsonExportSegment jseg;
-            jseg.load(fileResourceDirectory, content, segment);
-            segments_.push_back(jseg.make(JsonExportSegment::FileType::Au));
+            addSegment(fileResourceDirectory, content, segment);
         }
     }
 
@@ -185,7 +198,7 @@ BatchServiceImplThread::FinalStatus ExportJsonWorkerThread::process()
 
     QString content = dfstructure.textChannel->content();
 
-    JsonExportBuilder exporter;
+    JsonExportBuilder exporter(JsonExportSegment::FileType::Au);
     exporter.addSegments(document.fileResourceDirectory(), content,
                          dfstructure.collateChannel->segments());
 
