@@ -524,6 +524,33 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
         }
     }
 
+    reportStatus("Building HTML");
+    {
+        QFile htmlFile(outputDir.filePath("index.html"));
+        if (!htmlFile.open(QIODevice::WriteOnly)) {
+            return {false, "Cannot open html file for writing"};
+        }
+        AutoFileDeletion fileDeleter(htmlFile);
+
+        {
+            QString content = dfstructure.textChannel->content();
+            JsonExportBuilder jsonExporter(JsonExportSegment::FileType::Mp3);
+            jsonExporter.addSegments(document.fileResourceDirectory(), content,
+                                     dfstructure.collateChannel->segments());
+            auto result = jsonExporter.build();
+            if (htmlFile.write(result) != result.size()) {
+                return {false, "Write failed"};
+            }
+        }
+
+        if (!htmlFile.flush()) {
+            return {false, "Flush failed"};
+        }
+
+        htmlFile.close();
+        fileDeleter.commit();
+    }
+
     return {true, ""};
 }
 
