@@ -56,7 +56,7 @@ void BatchServiceImplThread::reportStatus(QString status)
 
 namespace {
 
-struct JsonExportSegment {
+class JsonExportSegment {
     int segmentStart;
     int length;
     QString text;
@@ -64,6 +64,7 @@ struct JsonExportSegment {
     QString fileAu;
     QString fileMp3;
     QString fileCreateTime;
+public:
     void load(const QString& fileResourceDirectory, const QString& content,
               const channel::CollateChannel::Segment& segment);
     enum class FileType { Au, Mp3 };
@@ -128,6 +129,27 @@ QJsonObject JsonExportSegment::make(JsonExportSegment::FileType ft)
     return obj;
 }
 
+class JsonExportBuilder {
+    QJsonArray segments_;
+public:
+    void addSegments(const QString& fileResourceDirectory,
+                     const QString& content,
+                     const std::vector<channel::CollateChannel::Segment>& segments)
+    {
+        for (auto& segment : segments) {
+            JsonExportSegment jseg;
+            jseg.load(fileResourceDirectory, content, segment);
+            segments_.push_back(jseg.make(JsonExportSegment::FileType::Au));
+        }
+    }
+
+    QByteArray build()
+    {
+        QJsonDocument doc(segments_);
+        return doc.toJson();
+    }
+};
+
 class ExportJsonWorkerThread : public BatchServiceImplThread {
     QUrl documentUrl_;
 public:
@@ -163,21 +185,16 @@ BatchServiceImplThread::FinalStatus ExportJsonWorkerThread::process()
 
     QString content = dfstructure.textChannel->content();
 
-    QJsonArray jsonSegments;
-
-    for (auto& segment : dfstructure.collateChannel->segments()) {
-        JsonExportSegment jseg;
-        jseg.load(document.fileResourceDirectory(), content, segment);
-        jsonSegments.push_back(jseg.make(JsonExportSegment::FileType::Au));
-    }
+    JsonExportBuilder exporter;
+    exporter.addSegments(document.fileResourceDirectory(), content,
+                         dfstructure.collateChannel->segments());
 
     QFile file(outputPath);
     if (!file.open(QFile::NewOnly)) {
         return {false, QString("Cannot open file: %1").arg(file.errorString())};
     }
 
-    QJsonDocument jsonDoc(jsonSegments);
-    QByteArray toWrite = jsonDoc.toJson();
+    QByteArray toWrite = exporter.build();
     qint64 written = file.write(toWrite);
     if (written != toWrite.size()) {
         return {false, QString("Cannot completely write file: %1").arg(file.errorString())};
