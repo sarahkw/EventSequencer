@@ -129,20 +129,26 @@ QJsonObject JsonExportSegment::make(JsonExportSegment::FileType ft)
     return obj;
 }
 
-QByteArray jsonExport(
-    const QString& fileResourceDirectory, const QString& content,
-    const std::vector<channel::CollateChannel::Segment>& segments,
-    JsonExportSegment::FileType fileType)
-{
-    QJsonArray arr;
-    for (auto& segment : segments) {
-        JsonExportSegment jseg;
-        jseg.load(fileResourceDirectory, content, segment);
-        arr.push_back(jseg.make(fileType));
+class JsonExportBuilder {
+    QJsonArray segments_;
+public:
+    void addSegments(const QString& fileResourceDirectory,
+                     const QString& content,
+                     const std::vector<channel::CollateChannel::Segment>& segments)
+    {
+        for (auto& segment : segments) {
+            JsonExportSegment jseg;
+            jseg.load(fileResourceDirectory, content, segment);
+            segments_.push_back(jseg.make(JsonExportSegment::FileType::Au));
+        }
     }
-    QJsonDocument doc(arr);
-    return doc.toJson();
-}
+
+    QByteArray build()
+    {
+        QJsonDocument doc(segments_);
+        return doc.toJson();
+    }
+};
 
 class ExportJsonWorkerThread : public BatchServiceImplThread {
     QUrl documentUrl_;
@@ -179,14 +185,16 @@ BatchServiceImplThread::FinalStatus ExportJsonWorkerThread::process()
 
     QString content = dfstructure.textChannel->content();
 
+    JsonExportBuilder exporter;
+    exporter.addSegments(document.fileResourceDirectory(), content,
+                         dfstructure.collateChannel->segments());
+
     QFile file(outputPath);
     if (!file.open(QFile::NewOnly)) {
         return {false, QString("Cannot open file: %1").arg(file.errorString())};
     }
 
-    QByteArray toWrite = jsonExport(document.fileResourceDirectory(), content,
-                                    dfstructure.collateChannel->segments(),
-                                    JsonExportSegment::FileType::Au);
+    QByteArray toWrite = exporter.build();
     qint64 written = file.write(toWrite);
     if (written != toWrite.size()) {
         return {false, QString("Cannot completely write file: %1").arg(file.errorString())};
