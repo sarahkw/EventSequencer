@@ -78,7 +78,7 @@ ScrollView {
             anchors.left: parent.left
             anchors.right: parent.right
             title: "Export HTML"
-            description: "Write a HTML file with MP3-encoded resources for you to share on the world wide web."
+            description: "Encode audio as MP3 and write a HTML file for you to share on the world wide web. Note that encoding will use a lot of power."
             defaultOutputPath: exportManager.defaultExportHtmlOutputPath
             defaultOutputPathExists: exportManager.defaultExportHtmlOutputPathExists
             actionEnabled: !exportManager.serviceIsWorking

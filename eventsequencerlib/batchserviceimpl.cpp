@@ -373,7 +373,7 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
     for (size_t i = 0; i < workItems.size(); ++i) {
         WorkItem& wi = workItems[i];
 
-        reportStatus(QString("%1 of %2").arg(i).arg(workItems.size()));
+        reportStatus(QString("%1 of %2 files encoded").arg(i).arg(workItems.size()));
 
         QString partialOutputFilePath = QString("%1/%2.part").arg(outputPath).arg(wi.destFileName);
         QString outputFilePath = QString("%1/%2").arg(outputPath).arg(wi.destFileName);
