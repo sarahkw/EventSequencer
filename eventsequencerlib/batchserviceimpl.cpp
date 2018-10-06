@@ -147,6 +147,25 @@ BatchServiceImplThread::FinalStatus ExportJsonWorkerThread::process()
     return {true, ""};
 }
 
+class AutoFileDeletion {
+    QFile& file_;
+    bool committed_ = false;
+public:
+    AutoFileDeletion(QFile& file) : file_(file) {}
+    ~AutoFileDeletion()
+    {
+        if (!committed_) {
+            if (!file_.remove()) {
+                qWarning("Unable to remove temp file");
+            }
+        }
+    }
+    void commit()
+    {
+        committed_ = true;
+    }
+};
+
 class ExportPlayToFileWorkerThread : public BatchServiceImplThread {
     QUrl documentUrl_;
 public:
@@ -209,6 +228,8 @@ BatchServiceImplThread::FinalStatus ExportPlayToFileWorkerThread::process()
         return {false, QString("Cannot open file: %1").arg(file.errorString())};
     }
 
+    AutoFileDeletion fileDeleter(file);
+
     qint64 totalBytes = 0;
 
     AuFileHeader afh;
@@ -236,6 +257,10 @@ BatchServiceImplThread::FinalStatus ExportPlayToFileWorkerThread::process()
             // EOF
             break;
         }
+
+        if (QThread::currentThread()->isInterruptionRequested()) {
+            return {false, "Canceled"};
+        }
     }
 
     if (!file.flush()) {
@@ -243,6 +268,7 @@ BatchServiceImplThread::FinalStatus ExportPlayToFileWorkerThread::process()
     }
 
     file.close();
+    fileDeleter.commit();
 
     return {true, ""};
 }
