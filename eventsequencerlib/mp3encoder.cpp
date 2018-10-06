@@ -6,6 +6,8 @@
 
 #include <cmath>
 
+#include <QThread>
+
 Mp3Encoder::Mp3Encoder(QIODevice* source, QAudioFormat* sourceFormat,
                        QIODevice* destination)
     : source_(source), sourceFormat_(sourceFormat), destination_(destination)
@@ -192,6 +194,10 @@ Mp3Encoder::Result Mp3Encoder::encode()
 
         if (framesRead < frameCount_) {
             break;  // EOF
+        }
+
+        if (QThread::currentThread()->isInterruptionRequested()) {
+            return {false, "Encoding canceled"};
         }
     }
 

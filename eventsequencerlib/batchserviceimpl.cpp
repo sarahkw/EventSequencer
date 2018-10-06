@@ -426,6 +426,7 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
         if (!writeFile.open(QFile::WriteOnly)) {
             return {false, QString("Error: %1: %2").arg(outputFilePath).arg(writeFile.errorString())};
         }
+        AutoFileDeletion fileDeleter(writeFile);
 
         Mp3Encoder mp3enc(resource.get(), &audioFormat, &writeFile);
         {
@@ -442,6 +443,8 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
         if (!QFile::rename(partialOutputFilePath, outputFilePath)) {
             return {false, "Cannot rename partial file"};
         }
+
+        fileDeleter.commit();
 
         if (isInterruptionRequested()) {
             return {false, "Canceled"};
