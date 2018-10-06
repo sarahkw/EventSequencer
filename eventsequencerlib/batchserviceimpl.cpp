@@ -56,6 +56,78 @@ void BatchServiceImplThread::reportStatus(QString status)
 
 namespace {
 
+struct JsonSegment {
+    int segmentStart;
+    int length;
+    QString text;
+    bool hasConflict;
+    QString fileAu;
+    QString fileMp3;
+    QString fileCreateTime;
+    void load(const QString& fileResourceDirectory, const QString& content,
+              const channel::CollateChannel::Segment& segment);
+    enum class FileType { Au, Mp3 };
+    QJsonObject make(FileType ft);
+};
+
+void JsonSegment::load(const QString& fileResourceDirectory,
+                       const QString& content,
+                       const channel::CollateChannel::Segment& segment)
+{
+    this->segmentStart = segment.segmentStart;
+    this->length = segment.segmentLength;
+    this->text = content.mid(segment.segmentStart, segment.segmentLength);
+    this->hasConflict =
+        segment.segmentType == channel::CollateChannel::SegmentType::Conflict;
+
+    Strip* s = segment.strip;
+    if (s == nullptr) {
+        return;
+    }
+    QUrl url = s->resourceUrl();
+    if (url.isEmpty()) {
+        return;
+    }
+    QString filePath;
+    if (!ManagedResources(fileResourceDirectory)
+             .urlConvertToFilePath(url, &filePath)) {
+        return;
+    }
+    QFileInfo fi(filePath);
+    if (fi.exists()) {
+        this->fileAu = fi.fileName();
+        this->fileMp3 = fi.completeBaseName() + ".mp3";
+
+        // Let's make an attempt to read meta-data. Failures are
+        // silently ignored because files may not have meta-data, may
+        // be missing, etc.
+        std::string createTime;
+        if (ResourceMetaData::readFromFile(filePath, &createTime)) {
+            this->fileCreateTime = QString::fromStdString(createTime);
+        }
+    }
+}
+
+QJsonObject JsonSegment::make(JsonSegment::FileType ft)
+{
+    QJsonObject obj;
+    obj["startPosition"] = this->segmentStart;
+    obj["length"] = this->length;
+    obj["text"] = this->text;
+    if (this->hasConflict) {
+        obj["hasConflict"] = true;
+    }
+    if (ft == FileType::Au && !this->fileAu.isEmpty()) {
+        obj["file"] = this->fileAu;
+    } else if (ft == FileType::Mp3 && !this->fileMp3.isEmpty()) {
+        obj["file"] = this->fileMp3;
+    }
+    if (!this->fileCreateTime.isEmpty()) {
+        obj["fileCreateTime"] = this->fileCreateTime;
+    }
+    return obj;
+}
+
 class ExportJsonWorkerThread : public BatchServiceImplThread {
     QUrl documentUrl_;
 public:
@@ -94,44 +166,15 @@ BatchServiceImplThread::FinalStatus ExportJsonWorkerThread::process()
     QJsonArray jsonSegments;
 
     for (auto& segment : dfstructure.collateChannel->segments()) {
-        QJsonObject obj;
-        Strip* s = segment.strip;
-        obj["startPosition"] = segment.segmentStart;
-        obj["length"] = segment.segmentLength;
-        obj["text"] = content.mid(segment.segmentStart, segment.segmentLength);
-        if (segment.segmentType == channel::CollateChannel::SegmentType::Conflict) {
-            obj["hasConflict"] = true;
-        }
-        if (s != nullptr) {
-            QUrl url = s->resourceUrl();
-            if (!url.isEmpty()) {
-                obj["file"] = ManagedResources::urlConvertToFileName(url.toString());
-
-                // Let's make an attempt to read meta-data. Failures are silently
-                // ignored because files may not have meta-data, may be missing,
-                // etc.
-                {
-                    QString filePath;
-                    ManagedResources mr(document.fileResourceDirectory());
-                    if (mr.urlConvertToFilePath(url, &filePath)) {
-                        std::string createTime;
-                        if (ResourceMetaData::readFromFile(filePath, &createTime)) {
-                            obj["fileCreateTime"] = QString::fromStdString(createTime);
-                        }
-                    }
-                    // RAII to clean up
-                }
-            }
-        }
-        jsonSegments.push_back(obj);
+        JsonSegment jseg;
+        jseg.load(document.fileResourceDirectory(), content, segment);
+        jsonSegments.push_back(jseg.make(JsonSegment::FileType::Au));
     }
 
     QFile file(outputPath);
     if (!file.open(QFile::NewOnly)) {
         return {false, QString("Cannot open file: %1").arg(file.errorString())};
     }
-
-    QString error = "Success";
 
     QJsonDocument jsonDoc(jsonSegments);
     QByteArray toWrite = jsonDoc.toJson();
