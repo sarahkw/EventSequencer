@@ -120,6 +120,21 @@ bool DocFillExportManager::deleteDefaultExportHtmlOutputPath()
     return success;
 }
 
+QVariantList DocFillExportManager::getExportHtmlIndexUrl() const
+{
+    if (!defaultExportHtmlOutputPathExists()) {
+        return {false, "Export directory doesn't exist"};
+    }
+
+    QDir outputDir(defaultExportHtmlOutputPath());
+    QFile indexFile(outputDir.filePath("index.html"));
+    if (indexFile.exists()) {
+        return {true, QUrl::fromLocalFile(indexFile.fileName())};
+    } else {
+        return {false, "HTML index does not exist. Perhaps the export was not complete. Press Update to complete the export."};
+    }
+}
+
 void DocFillExportManager::updateDefaultOutputPaths()
 {
     defaultExportJsonOutputPath_.clear();

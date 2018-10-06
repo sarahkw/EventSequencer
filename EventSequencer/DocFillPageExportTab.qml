@@ -83,6 +83,15 @@ ScrollView {
             defaultOutputPathExists: exportManager.defaultExportHtmlOutputPathExists
             actionEnabled: !exportManager.serviceIsWorking
             showPreviewAndUpdate: true
+            onPreviewActivated: {
+                var result = exportManager.getExportHtmlIndexUrl()
+                var success = result[0]
+                if (success) {
+                    Qt.openUrlExternally(result[1])
+                } else {
+                    msgbox.msgbox(result[1], "Preview")
+                }
+            }
             onUpdateActivated: {
                 var result = exportManager.requestExportHtml(document, true)
                 if (result !== "") {

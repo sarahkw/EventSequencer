@@ -65,6 +65,8 @@ public:
     Q_INVOKABLE bool deleteDefaultPlayToFileOutputPath();
     Q_INVOKABLE bool deleteDefaultExportHtmlOutputPath();
 
+    Q_INVOKABLE QVariantList getExportHtmlIndexUrl() const;
+
 signals:
 
     void batchServiceStatusChanged();
