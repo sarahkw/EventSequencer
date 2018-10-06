@@ -56,7 +56,7 @@ void BatchServiceImplThread::reportStatus(QString status)
 
 namespace {
 
-struct JsonSegment {
+struct JsonExportSegment {
     int segmentStart;
     int length;
     QString text;
@@ -70,9 +70,9 @@ struct JsonSegment {
     QJsonObject make(FileType ft);
 };
 
-void JsonSegment::load(const QString& fileResourceDirectory,
-                       const QString& content,
-                       const channel::CollateChannel::Segment& segment)
+void JsonExportSegment::load(const QString& fileResourceDirectory,
+                             const QString& content,
+                             const channel::CollateChannel::Segment& segment)
 {
     this->segmentStart = segment.segmentStart;
     this->length = segment.segmentLength;
@@ -108,7 +108,7 @@ void JsonSegment::load(const QString& fileResourceDirectory,
     }
 }
 
-QJsonObject JsonSegment::make(JsonSegment::FileType ft)
+QJsonObject JsonExportSegment::make(JsonExportSegment::FileType ft)
 {
     QJsonObject obj;
     obj["startPosition"] = this->segmentStart;
@@ -166,9 +166,9 @@ BatchServiceImplThread::FinalStatus ExportJsonWorkerThread::process()
     QJsonArray jsonSegments;
 
     for (auto& segment : dfstructure.collateChannel->segments()) {
-        JsonSegment jseg;
+        JsonExportSegment jseg;
         jseg.load(document.fileResourceDirectory(), content, segment);
-        jsonSegments.push_back(jseg.make(JsonSegment::FileType::Au));
+        jsonSegments.push_back(jseg.make(JsonExportSegment::FileType::Au));
     }
 
     QFile file(outputPath);
