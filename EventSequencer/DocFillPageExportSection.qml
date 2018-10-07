@@ -60,7 +60,7 @@ GroupBox {
             Button {
                 id: btnPreview
                 Layout.fillWidth: true
-                text: "Preview"
+                text: "View"
                 onClicked: previewActivated()
                 visible: false
                 enabled: actionEnabled

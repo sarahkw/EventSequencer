@@ -87,11 +87,39 @@ ScrollView {
                 var result = exportManager.getExportHtmlIndexUrl()
                 var success = result[0]
                 if (success) {
-                    Qt.openUrlExternally(result[1])
+                    previewDialog.previewUrl = result[1]
+                    previewDialog.open()
                 } else {
-                    msgbox.msgbox(result[1], "Preview")
+                    msgbox.msgbox(result[1], "View")
                 }
             }
+            Dialog {
+                id: previewDialog
+                parent: ApplicationWindow.overlay
+                modal: true
+                width: parent.width * 0.97
+                x: (parent.width - width) / 2
+                y: (parent.height - height) / 2
+                closePolicy: Popup.CloseOnEscape
+                title: "View"
+                standardButtons: Dialog.Yes | Dialog.No
+                property string previewUrl: ""
+                onAccepted: {
+                    ES.ClipboardWrapper.setText(previewUrl)
+                }
+                Label {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                    text: "You can see what the exported HTML looks like before copying it off your device by taking your browser to:
+
+%1
+
+Unfortunately, the Android browser doesn't allow us to use the file:// scheme to open documents. Using the content:// scheme, which it does support, is not yet implemented. Would you like to copy the URL to the clipboard so you could manually paste it?".arg(previewDialog.previewUrl)
+                }
+            }
+
+
             onUpdateActivated: {
                 var result = exportManager.requestExportHtml(document, true)
                 if (result !== "") {
