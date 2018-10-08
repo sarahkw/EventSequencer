@@ -1,6 +1,7 @@
 <!DOCTYPE RCC>
 <RCC>
     <qresource prefix="/">
+        <file>HtmlTemplate.txt</file>
         <file>About.txt</file>
         <file>AutoSaveManager.qml</file>
         <file>ChannelTypeComboBox.qml</file>

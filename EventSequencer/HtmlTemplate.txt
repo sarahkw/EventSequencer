@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>DocFill Web Viewer</title>
+    <script>
+        let DOCFILL_DATA = %%JSON%%;
+    </script>
+    <style type="text/css">
+        table, tr, td {
+            border: 1px solid black;
+        }
+        td.content {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>DocFill Web Viewer</h1>
+
+    <table id="contenttable" width="100%">
+    </table>
+
+    <script>
+        let contenttable = document.getElementById("contenttable");
+        for (let xx of DOCFILL_DATA) {
+            let row = document.createElement("tr");
+            row.appendChild(function () {
+                let col = document.createElement("td");
+                col.classList.add('content');
+                col.textContent = xx.text;
+                return col;
+            }());
+            row.appendChild(function () {
+                let col = document.createElement("td");
+                col.classList.add('metadata');
+                if (xx.file !== undefined) {
+                    if (xx.fileCreateTime !== undefined) {
+                        col.appendChild(function () {
+                            let div = document.createElement("div");
+                            div.appendChild(document.createTextNode("Created (UTC): " + xx.fileCreateTime));
+                            return div;
+                        }());
+                    }
+                    col.appendChild(function () {
+                        let audio = document.createElement("audio");
+                        audio.controls = true;
+                        audio.appendChild(function () {
+                            let source = document.createElement("source");
+                            source.src = xx.file;
+                            source.type = 'audio/mpeg';
+                            return source;
+                        }());
+                        return audio;
+                    }());
+                    return col;
+                }
+            }());
+            contenttable.appendChild(row);
+        }
+    </script>
+</body>
+</html>

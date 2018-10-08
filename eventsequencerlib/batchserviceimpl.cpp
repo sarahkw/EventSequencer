@@ -525,6 +525,16 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
     }
 
     reportStatus("Building HTML");
+
+    QString htmlTemplate;
+    {
+        QFile templateFile(":/HtmlTemplate.txt");
+        if (!templateFile.open(QFile::ReadOnly)) {
+            return {false, "Unable to open HTML template"};
+        }
+        htmlTemplate = QString(templateFile.readAll());
+    }
+
     {
         QFile htmlFile(outputDir.filePath("index.html"));
         if (!htmlFile.open(QIODevice::WriteOnly)) {
@@ -532,15 +542,20 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
         }
         AutoFileDeletion fileDeleter(htmlFile);
 
+        QString htmlJsonInsert;
         {
             QString content = dfstructure.textChannel->content();
             JsonExportBuilder jsonExporter(JsonExportSegment::FileType::Mp3);
             jsonExporter.addSegments(document.fileResourceDirectory(), content,
                                      dfstructure.collateChannel->segments());
-            auto result = jsonExporter.build();
-            if (htmlFile.write(result) != result.size()) {
-                return {false, "Write failed"};
-            }
+            htmlJsonInsert = jsonExporter.build();
+        }
+
+        htmlTemplate.replace("%%JSON%%", htmlJsonInsert);
+
+        QByteArray toWrite = htmlTemplate.toUtf8();
+        if (htmlFile.write(toWrite) != toWrite.size()) {
+            return {false, "Write failed"};
         }
 
         if (!htmlFile.flush()) {

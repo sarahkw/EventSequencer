@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>HtmlTemplate.txt</file>
         <file>main.qml</file>
         <file>DefaultStripView.qml</file>
         <file>Triangle.qml</file>
