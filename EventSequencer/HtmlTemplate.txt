@@ -49,7 +49,6 @@
                     col.appendChild(function () {
                         let audio = document.createElement("audio");
                         audio.controls = true;
-                        audio.preload = 'none';
                         audio.appendChild(function () {
                             let source = document.createElement("source");
                             source.src = xx.file;
