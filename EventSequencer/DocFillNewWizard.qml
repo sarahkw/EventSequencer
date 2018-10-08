@@ -163,7 +163,7 @@ Pane {
                                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                                 textFormat: TextEdit.PlainText
                                 text: documentCreator.contents
-                                selectByMouse: true
+                                //selectByMouse: true    -- This breaks scrolling on Android.
                                 onEditingFinished: documentCreator.contents = text
                             }
                         }

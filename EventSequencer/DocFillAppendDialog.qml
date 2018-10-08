@@ -15,9 +15,10 @@ Dialog {
 
     parent: ApplicationWindow.overlay
     x: (parent.width - width) / 2
-    y: (parent.height - height) / 2
+    //y: (parent.height - height) / 2
+    y: parent.height * 0.05
     width: parent.width * 0.95
-    height: parent.height * 0.5
+    height: parent.height * 0.75
 
     title: appendAndAssignMode ? "Append and Assign" : "Append"
     modal: true
@@ -69,7 +70,7 @@ Dialog {
                 id: txtAppendText
                 wrapMode: TextEdit.Wrap
                 textFormat: TextEdit.PlainText
-                selectByMouse: true
+                // selectByMouse: true -- this breaks scrolling on Android
                 font.family: platformMonospacedFont
             }
         }
