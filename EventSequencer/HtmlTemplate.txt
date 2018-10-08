@@ -11,6 +11,10 @@
         }
         td.content {
             width: 100%;
+            vertical-align: top;
+        }
+        td.metadata {
+            vertical-align: top;
         }
     </style>
 </head>
@@ -28,7 +32,7 @@
             row.appendChild(function () {
                 let col = document.createElement("td");
                 col.classList.add('content');
-                col.textContent = xx.text;
+                col.innerText = xx.text;
                 return col;
             }());
             row.appendChild(function () {
@@ -54,6 +58,8 @@
                         return audio;
                     }());
                     return col;
+                } else {
+                    return document.createTextNode("");
                 }
             }());
             contenttable.appendChild(row);
