@@ -42,10 +42,10 @@ public:
     BackendIpc(std::function<void(const QVariant&)>&& cb);
     ~BackendIpc();
 
-    // SERVICEREQUESTS VERSION 03
+    // SERVICEREQUESTS VERSION 04
     QString requestExportJson(QUrl documentUrl);
     QString requestExportPlayToFile(QUrl documentUrl);
-    QString requestExportHtml(QUrl documentUrl, bool merge);
+    QString requestExportHtml(QUrl documentUrl, bool merge, int mp3Quality);
     void requestCancelWorker();
     void requestClearStatus();
 

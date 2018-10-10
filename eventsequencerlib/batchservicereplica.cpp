@@ -26,9 +26,9 @@ QString BatchServiceReplica::requestExportPlayToFile(QUrl documentUrl)
     return ipc_.requestExportPlayToFile(documentUrl);
 }
 
-QString BatchServiceReplica::requestExportHtml(QUrl documentUrl, bool merge)
+QString BatchServiceReplica::requestExportHtml(QUrl documentUrl, bool merge, int mp3Quality)
 {
-    return ipc_.requestExportHtml(documentUrl, merge);
+    return ipc_.requestExportHtml(documentUrl, merge, mp3Quality);
 }
 
 void BatchServiceReplica::requestCancelWorker()

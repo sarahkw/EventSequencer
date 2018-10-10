@@ -12,6 +12,14 @@ GroupBox {
     property bool showPreviewAndUpdate: false
     property bool mp3optionsActive: false
 
+    function getMp3Quality() {
+        if (mp3optionsLoader.item !== null) {
+            return mp3optionsLoader.item.getMp3Quality()
+        } else {
+            throw new Error("mp3 quality doesn't exist");
+        }
+    }
+
     signal exportActivated()
     signal deleteActivated()
     signal previewActivated()
@@ -64,11 +72,16 @@ GroupBox {
                 id: mp3optionsLoader
                 active: mp3optionsActive
                 sourceComponent: ObjectModel {
+                    function getMp3Quality() {
+                        return cmbMp3Quality.currentIndex
+                    }
+
                     Label {
                         text: "MP3"
                     }
                     ComboBox {
                         Layout.fillWidth: true
+                        id: cmbMp3Quality
                         model: [
                             'V0 (Highest quality)',
                             'V1',

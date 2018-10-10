@@ -349,11 +349,13 @@ BatchServiceImplThread::FinalStatus ExportPlayToFileWorkerThread::process()
 class ExportHtmlWorkerThread : public BatchServiceImplThread {
     QUrl documentUrl_;
     bool merge_;
+    int mp3Quality_;
 public:
-    ExportHtmlWorkerThread(QUrl documentUrl, bool merge)
+    ExportHtmlWorkerThread(QUrl documentUrl, bool merge, int mp3Quality)
         : BatchServiceImplThread(documentUrl),
           documentUrl_(documentUrl),
-          merge_(merge)
+          merge_(merge),
+          mp3Quality_(mp3Quality)
     {
     }
 
@@ -363,6 +365,9 @@ protected:
 
 BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
 {
+    // TODO Placeholder
+    qWarning() << "Not implemented: set quality to:" << mp3Quality_;
+
     Document document;
     {
         auto result = document.load(documentUrl_);
@@ -627,10 +632,10 @@ QString BatchServiceImpl::requestExportPlayToFile(QUrl documentUrl)
         [documentUrl]() { return new ExportPlayToFileWorkerThread(documentUrl); });
 }
 
-QString BatchServiceImpl::requestExportHtml(QUrl documentUrl, bool merge)
+QString BatchServiceImpl::requestExportHtml(QUrl documentUrl, bool merge, int mp3Quality)
 {
-    return startRequestedExport([documentUrl, merge]() {
-        return new ExportHtmlWorkerThread(documentUrl, merge);
+    return startRequestedExport([=]() {
+        return new ExportHtmlWorkerThread(documentUrl, merge, mp3Quality);
     });
 }
 

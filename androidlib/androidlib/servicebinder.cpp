@@ -30,7 +30,7 @@ bool ServiceBinder::onTransact(int code, const QAndroidParcel& data,
         return true;
     }
 
-    // SERVICEREQUESTS VERSION 03
+    // SERVICEREQUESTS VERSION 04
     if (code == 1000) {
         QString retval;
         QUrl documentUrl = data.readVariant().toString();
@@ -53,9 +53,10 @@ bool ServiceBinder::onTransact(int code, const QAndroidParcel& data,
         QString retval;
         QUrl documentUrl = data.readVariant().toString();
         bool merge = data.readVariant().toBool();
+        int mp3Quality = data.readVariant().toInt();
 
         QMetaObject::invokeMethod(service_.get(), [&]() {
-            retval = service_->requestExportHtml(documentUrl, merge);
+            retval = service_->requestExportHtml(documentUrl, merge, mp3Quality);
         }, Qt::BlockingQueuedConnection);
 
         reply.writeVariant(retval);

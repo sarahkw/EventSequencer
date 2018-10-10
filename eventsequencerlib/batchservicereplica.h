@@ -25,10 +25,10 @@ public:
 
     QVariant status() const;
 
-    // SERVICEREQUESTS VERSION 03
+    // SERVICEREQUESTS VERSION 04
     Q_INVOKABLE QString requestExportJson(QUrl documentUrl);
     Q_INVOKABLE QString requestExportPlayToFile(QUrl documentUrl);
-    Q_INVOKABLE QString requestExportHtml(QUrl documentUrl, bool merge);
+    Q_INVOKABLE QString requestExportHtml(QUrl documentUrl, bool merge, int mp3Quality);
     Q_INVOKABLE void requestCancelWorker();
     Q_INVOKABLE void requestClearStatus();
 

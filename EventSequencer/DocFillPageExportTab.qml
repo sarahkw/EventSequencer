@@ -122,13 +122,13 @@ Unfortunately, the Android browser doesn't allow us to use the file:// scheme to
 
 
             onUpdateActivated: {
-                var result = exportManager.requestExportHtml(document, true)
+                var result = exportManager.requestExportHtml(document, true, -1)
                 if (result !== "") {
                     msgbox.msgbox(result, "Update")
                 }
             }
             onExportActivated: {
-                var result = exportManager.requestExportHtml(document, false)
+                var result = exportManager.requestExportHtml(document, false, getMp3Quality())
                 if (result !== "") {
                     msgbox.msgbox(result, "Export")
                 }

@@ -58,10 +58,10 @@ private:
     QString startRequestedExport(std::function<BatchServiceImplThread*()> creator);
 public:
 
-    // SERVICEREQUESTS VERSION 03
+    // SERVICEREQUESTS VERSION 04
     Q_INVOKABLE QString requestExportJson(QUrl documentUrl) override;
     Q_INVOKABLE QString requestExportPlayToFile(QUrl documentUrl) override;
-    Q_INVOKABLE QString requestExportHtml(QUrl documentUrl, bool merge) override;
+    Q_INVOKABLE QString requestExportHtml(QUrl documentUrl, bool merge, int mp3Quality) override;
     Q_INVOKABLE void requestCancelWorker() override;
     Q_INVOKABLE void requestClearStatus() override;
 
