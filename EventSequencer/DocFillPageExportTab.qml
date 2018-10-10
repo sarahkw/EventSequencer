@@ -83,6 +83,7 @@ ScrollView {
             defaultOutputPathExists: exportManager.defaultExportHtmlOutputPathExists
             actionEnabled: !exportManager.serviceIsWorking
             showPreviewAndUpdate: true
+            mp3optionsActive: true
             onPreviewActivated: {
                 var result = exportManager.getExportHtmlIndexUrl()
                 var success = result[0]

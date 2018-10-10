@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import QtQml.Models 2.3
 
 GroupBox {
     property alias description: descriptionLabel.text
@@ -9,6 +10,7 @@ GroupBox {
     property bool defaultOutputPathExists
     property bool actionEnabled: true
     property bool showPreviewAndUpdate: false
+    property bool mp3optionsActive: false
 
     signal exportActivated()
     signal deleteActivated()
@@ -42,8 +44,9 @@ GroupBox {
             Layout.fillWidth: true
             wrapMode: Text.Wrap
         }
-        RowLayout {
+        GridLayout {
             Layout.fillWidth: true
+            columns: 2
             Label {
                 text: "Path"
             }
@@ -53,6 +56,33 @@ GroupBox {
                 readOnly: true
                 text: defaultOutputPath
                 selectByMouse: true
+            }
+            Repeater {
+                model: mp3optionsLoader.item
+            }
+            Loader {
+                id: mp3optionsLoader
+                active: mp3optionsActive
+                sourceComponent: ObjectModel {
+                    Label {
+                        text: "MP3"
+                    }
+                    ComboBox {
+                        Layout.fillWidth: true
+                        model: [
+                            'V0 (Highest quality)',
+                            'V1',
+                            'V2',
+                            'V3',
+                            'V4',
+                            'V5',
+                            'V6 (Default)',
+                            'V7',
+                            'V8',
+                            'V9 (Smallest file)'
+                        ]
+                    }
+                }
             }
         }
         RowLayout {
