@@ -131,7 +131,7 @@ QVariantList DocFillExportManager::getExportHtmlIndexUrl() const
     if (indexFile.exists()) {
         return {true, QUrl::fromLocalFile(indexFile.fileName())};
     } else {
-        return {false, "HTML index does not exist. Perhaps the export was not complete. Press Update to complete the export."};
+        return {false, "HTML index does not exist. The export is not complete. If no export is currently running, press Update to complete the export."};
     }
 }
 

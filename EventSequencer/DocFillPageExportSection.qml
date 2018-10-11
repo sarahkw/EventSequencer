@@ -108,7 +108,6 @@ GroupBox {
                 text: "View"
                 onClicked: previewActivated()
                 visible: false
-                enabled: actionEnabled
             }
             DelayButton {
                 id: btnUpdate
