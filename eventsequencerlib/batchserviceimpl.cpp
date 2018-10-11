@@ -19,6 +19,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QSettings>
+#include <QElapsedTimer>
 
 #include <cmath>
 
@@ -366,6 +367,9 @@ protected:
 
 BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
 {
+    QElapsedTimer elapsedTimer;
+    elapsedTimer.start();
+
     Document document;
     {
         auto result = document.load(documentUrl_);
@@ -612,6 +616,8 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
         htmlFile.close();
         fileDeleter.commit();
     }
+
+    qInfo() << "Export time (ms):" << elapsedTimer.elapsed();
 
     return {true, ""};
 }
