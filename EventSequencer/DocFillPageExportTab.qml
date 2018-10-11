@@ -116,7 +116,7 @@ ScrollView {
 
 %1
 
-Unfortunately, the Android browser doesn't allow us to use the file:// scheme to open documents. Using the content:// scheme, which it does support, is not yet implemented. Would you like to copy the URL to the clipboard so you could manually paste it?".arg(previewDialog.previewUrl)
+Would you like to copy the URL to the clipboard?".arg(previewDialog.previewUrl)
                 }
             }
 
