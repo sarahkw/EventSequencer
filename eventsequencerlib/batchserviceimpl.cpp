@@ -366,9 +366,6 @@ protected:
 
 BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
 {
-    // TODO Placeholder
-    qWarning() << "Not implemented: set quality to:" << mp3Quality_;
-
     Document document;
     {
         auto result = document.load(documentUrl_);
