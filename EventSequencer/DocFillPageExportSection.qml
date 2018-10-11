@@ -77,7 +77,7 @@ GroupBox {
                     }
 
                     Label {
-                        text: "MP3"
+                        text: "Quality"
                     }
                     ComboBox {
                         Layout.fillWidth: true
@@ -94,6 +94,8 @@ GroupBox {
                             'V8',
                             'V9 (Smallest file)'
                         ]
+                        currentIndex: 6
+                        enabled: actionEnabled
                     }
                 }
             }

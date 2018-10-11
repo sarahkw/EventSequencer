@@ -18,6 +18,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QSettings>
 
 #include <cmath>
 
@@ -401,6 +402,43 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
         return {false, "Cannot create directory"};
     }
 
+    static const char EXPORTSETTINGS_INIFILE[] = "export.ini";
+    static const char EXPORTSETTINGS_KEY_EXPORTVERSION[] = "exportVersion";
+    static const char EXPORTSETTINGS_KEY_MP3VBRQUALITY[] = "mp3VbrQuality";
+
+    if (merge_) {
+        static const char ERRORMSG_UPDATE_CORRUPT_INI[] =
+                "Cannot update: export.ini corrupt or missing";
+        static const char ERRORMSG_UPDATE_INTERNAL_ERROR[] =
+                "Cannot update: internal error";
+
+        QSettings exportSettings(outputDir.filePath(EXPORTSETTINGS_INIFILE), QSettings::IniFormat);
+
+        QVariant exportVersion = exportSettings.value(EXPORTSETTINGS_KEY_EXPORTVERSION);
+        if (exportVersion.isNull()) {
+            return {false, ERRORMSG_UPDATE_CORRUPT_INI};
+        } else if (exportVersion.toInt() != 1) {
+            return {false, "Cannot update: export was done by newer version"};
+        }
+
+        QVariant mp3VbrQuality = exportSettings.value(EXPORTSETTINGS_KEY_MP3VBRQUALITY);
+        if (mp3VbrQuality.isNull()) {
+            return {false, ERRORMSG_UPDATE_CORRUPT_INI};
+        }
+        if (mp3Quality_ != -1) {
+            return {false, ERRORMSG_UPDATE_INTERNAL_ERROR};
+        }
+        mp3Quality_ = mp3VbrQuality.toInt();
+        if (!(mp3Quality_ >= 0 && mp3Quality_ <= 9)) {
+            // Just so that LAME doesn't assert.
+            return {false, ERRORMSG_UPDATE_INTERNAL_ERROR};
+        }
+    } else {
+        QSettings exportSettings(outputDir.filePath(EXPORTSETTINGS_INIFILE), QSettings::IniFormat);
+        exportSettings.setValue(EXPORTSETTINGS_KEY_EXPORTVERSION, 1);
+        exportSettings.setValue(EXPORTSETTINGS_KEY_MP3VBRQUALITY, mp3Quality_);
+    }
+
     AudioFormatHolder* audioFormatHolder = nullptr;
     if (document.audioFormatHolderSet()) {
         audioFormatHolder =
@@ -463,6 +501,9 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
         }
 
         for (auto& s : filesWeShouldDelete) {
+            if (s.compare(EXPORTSETTINGS_INIFILE, Qt::CaseInsensitive) == 0) {
+                continue;
+            }
             QFile::remove(outputDir.filePath(s));
         }
 
@@ -506,7 +547,8 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
         }
         AutoFileDeletion fileDeleter(writeFile);
 
-        Mp3Encoder mp3enc(resource.get(), &audioFormat, &writeFile);
+        Mp3Encoder mp3enc(resource.get(), &audioFormat, &writeFile,
+                          mp3Quality_);
         {
             auto result = mp3enc.initAndEncode();
             if (!result.success) {

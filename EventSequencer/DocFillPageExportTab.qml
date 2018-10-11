@@ -83,7 +83,7 @@ ScrollView {
             defaultOutputPathExists: exportManager.defaultExportHtmlOutputPathExists
             actionEnabled: !exportManager.serviceIsWorking
             showPreviewAndUpdate: true
-            mp3optionsActive: true
+            mp3optionsActive: !defaultOutputPathExists
             onPreviewActivated: {
                 var result = exportManager.getExportHtmlIndexUrl()
                 var success = result[0]
@@ -119,7 +119,6 @@ ScrollView {
 Unfortunately, the Android browser doesn't allow us to use the file:// scheme to open documents. Using the content:// scheme, which it does support, is not yet implemented. Would you like to copy the URL to the clipboard so you could manually paste it?".arg(previewDialog.previewUrl)
                 }
             }
-
 
             onUpdateActivated: {
                 var result = exportManager.requestExportHtml(document, true, -1)

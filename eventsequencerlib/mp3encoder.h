@@ -21,6 +21,8 @@ class Mp3Encoder {
     // Device to write to.
     QIODevice* destination_;
 
+    int mp3Quality_;
+
 private:
     const size_t bufferSize_ = 16384; // QIODEVICE_BUFFERSIZE
 
@@ -39,7 +41,7 @@ private:
 
 public:
     Mp3Encoder(QIODevice* source, QAudioFormat* sourceFormat,
-               QIODevice* destination);
+               QIODevice* destination, int mp3Quality);
     ~Mp3Encoder();
 
     struct Result {

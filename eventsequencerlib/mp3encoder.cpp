@@ -9,8 +9,11 @@
 #include <QThread>
 
 Mp3Encoder::Mp3Encoder(QIODevice* source, QAudioFormat* sourceFormat,
-                       QIODevice* destination)
-    : source_(source), sourceFormat_(sourceFormat), destination_(destination)
+                       QIODevice* destination, int mp3Quality)
+    : source_(source),
+      sourceFormat_(sourceFormat),
+      destination_(destination),
+      mp3Quality_(mp3Quality)
 {
     lame_ = lame_init();
 }
@@ -41,6 +44,9 @@ Mp3Encoder::Result Mp3Encoder::init()
 
     lame_set_in_samplerate(lame_, sourceFormat_->sampleRate());
     lame_set_num_channels(lame_, sourceFormat_->channelCount());
+
+    lame_set_VBR(lame_, vbr_default);
+    lame_set_VBR_q(lame_, mp3Quality_);
 
     {
         int rcode = lame_init_params(lame_);
