@@ -9,24 +9,24 @@ RECORDING AND ASSIGNING
 1. On the top tab bar, select the Record tab.
 2. Press the Record button on the bottom and read some text. Press Stop when you are done.
 3. Tap on the document to mark the beginning of the text you have read.
-4. Press the Select button to toggle the selection.
+4. Press the Select button to begin the selection.
 5. Tap on the document to mark the end of the text you have read.
 6. Press the Assign button.
 7. Notice that the text is now highlighted in green.
 
 It is ideal to assign ranges consecutively without leaving space in between. From the Document tab, there is an option to scroll to the next unassigned location. If you assign ranges consecutively, this will help you easily scroll to where you left off last time so you can continue reading.
 
-PLAYING BACK
+Try to read and assign parts of this tutorial text.
 
-Now that you have recorded yourself reading some text, let's play them back! Click on the Play tab.
+PREVIEW YOUR RECORDING
 
-The ComboBox lets you choose what to play.
+Before you assign the recording, you could listen to it.
 
-You may wonder what the "Review Unassigned Recording" is for. After you've made a recording, you can use the option to listen to the recording and determine if you wish to assign it.
+1. On the top bar, select the Play tab.
+2. On the combo box at the bottom, select "Review Unassigned Recording".
+3. Press Play.
 
-The "Tone" option helps you start speaking on the specified pitch if that is your goal.
-
-I MISASSIGNED
+CORRECTING MISASSIGNMENTS
 
 If you accidentally make the wrong assignment, put your cursor on the incorrect assignment and go to the File tab. In the Strips subtab, select the Strip that represents your wrong assignment. Press the Delete button and you will have the option to reclaim the recording as the unassigned recording, and you can assign it again in the Record tab.
 
