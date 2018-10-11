@@ -20,6 +20,7 @@
 #include <QJsonDocument>
 #include <QSettings>
 #include <QElapsedTimer>
+#include <QDateTime>
 
 #include <cmath>
 
@@ -66,6 +67,7 @@ class JsonExportSegment {
     QString fileAu;
     QString fileMp3;
     QString fileCreateTime;
+    QDateTime fileCreateTimeDt;
 public:
     void load(const QString& fileResourceDirectory, const QString& content,
               const channel::CollateChannel::Segment& segment);
@@ -105,8 +107,15 @@ void JsonExportSegment::load(const QString& fileResourceDirectory,
         // silently ignored because files may not have meta-data, may
         // be missing, etc.
         std::string createTime;
-        if (ResourceMetaData::readFromFile(filePath, &createTime)) {
+        qint64 createTimeInSeconds{};
+        if (ResourceMetaData::readFromFile(filePath, &createTime, &createTimeInSeconds)) {
             this->fileCreateTime = QString::fromStdString(createTime);
+            if (createTimeInSeconds > 0) {
+                auto dt = QDateTime::fromSecsSinceEpoch(createTimeInSeconds);
+                if (dt.isValid()) {
+                    this->fileCreateTimeDt = dt;
+                }
+            }
         }
     }
 }
@@ -125,8 +134,18 @@ QJsonObject JsonExportSegment::make(JsonExportSegment::FileType ft)
     } else if (ft == FileType::Mp3 && !this->fileMp3.isEmpty()) {
         obj["file"] = this->fileMp3;
     }
-    if (!this->fileCreateTime.isEmpty()) {
-        obj["fileCreateTime"] = this->fileCreateTime;
+
+    // TODO Change the FileType to something besides Au and Mp3. It should be
+    //      something like "JSON export" vs "HTML export". Because it doesn't
+    //      make sense to swap the timezone shown based on the format type.
+    if (ft == FileType::Au) {
+        if (!this->fileCreateTime.isEmpty()) {
+            obj["fileCreateTime"] = this->fileCreateTime;
+        }
+    } else if (ft == FileType::Mp3) {
+        if (this->fileCreateTimeDt.isValid()) {
+            obj["fileCreateTime"] = this->fileCreateTimeDt.toLocalTime().toString(Qt::SystemLocaleLongDate);
+        }
     }
     return obj;
 }

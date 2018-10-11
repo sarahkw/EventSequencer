@@ -42,7 +42,7 @@
                     if (xx.fileCreateTime !== undefined) {
                         col.appendChild(function () {
                             let div = document.createElement("div");
-                            div.appendChild(document.createTextNode("Created (UTC): " + xx.fileCreateTime));
+                            div.appendChild(document.createTextNode(xx.fileCreateTime));
                             return div;
                         }());
                     }
