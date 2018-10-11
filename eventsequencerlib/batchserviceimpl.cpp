@@ -482,6 +482,9 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
         }
     }
 
+    QDir outputResourcePath(outputDir.filePath("resource"));
+    outputResourcePath.mkpath(".");
+
     if (merge_) {
         std::set<QString> filesWeShouldHave;
         for (auto& wi : workItems) {
@@ -490,7 +493,7 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
 
         std::set<QString> filesWeAlreadyHave;
         std::vector<QString> filesWeShouldDelete;
-        for (auto& fi : outputDir.entryInfoList(QDir::Files)) {
+        for (auto& fi : outputResourcePath.entryInfoList(QDir::Files)) {
             if (filesWeShouldHave.count(fi.fileName()) == 0) {
                 // We shouldn't have this file.
                 filesWeShouldDelete.push_back(fi.fileName());
@@ -504,7 +507,7 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
             if (s.compare(EXPORTSETTINGS_INIFILE, Qt::CaseInsensitive) == 0) {
                 continue;
             }
-            QFile::remove(outputDir.filePath(s));
+            QFile::remove(outputResourcePath.filePath(s));
         }
 
         workItems.erase(std::remove_if(workItems.begin(), workItems.end(),
@@ -520,8 +523,8 @@ BatchServiceImplThread::FinalStatus ExportHtmlWorkerThread::process()
 
         reportStatus(QString("%1 of %2 files encoded").arg(i).arg(workItems.size()));
 
-        QString partialOutputFilePath = QString("%1/%2.part").arg(outputPath).arg(wi.destFileName);
-        QString outputFilePath = QString("%1/%2").arg(outputPath).arg(wi.destFileName);
+        QString outputFilePath = outputResourcePath.filePath(wi.destFileName);
+        QString partialOutputFilePath = outputFilePath + ".part";
 
         std::unique_ptr<SampleModifyingIODevice> resource;
         {

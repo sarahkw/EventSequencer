@@ -51,7 +51,7 @@
                         audio.controls = true;
                         audio.appendChild(function () {
                             let source = document.createElement("source");
-                            source.src = xx.file;
+                            source.src = "resource/" + xx.file;
                             source.type = 'audio/mpeg';
                             return source;
                         }());
