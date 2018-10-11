@@ -1,28 +1,26 @@
 WELCOME TO DOCFILL
 
-This tutorial will help you get started quickly!
+Gray highlighted text means that there are no recordings assigned to the text.
 
-You should now be viewing this text in the new document wizard. Finish the wizard to create the tutorial document.
+Green highlighted text means there is a recording assigned.
 
-From the main menu, select the Tutorial document, you should now be inside the document!
+RECORDING AND ASSIGNING
 
-Notice that the text is highlighted in gray. Gray highlighted text means that there are no recordings assigned to the text. Green highlighted text means there is a recording assigned.
+1. On the top tab bar, select the Record tab.
+2. Press the Record button on the bottom and read some text. Press Stop when you are done.
+3. Tap on the document to mark the beginning of the text you have read.
+4. Press the Select button to toggle the selection.
+5. Tap on the document to mark the end of the text you have read.
+6. Press the Assign button.
+7. Notice that the text is now highlighted in green.
 
-YOUR FIRST RECORDING
-
-X Place the cursor before the X and change to the Record tab. Press the Record button and start reading the text from before the X to before the Y. Press Stop when you are done. While the cursor is still on the X, start the Selection range by pressing on the Select button.
-
-Y Place the cursor before the Y. Finally, press Assign! You will notice that the line which you have read has now been highlighted in green.
-
-Now choose a few more parts to record and assign. You're getting the hang of it!
-
-It is ideal to assign ranges consecutively without leaving space in between. There is a menu option on the Document tab's Go button that moves the cursor to the next unassigned location. If you assign ranges consecutively, this will help you easily scroll to where you left off last time so you can continue reading.
+It is ideal to assign ranges consecutively without leaving space in between. From the Document tab, there is an option to scroll to the next unassigned location. If you assign ranges consecutively, this will help you easily scroll to where you left off last time so you can continue reading.
 
 PLAYING BACK
 
 Now that you have recorded yourself reading some text, let's play them back! Click on the Play tab.
 
-The ComboBox lets you choose what to play. I'm sure you could figure it out.
+The ComboBox lets you choose what to play.
 
 You may wonder what the "Review Unassigned Recording" is for. After you've made a recording, you can use the option to listen to the recording and determine if you wish to assign it.
 
@@ -35,7 +33,3 @@ If you accidentally make the wrong assignment, put your cursor on the incorrect 
 WORKFLOW AUTOMATION
 
 Once you are comfortable with using the application, File -> Settings has a few options to automate your workflow. This will enable you to read quickly without pressing as many buttons.
-
-YOUR TURN
-
-Create documents with what you wish to read and start filling the document with recordings!
