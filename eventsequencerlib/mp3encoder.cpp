@@ -48,12 +48,27 @@ Mp3Encoder::Result Mp3Encoder::init()
     lame_set_VBR(lame_, vbr_default);
     lame_set_VBR_q(lame_, mp3Quality_);
 
+    // We don't want an automatic id3 tag because we need to keep
+    // track of the zero frame that's to be replaced with the VBR
+    // info.
+    lame_set_write_id3tag_automatic(lame_, 0);
+
     {
         int rcode = lame_init_params(lame_);
         if (rcode < 0) {
             return {false, QString("Lame could not init params: %1").arg(rcode)};
         }
     }
+
+//    id3tag_init(lame_);
+//    {
+//        auto size = lame_get_id3v2_tag(lame_, nullptr, 0);
+//        std::vector<unsigned char> tag(size);
+//        size = lame_get_id3v2_tag(lame_, tag.data(), tag.size());
+//        if (size != destination_->write(reinterpret_cast<char*>(tag.data()), size)) {
+//            return {false, "Cannot write ID3 header"};
+//        }
+//    }
 
     Q_ASSERT(sourceFormat_->sampleSize() > 0);
     Q_ASSERT(sourceFormat_->channelCount() > 0);
@@ -217,6 +232,25 @@ Mp3Encoder::Result Mp3Encoder::encode()
             destination_->write(reinterpret_cast<char*>(mp3Buffer_.data()),
                                 flushBufferResult)) {
             return {false, QString("Write Error")};
+        }
+    }
+
+    // Note: If we ever start adding ID3v2 tags in the future, we'll have to
+    // seek past it.
+    if (!destination_->seek(0)) {
+        return {false, "Error seeking for lametag"};
+    }
+
+    {
+        // XXX Maybe it's not so good that we're allocating yet another buffer
+        //     while we already have mp3Buffer_.
+        auto size = lame_get_lametag_frame(lame_, nullptr, 0);
+        std::vector<unsigned char> tag(size);
+        size = lame_get_lametag_frame(lame_, tag.data(), tag.size());
+        if (qint64(size) !=
+            destination_->write(reinterpret_cast<char*>(tag.data()),
+                                qint64(size))) {
+            return {false, "Error writing lame tag"};
         }
     }
 
